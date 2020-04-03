@@ -46,12 +46,14 @@ So we can add a new variable k, (Kill rate), and add to the system of equations.
 
 ![](https://user-images.githubusercontent.com/7212952/77828649-7f1e0f00-70fb-11ea-8b59-d7f722305847.gif)
 
-The SIR-D model code is based on
+The SIR-D model code is based on the contribution of Giuliano Belinassi, from IME-USP, Brazil
+
+https://github.com/Lewuathe/COVID19-SIR/issues/13#issue-589616803
+
+The the Pyhton notebook of
 
 https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
 
-and contribution of Giuliano Belinassi, from IME-USP, Brazil
 
-https://github.com/Lewuathe/COVID19-SIR/issues/13#issue-589616803
 
 
