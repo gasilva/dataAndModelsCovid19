@@ -64,7 +64,7 @@ The the Pyhton notebook of
 
 https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
 
-###References:
+### References:
 
 William Ogilvy Kermack, A. G. McKendrick and Gilbert Thomas Walker 1997A contribution to the mathematical theory of epidemicsProc. R. Soc. Lond. A115700–721 https://doi.org/10.1098/rspa.1927.0118
 
