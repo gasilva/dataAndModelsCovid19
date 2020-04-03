@@ -26,6 +26,7 @@ https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model
 The SIR-D model code is based on
 
 https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
+
 and contribution of Giuliano Belinassi, from IME-USP, Brazil
 
 https://github.com/Lewuathe/COVID19-SIR/issues/13#issue-589616803
