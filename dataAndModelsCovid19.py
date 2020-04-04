@@ -11,13 +11,11 @@ import math
 import pandas as pd
 import array
 import operator
-import git
 import argparse
 import sys
 import json
 import ssl
 import urllib.request
-import os
 from csv import reader
 from csv import writer
 from datetime import datetime,timedelta
