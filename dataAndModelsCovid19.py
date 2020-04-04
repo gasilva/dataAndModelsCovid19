@@ -1,9 +1,4 @@
 
-#data
-#https://ourworldindata.org/coronavirus
-
-#logistic model fitting
-#https://towardsdatascience.com/covid-19-infection-in-italy-mathematical-models-and-predictions-7784b4d7dd8d
 
 # Import the necessary packages and modules
 from datetime import datetime
@@ -16,12 +11,13 @@ import math
 import pandas as pd
 import array
 import operator
-import git 
+import git
 import argparse
 import sys
 import json
 import ssl
 import urllib.request
+import os
 from csv import reader
 from csv import writer
 from datetime import datetime,timedelta
@@ -31,7 +27,6 @@ from scipy.optimize import fsolve
 from scipy.integrate import odeint
 from scipy.integrate import solve_ivp
 from scipy.optimize import minimize
-#%matplotlib inline
 
 def logistic_model(x,a,b,c):
     return c/(1+np.exp(-(x-b)/max(1e-12,a)))
@@ -57,10 +52,10 @@ def getCases(df,country):
                     j1+=1
     return [time1, cases1]
 
-def parse_arguments():
+def parse_arguments(country):
     parser = argparse.ArgumentParser()
 
-    country1="China"
+    country1=country
 
     if country1=="Brazil":
         date="3/3/20"
@@ -245,6 +240,7 @@ class Learner(object):
             values = np.append(values, datetime.strftime(current, '%m/%d/%y'))
         return values
 
+    #predict final extended values
     def predict(self, beta, a, b, data, recovered, death, country, s_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
@@ -263,6 +259,7 @@ class Learner(object):
         # ivp = solve_ivp(SIR, [0, size], [s_0,i_0,r_0,d_0], t_eval=np.arange(0, size, 1))
         return new_index, extended_actual, extended_recovered, extended_death, res[:,0], res[:,1],res[:,2],res[:,3]
 
+    #run optimizer and plotting
     def train(self):
         recovered = self.load_recovered(self.country)
         death = self.load_dead(self.country)
@@ -314,7 +311,7 @@ class Learner(object):
 
         plt.show()
 
-
+#objective function Odeint solver
 def lossOdeint(point, data, recovered, death, s_0, i_0, r_0, d_0):
     size = len(data)
     beta, a, b = point
@@ -334,6 +331,7 @@ def lossOdeint(point, data, recovered, death, s_0, i_0, r_0, d_0):
     w = 1 - u - v - z
     return u*l1 + v*l2 + w*l3
 
+#objective function solve_ivp solver
 def loss(point, data, recovered, death, s_0, i_0, r_0, d_0):
     size = len(data)
     beta, a, b = point
@@ -352,7 +350,9 @@ def loss(point, data, recovered, death, s_0, i_0, r_0, d_0):
     w = 1 - u - v
     return u*l1 + v*l2 + w*l3
 
-def main():
+#main program SIRD model
+
+def main(country):
     
     START_DATE = {
   'Japan': '1/22/20',
@@ -360,7 +360,7 @@ def main():
   'Republic of Korea': '1/22/20',
   'Iran (Islamic Republic of)': '2/19/20'}
 
-    countries, download, startdate, predict_range , s_0, i_0, r_0, k_0 = parse_arguments()
+    countries, download, startdate, predict_range , s_0, i_0, r_0, k_0 = parse_arguments(country)
 
     if download:
         data_d = load_json("./data_url.json")
@@ -380,11 +380,27 @@ def main():
         #        '. Be sure it exists in the data exactly as you entry it.' +
         #        ' Also check date format if you passed it as parameter.')
            
-
+#initial vars
 a = 0.0
 b = 0.0
 c = 0.0 
 date = []
+
+#load new confirmed cases
+data_d = load_json("./data_url.json")
+download_data(data_d)
+
+#sum provinces under same country
+sumCases_province('data/time_series_19-covid-Confirmed.csv', 'data/time_series_19-covid-Confirmed-country.csv')
+
+#load CSV file
+dateparse = lambda x: pd.datetime.strptime(x, '%m/%d/%Y')
+df=pd.read_csv('data/time_series_19-covid-Confirmed-country.csv', \
+    delimiter=',',parse_dates=True, date_parser=dateparse,header=None)
+df=df.transpose()
+
+#Initial parameters
+#Choose here your options
 
 #option
 #opt=0 all plots
@@ -393,36 +409,7 @@ date = []
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
 #opt=5 SIR-D Model
-opt=4
-
-# git_url='https://github.com/CSSEGISandData/COVID-19.git'
-# Repo.clone_from(git_url, r'C:\Users\GuilhermeSilva\Desktop\corona')
-
-repo = git.Repo(r'C:\Users\GuilhermeSilva\Desktop\corona\COVID-19')
-repo.remotes.origin.pull()
-
-dateparse = lambda x: pd.datetime.strptime(x, '%m/%d/%Y')
-df=pd.read_csv(r'C:\Users\GuilhermeSilva\Desktop\corona\COVID-19\csse_covid_19_data\csse_covid_19_time_series\time_series_covid19_confirmed_global.csv', \
-    delimiter=',',parse_dates=True, date_parser=dateparse,header=None)
-df=df.transpose()
-
-tamCol = np.shape(df)[1]
-i=0
-ix=0
-
-#sum results of provinces/states of one country
-while i<tamCol-1:
-    if df[i][1]==df[i+1][1]:
-        if ix==0:
-            ix=i
-        df[ix][4:] = np.asfarray(df[ix][4:],float)+np.asfarray(df[i+1][4:],float) 
-        if not ix==i:
-            df[i][0]="ignore"
-        else:
-            df[i][0]="main results"     
-    else:
-        ix=0
-    i+=1
+opt=0
 
 #prepare data for plotting
 country1="US"
@@ -435,7 +422,47 @@ country4="France"
 [time4,cases4]=getCases(df,country4)
 country5="Germany"
 [time5,cases5]=getCases(df,country5)
+
+#choose country for curve fitting
+#choose country for growth curve
+#one of countries above
+country="Brazil"
+
+#plot version - changes the file name png
 version="2"
+
+#choose country for SIRD model
+# "Brazil"
+# "China"
+# "Italy"
+# "France"
+# "United Kingdom"
+# "US"
+# Countries above are already adjusted
+countrySIRD="Brazil"
+
+# For other countries you can run at command line
+# but be sure to define S_0, I_0, R_0, K_0
+# the sucess of fitting will depend on these paramenters
+#
+# usage: dataAndModelsCovid19.py [-h] [--countries COUNTRY_CSV] [--download-data]
+#                  [--start-date START_DATE] [--prediction-days PREDICT_RANGE]
+#                  [--S_0 S_0] [--I_0 I_0] [--R_0 R_0]
+
+# optional arguments:
+#   -h, --help            show this help message and exit
+#   --countries COUNTRY_CSV
+#                         Countries on CSV format. It must exact match the data
+#                         names or you will get out of bonds error.
+#   --download-data       Download fresh data and then run
+#   --start-date START_DATE
+#                         Start date on MM/DD/YY format ... I know ...It
+#                         defaults to first data available 1/22/20
+#   --prediction-days PREDICT_RANGE
+#                         Days to predict with the model. Defaults to 150
+#   --S_0 S_0             S_0. Defaults to 100000
+#   --I_0 I_0             I_0. Defaults to 2
+#   --R_0 R_0             R_0. Defaults to 0
 
 if opt==1 or opt==0 or opt==4:
 
@@ -539,34 +566,31 @@ if opt==2 or opt==0:
 
     #model fitting
 
-    country="Brazil"
-
-    if country=="Italy":
+    if country==country1:
         casesFit=cases1
         timeFit=time1
         maxCases=27e4
         maxTime=80
         guessExp=2
 
-    if country=="Germany":
-        casesFit=cases4
-        timeFit=time4
-        maxCases=12e4
+    if country==country2:
+        casesFit=cases2
+        timeFit=time2
+        maxCases=13e4
         maxTime=80
-        country='Germany'
         guessExp=2
 
-    if country=="Brazil":
+    if country==country3:
         casesFit=cases3
         timeFit=time3
         maxCases=30e3
         maxTime=50
         guessExp=0.5
 
-    if country=="France":
-        casesFit=cases2
-        timeFit=time2
-        maxCases=13e4
+    if country==country4:
+        casesFit=cases4
+        timeFit=time4
+        maxCases=12e4
         maxTime=80
         guessExp=2
 
@@ -617,9 +641,34 @@ if opt==3 or opt==0 or opt==4:
     plt.rc('font', size=14)
     
     growth=[]
-    country='Brazil'
-    casesGrowth=cases3
-    timeGrowth=time3
+
+    if country==country1:
+        casesGrowth=cases1
+        timeFit=time1
+        maxCases=27e4
+        maxTime=80
+        guessExp=2
+
+    if country==country2:
+        casesGrowth=cases2
+        timeGrowth=time2
+        maxCases=13e4
+        maxTime=80
+        guessExp=2
+
+    if country==country3:
+        casesGrowth=cases3
+        timeGrowth=time3
+        maxCases=30e3
+        maxTime=50
+        guessExp=0.5
+
+    if country==country4:
+        casesGrowth=cases4
+        timeGrowth=time4
+        maxCases=12e4
+        maxTime=80
+        guessExp=2
 
     for i in range(0,len(casesGrowth)-1):
         growth.append(100*float(casesGrowth[i+1])/float(casesGrowth[i])-100)
@@ -674,4 +723,4 @@ if opt==5 or opt==0:
     #https://www.lewuathe.com/covid-19-dynamics-with-sir-model.html
 
     if __name__ == '__main__':
-        main()
+        main(countrySIRD)
