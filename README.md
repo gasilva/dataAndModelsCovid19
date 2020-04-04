@@ -2,7 +2,87 @@
 
 ## Installation
 
+Clone this repository
+
+```
+git clone https://github.com/gasilva/dataAndModelsCovid19.git
+```
+
+Or use GitHub Desktop [https://desktop.github.com/](https://desktop.github.com/) and File, Clone repository
+
 ## Run Code
+
+If you are using Visual Code Studio, select the folder you are running.
+
+```
+python dataAndModelsCovid19.py
+```
+
+## Usage
+
+Select one option 1 to 5 by variable opt
+
+```
+#Initial parameters
+#Choose here your options
+
+#option
+#opt=0 all plots
+#opt=1 corona log plot
+#opt=2 logistic model prediction
+#opt=3 bar plot with growth rate
+#opt=4 log plot + bar plot
+#opt=5 SIR-D Model
+opt=0
+```
+
+Select countries to be plotted in log to analyze growth rate. All countries available.
+
+```
+#prepare data for plotting
+country1="US"
+[time1,cases1]=getCases(df,country1)
+country2="Italy"
+[time2,cases2]=getCases(df,country2)
+country3="Brazil"
+[time3,cases3]=getCases(df,country3)
+country4="France"
+[time4,cases4]=getCases(df,country4)
+country5="Germany"
+[time5,cases5]=getCases(df,country5)
+
+```
+Choose version to be place in the .png file name of log plot. This allows to you to analyze different set of countries.
+
+```
+#plot version - changes the file name png
+version="2"
+```
+
+
+Select country to have the exponential and logistic function fitting. Choose one of the countries in the list above.
+
+```
+#choose country for curve fitting
+#choose country for growth curve
+#one of countries above
+country="Brazil"
+
+```
+
+Choose country to analyze data by SIRD model. Some countries are already adjusted. Other countries may need extra work to adjust S_0, I_0, R_0 and K_0, i.e., the initial conditions. Plus it may required you to set the start date correctly. If a delay/lag exist in the recovery or dead data, it may be required to set negative values for R_0 and K_0. It may simulate the lag.
+
+```
+#choose country for SIRD model
+# "Brazil"
+# "China"
+# "Italy"
+# "France"
+# "United Kingdom"
+# "US"
+# Countries above are already adjusted
+countrySIRD="Brazil"
+```
 
 ## Databases Used in This Study
  
