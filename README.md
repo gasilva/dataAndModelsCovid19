@@ -58,11 +58,11 @@ https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model
 
 https://triplebyte.com/blog/modeling-infectious-diseases
 
-#### SIR-D - SIR model extended to have deaths and recovered separated
-
 The γ is split in two by γ = a + b, where a is the rate of recoveries, and b is the rate of death. Since the death rate seems to be linear (1.5% in China, for example), this linear decomposition of γ is precise enough. 
 
 So we can add a new variable k, (Kill rate), and add to the system of equations. Therefore:
+
+#### SIR-D - SIR model extended to have deaths and recovered separated
 
 ![](https://user-images.githubusercontent.com/7212952/77828649-7f1e0f00-70fb-11ea-8b59-d7f722305847.gif)
 
