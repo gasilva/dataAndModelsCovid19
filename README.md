@@ -4,7 +4,7 @@
 
 ## Run Code
 
-## Theory
+## Data Bases Used in This Study
  
 ### Data
 
@@ -12,7 +12,7 @@ This code has data from Repository by Johns Hopkins CSSE
 
 https://github.com/CSSEGISandData/COVID-19
 
-### Data Analysis and Curve Fitting
+### Data Analysis
 
 The log-curve of exponential growth in several countries is based on
 
@@ -20,9 +20,13 @@ https://www.ft.com/content/ae83040c-18e6-440e-bd00-e4c5cefdda26
 
 The growth rate is original from Guilherme A. L. da Silva - http://www.at4i.com
 
+### Curve Fitting
+
 The exponential and logistic curves fitting is based on
 
 https://towardsdatascience.com/covid-19-infection-in-italy-mathematical-models-and-predictions-7784b4d7dd8d
+
+## Theory
 
 ### Mathematical Models
 
