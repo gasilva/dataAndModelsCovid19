@@ -4,7 +4,7 @@
 
 ## Run Code
 
-## Data Bases Used in This Study
+## Databases Used in This Study
  
 ### Data
 
