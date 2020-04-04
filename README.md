@@ -1,6 +1,10 @@
 # dataAndModelsCovid19
 
-## Python code to analyze data and predict Covid-19 infection
+## Installation
+
+## Run Code
+
+## Databases Used in This Study
  
 ### Data
 
@@ -8,7 +12,7 @@ This code has data from Repository by Johns Hopkins CSSE
 
 https://github.com/CSSEGISandData/COVID-19
 
-### Data Analysis and Curve Fitting
+### Data Analysis
 
 The log-curve of exponential growth in several countries is based on
 
@@ -16,9 +20,13 @@ https://www.ft.com/content/ae83040c-18e6-440e-bd00-e4c5cefdda26
 
 The growth rate is original from Guilherme A. L. da Silva - http://www.at4i.com
 
+### Curve Fitting
+
 The exponential and logistic curves fitting is based on
 
 https://towardsdatascience.com/covid-19-infection-in-italy-mathematical-models-and-predictions-7784b4d7dd8d
+
+## Theory
 
 ### Mathematical Models
 
@@ -50,11 +58,11 @@ https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model
 
 https://triplebyte.com/blog/modeling-infectious-diseases
 
-#### SIR-D - SIR model extended to have deaths and recovered separated
-
 The γ is split in two by γ = a + b, where a is the rate of recoveries, and b is the rate of death. Since the death rate seems to be linear (1.5% in China, for example), this linear decomposition of γ is precise enough. 
 
 So we can add a new variable k, (Kill rate), and add to the system of equations. Therefore:
+
+#### SIR-D - SIR model extended to have deaths and recovered separated
 
 ![](https://user-images.githubusercontent.com/7212952/77828649-7f1e0f00-70fb-11ea-8b59-d7f722305847.gif)
 
