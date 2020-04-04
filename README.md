@@ -20,6 +20,8 @@ python dataAndModelsCovid19.py
 
 ## Usage
 
+Make changes directly in the dataAndModelsCovid19.py file.
+
 Select one option 1 to 5 by variable opt
 
 ```
@@ -82,6 +84,39 @@ Choose country to analyze data by SIRD model. Some countries are already adjuste
 # "US"
 # Countries above are already adjusted
 countrySIRD="Brazil"
+```
+
+## Command line use for SIRD model
+
+This implementation comes from SIR model of [https://github.com/Lewuathe/COVID19-SIR](https://github.com/Lewuathe/COVID19-SIR)
+
+It was added the K_0 value because SIRD model has initial deaths value in addition to S_0, I_0 and R_0.
+
+You can analayze several countries by making a CSV list like: Brazil,Italy,US,France. Do not put spaces before or after commas.
+
+```
+ For other countries you can run at command line
+ but be sure to define S_0, I_0, R_0, K_0
+ the sucess of fitting will depend on these paramenters
+
+ usage: dataAndModelsCovid19.py [-h] [--countries COUNTRY_CSV] [--download-data]
+                  [--start-date START_DATE] [--prediction-days PREDICT_RANGE]
+                  [--S_0 S_0] [--I_0 I_0] [--R_0 R_0]
+
+ optional arguments:
+   -h, --help            show this help message and exit
+   --countries COUNTRY_CSV
+                         Countries on CSV format. It must exact match the data
+                         names or you will get out of bonds error.
+   --download-data       Download fresh data and then run
+   --start-date START_DATE
+                         Start date on MM/DD/YY format ... I know ...It
+                         defaults to first data available 1/22/20
+   --prediction-days PREDICT_RANGE
+                         Days to predict with the model. Defaults to 150
+   --S_0 S_0             S_0. Defaults to 100000
+   --I_0 I_0             I_0. Defaults to 2
+   --R_0 R_0             R_0. Defaults to 0
 ```
 
 ## Databases Used in This Study
