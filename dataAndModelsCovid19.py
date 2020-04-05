@@ -242,7 +242,7 @@ class Learner(object):
     def predict(self, beta, a, b, data, recovered, death, country, s_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
-        def SIR(t, y):
+        def SIR(y,t):
             S = y[0]
             I = y[1]
             R = y[2]
@@ -315,7 +315,12 @@ def lossOdeint(point, data, recovered, death, s_0, i_0, r_0, d_0):
     size = len(data)
     beta, a, b = point
     def SIR(y,t):
-        return [-beta*y[0]*y[1], beta*y[0]*y[1]-(a+b)*y[1], a*y[1], b*y[1]]
+        S = y[0]
+        I = y[1]
+        R = y[2]
+        D = y[3]
+        yz=1-(-beta*S*I+beta*S*I-(a+b)*I+a*I)
+        return [-beta*S*I, beta*S*I-(a+b)*I, a*I, yz]
     y0=[s_0,i_0,r_0,d_0]
     tspan=np.arange(0, size, 1)
     res=odeint(SIR,y0,tspan)
@@ -327,7 +332,7 @@ def lossOdeint(point, data, recovered, death, s_0, i_0, r_0, d_0):
     #weight for recovered
     v = 0.01 ##Brazil France 0.04 US 0.02 China 0.01 (it has a lag in recoveries) Others 0.15
     #weight for deaths
-    w = 1 - u - v - z
+    w = 1 - u - v
     return u*l1 + v*l2 + w*l3
 
 #objective function solve_ivp solver
@@ -583,7 +588,7 @@ if opt==2 or opt==0:
     if country==country3:
         casesFit=cases3
         timeFit=time3
-        maxCases=30e3
+        maxCases=50e3
         maxTime=50
         guessExp=0.5
 
