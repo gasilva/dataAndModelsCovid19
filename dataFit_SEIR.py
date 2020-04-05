@@ -239,29 +239,26 @@ class Learner(object):
         return values
 
     #predict final extended values
-    def predict(self, beta, a, b, data, recovered, death, country, s_0, i_0, r_0, d_0):
+    def predict(self, beta, mu, sigma, a, b, data, recovered, death, country, s_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
         def SIR(y,t):
-        # def SIR(t,y):
             S = y[0]
-            I = y[1]
-            R = y[2]
-            D = y[3]
-            y1=-beta*S*I
-            y2=beta*S*I-(a+b)*I
-            y3=a*I
-            y4=1-(y1+y2+y3)
-            return [y1,y2,y3,y4]
+            E = y[1]
+            I = y[2]
+            R = y[3]
+            y1=mu-(beta*I+mu)*S
+            y2=beta*S*I-(mu+sigma)*E
+            y3=sigma*E-(mu+a+b)*I
+            return [-beta*S*I, beta*S*I-(a+b)*I, a*I, yz]
         y0=[s_0,i_0,r_0,d_0]
         tspan=np.arange(0, size, 1)
         res=odeint(SIR,y0,tspan)
-        # solution = solve_ivp(SIR, [0, size], [s_0,i_0,r_0,d_0], t_eval=np.arange(0, size, 1), vectorized=True)
         extended_actual = np.concatenate((data.values, [None] * (size - len(data.values))))
         extended_recovered = np.concatenate((recovered.values, [None] * (size - len(recovered.values))))
         extended_death = np.concatenate((death.values, [None] * (size - len(death.values))))
+        # ivp = solve_ivp(SIR, [0, size], [s_0,i_0,r_0,d_0], t_eval=np.arange(0, size, 1))
         return new_index, extended_actual, extended_recovered, extended_death, res[:,0], res[:,1],res[:,2],res[:,3]
-        # return new_index, extended_actual, extended_recovered, extended_death, solution.y[0],solution.y[1],solution.y[2],solution.y[3]
 
     #run optimizer and plotting
     def train(self):
@@ -324,11 +321,8 @@ def lossOdeint(point, data, recovered, death, s_0, i_0, r_0, d_0):
         I = y[1]
         R = y[2]
         D = y[3]
-        y1=-beta*S*I
-        y2=beta*S*I-(a+b)*I
-        y3=a*I
-        y4=1-(y1+y2+y3)
-        return [y1,y2,y3,y4]
+        yz=1-(-beta*S*I+beta*S*I-(a+b)*I+a*I)
+        return [-beta*S*I, beta*S*I-(a+b)*I, a*I, yz]
     y0=[s_0,i_0,r_0,d_0]
     tspan=np.arange(0, size, 1)
     res=odeint(SIR,y0,tspan)
@@ -338,7 +332,7 @@ def lossOdeint(point, data, recovered, death, s_0, i_0, r_0, d_0):
     #weight for cases
     u = 0.25
     #weight for recovered
-    v = 0.15 ##Brazil France 0.02 China 0.01 (it has a lag in recoveries) Others 0.15
+    v = 0.1 ##Brazil France 0.02 China 0.01 (it has a lag in recoveries) Others 0.15
     #weight for deaths
     w = 1 - u - v
     return u*l1 + v*l2 + w*l3
@@ -347,25 +341,19 @@ def lossOdeint(point, data, recovered, death, s_0, i_0, r_0, d_0):
 def loss(point, data, recovered, death, s_0, i_0, r_0, d_0):
     size = len(data)
     beta, a, b = point
-    def SIR(t,y):
+    def SIR(y,t):
         S = y[0]
         I = y[1]
         R = y[2]
         D = y[3]
-        y1=-beta*S*I
-        y2=beta*S*I-(a+b)*I
-        y3=a*I
-        y4=1-(y1+y2+y3)
-        return [y1,y2,y3,y4]
+        yz=1-(-beta*S*I+beta*S*I-(a+b)*I+a*I)
+        return [-beta*S*I, beta*S*I-(a+b)*I, a*I, yz]
     solution = solve_ivp(SIR, [0, size], [s_0,i_0,r_0,d_0], t_eval=np.arange(0, size, 1), vectorized=True)
     l1 = np.sqrt(np.mean((solution.y[1] - data)**2))
     l2 = np.sqrt(np.mean((solution.y[2] - recovered)**2))
     l3 = np.sqrt(np.mean((solution.y[3] - death)**2))
-    #weight for cases
-    u = 0.25
-    #weight for recovered
-    v = 0.15 ##Brazil France 0.02 China 0.01 (it has a lag in recoveries) Others 0.15
-    #weight for deaths
+    u = 0.1
+    v = 0.1
     w = 1 - u - v
     return u*l1 + v*l2 + w*l3
 
@@ -428,7 +416,7 @@ df=df.transpose()
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
 #opt=5 SIR-D Model
-opt=5
+opt=0
 
 #prepare data for plotting
 country1="US"
@@ -458,7 +446,7 @@ country="Brazil"
 # "United Kingdom"
 # "US"
 # Countries above are already adjusted
-countrySIRD="Italy"
+countrySIRD="Brazil"
 
 # For other countries you can run at command line
 # but be sure to define S_0, I_0, R_0, K_0
