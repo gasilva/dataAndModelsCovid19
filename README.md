@@ -15,7 +15,7 @@ Or use GitHub Desktop [https://desktop.github.com/](https://desktop.github.com/)
 If you are using Visual Code Studio, select the folder you are running.
 
 ```
-python dataAndModelsCovid19.py
+python dataFit_SIRD.py
 ```
 
 ## Usage
