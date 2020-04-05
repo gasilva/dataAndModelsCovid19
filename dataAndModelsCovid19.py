@@ -78,10 +78,10 @@ def parse_arguments(country):
 
     if country1=="France":
         date="2/25/20"
-        s0=145e3
+        s0=170e3
         i0=265
-        r0=-50
-        k0=200
+        r0=-120
+        k0=250
 
     if country1=="United Kingdom":
         date="2/25/20"
