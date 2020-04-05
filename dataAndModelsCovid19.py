@@ -414,7 +414,7 @@ df=df.transpose()
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
 #opt=5 SIR-D Model
-opt=3
+opt=0
 
 #prepare data for plotting
 country1="US"
