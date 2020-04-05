@@ -242,12 +242,13 @@ class Learner(object):
     def predict(self, beta, a, b, data, recovered, death, country, s_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
-        def SIR(y,t):
+        def SIR(t, y):
             S = y[0]
             I = y[1]
             R = y[2]
             D = y[3]
-            return [-beta*S*I, beta*S*I-(a+b)*I, a*I, b*I]
+            yz=1-(-beta*S*I+beta*S*I-(a+b)*I+a*I)
+            return [-beta*S*I, beta*S*I-(a+b)*I, a*I, yz]
         y0=[s_0,i_0,r_0,d_0]
         tspan=np.arange(0, size, 1)
         res=odeint(SIR,y0,tspan)
@@ -338,7 +339,8 @@ def loss(point, data, recovered, death, s_0, i_0, r_0, d_0):
         I = y[1]
         R = y[2]
         D = y[3]
-        return [-beta*S*I, beta*S*I-(a+b)*I, a*I, b*I]
+        yz=1-(-beta*S*I+beta*S*I-(a+b)*I+a*I)
+        return [-beta*S*I, beta*S*I-(a+b)*I, a*I, yz]
     solution = solve_ivp(SIR, [0, size], [s_0,i_0,r_0,d_0], t_eval=np.arange(0, size, 1), vectorized=True)
     l1 = np.sqrt(np.mean((solution.y[1] - data)**2))
     l2 = np.sqrt(np.mean((solution.y[2] - recovered)**2))
@@ -421,13 +423,13 @@ country4="France"
 country5="Germany"
 [time5,cases5]=getCases(df,country5)
 
+#plot version - changes the file name png
+version="2"
+
 #choose country for curve fitting
 #choose country for growth curve
 #one of countries above
 country="Brazil"
-
-#plot version - changes the file name png
-version="2"
 
 #choose country for SIRD model
 # "Brazil"
