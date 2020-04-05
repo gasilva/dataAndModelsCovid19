@@ -71,7 +71,7 @@ def parse_arguments(country):
 
     if country1=="Italy":
         date="1/31/20"
-        s0=160000
+        s0=220000
         i0=23
         r0=15
         k0=100
@@ -264,8 +264,8 @@ class Learner(object):
         death = self.load_dead(self.country)
         data = (self.load_confirmed(self.country) - recovered - death)
 
-        #optimal = minimize(lossOdeint,        
-        optimal = minimize(loss,
+        optimal = minimize(lossOdeint,        
+        # optimal = minimize(loss,
             [0.001, 0.001, 0.001],
             args=(data, recovered, death, self.s_0, self.i_0, self.r_0, self.d_0),
             method='L-BFGS-B',
@@ -330,7 +330,7 @@ def lossOdeint(point, data, recovered, death, s_0, i_0, r_0, d_0):
     #weight for cases
     u = 0.25
     #weight for recovered
-    v = 0.01 ##Brazil France 0.04 US 0.02 China 0.01 (it has a lag in recoveries) Others 0.15
+    v = 0.15 ##Brazil France 0.04 US 0.02 China 0.01 (it has a lag in recoveries) Others 0.15
     #weight for deaths
     w = 1 - u - v
     return u*l1 + v*l2 + w*l3
@@ -339,7 +339,7 @@ def lossOdeint(point, data, recovered, death, s_0, i_0, r_0, d_0):
 def loss(point, data, recovered, death, s_0, i_0, r_0, d_0):
     size = len(data)
     beta, a, b = point
-    def SIR(t, y):
+    def SIR(y,t):
         S = y[0]
         I = y[1]
         R = y[2]
@@ -414,7 +414,7 @@ df=df.transpose()
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
 #opt=5 SIR-D Model
-opt=0
+opt=5
 
 #prepare data for plotting
 country1="US"
@@ -444,7 +444,7 @@ country="Brazil"
 # "United Kingdom"
 # "US"
 # Countries above are already adjusted
-countrySIRD="Brazil"
+countrySIRD="Italy"
 
 # For other countries you can run at command line
 # but be sure to define S_0, I_0, R_0, K_0
