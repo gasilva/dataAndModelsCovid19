@@ -78,9 +78,9 @@ def parse_arguments(country):
 
     if country1=="France":
         date="2/25/20"
-        s0=95e3
-        i0=250
-        r0=-75
+        s0=145e3
+        i0=265
+        r0=-50
         k0=200
 
     if country1=="United Kingdom":
@@ -92,10 +92,10 @@ def parse_arguments(country):
 
     if country1=="US":
         date="2/25/20"
-        s0=470000
-        i0=10
-        r0=-50
-        k0=50
+        s0=600000
+        i0=500
+        r0=0
+        k0=90
 
     parser.add_argument(
         '--countries',
@@ -330,7 +330,7 @@ def lossOdeint(point, data, recovered, death, s_0, i_0, r_0, d_0):
     #weight for cases
     u = 0.25
     #weight for recovered
-    v = 0.15 ##Brazil France 0.04 US 0.02 China 0.01 (it has a lag in recoveries) Others 0.15
+    v = 0.02 ##Brazil France 0.04 China 0.01 (it has a lag in recoveries) Others 0.15
     #weight for deaths
     w = 1 - u - v
     return u*l1 + v*l2 + w*l3
@@ -444,7 +444,7 @@ country="Brazil"
 # "United Kingdom"
 # "US"
 # Countries above are already adjusted
-countrySIRD="Italy"
+countrySIRD="France"
 
 # For other countries you can run at command line
 # but be sure to define S_0, I_0, R_0, K_0
