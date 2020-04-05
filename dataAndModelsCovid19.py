@@ -414,7 +414,7 @@ df=df.transpose()
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
 #opt=5 SIR-D Model
-opt=5
+opt=3
 
 #prepare data for plotting
 country1="US"
@@ -649,7 +649,7 @@ if opt==3 or opt==0 or opt==4:
 
     if country==country1:
         casesGrowth=cases1
-        timeFit=time1
+        timeGrowth=time1
         maxCases=27e4
         maxTime=80
         guessExp=2
