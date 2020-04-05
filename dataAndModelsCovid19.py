@@ -330,7 +330,7 @@ def lossOdeint(point, data, recovered, death, s_0, i_0, r_0, d_0):
     #weight for cases
     u = 0.25
     #weight for recovered
-    v = 0.02 ##Brazil France 0.04 China 0.01 (it has a lag in recoveries) Others 0.15
+    v = 0.01 ##Brazil France 0.02 China 0.01 (it has a lag in recoveries) Others 0.15
     #weight for deaths
     w = 1 - u - v
     return u*l1 + v*l2 + w*l3
@@ -444,7 +444,7 @@ country="Brazil"
 # "United Kingdom"
 # "US"
 # Countries above are already adjusted
-countrySIRD="France"
+countrySIRD="China"
 
 # For other countries you can run at command line
 # but be sure to define S_0, I_0, R_0, K_0
