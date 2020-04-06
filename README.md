@@ -10,14 +10,6 @@ git clone https://github.com/gasilva/dataAndModelsCovid19.git
 
 Or use GitHub Desktop [https://desktop.github.com/](https://desktop.github.com/) and File, Clone repository
 
-## Run Code
-
-If you are using Visual Code Studio, select the folder you are running.
-
-```
-python dataFit_SIRD.py
-```
-
 ## Usage
 
 Make changes directly in the dataAndModelsCovid19.py file.
@@ -84,6 +76,27 @@ Choose country to analyze data by SIRD model. Some countries are already adjuste
 # "US"
 # Countries above are already adjusted
 countrySIRD="Brazil"
+```
+
+## Run Code
+
+If you are using Visual Code Studio, select the folder you are running.
+
+To run SIR-D model with opt=5:
+
+```
+python dataFit_SIRD.py
+```
+To run SEIR model with opt=5:
+
+```
+python dataFit_SEIR.py
+```
+
+To run SEIR-D model with opt=5:
+
+```
+python dataFit_SEIRD.py
 ```
 
 ## Command line use for SIRD model
