@@ -323,7 +323,7 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
-        fig.savefig(f"{self.country}_"+version+".png")
+        fig.savefig("./results/"+f"{self.country}_"+version+".png")
 
         plt.show()
 
@@ -538,8 +538,8 @@ if opt==1 or opt==0 or opt==4:
     plt.legend()
 
     #save figs
-    plt.savefig('./coronaPythonEN'+version+'.png', dpi = 1200)
-    plt.savefig('./coronaPythonEN'+version+'.pdf')
+    plt.savefig('./results/coronaPythonEN'+version+'.png', dpi = 1200)
+    plt.savefig('./results/coronaPythonEN'+version+'.pdf')
 
     # Show the plot
     plt.show()
@@ -635,8 +635,8 @@ if opt==2 or opt==0:
             ha='left',rotation=90)
 
     #save figs
-    plt.savefig('./coronaPythonModelEN'+country+'.png', dpi = 1200)
-    plt.savefig('./coronaPythonModelEN'+country+'.pdf')
+    plt.savefig('./results/coronaPythonModelEN'+country+'.png', dpi = 1200)
+    plt.savefig('./results/coronaPythonModelEN'+country+'.pdf')
 
     plt.show()
 
@@ -717,8 +717,8 @@ if opt==3 or opt==0 or opt==4:
             ha='left',rotation=90)
 
     #save figs
-    plt.savefig('./coronaPythonGrowthEN'+country+'.png', dpi = 1200)
-    plt.savefig('./coronaPythonGrowthEN'+country+'.pdf')
+    plt.savefig('./results/coronaPythonGrowthEN'+country+'.png', dpi = 1200)
+    plt.savefig('./results/coronaPythonGrowthEN'+country+'.pdf')
 
     plt.show()
 
