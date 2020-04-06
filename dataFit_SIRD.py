@@ -311,7 +311,7 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
-        fig.savefig(f"{self.country}.png")
+        fig.savefig(f"./results/{self.country}_modelSIRD_"+version+".png")
 
         plt.show()
 
@@ -458,7 +458,7 @@ country="Brazil"
 # "United Kingdom"
 # "US"
 # Countries above are already adjusted
-countrySIRD="Italy"
+countrySIRD="Brazil"
 
 # For other countries you can run at command line
 # but be sure to define S_0, I_0, R_0, K_0
@@ -553,7 +553,7 @@ if opt==1 or opt==0 or opt==4:
     plt.legend()
 
     #save figs
-    plt.savefig('./results/coronaPythonEN'+version+'.png', dpi = 1200)
+    plt.savefig('./results/coronaPythonEN'+version+'.png', dpi = 600)
     plt.savefig('./results/coronaPythonEN'+version+'.pdf')
 
     # Show the plot
@@ -650,7 +650,7 @@ if opt==2 or opt==0:
             ha='left',rotation=90)
 
     #save figs
-    plt.savefig('./results/coronaPythonModelEN'+country+'.png', dpi = 1200)
+    plt.savefig('./results/coronaPythonModelEN'+country+'.png', dpi = 600)
     plt.savefig('./results/coronaPythonModelEN'+country+'.pdf')
 
     plt.show()
@@ -732,7 +732,7 @@ if opt==3 or opt==0 or opt==4:
             ha='left',rotation=90)
 
     #save figs
-    plt.savefig('./results/coronaPythonGrowthEN'+country+'.png', dpi = 1200)
+    plt.savefig('./results/coronaPythonGrowthEN'+country+'.png', dpi = 600)
     plt.savefig('./results/coronaPythonGrowthEN'+country+'.pdf')
 
     plt.show()

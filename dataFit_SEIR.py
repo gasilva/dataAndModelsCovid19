@@ -318,12 +318,8 @@ class Learner(object):
         xy=(1.045,0.1), xycoords='axes fraction',
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
-        plt.annotate('SIR-D Model by Giuliano Belinassi - IME-USP, São Paulo, Brazil', fontsize=10, 
-        xy=(1.06,0.1), xycoords='axes fraction',
-        xytext=(0, 0), textcoords='offset points',
-        ha='left',rotation=90)
 
-        fig.savefig("./results/"+f"{self.country}_"+version+".png")
+        fig.savefig("./results/"+f"{self.country}_modelSEIR_"+version+".png")
 
         plt.show()
 
@@ -428,7 +424,7 @@ country5="Germany"
 [time5,cases5]=getCases(df,country5)
 
 #plot version - changes the file name png
-version="SEIR"
+version="1"
 
 #choose country for curve fitting
 #choose country for growth curve
@@ -443,7 +439,7 @@ country="Brazil"
 # "United Kingdom"
 # "US"
 # Countries above are already adjusted
-countrySIRD="Italy"
+countrySIRD="Brazil"
 
 # For other countries you can run at command line
 # but be sure to define S_0, I_0, R_0, K_0
@@ -538,7 +534,7 @@ if opt==1 or opt==0 or opt==4:
     plt.legend()
 
     #save figs
-    plt.savefig('./results/coronaPythonEN'+version+'.png', dpi = 1200)
+    plt.savefig('./results/coronaPythonEN'+version+'.png', dpi = 600)
     plt.savefig('./results/coronaPythonEN'+version+'.pdf')
 
     # Show the plot
@@ -635,7 +631,7 @@ if opt==2 or opt==0:
             ha='left',rotation=90)
 
     #save figs
-    plt.savefig('./results/coronaPythonModelEN'+country+'.png', dpi = 1200)
+    plt.savefig('./results/coronaPythonModelEN'+country+'.png', dpi = 600)
     plt.savefig('./results/coronaPythonModelEN'+country+'.pdf')
 
     plt.show()
@@ -717,7 +713,7 @@ if opt==3 or opt==0 or opt==4:
             ha='left',rotation=90)
 
     #save figs
-    plt.savefig('./results/coronaPythonGrowthEN'+country+'.png', dpi = 1200)
+    plt.savefig('./results/coronaPythonGrowthEN'+country+'.png', dpi = 600)
     plt.savefig('./results/coronaPythonGrowthEN'+country+'.pdf')
 
     plt.show()

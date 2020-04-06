@@ -61,7 +61,7 @@ def parse_arguments(country):
         e0=1e-4
         i0=27
         r0=100
-        k0=-100
+        k0=0
 
     if country1=="China":
         date="1/22/20"
@@ -329,7 +329,7 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
-        fig.savefig("./results/"+f"{self.country}_"+version+".png")
+        fig.savefig("./results/"+f"{self.country}_modelSEIRD.png",dpi=300)
 
         plt.show()
 
@@ -358,9 +358,9 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, i_0, r_0, d_0):
     l2 = np.sqrt(np.mean((res[:,3]- recovered)**2))
     l3 = np.sqrt(np.mean((res[:,4]- death)**2))
     #weight for cases
-    u = 0.8  #Brazil Italy 0.5
+    u = 0.5  #Brazil Italy 0.5
     #weight for deaths
-    w = 0.15 #Brazil Italy 0.25
+    w = 0.3 #Brazil Italy 0.25
     #weight for recovered
     v = 1 - u - w
     return u*l1 + v*l2 + w*l3
@@ -439,7 +439,7 @@ country5="Germany"
 [time5,cases5]=getCases(df,country5)
 
 #plot version - changes the file name png
-version="SEIRD"
+version="1"
 
 #choose country for curve fitting
 #choose country for growth curve
@@ -454,7 +454,7 @@ country="Brazil"
 # "United Kingdom"
 # "US"
 # Countries above are already adjusted
-countrySIRD="China"
+countrySIRD="Brazil"
 
 # For other countries you can run at command line
 # but be sure to define S_0, I_0, R_0, d_0
@@ -549,8 +549,8 @@ if opt==1 or opt==0 or opt==4:
     plt.legend()
 
     #save figs
-    plt.savefig('./results/coronaPythonEN'+version+'.png', dpi = 300)
-    plt.savefig('./results/coronaPythonEN'+version+'.pdf')
+    plt.savefig('./results/coronaPythonEN_'+version+'.png', dpi = 600)
+    plt.savefig('./results/coronaPythonEN_'+version+'.pdf')
 
     # Show the plot
     plt.show()
@@ -646,7 +646,7 @@ if opt==2 or opt==0:
             ha='left',rotation=90)
 
     #save figs
-    plt.savefig('./results/coronaPythonModelEN'+country+'.png', dpi = 300)
+    plt.savefig('./results/coronaPythonModelEN'+country+'.png', dpi = 600)
     plt.savefig('./results/coronaPythonModelEN'+country+'.pdf')
 
     plt.show()
@@ -728,8 +728,8 @@ if opt==3 or opt==0 or opt==4:
             ha='left',rotation=90)
 
     #save figs
-    plt.savefig('./results/coronaPythonGrowthEN'+country+'.png', dpi = 300)
-    plt.savefig('./results/coronaPythonGrowthEN'+country+'.pdf')
+    plt.savefig('./results/coronaPythonGrowthEN_'+country+'.png', dpi = 600)
+    plt.savefig('./results/coronaPythonGrowthEN_'+country+'.pdf')
 
     plt.show()
 
