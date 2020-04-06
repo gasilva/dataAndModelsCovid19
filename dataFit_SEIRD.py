@@ -65,11 +65,11 @@ def parse_arguments(country):
 
     if country1=="China":
         date="1/22/20"
-        s0=170000
+        s0=150000
         e0=1e-4
         i0=300
-        r0=-80000
-        k0=400
+        r0=300
+        k0=0
 
     if country1=="Italy":
         date="2/14/20"
@@ -329,7 +329,7 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
-        fig.savefig(f"{self.country}_"+version+".png")
+        fig.savefig("./results/"+f"{self.country}_"+version+".png")
 
         plt.show()
 
@@ -424,7 +424,7 @@ df=df.transpose()
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
 #opt=5 SEIR-D Model
-opt=0
+opt=5
 
 #prepare data for plotting
 country1="US"
@@ -454,7 +454,7 @@ country="Brazil"
 # "United Kingdom"
 # "US"
 # Countries above are already adjusted
-countrySIRD="US"
+countrySIRD="China"
 
 # For other countries you can run at command line
 # but be sure to define S_0, I_0, R_0, d_0
@@ -549,8 +549,8 @@ if opt==1 or opt==0 or opt==4:
     plt.legend()
 
     #save figs
-    plt.savefig('./coronaPythonEN'+version+'.png', dpi = 300)
-    plt.savefig('./coronaPythonEN'+version+'.pdf')
+    plt.savefig('./results/coronaPythonEN'+version+'.png', dpi = 300)
+    plt.savefig('./results/coronaPythonEN'+version+'.pdf')
 
     # Show the plot
     plt.show()
@@ -646,8 +646,8 @@ if opt==2 or opt==0:
             ha='left',rotation=90)
 
     #save figs
-    plt.savefig('./coronaPythonModelEN'+country+'.png', dpi = 300)
-    plt.savefig('./coronaPythonModelEN'+country+'.pdf')
+    plt.savefig('./results/coronaPythonModelEN'+country+'.png', dpi = 300)
+    plt.savefig('./results/coronaPythonModelEN'+country+'.pdf')
 
     plt.show()
 
@@ -728,8 +728,8 @@ if opt==3 or opt==0 or opt==4:
             ha='left',rotation=90)
 
     #save figs
-    plt.savefig('./coronaPythonGrowthEN'+country+'.png', dpi = 300)
-    plt.savefig('./coronaPythonGrowthEN'+country+'.pdf')
+    plt.savefig('./results/coronaPythonGrowthEN'+country+'.png', dpi = 300)
+    plt.savefig('./results/coronaPythonGrowthEN'+country+'.pdf')
 
     plt.show()
 
