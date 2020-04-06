@@ -65,10 +65,10 @@ def parse_arguments(country):
 
     if country1=="China":
         date="1/22/20"
-        s0=150000
+        s0=210e3
         e0=1e-4
-        i0=300
-        r0=300
+        i0=800
+        r0=-250e3
         k0=0
 
     if country1=="Italy":
@@ -358,10 +358,10 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, i_0, r_0, d_0):
     l2 = np.sqrt(np.mean((res[:,3]- recovered)**2))
     l3 = np.sqrt(np.mean((res[:,4]- death)**2))
     #weight for cases
-    u = 0.5
-    #weight for recovered
-    w = 0.25 #Brazil Italy 0.25 #France
+    u = 0.8  #Brazil Italy 0.5
     #weight for deaths
+    w = 0.15 #Brazil Italy 0.25
+    #weight for recovered
     v = 1 - u - w
     return u*l1 + v*l2 + w*l3
 
