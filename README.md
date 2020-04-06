@@ -14,8 +14,21 @@ Or use GitHub Desktop [https://desktop.github.com/](https://desktop.github.com/)
 
 If you are using Visual Code Studio, select the folder you are running.
 
+To run SIR-D model with opt=5:
+
 ```
 python dataFit_SIRD.py
+```
+To run SEIR model with opt=5:
+
+```
+python dataFit_SEIR.py
+```
+
+To run SEIR-D model with opt=5:
+
+```
+python dataFit_SEIRD.py
 ```
 
 ## Usage
