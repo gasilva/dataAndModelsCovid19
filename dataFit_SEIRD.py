@@ -250,7 +250,7 @@ class Learner(object):
         return values
 
     #predict final extended values
-    def predict(self, beta, sigma, gamma, b, data, recovered, death, healed, country, s_0, e_0, i_0, r_0, d_0):
+    def predict(self, beta, sigma, sigma2, gamma, b, data, recovered, death, healed, country, s_0, e_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
         def SEIRD(y,t):
@@ -259,8 +259,8 @@ class Learner(object):
             I = y[2]
             R = y[3]
             D = y[4]
-            sigma=1/22.0
-            sigma2=1/55.0
+            # sigma=1/22.0
+            # sigma2=1/55.0
             y1=-beta*I*S
             y2=beta*S*I-(sigma)*E
             y3=sigma*E-(gamma)*I-sigma2*I
@@ -285,16 +285,16 @@ class Learner(object):
         self.data = self.load_confirmed(self.country) - self.recovered
 
         optimal = minimize(lossOdeint,        
-            [0.001, 0.001, 0.001, 0.001],
+            [0.001, 0.001, 0.001, 0.001, 0.001],
             args=(self.data, self.recovered, self.death, self.s_0, self.e_0, self.i_0, self.r_0, self.d_0),
             method='L-BFGS-B',
-            bounds=[(1e-12, 5), (1e-12,0.2), (1e-12, 0.6), (1e-12, 0.6)])
+            bounds=[(1e-12, 5), (1e-12,0.2),  (1e-12,0.2), (1e-12, 0.6), (1e-12, 0.6)])
             #beta, sigma, gamma
 
         print(optimal)
-        beta, sigma, gamma, b = optimal.x
+        beta, sigma, sigma2, gamma, b = optimal.x
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, \
-                extended_healed, a, b = self.predict(beta, sigma, gamma, b, self.data, self.recovered, \
+                extended_healed, a, b = self.predict(beta, sigma, sigma2, gamma, b, self.data, self.recovered, \
                 self.death, self.healed, self.country, self.s_0, self.e_0, self.i_0, self.r_0, self.d_0)
 
         df = pd.DataFrame({
@@ -312,9 +312,9 @@ class Learner(object):
         plt.rc('font', size=14)
         fig, ax = plt.subplots(figsize=(15, 10))
         ax.set_title("SEIR-D Model for "+self.country)
-        ax.set_ylim((0, max(y0+1e3)))
+        ax.set_ylim((0, max(y2+5e3)))
         df.plot(ax=ax)
-        print(f"country={self.country}, beta={beta:.8f}, sigma={sigma:.8f},gamma={gamma:.8f}, b={b:.8f}, r_0:{(beta/gamma):.8f}")
+        print(f"country={self.country}, beta={beta:.8f}, 1/sigma={1/sigma:.8f}, 1/sigma2={1/sigma2:.8f},gamma={gamma:.8f}, b={b:.8f}, r_0:{(beta/gamma):.8f}")
         
         plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=10, 
         xy=(1.04, 0.1), xycoords='axes fraction',
@@ -336,15 +336,15 @@ class Learner(object):
 #objective function Odeint solver
 def lossOdeint(point, data, recovered, death, s_0, e_0, i_0, r_0, d_0):
     size = len(data)
-    beta, sigma, gamma, b = point
+    beta, sigma, sigma2, gamma, b = point
     def SEIRD(y,t):
         S = y[0]
         E = y[1]
         I = y[2]
         R = y[3]
         D = y[4]
-        sigma=1/22.0
-        sigma2=1/55.0
+        # sigma=1/22.0
+        # sigma2=1/55.0
         y1=-beta*I*S
         y2=beta*S*I-(sigma)*E
         y3=sigma*E-(gamma)*I-sigma2*I
