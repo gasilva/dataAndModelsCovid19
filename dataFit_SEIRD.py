@@ -15,6 +15,7 @@ import argparse
 import sys
 import json
 import ssl
+import os
 import urllib.request
 from csv import reader
 from csv import writer
@@ -57,7 +58,7 @@ def parse_arguments(country):
 
     if country1=="Brazil":
         date="3/3/20"
-        s0=200000
+        s0=50e3
         e0=1e-4
         i0=27
         r0=100
@@ -68,12 +69,12 @@ def parse_arguments(country):
         s0=210e3
         e0=1e-4
         i0=800
-        r0=-250e3
+        r0=0 #-250e3
         k0=0
 
     if country1=="Italy":
         date="2/14/20"
-        s0=230e3
+        s0=250e3
         e0=1e-4
         i0=50
         r0=0
@@ -99,7 +100,7 @@ def parse_arguments(country):
         date="2/25/20"
         s0=900000
         e0=1e-4
-        i0=400
+        i0=00
         r0=0
         k0=600
 
@@ -259,8 +260,8 @@ class Learner(object):
             I = y[2]
             R = y[3]
             D = y[4]
-            # sigma=1/22.0
-            # sigma2=1/55.0
+            sigma=1/22.0
+            sigma2=1/55.0
             y1=-beta*I*S
             y2=beta*S*I-(sigma)*E
             y3=sigma*E-(gamma)*I-sigma2*I
@@ -291,8 +292,11 @@ class Learner(object):
             bounds=[(1e-12, 5), (1e-12,0.2),  (1e-12,0.2), (1e-12, 0.6), (1e-12, 0.6)])
             #beta, sigma, gamma
 
+        sigma=1/22.0
+        sigma2=1/55.0
+
         print(optimal)
-        beta, sigma, sigma2, gamma, b = optimal.x
+        beta, xsigma, xsigma2, gamma, b = optimal.x
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, \
                 extended_healed, a, b = self.predict(beta, sigma, sigma2, gamma, b, self.data, self.recovered, \
                 self.death, self.healed, self.country, self.s_0, self.e_0, self.i_0, self.r_0, self.d_0)
@@ -312,7 +316,7 @@ class Learner(object):
         plt.rc('font', size=14)
         fig, ax = plt.subplots(figsize=(15, 10))
         ax.set_title("SEIR-D Model for "+self.country)
-        ax.set_ylim((0, max(y2+5e3)))
+        ax.set_ylim((0, max(y0+5e3)))
         df.plot(ax=ax)
         print(f"country={self.country}, beta={beta:.8f}, 1/sigma={1/sigma:.8f}, 1/sigma2={1/sigma2:.8f},gamma={gamma:.8f}, b={b:.8f}, r_0:{(beta/gamma):.8f}")
         
@@ -329,9 +333,13 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
-        fig.savefig("./results/"+f"{self.country}_modelSEIRD.png",dpi=300)
 
-        plt.show()
+        country=self.country
+        strFile = "./results/modelSEIRD"+country+".png"
+        savePlot(strFile)
+
+        plt.show() 
+        plt.close()
 
 #objective function Odeint solver
 def lossOdeint(point, data, recovered, death, s_0, e_0, i_0, r_0, d_0):
@@ -343,8 +351,8 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, i_0, r_0, d_0):
         I = y[2]
         R = y[3]
         D = y[4]
-        # sigma=1/22.0
-        # sigma2=1/55.0
+        sigma=1/22.0
+        sigma2=1/55.0
         y1=-beta*I*S
         y2=beta*S*I-(sigma)*E
         y3=sigma*E-(gamma)*I-sigma2*I
@@ -358,11 +366,11 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, i_0, r_0, d_0):
     l2 = np.sqrt(np.mean((res[:,3]- recovered)**2))
     l3 = np.sqrt(np.mean((res[:,4]- death)**2))
     #weight for cases
-    u = 0.5  #Brazil Italy 0.5
+    u = 0.3  #Brazil Italy UK 0.5 France 0.4
     #weight for deaths
-    w = 0.3 #Brazil Italy 0.25
+    w = 0.3 #Brazil Italy UK 0.3
     #weight for recovered
-    v = 1 - u - w
+    v = max(0,1. - u - w)
     return u*l1 + v*l2 + w*l3
 
 #main program SIRD model
@@ -394,7 +402,12 @@ def main(country):
         #    print('WARNING: Problem processing ' + str(country) +
         #        '. Be sure it exists in the data exactly as you entry it.' +
         #        ' Also check date format if you passed it as parameter.')
-           
+
+def savePlot(strFile):
+    if os.path.isfile(strFile):
+        os.remove(strFile)   # Opt.: os.system("del "+strFile)
+    plt.savefig(strFile,dpi=600)
+
 #initial vars
 a = 0.0
 b = 0.0
@@ -549,11 +562,12 @@ if opt==1 or opt==0 or opt==4:
     plt.legend()
 
     #save figs
-    plt.savefig('./results/coronaPythonEN_'+version+'.png', dpi = 600)
-    plt.savefig('./results/coronaPythonEN_'+version+'.pdf')
+    savePlot('./results/coronaPythonEN_'+version+'.png', dpi = 600)
+    savePlot('./results/coronaPythonEN_'+version+'.pdf')
 
     # Show the plot
-    plt.show()
+    plt.show() 
+    plt.close()
 
 if opt==2 or opt==0:
 
@@ -646,10 +660,11 @@ if opt==2 or opt==0:
             ha='left',rotation=90)
 
     #save figs
-    plt.savefig('./results/coronaPythonModelEN'+country+'.png', dpi = 600)
-    plt.savefig('./results/coronaPythonModelEN'+country+'.pdf')
+    savePlot('./results/coronaPythonModelEN'+country+'.png', dpi = 600)
+    savePlot('./results/coronaPythonModelEN'+country+'.pdf')
 
-    plt.show()
+    plt.show() 
+    plt.close()
 
 if opt==3 or opt==0 or opt==4:
     plt.rcParams['figure.figsize'] = [9, 7]
@@ -728,10 +743,11 @@ if opt==3 or opt==0 or opt==4:
             ha='left',rotation=90)
 
     #save figs
-    plt.savefig('./results/coronaPythonGrowthEN_'+country+'.png', dpi = 600)
-    plt.savefig('./results/coronaPythonGrowthEN_'+country+'.pdf')
+    savePlot('./results/coronaPythonGrowthEN_'+country+'.png', dpi = 600)
+    savePlot('./results/coronaPythonGrowthEN_'+country+'.pdf')
 
-    plt.show()
+    plt.show() 
+    plt.close()
 
 if opt==5 or opt==0:
 
