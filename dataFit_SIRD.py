@@ -18,6 +18,7 @@ import ssl
 import urllib.request
 from csv import reader
 from csv import writer
+import os
 from datetime import datetime,timedelta
 from sklearn.metrics import mean_squared_error
 from scipy.optimize import curve_fit
@@ -311,9 +312,11 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
-        fig.savefig(f"./results/{self.country}_modelSIRD_"+version+".png")
+        country=self.country
+        savePlot("./results/modelSIRD"+country+".png")
 
         plt.show()
+        plt.close()
 
 #objective function Odeint solver
 def lossOdeint(point, data, recovered, death, s_0, i_0, r_0, d_0):
@@ -398,7 +401,12 @@ def main(country):
         #    print('WARNING: Problem processing ' + str(country) +
         #        '. Be sure it exists in the data exactly as you entry it.' +
         #        ' Also check date format if you passed it as parameter.')
-           
+
+def savePlot(strFile):
+    if os.path.isfile(strFile):
+        os.remove(strFile)   # Opt.: os.system("del "+strFile)
+    plt.savefig(strFile,dpi=600)
+
 #initial vars
 a = 0.0
 b = 0.0
@@ -553,11 +561,12 @@ if opt==1 or opt==0 or opt==4:
     plt.legend()
 
     #save figs
-    plt.savefig('./results/coronaPythonEN'+version+'.png', dpi = 600)
-    plt.savefig('./results/coronaPythonEN'+version+'.pdf')
+    savePlot('./results/coronaPythonEN'+version+'.png', dpi = 600)
+    savePlot('./results/coronaPythonEN'+version+'.pdf')
 
     # Show the plot
     plt.show()
+    plt.close()
 
 if opt==2 or opt==0:
 
@@ -650,10 +659,11 @@ if opt==2 or opt==0:
             ha='left',rotation=90)
 
     #save figs
-    plt.savefig('./results/coronaPythonModelEN'+country+'.png', dpi = 600)
-    plt.savefig('./results/coronaPythonModelEN'+country+'.pdf')
+    savePlot('./results/coronaPythonModelEN'+country+'.png', dpi = 600)
+    savePlot('./results/coronaPythonModelEN'+country+'.pdf')
 
     plt.show()
+    plt.close()
 
 if opt==3 or opt==0 or opt==4:
     plt.rcParams['figure.figsize'] = [9, 7]
@@ -732,10 +742,11 @@ if opt==3 or opt==0 or opt==4:
             ha='left',rotation=90)
 
     #save figs
-    plt.savefig('./results/coronaPythonGrowthEN'+country+'.png', dpi = 600)
-    plt.savefig('./results/coronaPythonGrowthEN'+country+'.pdf')
+    savePlot('./results/coronaPythonGrowthEN'+country+'.png', dpi = 600)
+    savePlot('./results/coronaPythonGrowthEN'+country+'.pdf')
 
     plt.show()
+    plt.close()
 
 if opt==5 or opt==0:
 
