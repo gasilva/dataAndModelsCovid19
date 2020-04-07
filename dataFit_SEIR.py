@@ -538,7 +538,6 @@ if opt==1 or opt==0 or opt==4:
 
     #save figs
     plt.savefig('./results/coronaPythonEN'+version+'.png', dpi = 600)
-    plt.savefig('./results/coronaPythonEN'+version+'.pdf')
 
     # Show the plot
     plt.show() 
@@ -635,7 +634,6 @@ if opt==2 or opt==0:
 
     #save figs
     plt.savefig('./results/coronaPythonModelEN'+country+'.png', dpi = 600)
-    plt.savefig('./results/coronaPythonModelEN'+country+'.pdf')
 
     plt.show() 
     plt.close()
@@ -718,7 +716,6 @@ if opt==3 or opt==0 or opt==4:
 
     #save figs
     plt.savefig('./results/coronaPythonGrowthEN'+country+'.png', dpi = 600)
-    plt.savefig('./results/coronaPythonGrowthEN'+country+'.pdf')
 
     plt.show() 
     plt.close()
