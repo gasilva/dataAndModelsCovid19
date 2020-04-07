@@ -114,7 +114,7 @@ python dataFit_SEAIRD.py
 To run SEIAR-D model with Optimization of Sigma and Sigma2 with opt=5:
 
 ```
-python dataFit_SEAIR_sigmaDOpt.py
+python dataFit_SEAIR_sigmaOpt.py
 ```
 
 ## Command line use for SIRD model
