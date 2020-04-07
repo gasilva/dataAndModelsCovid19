@@ -674,7 +674,7 @@ if opt==2 or opt==0:
             ha='left',rotation=90)
 
     #save figs
-    strFile ='./results/coronaPythonModelEN'+country+'.pdf'
+    strFile ='./results/coronaPythonModelEN'+country+'.png'
     savePlot(strFile)
 
     plt.show() 
