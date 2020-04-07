@@ -272,12 +272,12 @@ class Learner(object):
             D = y[5]
             sigma=1/22.0
             sigma2=1/55.0
-            p=0.1
+            p=0.15
             y0=-beta*(A+I)*S #S
             y1=beta*S*(A+I)-(sigma)*E #E
-            y2=sigma*E*(1-p) #A
-            y3=sigma*E*p-gamma*I #I
-            y4=b*I+gamma*A #R
+            y2=sigma*E*(1-p)-gamma*A #A
+            y3=sigma*E*p-gamma*I-sigma2*I #I
+            y4=b*I+gamma*A+b/gamma*sigma2*I #R
             y5=max(0,1.-(y0+y1+y2+y3+y4)) #D
             return [y0,y1,y2,y3,y4,y5]
         y0=[s_0,e_0,a_0,i_0,r_0,d_0]
@@ -366,12 +366,12 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0):
         D = y[5]
         sigma=1/22.0
         sigma2=1/55.0
-        p=0.1
-        y0=-beta*(I+A)*S #S
-        y1=beta*S*(I+A)-sigma*E #E
+        p=0.15
+        y0=-beta*(A+I)*S #S
+        y1=beta*S*(A+I)-(sigma)*E #E
         y2=sigma*E*(1-p)-gamma*A #A
-        y3=sigma*E*p-gamma*I #I
-        y4=b*I+gamma*A #R
+        y3=sigma*E*p-gamma*I-sigma2*I #I
+        y4=b*I+gamma*A+b/gamma*sigma2*I #R
         y5=max(0,1.-(y0+y1+y2+y3+y4)) #D
         return [y0,y1,y2,y3,y4,y5]
     y0=[s_0,e_0,a_0,i_0,r_0,d_0]
@@ -451,8 +451,8 @@ df=df.transpose()
 #opt=2 logistic model prediction
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
-#opt=5 SEIR-D Model
-opt=0
+#opt=5 SEAIR-D Model
+opt=5
 
 #prepare data for plotting
 country1="US"
@@ -768,4 +768,4 @@ if opt==5 or opt==0:
     #https://www.lewuathe.com/covid-19-dynamics-with-sir-model.html
 
     if __name__ == '__main__':
-        main(countrySIRD)
+     

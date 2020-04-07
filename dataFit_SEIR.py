@@ -323,7 +323,6 @@ class Learner(object):
         plt.savefig("./results/modelSEIR"+country+".png",dpi=600)
 
         plt.show() 
- 	 plt.close()()
         plt.close()
 
 #objective function Odeint solver

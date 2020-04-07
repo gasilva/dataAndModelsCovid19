@@ -562,7 +562,7 @@ if opt==1 or opt==0 or opt==4:
     plt.legend()
 
     #save figs
-    savePlot('./results/coronaPythonEN_'+version+'.png', dpi = 600)
+    savePlot('./results/coronaPythonEN_'+version+'.png')
 
     # Show the plot
     plt.show() 
@@ -659,7 +659,7 @@ if opt==2 or opt==0:
             ha='left',rotation=90)
 
     #save figs
-    savePlot('./results/coronaPythonModelEN'+country+'.png', dpi = 600)
+    savePlot('./results/coronaPythonModelEN'+country+'.png')
 
     plt.show() 
     plt.close()
@@ -741,7 +741,7 @@ if opt==3 or opt==0 or opt==4:
             ha='left',rotation=90)
 
     #save figs
-    savePlot('./results/coronaPythonGrowthEN_'+country+'.png', dpi = 600)
+    savePlot('./results/coronaPythonGrowthEN_'+country+'.png')
 
     plt.show() 
     plt.close()
