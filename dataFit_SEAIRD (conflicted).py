@@ -61,8 +61,8 @@ def parse_arguments(country):
         s0=300e3
         e0=1e-4
         i0=100
-        r0=0
-        k0=0
+        r0=200
+        k0=300
 
     if country1=="China":
         date="1/22/20"
@@ -270,11 +270,13 @@ class Learner(object):
             I = y[3]
             R = y[4]
             D = y[5]
-            p=0.2
+            sigma=1/22.0
+            sigma2=1/55.0
+            p=0.15
             y0=-beta*(A+I)*S #S
-            y1=beta*S*(A+I)-sigma*E #E
+            y1=beta*S*(A+I)-(sigma)*E #E
             y2=sigma*E*(1-p)-gamma*A #A
-            y3=sigma*E*p-gamma*I-sigma2*I#I
+            y3=sigma*E*p-gamma*I-sigma2*I #I
             y4=b*I+gamma*A+b/gamma*sigma2*I #R
             y5=max(0,1.-(y0+y1+y2+y3+y4)) #D
             return [y0,y1,y2,y3,y4,y5]
@@ -299,11 +301,14 @@ class Learner(object):
             [0.001, 0.001, 0.001, 0.001, 0.001],
             args=(self.data, self.recovered, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0),
             method='L-BFGS-B',
-            bounds=[(1e-12, 5), (.5e-2,0.2),  (1e-12,0.2), (1e-3, 0.6), (1e-12, 0.6)])
+            bounds=[(1e-12, 5), (1e-12,0.2),  (1e-12,0.2), (1e-12, 0.6), (1e-12, 0.6)])
             #beta, sigma, gamma
 
+        sigma=1/22.0
+        sigma2=1/55.0
+
         print(optimal)
-        beta, sigma, sigma2, gamma, b = optimal.x
+        beta, xsigma, xsigma2, gamma, b = optimal.x
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5, \
                 extended_healed, a, b = self.predict(beta, sigma, sigma2, gamma, b, self.data, self.recovered, \
                 self.death, self.healed, self.country, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
@@ -342,7 +347,7 @@ class Learner(object):
         ha='left',rotation=90)
 
         country=self.country
-        strFile ="./results/modelSEAIRDOpt"+country+".png"
+        strFile ="./results/modelSEAIRD"+country+".png"
         savePlot(strFile)
 
         plt.show()
@@ -359,11 +364,13 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0):
         I = y[3]
         R = y[4]
         D = y[5]
-        p=0.2
+        sigma=1/22.0
+        sigma2=1/55.0
+        p=0.15
         y0=-beta*(A+I)*S #S
-        y1=beta*S*(A+I)-sigma*E #E
+        y1=beta*S*(A+I)-(sigma)*E #E
         y2=sigma*E*(1-p)-gamma*A #A
-        y3=sigma*E*p-gamma*I-sigma2*I#I
+        y3=sigma*E*p-gamma*I-sigma2*I #I
         y4=b*I+gamma*A+b/gamma*sigma2*I #R
         y5=max(0,1.-(y0+y1+y2+y3+y4)) #D
         return [y0,y1,y2,y3,y4,y5]
@@ -374,9 +381,9 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0):
     l2 = np.sqrt(np.mean((res[:,4]- recovered)**2))
     l3 = np.sqrt(np.mean((res[:,5]- death)**2))
     #weight for cases
-    u = 0.1  #Brazil 0.1
+    u = 0.5  #Brazil Italy UK 0.5 France 0.4
     #weight for deaths
-    w = 0.2 #Brazil 0.2
+    w = 0.3 #Brazil Italy UK 0.3
     #weight for recovered
     v = max(0,1. - u - w)
     return u*l1 + v*l2 + w*l3
@@ -444,7 +451,7 @@ df=df.transpose()
 #opt=2 logistic model prediction
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
-#opt=5 SEIR-D Model
+#opt=5 SEAIR-D Model
 opt=5
 
 #prepare data for plotting
