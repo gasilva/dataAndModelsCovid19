@@ -117,7 +117,7 @@ To run SEIAR-D model with Optimization of Sigma and Sigma2 with opt=5:
 python dataFit_SEAIR_sigmaOpt.py
 ```
 
-## Command line use for SIRD model
+## Command line use
 
 This implementation comes from SIR model of [https://github.com/Lewuathe/COVID19-SIR](https://github.com/Lewuathe/COVID19-SIR)
 
@@ -148,6 +148,18 @@ You can analayze several countries by making a CSV list like: Brazil,Italy,US,Fr
    --S_0 S_0             S_0. Defaults to 100000
    --I_0 I_0             I_0. Defaults to 2
    --R_0 R_0             R_0. Defaults to 0
+```
+
+In SEIR and SEIR-D models, you have additionally
+
+```
+   --E_0 E_0             E_0. Defaults to 0
+```
+
+In SEAIR-D models, you have additionally
+
+```
+   --A_0 A_0             A_0. Defaults to 0
 ```
 
 ## Databases Used in This Study
