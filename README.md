@@ -99,6 +99,24 @@ To run SEIR-D model with opt=5:
 python dataFit_SEIRD.py
 ```
 
+To run SEIR-D model with Optimization of Sigma and Sigma2 with opt=5:
+
+```
+python dataFit_SEIRDOpt.py
+```
+
+To run SEIAR-D model with opt=5:
+
+```
+python dataFit_SEAIRD.py
+```
+
+To run SEIAR-D model with Optimization of Sigma and Sigma2 with opt=5:
+
+```
+python dataFit_SEAIRDOpt.py
+```
+
 ## Command line use for SIRD model
 
 This implementation comes from SIR model of [https://github.com/Lewuathe/COVID19-SIR](https://github.com/Lewuathe/COVID19-SIR)
