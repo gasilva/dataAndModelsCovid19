@@ -123,12 +123,12 @@ This implementation comes from SIR model of [https://github.com/Lewuathe/COVID19
 
 It was added the K_0 value because SIRD model has initial deaths value in addition to S_0, I_0 and R_0.
 
-You can analayze several countries by making a CSV list like: Brazil,Italy,US,France. Do not put spaces before or after commas.
+You can analyze several countries by making a CSV list like: Brazil,Italy,US,France. Do not put spaces before or after commas.
 
 ```
  For other countries you can run at command line
  but be sure to define S_0, I_0, R_0, K_0
- the sucess of fitting will depend on these paramenters
+ the success of fitting will depend on these parameters
 
  usage: dataAndModelsCovid19.py [-h] [--countries COUNTRY_CSV] [--download-data]
                   [--start-date START_DATE] [--prediction-days PREDICT_RANGE]
@@ -234,11 +234,7 @@ https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
 
 #### SEIR - WHO model type for suceptibles, exposed, infected and recovered with delay in recoveries
 
-$\left\{\begin{array}{l}\frac{d s}{d t}=-\beta i(t) s(t) \\ 
-\frac{d e}{d t}=\beta s(t) i(t)-\sigma i(t) \\ 
-\frac{d i}{d t}=\sigma e(t) - (\gamma - \sigma_2) \cdot i(t) \\ 
-\frac{d r}{d t}=(\gamma + \sigma_2) \cdot i(t)
-\end{array}\right\}$
+![](SEIR_Model.png)
 
 
 The last equation does not need to solved, because
