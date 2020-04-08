@@ -1,7 +1,3 @@
-﻿---
-useMath=true
----
-
 # dataAndModelsCovid19
 
 ## Installation
@@ -238,7 +234,7 @@ https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
 
 #### SEIR - WHO model type for susceptibles, exposed, infected and recovered with delay in recoveries
 
-![](SEIR_Model.png =250x250)
+![](SEIR_Model.png)
 
 The last equation does not need to solved, because
 
@@ -257,7 +253,7 @@ Matt J. Keeling & Pejman Rohani, Chaper 2.6, SEIR model
 
 The splitting of deaths and healed from recoveries of the SEIR model is necessary because death data is more accurate than healed data of several countries.
 
-![](SEIRD_Model.png =250x250)
+![](SEIRD_Model.png)
 
 The last equation does not need to solved, because
 <img src="http://www.sciweavers.org/tex2img.php?eq=s%28t%29%2Be%28t%29%2Bi%28t%29%2Br%28t%29%2Bk%28t%29%20%5Cgeq%201%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="s(t)+e(t)+i(t)+r(t)+k(t) \geq 1" width="365" height="29" />
