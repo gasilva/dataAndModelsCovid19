@@ -1,4 +1,4 @@
-# dataAndModelsCovid19
+﻿# dataAndModelsCovid19
 
 ## Installation
 
@@ -234,11 +234,16 @@ https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
 
 #### SEIR - WHO model type for suceptibles, exposed, infected and recovered with delay in recoveries
 
-<img src="http://www.sciweavers.org/tex2img.php?eq=%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bl%7D%5Cfrac%7Bd%20s%7D%7Bd%20t%7D%3D-%5Cbeta%20i%28t%29%20s%28t%29%20%5C%5C%20%20%5C%5C%0A%5Cfrac%7Bd%20e%7D%7Bd%20t%7D%3D%5Cbeta%20s%28t%29%20i%28t%29-%5Csigma%20i%28t%29%20%5C%5C%20%20%5C%5C%0A%5Cfrac%7Bd%20i%7D%7Bd%20t%7D%3D%5Csigma%20e%28t%29%20-%20%28%5Cgamma%20-%20%5Csigma_2%29%20%5Ccdot%20i%28t%29%20%5C%5C%20%5C%5C%0A%5Cfrac%7Bd%20r%7D%7Bd%20t%7D%3D%28%5Cgamma%20%2B%20%5Csigma_2%29%20%5Ccdot%20i%28t%29%0A%5Cend%7Barray%7D%5Cright%5C%7D%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="\left\{\begin{array}{l}\frac{d s}{d t}=-\beta i(t) s(t) \\  \\\frac{d e}{d t}=\beta s(t) i(t)-\sigma i(t) \\  \\\frac{d i}{d t}=\sigma e(t) - (\gamma - \sigma_2) \cdot i(t) \\ \\\frac{d r}{d t}=(\gamma + \sigma_2) \cdot i(t)\end{array}\right\}" width="348" height="215" />
+$\left\{\begin{array}{l}\frac{d s}{d t}=-\beta i(t) s(t) \\ 
+\frac{d e}{d t}=\beta s(t) i(t)-\sigma i(t) \\ 
+\frac{d i}{d t}=\sigma e(t) - (\gamma - \sigma_2) \cdot i(t) \\ 
+\frac{d r}{d t}=(\gamma + \sigma_2) \cdot i(t)
+\end{array}\right\}$
+
 
 The last equation does not need to solved, because
 
-<img src="http://www.sciweavers.org/tex2img.php?eq=s%28t%29%2Be%28t%29%2Bi%28t%29%2Br%28t%29%20%5Cgeq%201%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="s(t)+e(t)+i(t)+r(t) \geq 1" width="294" height="29" />
+$s(t)+e(t)+i(t)+r(t) \geq 1$
 
 About SEIR models:
 
