@@ -1,4 +1,8 @@
-﻿# dataAndModelsCovid19
+﻿---
+useMath=True
+---
+
+# dataAndModelsCovid19
 
 ## Installation
 
@@ -234,7 +238,14 @@ https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
 
 #### SEIR - WHO model type for suceptibles, exposed, infected and recovered with delay in recoveries
 
-![](SEIR_Model.png)
+<div class="math">
+\begin{equation}\left\{\begin{array}{l}\frac{d s}{d t}=-\beta i(t) s(t) \\ 
+\frac{d e}{d t}=\beta s(t) i(t)-\sigma i(t) \\ 
+\frac{d i}{d t}=\sigma e(t) - (\gamma - \sigma_2) \cdot i(t) \\ 
+\frac{d r}{d t}=(\gamma + \sigma_2) \cdot i(t)
+\end{array}\right\}
+\end{equation}
+</div>
 
 
 The last equation does not need to solved, because
