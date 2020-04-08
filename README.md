@@ -232,8 +232,34 @@ The the Pyhton notebook of
 
 https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
 
+#### SEIR - WHO model type for suceptibles, exposed, infected and recovered with delay in recoveries
+
+<img src="http://www.sciweavers.org/tex2img.php?eq=%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bl%7D%5Cfrac%7Bd%20s%7D%7Bd%20t%7D%3D-%5Cbeta%20i%28t%29%20s%28t%29%20%5C%5C%20%20%5C%5C%0A%5Cfrac%7Bd%20e%7D%7Bd%20t%7D%3D%5Cbeta%20s%28t%29%20i%28t%29-%5Csigma%20i%28t%29%20%5C%5C%20%20%5C%5C%0A%5Cfrac%7Bd%20i%7D%7Bd%20t%7D%3D%5Csigma%20e%28t%29%20-%20%28%5Cgamma%20-%20%5Csigma_2%29%20%5Ccdot%20i%28t%29%20%5C%5C%20%5C%5C%0A%5Cfrac%7Bd%20r%7D%7Bd%20t%7D%3D%28%5Cgamma%20%2B%20%5Csigma_2%29%20%5Ccdot%20i%28t%29%0A%5Cend%7Barray%7D%5Cright%5C%7D%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="\left\{\begin{array}{l}\frac{d s}{d t}=-\beta i(t) s(t) \\  \\\frac{d e}{d t}=\beta s(t) i(t)-\sigma i(t) \\  \\\frac{d i}{d t}=\sigma e(t) - (\gamma - \sigma_2) \cdot i(t) \\ \\\frac{d r}{d t}=(\gamma + \sigma_2) \cdot i(t)\end{array}\right\}" width="348" height="215" />
+
+The last equation does not need to solved, because
+
+<img src="http://www.sciweavers.org/tex2img.php?eq=s%28t%29%2Be%28t%29%2Bi%28t%29%2Br%28t%29%20%5Cgeq%201%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="s(t)+e(t)+i(t)+r(t) \geq 1" width="294" height="29" />
+
+About SEIR models:
+
+[https://idmod.org/docs/malaria/model-seir.html](https://idmod.org/docs/malaria/model-seir.html)
+
+Codes from the book of Modeling Infectious Diseases in Humans and Animals
+Matt J. Keeling & Pejman Rohani, Chaper 2.6, SEIR model
+
+[http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html](http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html)
+
+#### SEIR-D - Orginal variation, proposed by this author, from SEIR model for suceptibles, exposed, infected and deaths with delay in recoveries ands deaths
+
+The splitting of deaths and healed from recoveries of the SEIR model is necessary because death data is more accurate than healed data of several countries.
+
+<img src="http://www.sciweavers.org/tex2img.php?eq=%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bl%7D%5Cfrac%7Bd%20s%7D%7Bd%20t%7D%3D-%5Cbeta%20i%28t%29%20s%28t%29%20%5C%5C%20%5C%5C%0A%5Cfrac%7Bd%20e%7D%7Bd%20t%7D%3D%5Cbeta%20s%28t%29%20i%28t%29-%5Csigma%20i%28t%29%20%5C%5C%20%5C%5C%0A%5Cfrac%7Bd%20i%7D%7Bd%20t%7D%3D%5Csigma%20e%28t%29%20-%20%28%5Cgamma%20-%20%5Csigma_2%29%20%5Ccdot%20i%28t%29%20%5C%5C%20%5C%5C%0A%5Cfrac%7Bd%20r%7D%7Bd%20t%7D%3D%281%20%2B%20%5Cfrac%7B1%7D%7B%5Cgamma%7D%5Csigma_2%29%20%5Ccdot%20a%20i%28t%29%20%5C%5C%20%5C%5C%0A%5Cfrac%7Bd%20k%7D%7Bd%20t%7D%3D%281%20%2B%20%5Cfrac%7B1%7D%7B%5Cgamma%7D%5Csigma_2%29%20%5Ccdot%20b%20i%28t%29%0A%5Cend%7Barray%7D%5Cright%5C%7D%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="\left\{\begin{array}{l}\frac{d s}{d t}=-\beta i(t) s(t) \\ \\\frac{d e}{d t}=\beta s(t) i(t)-\sigma i(t) \\ \\\frac{d i}{d t}=\sigma e(t) - (\gamma - \sigma_2) \cdot i(t) \\ \\\frac{d r}{d t}=(1 + \frac{1}{\gamma}\sigma_2) \cdot a i(t) \\ \\\frac{d k}{d t}=(1 + \frac{1}{\gamma}\sigma_2) \cdot b i(t)\end{array}\right\}" width="348" height="281" />
+
+The last equation does not need to solved, because
+<img src="http://www.sciweavers.org/tex2img.php?eq=s%28t%29%2Be%28t%29%2Bi%28t%29%2Br%28t%29%2Bk%28t%29%20%5Cgeq%201%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="s(t)+e(t)+i(t)+r(t)+k(t) \geq 1" width="365" height="29" />
+
+The model takes SEIR Model and split the <img src="http://www.sciweavers.org/tex2img.php?eq=r%28t%29%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="r(t)" width="44" height="29" /> in <img src="http://www.sciweavers.org/tex2img.php?eq=r%28t%29%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="r(t)" width="44" height="29" /> and <img src="http://www.sciweavers.org/tex2img.php?eq=k%28t%29%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="k(t)" width="44" height="29" /> by making <img src="http://www.sciweavers.org/tex2img.php?eq=%5Cgamma%3Da%2Bb%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="\gamma=a+b" width="108" height="25" />.
+
 ### References:
 
 William Ogilvy Kermack, A. G. McKendrick and Gilbert Thomas Walker 1997A contribution to the mathematical theory of epidemicsProc. R. Soc. Lond. A115700–721 https://doi.org/10.1098/rspa.1927.0118
-
-
