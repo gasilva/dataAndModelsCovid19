@@ -98,11 +98,11 @@ def parse_arguments(country):
 
     if country1=="US":
         date="2/25/20"
-        s0=900000
+        s0=900e3
         e0=1e-4
-        i0=00
+        i0=70
         r0=0
-        k0=600
+        k0=300
 
     parser.add_argument(
         '--countries',
@@ -311,7 +311,7 @@ class Learner(object):
         plt.rc('font', size=14)
         fig, ax = plt.subplots(figsize=(15, 10))
         ax.set_title("SEIR-D Model for "+self.country)
-        ax.set_ylim((0, max(y2+5e3)))
+        ax.set_ylim((0, max(y0+5e3)))
         df.plot(ax=ax)
         print(f"country={self.country}, beta={beta:.8f}, 1/sigma={1/sigma:.8f}, 1/sigma2={1/sigma2:.8f},gamma={gamma:.8f}, b={b:.8f}, r_0:{(beta/gamma):.8f}")
         
@@ -357,7 +357,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, i_0, r_0, d_0):
     l2 = np.sqrt(np.mean((res[:,3]- recovered)**2))
     l3 = np.sqrt(np.mean((res[:,4]- death)**2))
     #weight for cases
-    u = 0.3  #Brazil Italy UK 0.5 France 0.4
+    u = 0.25  #Brazil 0.3 France 0.4
     #weight for deaths
     w = 0.3 #Brazil Italy UK 0.3
     #weight for recovered
@@ -458,7 +458,7 @@ country="Brazil"
 # "United Kingdom"
 # "US"
 # Countries above are already adjusted
-countrySIRD="Brazil"
+countrySIRD="US"
 
 # For other countries you can run at command line
 # but be sure to define S_0, I_0, R_0, d_0

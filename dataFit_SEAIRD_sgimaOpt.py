@@ -98,11 +98,11 @@ def parse_arguments(country):
 
     if country1=="US":
         date="2/25/20"
-        s0=900000
+        s0=2550e3
         e0=1e-4
-        i0=00
+        i0=70
         r0=0
-        k0=600
+        k0=300
     
     a0=0
 
@@ -375,9 +375,9 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0):
     l3 = np.sqrt(np.mean((res[:,5]- death)**2))
     #weight for cases
     u = 0.1  #Brazil 0.1
-    #weight for deaths
-    w = 0.2 #Brazil 0.2
     #weight for recovered
+    w = 0.1 #Brazil 0.2
+    #weight for deaths
     v = max(0,1. - u - w)
     return u*l1 + v*l2 + w*l3
 
@@ -475,7 +475,7 @@ country="Brazil"
 # "United Kingdom"
 # "US"
 # Countries above are already adjusted
-countrySIRD="Brazil"
+countrySIRD="US"
 
 # For other countries you can run at command line
 # but be sure to define S_0, I_0, R_0, d_0

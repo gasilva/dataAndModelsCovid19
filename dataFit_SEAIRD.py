@@ -768,4 +768,4 @@ if opt==5 or opt==0:
     #https://www.lewuathe.com/covid-19-dynamics-with-sir-model.html
 
     if __name__ == '__main__':
-     
+        main(countrySIRD)
