@@ -467,7 +467,7 @@ country="Brazil"
 # "United Kingdom"
 # "US"
 # Countries above are already adjusted
-countrySIRD="Brazil"
+countrySIRD="US"
 
 # For other countries you can run at command line
 # but be sure to define S_0, I_0, R_0, d_0
