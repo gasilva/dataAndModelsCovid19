@@ -1,5 +1,4 @@
 ﻿---
-Markdown.UseMathematics=true
 useMath=true
 ---
 
