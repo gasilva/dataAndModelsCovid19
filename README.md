@@ -1,8 +1,3 @@
-﻿---
-Markdown.UseMathematics=true
-useMath=true
----
-
 # dataAndModelsCovid19
 
 ## Installation
