@@ -64,9 +64,9 @@ df_SIRD = loadDataFrame('./data/SIRD_'+country+'.pkl')
 # recovered_data
 # recovered
 # death_data
-# predicted_deaths
+# estimated_deaths
 
-# for col in df_SEIRD.columns: 
+# for col in df_SEIR.columns: 
 #     print(col) 
 
 # sys.exit()
@@ -99,8 +99,8 @@ plt.close()
 
 df = pd.DataFrame({
             'Death data': df_SEIRD.death_data,
-            'SIRD': df_SIRD.infected,
-            'SEIR': df_SEIR.infected,
+            'SIRD': df_SIRD.estimated_deaths,
+            'SEIR': df_SEIR.recovered,
             'SEIRD': df_SEIRD.predicted_deaths,
             'SEIRD Opt': df_SEIRDopt.predicted_deaths,
             'SEAIRD Opt': df_SEAIRDopt.predicted_deaths},

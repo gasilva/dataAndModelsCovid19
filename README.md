@@ -236,9 +236,13 @@ The model takes SEIR Model and split the <img src="http://www.sciweavers.org/tex
 
 #### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptibles, exposed, asymptomatic, infected and deaths with delay in recoveries ands deaths
 
-The splitting of deaths and healed from recoveries of the SEIR model is necessary because death data is more accurate than healed data of several countries.
+The inclusion of asymptomatic cases in SEIRD model generates SEAIRD equation system:
 
-![](./equations/SEIRD_Model.png)
+![](./equations/SEAIRD_Model.png)
+
+It is a new completely development model inspired on the paper below, because it does not have same equations and parameters:
+
+[https://www.hindawi.com/journals/ddns/2017/4232971/#references](https://www.hindawi.com/journals/ddns/2017/4232971/#references)
 
 ### References:
 
