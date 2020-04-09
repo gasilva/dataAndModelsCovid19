@@ -61,7 +61,7 @@ def parse_arguments(country):
         s0=65e3
         e0=1e-4
         i0=27
-        r0=100
+        r0=0
         k0=0
 
     if country1=="China":
@@ -263,7 +263,7 @@ class Learner(object):
             y1=-beta*I*S
             y2=beta*S*I-(sigma)*E
             y3=sigma*E-(gamma)*I-sigma2*I
-            y4=b*I+sigma2*I
+            y4=b*I+b/gamma*sigma2*I
             y5=max(0,1.-(y1+y2+y3+y4))
             return [y1,y2,y3,y4,y5]
         y0=[s_0,e_0,i_0,r_0,d_0]
@@ -349,7 +349,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, i_0, r_0, d_0):
         y1=-beta*I*S
         y2=beta*S*I-(sigma)*E
         y3=sigma*E-(gamma)*I-sigma2*I
-        y4=b*I+sigma2*I
+        y4=b*I+b/gamma*sigma2*I
         y5=max(0,1.-(y1+y2+y3+y4))
         return [y1,y2,y3,y4,y5]
     y0=[s_0,e_0,i_0,r_0,d_0]
@@ -361,7 +361,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, i_0, r_0, d_0):
     #weight for cases
     u = 0.3  #Brazil 0.3 France 0.4 US 0.25
     #weight for deaths
-    w = 0.3 #Brazil Italy US UK 0.3
+    w = 0.23 #Brazil Italy US UK 0.3
     #weight for recovered
     v = max(0,1. - u - w)
     return u*l1 + v*l2 + w*l3
