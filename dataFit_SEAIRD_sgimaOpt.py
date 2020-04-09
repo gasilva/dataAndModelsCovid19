@@ -1,14 +1,9 @@
 
 
 # Import the necessary packages and modules
-from datetime import datetime
 import sys
-import matplotlib.pyplot as plt
-from matplotlib import cm
-import numpy as np
 import csv
 import math
-import pandas as pd
 import array
 import operator
 import argparse
@@ -17,6 +12,10 @@ import json
 import ssl
 import os
 import urllib.request
+import matplotlib.pyplot as plt
+from matplotlib import cm
+import numpy as np
+import pandas as pd
 from csv import reader
 from csv import writer
 from datetime import datetime,timedelta
@@ -26,6 +25,33 @@ from scipy.optimize import fsolve
 from scipy.integrate import odeint
 from scipy.integrate import solve_ivp
 from scipy.optimize import minimize
+
+def logGrowth(growth,finalDay):
+    x =[]
+    y = []
+    x=np.linspace(0,finalDay,finalDay+1)
+    for i in range(0,len(x)):
+        if i==0:
+            y.append(100)
+        else:
+            y.append(y[i-1]*growth)
+    return x,y
+
+def predictionsPlot(df,nPoints,startTime):
+    cases=[]
+    time=[]
+    j1=0
+    for j in range(0,nPoints):
+        if float(df.infected[j])>=startTime:
+            cases.append(float(df.infected[j]))
+            time.append(float(j1))
+            j1+=1
+    return time,cases
+
+def savePlot(strFile):
+    if os.path.isfile(strFile):
+        os.remove(strFile)   # Opt.: os.system("del "+strFile)
+    plt.savefig(strFile,dpi=600)
 
 def logistic_model(x,a,b,c):
     return c/(1+np.exp(-(x-b)/max(1e-12,a)))
@@ -51,6 +77,13 @@ def getCases(df,country):
                     j1+=1
     return [time1, cases1]
 
+def loadDataFrame(filename):
+    df= pd.read_pickle(filename)
+    df.columns = [c.lower().replace(' ', '_') for c in df.columns]
+    df.columns = [c.lower().replace('(', '') for c in df.columns]
+    df.columns = [c.lower().replace(')', '') for c in df.columns]
+    return df
+
 def parse_arguments(country):
     parser = argparse.ArgumentParser()
 
@@ -58,7 +91,7 @@ def parse_arguments(country):
 
     if country1=="Brazil":
         date="3/3/20"
-        s0=300e3
+        s0=350e3
         e0=1e-4
         i0=100
         r0=0
@@ -341,6 +374,8 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
+        df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
+
         country=self.country
         strFile ="./results/modelSEAIRDOpt"+country+".png"
         savePlot(strFile)
@@ -374,9 +409,9 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0):
     l2 = np.sqrt(np.mean((res[:,4]- recovered)**2))
     l3 = np.sqrt(np.mean((res[:,5]- death)**2))
     #weight for cases
-    u = 0.1  #Brazil 0.1
+    u = 0.1  #Brazil US 0.1
     #weight for recovered
-    w = 0.1 #Brazil 0.2
+    w = 0.2 #Brazil 0.2 US 0.1
     #weight for deaths
     v = max(0,1. - u - w)
     return u*l1 + v*l2 + w*l3
@@ -411,11 +446,6 @@ def main(country):
         #        '. Be sure it exists in the data exactly as you entry it.' +
         #        ' Also check date format if you passed it as parameter.')
 
-def savePlot(strFile):
-    if os.path.isfile(strFile):
-        os.remove(strFile)   # Opt.: os.system("del "+strFile)
-    plt.savefig(strFile,dpi=600)
-
 #initial vars
 a = 0.0
 b = 0.0
@@ -445,7 +475,7 @@ df=df.transpose()
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
 #opt=5 SEIR-D Model
-opt=5
+opt=1
 
 #prepare data for plotting
 country1="US"
@@ -475,7 +505,7 @@ country="Brazil"
 # "United Kingdom"
 # "US"
 # Countries above are already adjusted
-countrySIRD="US"
+countrySIRD="Brazil"
 
 # For other countries you can run at command line
 # but be sure to define S_0, I_0, R_0, d_0
@@ -502,26 +532,23 @@ countrySIRD="US"
 
 if opt==1 or opt==0 or opt==4:
 
+    model='SEAIRD_sigmaOpt' #34K
+    # model='SEIRD_sigmaOpt' #36K
+    # model='SEAIRD'
+    # model='SEIRD' #27 K
+    # model='SIRD'
+
+    df = loadDataFrame('./data/'+model+'_'+country+'.pkl')
+    time6, cases6 = predictionsPlot(df,80,180)
+
     #model
     #33% per day
-    x =[]
-    y = []
-    x=np.linspace(0,30,31)
-    for i in range(0,len(x)):
-        if i==0:
-            y.append(100)
-        else:
-            y.append(y[i-1]*1.33)
+    growth = 1.33
+    x,y = logGrowth(growth,40)
 
     #50% per day
-    x1 =[]
-    y1 = []
-    x1=np.linspace(0,30,31)
-    for i in range(0,len(x1)):
-        if i==0:
-            y1.append(100)
-        else:
-            y1.append(y1[i-1]*1.25)
+    growth1 = 1.25
+    x1,y1 = logGrowth(growth1,40)
 
     # Plot the data
     #ax.figure(figsize=(19.20,10.80))
@@ -531,20 +558,31 @@ if opt==1 or opt==0 or opt==4:
     plt.plot(time4, cases4,'mv-',label=country4) 
     plt.plot(time5, cases5,'cx-',label=country5) 
     plt.plot(time3, cases3,'go-',label=country3) 
+    plt.plot(time6, cases6,'--',c='0.6',label=country3+" "+model) 
     plt.plot(time1, cases1,'b-',label=country1) 
-    plt.plot(x, y,'y--',label='33% per day',alpha=0.3) 
-    plt.plot(x1, y1,'y-.',label='25% per day',alpha=0.3) 
+    plt.plot(x, y,'y--',label='{:.1f}'.format((growth-1)*100)+'% per day',alpha=0.3)
+    plt.plot(x1, y1,'y-.',label='{:.1f}'.format((growth1-1)*100)+'% per day',alpha=0.3) 
     plt.rc('font', size=11)
+
     plt.annotate(country3+" {:.1f} K".format(cases3[len(cases3)-1]/1000), # this is the text
         (time3[len(cases3)-1],cases3[len(cases3)-1]), # this is the point to label
         textcoords="offset points", # how to position the text
-        xytext=(15,10), # distance from text to points (x,y)
+        xytext=(0,10), # distance from text to points (x,y)
         ha='left') # horizontal alignment can be left, right or center
+
+    idx=int(np.argmax(cases6))
+    plt.annotate("{:.1f} K".format(max(cases6)/1000), # this is the text
+        (time6[idx],cases6[idx]), # this is the point to label
+        textcoords="offset points", # how to position the text
+        xytext=(5,-15), # distance from text to points (x,y)
+        ha='right') # horizontal alignment can be left, right or center
+
     plt.annotate(country2+" {:.1f} K".format(cases2[len(cases2)-1]/1000), # this is the text
         (time2[len(cases2)-1],cases2[len(cases2)-1]), # this is the point to label
         textcoords="offset points", # how to position the text
         xytext=(0,10), # distance from text to points (x,y)
         ha='center') # horizontal alignment can be left, right or center
+    
     plt.annotate(country1+" {:.1f} K".format(cases1[len(cases1)-1]/1000), # this is the text
         (time1[len(cases1)-1],cases1[len(cases1)-1]), # this is the point to label
         textcoords="offset points", # how to position the text

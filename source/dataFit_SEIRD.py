@@ -58,7 +58,7 @@ def parse_arguments(country):
 
     if country1=="Brazil":
         date="3/3/20"
-        s0=40e3
+        s0=50e3
         e0=1e-4
         i0=27
         r0=100
@@ -98,11 +98,11 @@ def parse_arguments(country):
 
     if country1=="US":
         date="2/25/20"
-        s0=900e3
+        s0=900000
         e0=1e-4
-        i0=70
+        i0=00
         r0=0
-        k0=300
+        k0=600
 
     parser.add_argument(
         '--countries',
@@ -260,10 +260,12 @@ class Learner(object):
             I = y[2]
             R = y[3]
             D = y[4]
+            sigma=1/22.0
+            sigma2=1/55.0
             y1=-beta*I*S
             y2=beta*S*I-(sigma)*E
             y3=sigma*E-(gamma)*I-sigma2*I
-            y4=b*I+sigma2*I
+            y4=b*I+b/gamma*sigma2*I
             y5=max(0,1.-(y1+y2+y3+y4))
             return [y1,y2,y3,y4,y5]
         y0=[s_0,e_0,i_0,r_0,d_0]
@@ -290,8 +292,11 @@ class Learner(object):
             bounds=[(1e-12, 5), (1e-12,0.2),  (1e-12,0.2), (1e-12, 0.6), (1e-12, 0.6)])
             #beta, sigma, gamma
 
+        sigma=1/22.0
+        sigma2=1/55.0
+
         print(optimal)
-        beta, sigma, sigma2, gamma, b = optimal.x
+        beta, xsigma, xsigma2, gamma, b = optimal.x
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, \
                 extended_healed, a, b = self.predict(beta, sigma, sigma2, gamma, b, self.data, self.recovered, \
                 self.death, self.healed, self.country, self.s_0, self.e_0, self.i_0, self.r_0, self.d_0)
@@ -328,8 +333,11 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
+        df.to_pickle('./data/SEIRD_'+self.country+'.pkl')
+
         country=self.country
-        savePlot("./results/modelSEIRD_sigamOpt"+country+".png")
+        strFile = "./results/modelSEIRD"+country+".png"
+        savePlot(strFile)
 
         plt.show() 
         plt.close()
@@ -344,10 +352,12 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, i_0, r_0, d_0):
         I = y[2]
         R = y[3]
         D = y[4]
+        sigma=1/22.0
+        sigma2=1/55.0
         y1=-beta*I*S
         y2=beta*S*I-(sigma)*E
         y3=sigma*E-(gamma)*I-sigma2*I
-        y4=b*I+sigma2*I
+        y4=b*I+b/gamma*sigma2*I
         y5=max(0,1.-(y1+y2+y3+y4))
         return [y1,y2,y3,y4,y5]
     y0=[s_0,e_0,i_0,r_0,d_0]
@@ -357,9 +367,9 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, i_0, r_0, d_0):
     l2 = np.sqrt(np.mean((res[:,3]- recovered)**2))
     l3 = np.sqrt(np.mean((res[:,4]- death)**2))
     #weight for cases
-    u = 0.25  #Brazil 0.3 France 0.4
+    u = 0.4  #Brazil Italy UK 0.5 France 0.4 US 0.3
     #weight for deaths
-    w = 0.3 #Brazil Italy UK 0.3
+    w = 0.25 #Brazil Italy UK 0.3
     #weight for recovered
     v = max(0,1. - u - w)
     return u*l1 + v*l2 + w*l3
@@ -458,7 +468,7 @@ country="Brazil"
 # "United Kingdom"
 # "US"
 # Countries above are already adjusted
-countrySIRD="US"
+countrySIRD="Brazil"
 
 # For other countries you can run at command line
 # but be sure to define S_0, I_0, R_0, d_0
@@ -553,7 +563,7 @@ if opt==1 or opt==0 or opt==4:
     plt.legend()
 
     #save figs
-    savePlot('./results/coronaPythonEN_'+version+'.png', dpi = 600)
+    savePlot('./results/coronaPythonEN_'+version+'.png')
 
     # Show the plot
     plt.show() 
@@ -650,7 +660,7 @@ if opt==2 or opt==0:
             ha='left',rotation=90)
 
     #save figs
-    savePlot('./results/coronaPythonModelEN'+country+'.png', dpi = 600)
+    savePlot('./results/coronaPythonModelEN'+country+'.png')
 
     plt.show() 
     plt.close()
@@ -732,7 +742,7 @@ if opt==3 or opt==0 or opt==4:
             ha='left',rotation=90)
 
     #save figs
-    savePlot('./results/coronaPythonGrowthEN_'+country+'.png', dpi = 600)
+    savePlot('./results/coronaPythonGrowthEN_'+country+'.png')
 
     plt.show() 
     plt.close()
