@@ -15,10 +15,10 @@ import argparse
 import sys
 import json
 import ssl
-import os
 import urllib.request
 from csv import reader
 from csv import writer
+import os
 from datetime import datetime,timedelta
 from sklearn.metrics import mean_squared_error
 from scipy.optimize import curve_fit
@@ -58,32 +58,28 @@ def parse_arguments(country):
 
     if country1=="Brazil":
         date="3/3/20"
-        s0=60e3
-        e0=1e-4
+        s0=25000
         i0=27
-        r0=-200
+        r0=-40
         k0=0
 
     if country1=="China":
         date="1/22/20"
         s0=170000
-        e0=1e-4
         i0=1200
         r0=-80000
-        k0=400
+        k0=200
 
     if country1=="Italy":
-        date="2/14/20"
-        s0=220e3
-        e0=1e-4
-        i0=35
-        r0=-100
-        k0=200
+        date="1/31/20"
+        s0=220000
+        i0=23
+        r0=15
+        k0=100
 
     if country1=="France":
         date="2/25/20"
         s0=170e3
-        e0=1e-4
         i0=265
         r0=-120
         k0=250
@@ -91,7 +87,6 @@ def parse_arguments(country):
     if country1=="United Kingdom":
         date="2/25/20"
         s0=80000
-        e0=1e-4
         i0=22
         r0=-5 #-50
         k0=-50
@@ -99,7 +94,6 @@ def parse_arguments(country):
     if country1=="US":
         date="2/25/20"
         s0=600000
-        e0=1e-4
         i0=500
         r0=0
         k0=90
@@ -135,12 +129,6 @@ def parse_arguments(country):
         default=s0)
 
     parser.add_argument(
-        '--E_0',
-        dest='e_0',
-        type=int,
-        default=e0)
-
-    parser.add_argument(
         '--I_0',
         dest='i_0',
         type=int,
@@ -158,6 +146,7 @@ def parse_arguments(country):
         type=int,
         default=k0)
 
+
     args = parser.parse_args()
 
     country_list = []
@@ -170,7 +159,7 @@ def parse_arguments(country):
     else:
         sys.exit("QUIT: You must pass a country list on CSV format.")
 
-    return (country_list, args.download_data, args.start_date, args.predict_range, args.s_0, args.e_0, args.i_0, args.r_0, args.k_0)
+    return (country_list, args.download_data, args.start_date, args.predict_range, args.s_0, args.i_0, args.r_0, args.k_0)
 
 def sumCases_province(input_file, output_file):
     with open(input_file, "r") as read_obj, open(output_file,'w',newline='') as write_obj:
@@ -214,13 +203,12 @@ def load_json(json_file_str):
 
 
 class Learner(object):
-    def __init__(self, country, loss, start_date, predict_range,s_0, e_0, i_0, r_0, d_0):
+    def __init__(self, country, loss, start_date, predict_range,s_0, i_0, r_0, d_0):
         self.country = country
         self.loss = loss
         self.start_date = start_date
         self.predict_range = predict_range
         self.s_0 = s_0
-        self.e_0 = e_0
         self.i_0 = i_0
         self.r_0 = r_0
         self.d_0 = d_0
@@ -252,64 +240,64 @@ class Learner(object):
         return values
 
     #predict final extended values
-    def predict(self, beta, mu, sigma, gamma, data, recovered, country, s_0, e_0, i_0, r_0):
+    def predict(self, beta, a, b, data, recovered, death, country, s_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
-        def SEIR(y,t):
+        def SIR(y,t):
+        # def SIR(t,y):
             S = y[0]
-            E = y[1]
-            I = y[2]
-            R = y[3]
-            gamma=a+b
-            sigma=1/20.0
-            sigma2=1/55.0
-            y1=mu-(beta*I+mu)*S
-            y2=beta*S*I-(mu+sigma)*E
-            y3=sigma*E-(mu+gamma)*I-sigma2*I
-            y4=max(0,1.-(y1+y2+y3)) #gamma*I-mu*R+sigma2*I #max(0,1.-(y1+y2+y3))
+            I = y[1]
+            R = y[2]
+            D = y[3]
+            y1=-beta*S*I
+            y2=beta*S*I-(a+b)*I
+            y3=a*I
+            y4=1-(y1+y2+y3)
             return [y1,y2,y3,y4]
-        y0=[s_0,e_0,i_0,r_0]
+        y0=[s_0,i_0,r_0,d_0]
         tspan=np.arange(0, size, 1)
-        res=odeint(SEIR,y0,tspan)
+        res=odeint(SIR,y0,tspan)
+        # solution = solve_ivp(SIR, [0, size], [s_0,i_0,r_0,d_0], t_eval=np.arange(0, size, 1), vectorized=True)
         extended_actual = np.concatenate((data.values, [None] * (size - len(data.values))))
         extended_recovered = np.concatenate((recovered.values, [None] * (size - len(recovered.values))))
-        return new_index, extended_actual, extended_recovered, res[:,0], res[:,1],res[:,2],res[:,3]
+        extended_death = np.concatenate((death.values, [None] * (size - len(death.values))))
+        return new_index, extended_actual, extended_recovered, extended_death, res[:,0], res[:,1],res[:,2],res[:,3]
+        # return new_index, extended_actual, extended_recovered, extended_death, solution.y[0],solution.y[1],solution.y[2],solution.y[3]
 
     #run optimizer and plotting
     def train(self):
-        death = self.load_dead(self.country)
         recovered = self.load_recovered(self.country)
+        death = self.load_dead(self.country)
         data = (self.load_confirmed(self.country) - recovered - death)
-        recovered = recovered+death
 
         optimal = minimize(lossOdeint,        
         # optimal = minimize(loss,
-            [0.001, 0.001, 0.001, 0.001],
-            args=(data, recovered, self.s_0, self.e_0, self.i_0, self.r_0),
+            [0.001, 0.001, 0.001],
+            args=(data, recovered, death, self.s_0, self.i_0, self.r_0, self.d_0),
             method='L-BFGS-B',
-            bounds=[(1e-12, 5), (1e-12, .2), (1e-12,0.2), (1e-12, 0.6)])
-            #beta, mu, sigma, gamma
+            bounds=[(0.00000001, 0.3), (0.00000001, 0.3), (0.00000001, 0.3)])
 
         print(optimal)
-        beta, mu, sigma, gamma = optimal.x
-        new_index, extended_actual, extended_recovered, y0, y1, y2, y3 = self.predict(beta, mu, sigma, gamma, data, recovered, self.country, self.s_0, self.e_0, self.i_0, self.r_0)
+        beta, a, b = optimal.x
+        new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3 = self.predict(beta, a, b, data, recovered, death, self.country, self.s_0, self.i_0, self.r_0, self.d_0)
 
         df = pd.DataFrame({
             'Susceptible': y0,
-            'Exposed': y1,
             'Infected data': extended_actual,
-            'Infected': y2,
+            'Infected': y1,
             'Recovered data': extended_recovered,
-            'Recovered': y3},
+            'Recovered': y2,
+            'Death data': extended_death,
+            'Estimated Deaths': y3},
             index=new_index)
 
         #plt.rcParams['figure.figsize'] = [7, 7]
         plt.rc('font', size=14)
         fig, ax = plt.subplots(figsize=(15, 10))
-        ax.set_title("SEIR Model for "+self.country)
+        ax.set_title("SIR-D Model for "+self.country)
         ax.set_ylim((0, max(y0+1e3)))
         df.plot(ax=ax)
-        print(f"country={self.country}, beta={beta:.8f}, mu={mu:.8f}, sigma={sigma:.8f},  gamma={gamma:.8f}, r_0:{(beta/gamma):.8f}")
+        print(f"country={self.country}, beta={beta:.8f}, a={a:.8f}, b={b:.8f},  gamma={(a+b):.8f}, r_0:{(beta/(a+b)):.8f}")
         
         plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=10, 
         xy=(1.04, 0.1), xycoords='axes fraction',
@@ -319,39 +307,72 @@ class Learner(object):
         xy=(1.045,0.1), xycoords='axes fraction',
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
+        plt.annotate('SIR-D Model by Giuliano Belinassi - IME-USP, São Paulo, Brazil', fontsize=10, 
+        xy=(1.06,0.1), xycoords='axes fraction',
+        xytext=(0, 0), textcoords='offset points',
+        ha='left',rotation=90)
+
+        df.to_pickle('./data/SIRD_'+self.country+'.pkl')
 
         country=self.country
-        savePlot("./results/modelSEIR"+country+".png")
+        savePlot("./results/modelSIRD"+country+".png")
 
-        plt.show() 
+        plt.show()
         plt.close()
 
 #objective function Odeint solver
-def lossOdeint(point, data, recovered, s_0, e_0, i_0, r_0):
+def lossOdeint(point, data, recovered, death, s_0, i_0, r_0, d_0):
     size = len(data)
-    beta, mu, sigma, gamma = point
-    def SEIR(y,t):
+    beta, a, b = point
+    def SIR(y,t):
         S = y[0]
-        E = y[1]
-        I = y[2]
-        R = y[3]
-        sigma=1/20.0
-        sigma2=1/55.0
-        y1=mu-(beta*I+mu)*S
-        y2=beta*S*I-(mu+sigma)*E
-        y3=sigma*E-(mu+gamma)*I-sigma2*I
-        y4=max(0,1.-(y1+y2+y3)) #gamma*I-mu*R+sigma2*I #max(0,1.-(y1+y2+y3))
+        I = y[1]
+        R = y[2]
+        D = y[3]
+        y1=-beta*S*I
+        y2=beta*S*I-(a+b)*I
+        y3=a*I
+        y4=1-(y1+y2+y3)
         return [y1,y2,y3,y4]
-    y0=[s_0,e_0,i_0,r_0]
+    y0=[s_0,i_0,r_0,d_0]
     tspan=np.arange(0, size, 1)
-    res=odeint(SEIR,y0,tspan)
-    l1 = np.sqrt(np.mean((res[:,2]- data)**2))
-    l2 = np.sqrt(np.mean((res[:,3]- recovered)**2))
+    res=odeint(SIR,y0,tspan)
+    l1 = np.sqrt(np.mean((res[:,1]- data)**2))
+    l2 = np.sqrt(np.mean((res[:,2]- recovered)**2))
+    l3 = np.sqrt(np.mean((res[:,3] - death)**2))
     #weight for cases
-    u = 0.2
-   #weight for deaths
-    v = 1 - u
-    return u*l1 + v*l2
+    u = 0.25
+    #weight for recovered
+    v = 0.15 ##Brazil France 0.02 China 0.01 (it has a lag in recoveries) Others 0.15
+    #weight for deaths
+    w = 1 - u - v
+    return u*l1 + v*l2 + w*l3
+
+#objective function solve_ivp solver
+def loss(point, data, recovered, death, s_0, i_0, r_0, d_0):
+    size = len(data)
+    beta, a, b = point
+    def SIR(t,y):
+        S = y[0]
+        I = y[1]
+        R = y[2]
+        D = y[3]
+        y1=-beta*S*I
+        y2=beta*S*I-(a+b)*I
+        y3=a*I
+        y4=1-(y1+y2+y3)
+        return [y1,y2,y3,y4]
+    solution = solve_ivp(SIR, [0, size], [s_0,i_0,r_0,d_0], t_eval=np.arange(0, size, 1), vectorized=True)
+    l1 = np.sqrt(np.mean((solution.y[1] - data)**2))
+    l2 = np.sqrt(np.mean((solution.y[2] - recovered)**2))
+    l3 = np.sqrt(np.mean((solution.y[3] - death)**2))
+    #weight for cases
+    u = 0.25
+    #weight for recovered
+    v = 0.02 ##US 0.15 Brazil France 0.02 China 0.01 (it has a lag in recoveries) Others 0.15
+    #weight for deaths
+    w = 1 - u - v
+    return u*l1 + v*l2 + w*l3
 
 #main program SIRD model
 
@@ -363,7 +384,7 @@ def main(country):
   'Republic of Korea': '1/22/20',
   'Iran (Islamic Republic of)': '2/19/20'}
 
-    countries, download, startdate, predict_range , s_0, e_0, i_0, r_0, k_0 = parse_arguments(country)
+    countries, download, startdate, predict_range , s_0, i_0, r_0, k_0 = parse_arguments(country)
 
     if download:
         data_d = load_json("./data_url.json")
@@ -375,7 +396,7 @@ def main(country):
 
     for country in countries:
         #learner = Learner(country, loss, startdate, predict_range, s_0, i_0, r_0, k_0)
-        learner = Learner(country, lossOdeint, startdate, predict_range, s_0, e_0, i_0, r_0, k_0)
+        learner = Learner(country, lossOdeint, startdate, predict_range, s_0, i_0, r_0, k_0)
         #try:
         learner.train()
         #except BaseException:
@@ -416,7 +437,7 @@ df=df.transpose()
 #opt=2 logistic model prediction
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
-#opt=5 SEIR-D Model
+#opt=5 SIR-D Model
 opt=5
 
 #prepare data for plotting
@@ -432,7 +453,7 @@ country5="Germany"
 [time5,cases5]=getCases(df,country5)
 
 #plot version - changes the file name png
-version="1"
+version="SIRD"
 
 #choose country for curve fitting
 #choose country for growth curve
@@ -545,7 +566,8 @@ if opt==1 or opt==0 or opt==4:
     savePlot('./results/coronaPythonEN'+version+'.png')
 
     # Show the plot
-    plt.show() 
+    plt.show()
+    plt.close()
 
 if opt==2 or opt==0:
 
@@ -640,7 +662,7 @@ if opt==2 or opt==0:
     #save figs
     savePlot('./results/coronaPythonModelEN'+country+'.png')
 
-    plt.show() 
+    plt.show()
     plt.close()
 
 if opt==3 or opt==0 or opt==4:
@@ -722,7 +744,7 @@ if opt==3 or opt==0 or opt==4:
     #save figs
     savePlot('./results/coronaPythonGrowthEN'+country+'.png')
 
-    plt.show() 
+    plt.show()
     plt.close()
 
 if opt==5 or opt==0:

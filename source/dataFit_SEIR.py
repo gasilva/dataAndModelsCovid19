@@ -58,53 +58,51 @@ def parse_arguments(country):
 
     if country1=="Brazil":
         date="3/3/20"
-        s0=300e3
+        s0=60e3
         e0=1e-4
-        i0=100
-        r0=200
-        k0=300
+        i0=27
+        r0=-200
+        k0=0
 
     if country1=="China":
         date="1/22/20"
-        s0=210e3
+        s0=170000
         e0=1e-4
-        i0=800
-        r0=0 #-250e3
-        k0=0
+        i0=1200
+        r0=-80000
+        k0=400
 
     if country1=="Italy":
         date="2/14/20"
-        s0=250e3
+        s0=220e3
         e0=1e-4
-        i0=50
-        r0=0
-        k0=0
+        i0=35
+        r0=-100
+        k0=200
 
     if country1=="France":
         date="2/25/20"
-        s0=190e3
+        s0=170e3
         e0=1e-4
         i0=265
-        r0=0
-        k0=0
+        r0=-120
+        k0=250
 
     if country1=="United Kingdom":
         date="2/25/20"
-        s0=138000
+        s0=80000
         e0=1e-4
         i0=22
-        r0=0 #-50
-        k0=150
+        r0=-5 #-50
+        k0=-50
 
     if country1=="US":
         date="2/25/20"
-        s0=900000
+        s0=600000
         e0=1e-4
-        i0=00
+        i0=500
         r0=0
-        k0=600
-    
-    a0=0
+        k0=90
 
     parser.add_argument(
         '--countries',
@@ -143,12 +141,6 @@ def parse_arguments(country):
         default=e0)
 
     parser.add_argument(
-        '--A_0',
-        dest='a_0',
-        type=int,
-        default=a0)
-
-    parser.add_argument(
         '--I_0',
         dest='i_0',
         type=int,
@@ -161,8 +153,8 @@ def parse_arguments(country):
         default=r0)
 
     parser.add_argument(
-        '--D_0',
-        dest='d_0',
+        '--K_0',
+        dest='k_0',
         type=int,
         default=k0)
 
@@ -178,7 +170,7 @@ def parse_arguments(country):
     else:
         sys.exit("QUIT: You must pass a country list on CSV format.")
 
-    return (country_list, args.download_data, args.start_date, args.predict_range, args.s_0, args.e_0, args.a_0, args.i_0, args.r_0, args.d_0)
+    return (country_list, args.download_data, args.start_date, args.predict_range, args.s_0, args.e_0, args.i_0, args.r_0, args.k_0)
 
 def sumCases_province(input_file, output_file):
     with open(input_file, "r") as read_obj, open(output_file,'w',newline='') as write_obj:
@@ -222,7 +214,7 @@ def load_json(json_file_str):
 
 
 class Learner(object):
-    def __init__(self, country, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0):
+    def __init__(self, country, loss, start_date, predict_range,s_0, e_0, i_0, r_0, d_0):
         self.country = country
         self.loss = loss
         self.start_date = start_date
@@ -232,7 +224,6 @@ class Learner(object):
         self.i_0 = i_0
         self.r_0 = r_0
         self.d_0 = d_0
-        self.a_0 = a_0
 
     def load_confirmed(self, country):
         df = pd.read_csv('data/time_series_19-covid-Confirmed-country.csv')
@@ -251,6 +242,7 @@ class Learner(object):
         country_df = df[df['Country/Region'] == country]
         return country_df.iloc[0].loc[self.start_date:]
     
+
     def extend_index(self, index, new_size):
         values = index.values
         current = datetime.strptime(index[-1], '%m/%d/%y')
@@ -260,133 +252,108 @@ class Learner(object):
         return values
 
     #predict final extended values
-    def predict(self, beta, sigma, sigma2, gamma, b, data, recovered, death, healed, country, s_0, e_0, a_0, i_0, r_0, d_0):
+    def predict(self, beta, mu, sigma, gamma, data, recovered, country, s_0, e_0, i_0, r_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
-        def SEAIRD(y,t):
+        def SEIR(y,t):
             S = y[0]
             E = y[1]
-            A = y[2]
-            I = y[3]
-            R = y[4]
-            D = y[5]
-            sigma=1/22.0
+            I = y[2]
+            R = y[3]
+            gamma=a+b
+            sigma=1/20.0
             sigma2=1/55.0
-            p=0.15
-            y0=-beta*(A+I)*S #S
-            y1=beta*S*(A+I)-(sigma)*E #E
-            y2=sigma*E*(1-p)-gamma*A #A
-            y3=sigma*E*p-gamma*I-sigma2*I #I
-            y4=b*I+gamma*A+b/gamma*sigma2*I #R
-            y5=max(0,1.-(y0+y1+y2+y3+y4)) #D
-            return [y0,y1,y2,y3,y4,y5]
-        y0=[s_0,e_0,a_0,i_0,r_0,d_0]
+            y1=mu-(beta*I+mu)*S
+            y2=beta*S*I-(mu+sigma)*E
+            y3=sigma*E-(mu+gamma)*I-sigma2*I
+            y4=max(0,1.-(y1+y2+y3)) #gamma*I-mu*R+sigma2*I #max(0,1.-(y1+y2+y3))
+            return [y1,y2,y3,y4]
+        y0=[s_0,e_0,i_0,r_0]
         tspan=np.arange(0, size, 1)
-        res=odeint(SEAIRD,y0,tspan)
-
+        res=odeint(SEIR,y0,tspan)
         extended_actual = np.concatenate((data.values, [None] * (size - len(data.values))))
         extended_recovered = np.concatenate((recovered.values, [None] * (size - len(recovered.values))))
-        extended_death = np.concatenate((death.values, [None] * (size - len(death.values))))
-        extended_healed = np.concatenate((healed.values, [None] * (size - len(healed.values))))
-        return new_index, extended_actual, extended_recovered, extended_death, res[:,0], res[:,1],res[:,2],res[:,3],res[:,4], res[:,5], extended_healed, a, b
+        return new_index, extended_actual, extended_recovered, res[:,0], res[:,1],res[:,2],res[:,3]
 
     #run optimizer and plotting
     def train(self):
-        self.death = self.load_dead(self.country)
-        self.healed = self.load_recovered(self.country)
-        self.recovered = self.healed + self.death
-        self.data = self.load_confirmed(self.country) - self.recovered
+        death = self.load_dead(self.country)
+        recovered = self.load_recovered(self.country)
+        data = (self.load_confirmed(self.country) - recovered - death)
+        recovered = recovered+death
 
         optimal = minimize(lossOdeint,        
-            [0.001, 0.001, 0.001, 0.001, 0.001],
-            args=(self.data, self.recovered, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0),
+        # optimal = minimize(loss,
+            [0.001, 0.001, 0.001, 0.001],
+            args=(data, recovered, self.s_0, self.e_0, self.i_0, self.r_0),
             method='L-BFGS-B',
-            bounds=[(1e-12, 5), (1e-12,0.2),  (1e-12,0.2), (1e-12, 0.6), (1e-12, 0.6)])
-            #beta, sigma, gamma
-
-        sigma=1/22.0
-        sigma2=1/55.0
+            bounds=[(1e-12, 5), (1e-12, .2), (1e-12,0.2), (1e-12, 0.6)])
+            #beta, mu, sigma, gamma
 
         print(optimal)
-        beta, xsigma, xsigma2, gamma, b = optimal.x
-        new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5, \
-                extended_healed, a, b = self.predict(beta, sigma, sigma2, gamma, b, self.data, self.recovered, \
-                self.death, self.healed, self.country, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
+        beta, mu, sigma, gamma = optimal.x
+        new_index, extended_actual, extended_recovered, y0, y1, y2, y3 = self.predict(beta, mu, sigma, gamma, data, recovered, self.country, self.s_0, self.e_0, self.i_0, self.r_0)
 
         df = pd.DataFrame({
-                    'Susceptible': y0,
-                    'Exposed': y1,
-                    'Asymptomatic': y2,
-                    'Infected data': extended_actual,
-                    'Infected': y3,
-                    'Recovered (Alive)': extended_healed,
-                    'Predicted Recovered (Alive)': y4,
-                    'Death data': extended_death,
-                    'Predicted Deaths': y5},
-                    index=new_index)
+            'Susceptible': y0,
+            'Exposed': y1,
+            'Infected data': extended_actual,
+            'Infected': y2,
+            'Recovered data': extended_recovered,
+            'Recovered': y3},
+            index=new_index)
 
         #plt.rcParams['figure.figsize'] = [7, 7]
         plt.rc('font', size=14)
         fig, ax = plt.subplots(figsize=(15, 10))
-        ax.set_title("SEAIR-D Model for "+self.country)
-        ax.set_ylim((0, max(y0+5e3)))
+        ax.set_title("SEIR Model for "+self.country)
+        ax.set_ylim((0, max(y0+1e3)))
         df.plot(ax=ax)
-        print(f"country={self.country}, beta={beta:.8f}, 1/sigma={1/sigma:.8f}, 1/sigma2={1/sigma2:.8f},gamma={gamma:.8f}, b={b:.8f}, r_0:{(beta/gamma):.8f}")
+        print(f"country={self.country}, beta={beta:.8f}, mu={mu:.8f}, sigma={sigma:.8f},  gamma={gamma:.8f}, r_0:{(beta/gamma):.8f}")
         
         plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=10, 
         xy=(1.04, 0.1), xycoords='axes fraction',
         xytext=(0, 0), textcoords='offset points',
         ha='right',rotation=90)
         plt.annotate('Source: https://www.lewuathe.com/covid-19-dynamics-with-sir-model.html', fontsize=10, 
-        xy=(1.06,0.1), xycoords='axes fraction',
-        xytext=(0, 0), textcoords='offset points',
-        ha='left',rotation=90)
-        plt.annotate('Original SEIR-D with delay model, São Paulo, Brazil', fontsize=10, 
         xy=(1.045,0.1), xycoords='axes fraction',
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
-        country=self.country
-        strFile ="./results/modelSEAIRD"+country+".png"
-        savePlot(strFile)
+        df.to_pickle('./data/SEIR_'+self.country+'.pkl')
 
-        plt.show()
+        country=self.country
+        savePlot("./results/modelSEIR"+country+".png")
+
+        plt.show() 
         plt.close()
 
 #objective function Odeint solver
-def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0):
+def lossOdeint(point, data, recovered, s_0, e_0, i_0, r_0):
     size = len(data)
-    beta, sigma, sigma2, gamma, b = point
-    def SEAIRD(y,t):
+    beta, mu, sigma, gamma = point
+    def SEIR(y,t):
         S = y[0]
         E = y[1]
-        A = y[2]
-        I = y[3]
-        R = y[4]
-        D = y[5]
-        sigma=1/22.0
+        I = y[2]
+        R = y[3]
+        sigma=1/20.0
         sigma2=1/55.0
-        p=0.15
-        y0=-beta*(A+I)*S #S
-        y1=beta*S*(A+I)-(sigma)*E #E
-        y2=sigma*E*(1-p)-gamma*A #A
-        y3=sigma*E*p-gamma*I-sigma2*I #I
-        y4=b*I+gamma*A+b/gamma*sigma2*I #R
-        y5=max(0,1.-(y0+y1+y2+y3+y4)) #D
-        return [y0,y1,y2,y3,y4,y5]
-    y0=[s_0,e_0,a_0,i_0,r_0,d_0]
+        y1=mu-(beta*I+mu)*S
+        y2=beta*S*I-(mu+sigma)*E
+        y3=sigma*E-(mu+gamma)*I-sigma2*I
+        y4=max(0,1.-(y1+y2+y3)) #gamma*I-mu*R+sigma2*I #max(0,1.-(y1+y2+y3))
+        return [y1,y2,y3,y4]
+    y0=[s_0,e_0,i_0,r_0]
     tspan=np.arange(0, size, 1)
-    res=odeint(SEAIRD,y0,tspan)
-    l1 = np.sqrt(np.mean((res[:,3] - data)**2))
-    l2 = np.sqrt(np.mean((res[:,4]- recovered)**2))
-    l3 = np.sqrt(np.mean((res[:,5]- death)**2))
+    res=odeint(SEIR,y0,tspan)
+    l1 = np.sqrt(np.mean((res[:,2]- data)**2))
+    l2 = np.sqrt(np.mean((res[:,3]- recovered)**2))
     #weight for cases
-    u = 0.5  #Brazil Italy UK 0.5 France 0.4
-    #weight for deaths
-    w = 0.3 #Brazil Italy UK 0.3
-    #weight for recovered
-    v = max(0,1. - u - w)
-    return u*l1 + v*l2 + w*l3
+    u = 0.2
+   #weight for deaths
+    v = 1 - u
+    return u*l1 + v*l2
 
 #main program SIRD model
 
@@ -398,7 +365,7 @@ def main(country):
   'Republic of Korea': '1/22/20',
   'Iran (Islamic Republic of)': '2/19/20'}
 
-    countries, download, startdate, predict_range , s_0, e_0, a_0, i_0, r_0, d_0 = parse_arguments(country)
+    countries, download, startdate, predict_range , s_0, e_0, i_0, r_0, k_0 = parse_arguments(country)
 
     if download:
         data_d = load_json("./data_url.json")
@@ -409,8 +376,8 @@ def main(country):
     sumCases_province('data/time_series_19-covid-Deaths.csv', 'data/time_series_19-covid-Deaths-country.csv')
 
     for country in countries:
-        #learner = Learner(country, loss, startdate, predict_range, s_0, i_0, r_0, d_0)
-        learner = Learner(country, lossOdeint, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0)
+        #learner = Learner(country, loss, startdate, predict_range, s_0, i_0, r_0, k_0)
+        learner = Learner(country, lossOdeint, startdate, predict_range, s_0, e_0, i_0, r_0, k_0)
         #try:
         learner.train()
         #except BaseException:
@@ -451,7 +418,7 @@ df=df.transpose()
 #opt=2 logistic model prediction
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
-#opt=5 SEAIR-D Model
+#opt=5 SEIR-D Model
 opt=5
 
 #prepare data for plotting
@@ -474,7 +441,7 @@ version="1"
 #one of countries above
 country="Brazil"
 
-#choose country for SEIRD model
+#choose country for SIRD model
 # "Brazil"
 # "China"
 # "Italy"
@@ -485,7 +452,7 @@ country="Brazil"
 countrySIRD="Brazil"
 
 # For other countries you can run at command line
-# but be sure to define S_0, I_0, R_0, d_0
+# but be sure to define S_0, I_0, R_0, K_0
 # the sucess of fitting will depend on these paramenters
 #
 # usage: dataAndModelsCovid19.py [-h] [--countries COUNTRY_CSV] [--download-data]
@@ -545,8 +512,8 @@ if opt==1 or opt==0 or opt==4:
     plt.annotate(country3+" {:.1f} K".format(cases3[len(cases3)-1]/1000), # this is the text
         (time3[len(cases3)-1],cases3[len(cases3)-1]), # this is the point to label
         textcoords="offset points", # how to position the text
-        xytext=(15,10), # distance from text to points (x,y)
-        ha='left') # horizontal alignment can be left, right or center
+        xytext=(10,10), # distance from text to points (x,y)
+        ha='right') # horizontal alignment can be left, right or center
     plt.annotate(country2+" {:.1f} K".format(cases2[len(cases2)-1]/1000), # this is the text
         (time2[len(cases2)-1],cases2[len(cases2)-1]), # this is the point to label
         textcoords="offset points", # how to position the text
@@ -577,11 +544,10 @@ if opt==1 or opt==0 or opt==4:
     plt.legend()
 
     #save figs
-    savePlot('./results/coronaPythonEN_'+version+'.png')
+    savePlot('./results/coronaPythonEN'+version+'.png')
 
     # Show the plot
     plt.show() 
-    plt.close()
 
 if opt==2 or opt==0:
 
@@ -674,8 +640,7 @@ if opt==2 or opt==0:
             ha='left',rotation=90)
 
     #save figs
-    strFile ='./results/coronaPythonModelEN'+country+'.png'
-    savePlot(strFile)
+    savePlot('./results/coronaPythonModelEN'+country+'.png')
 
     plt.show() 
     plt.close()
@@ -757,8 +722,7 @@ if opt==3 or opt==0 or opt==4:
             ha='left',rotation=90)
 
     #save figs
-    strFile ='./results/coronaPythonGrowthEN_'+country+'.png'
-    savePlot(strFile)
+    savePlot('./results/coronaPythonGrowthEN'+country+'.png')
 
     plt.show() 
     plt.close()
