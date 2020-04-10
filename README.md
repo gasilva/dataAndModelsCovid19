@@ -226,6 +226,10 @@ b: mortality rate  [1/min]
 
 ![](https://user-images.githubusercontent.com/7212952/77828649-7f1e0f00-70fb-11ea-8b59-d7f722305847.gif)
 
+![](./results/modelSIRDBrazil.png)
+
+![](./results/modelSIRDUS.png)
+
 The SIR-D model code is based on the contribution of Giuliano Belinassi, from IME-USP, Brazil
 
 https://github.com/Lewuathe/COVID19-SIR/issues/13#issue-589616803
@@ -264,6 +268,8 @@ The last equation does not need to solved, because
 <div class="Math">
 s(t)+e(t)+i(t)+r(t) >= 1
 </div>
+
+![](./results/modelSEIRBrazil.png)
 
 About SEIR models:
 
@@ -308,6 +314,10 @@ The last equation does not need to solved, because
 
 The model takes SEIR Model and split the r(t) and k(t) by making γ=a+b.
 
+![](./results/modelSEIRD_sigamOptBrazil.png)
+
+![](./results/modelSEIRD_sigamUS.png)
+
 #### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptibles, exposed, asymptomatic, infected and deaths with delay in recoveries ands deaths
 
 - S(t) are those susceptible but not yet infected with the disease
@@ -344,6 +354,10 @@ The inclusion of asymptomatic cases in SEIRD model generates SEAIRD equation sys
 It is a new completely development model inspired on the paper below, because it does not have same equations and parameters:
 
 [https://www.hindawi.com/journals/ddns/2017/4232971/#references](https://www.hindawi.com/journals/ddns/2017/4232971/#references)
+
+![](./results/modelSEAIRDOptBrazil.png)
+
+![](./results/modelSEAIRDOptUS.png)
 
 ### References:
 
