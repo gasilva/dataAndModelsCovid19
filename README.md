@@ -165,9 +165,9 @@ The matematical Models are based in Lotka-Volterra equations, it is like a preda
 
 A simple mathematical description of the spread of a disease in a population is the so-called SIR model, which divides the (fixed) population of N individuals into three "compartments" which may vary as a function of time, t:
 
-- S(t) are those susceptible but not yet infected with the disease;
-- I(t) is the number of infectious individuals;
-- R(t) are those individuals who have recovered from the disease and now have immunity to it.
+- S(t) are those susceptible but not yet infected with the disease
+- I(t) is the number of infectious individuals
+- R(t) are those individuals who have recovered (deads+healed)
 
 The SIR model describes the change in the population of each of these compartments in terms of two parameters, β and γ. β describes the effective contact rate of the disease: an infected individual comes into contact with βN other individuals per unit time (of which the fraction that are susceptible to contracting the disease is S/N). γ is the mean recovery rate: that is, 1/γ is the mean period of time during which an infected individual can pass it on.
 
@@ -195,6 +195,11 @@ So we can add a new variable k, (Kill rate), and add to the system of equations.
 
 #### SIR-D - SIR model extended to have deaths and recovered separated
 
+- S(t) are those susceptible but not yet infected with the disease
+- I(t) is the number of infectious individuals
+- R(t) are those individuals who have healed
+- K(t) are those individuals who have died
+
 ![](https://user-images.githubusercontent.com/7212952/77828649-7f1e0f00-70fb-11ea-8b59-d7f722305847.gif)
 
 The SIR-D model code is based on the contribution of Giuliano Belinassi, from IME-USP, Brazil
@@ -207,11 +212,18 @@ https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
 
 #### SEIR - WHO model type for susceptibles, exposed, infected and recovered with delay in recoveries
 
+- S(t) are those susceptible but not yet infected with the disease
+- E(t) are those exposed to the virus
+- I(t) is the number of infectious individuals
+- R(t) are those individuals who have recovered (deads+healed)
+
 ![](./equations/SEIR_Model.png)
 
 The last equation does not need to solved, because
 
-$s(t)+e(t)+i(t)+r(t) \geq 1$
+<div class="Math">
+s(t)+e(t)+i(t)+r(t) >= 1
+</div>
 
 About SEIR models:
 
@@ -223,6 +235,12 @@ Matt J. Keeling & Pejman Rohani, Chaper 2.6, SEIR model
 [http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html](http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html)
 
 #### SEIR-D - Original variation, proposed by this author, from SEIR model for susceptibles, exposed, infected and deaths with delay in recoveries ands deaths
+
+- S(t) are those susceptible but not yet infected with the disease
+- E(t) are those exposed to the virus
+- I(t) is the number of infectious individuals
+- R(t) are those individuals who have healed
+- K(t) are those individuals who have died
 
 The splitting of deaths and healed from recoveries of the SEIR model is necessary because death data is more accurate than healed data of several countries.
 
@@ -236,6 +254,14 @@ The model takes SEIR Model and split the <img src="http://www.sciweavers.org/tex
 
 #### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptibles, exposed, asymptomatic, infected and deaths with delay in recoveries ands deaths
 
+- S(t) are those susceptible but not yet infected with the disease
+- E(t) are those exposed to the virus
+- A(t) is the number of cases asymptomatic
+- I(t) is the number of infectious individuals
+- R(t) are those individuals who have healed
+- K(t) are those individuals who have died
+
+
 The inclusion of asymptomatic cases in SEIRD model generates SEAIRD equation system:
 
 ![](./equations/SEAIRD_Model.png)
@@ -247,3 +273,5 @@ It is a new completely development model inspired on the paper below, because it
 ### References:
 
 William Ogilvy Kermack, A. G. McKendrick and Gilbert Thomas Walker 1997A contribution to the mathematical theory of epidemicsProc. R. Soc. Lond. A115700–721 https://doi.org/10.1098/rspa.1927.0118
+
+ Keeling, M.J., Rohani, P., Modeling Infectious Diseases in Humans and Animals, Princeton University Press, Release Date: September 19, 2011, Princeton University Press, ISBN: 9781400841035 https://www.kobo.com/us/en/ebook/modeling-infectious-diseases-in-humans-and-animals
