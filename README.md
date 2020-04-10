@@ -2,7 +2,6 @@
 Markdown.UseMathematics = true
 ---
 
-<dl>
 <script type="text/x-mathjax-config">
     // enable inline parsing with single $ instead of /
     MathJax.Hub.Config({
@@ -19,7 +18,6 @@ Markdown.UseMathematics = true
     });
 </script>
 <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script>
-</dl>
 
 # dataAndModelsCovid19
 
