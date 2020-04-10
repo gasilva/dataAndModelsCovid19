@@ -359,6 +359,16 @@ It is a new completely development model inspired on the paper below, because it
 
 ![Model SEAIR-D Covid-19 epidemics for US with asymptomatic](./results/modelSEAIRDOptUS.png)
 
+### Models Comparison 
+
+The comparison between model is presented below. All models were best fitted against real data. Everything can be updated and adjusted better than done here but it requires time. Brazil was selected to be compared however other countries also can be calculated and compared.
+
+![Comparison of Models Results Infected Brazil](./results/compareModelInfectedBrazil.png)
+
+![Comparison of Models Results Deaths Brazil](./results/compareModelDeathsdBrazil.png)
+
+![Comparison of Models Results Recovered Brazil](./results/compareModelRecovedBrazil.png)
+
 ### References:
 
 Anderson, R. M., May, R. M. , Infectious Diseases of Humans: Dynamics and Control, Oxford University Press, 1991
