@@ -365,9 +365,9 @@ The comparison between model is presented below. All models were best fitted aga
 
 ![Comparison of Models Results Infected Brazil](./results/compareModelInfectedBrazil.png)
 
-![Comparison of Models Results Deaths Brazil](./results/compareModelDeathsdBrazil.png)
+![Comparison of Models Results Deaths Brazil](./results/compareModelDeathsBrazil.png)
 
-![Comparison of Models Results Recovered Brazil](./results/compareModelRecovedBrazil.png)
+![Comparison of Models Results Recovered Brazil](./results/compareModelRecoveredBrazil.png)
 
 ### References:
 
