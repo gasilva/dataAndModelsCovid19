@@ -367,15 +367,7 @@ p: is the fraction of the exposed which become symptomatic infectious sub-popula
 
 The inclusion of asymptomatic cases in SEIRD model generates SEAIRD equation system:
 
-$$$
-\left\{\begin{array}{l}\frac{d s}{d t}=-\beta i(t) s(t) \\ 
-\frac{d e}{d t}=\beta s(t) i(t)-\sigma e(t) \\ 
-\frac{d a}{d t}=\sigma e(t) \cdot (1-p)+\gamma a \\
-\frac{d i}{d t}=\sigma e(t) \cdot p - (\gamma + \sigma_2) \cdot i(t) \\ 
-\frac{d r}{d t}=(1 + \frac{1}{\gamma}\sigma_2) \cdot a i(t) \\
-\frac{d k}{d t}=(1 + \frac{1}{\gamma}\sigma_2) \cdot b i(t)
-\end{array}\right\}
-$$$
+![](./equations/SEAIRD_Model.png)
 
 It is a new completely development model inspired on the paper below, because it does not have same equations and parameters:
 
