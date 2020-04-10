@@ -316,7 +316,7 @@ The model takes SEIR Model and split the r(t) and k(t) by making γ=a+b.
 
 ![Model SEIR-D Covid-19 epidemics for Brazil](./results/modelSEIRD_sigamOptBrazil.png)
 
-![Model SEIR-D Covid-19 epidemics for US](./results/modelSEIRD_sigamUS.png)
+![Model SEIR-D Covid-19 epidemics for US](./results/modelSEIRD_sigamOptUS.png)
 
 #### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptibles, exposed, asymptomatic, infected and deaths with delay in recoveries ands deaths
 
