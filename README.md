@@ -1,10 +1,3 @@
----
-
-useMath = true
-
----
-
-
 # dataAndModelsCovid19
 
 ## Installation
