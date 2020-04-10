@@ -165,6 +165,8 @@ The matematical Models are based in Lotka-Volterra equations, it is like a preda
 
 ![General explanation about SIR model](https://d25hn4jiqx5f7l.cloudfront.net/file_attachments/files/original/f92193ccb498ebc28d1af83c31de63314c959a58.png?1582329912)
 
+Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://triplebyte.com/blog/modeling-infectious-diseases)
+
 A simple mathematical description of the spread of a disease in a population is the so-called SIR model, which divides the (fixed) population of N individuals into three "compartments" which may vary as a function of time, t:
 
 - S(t) are those susceptible but not yet infected with the disease
@@ -235,6 +237,8 @@ https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
 #### SEIR - WHO model type for susceptibles, exposed, infected and recovered with delay in recoveries
 
 ![SEIR model general application](https://d25hn4jiqx5f7l.cloudfront.net/file_attachments/files/original/73be551d5ca0a993eafa0f5b53a66da1b9e8e012.png?1582334250)
+
+Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://triplebyte.com/blog/modeling-infectious-diseases)
 
 - S(t) are those susceptible but not yet infected with the disease
 - E(t) are those exposed to the virus
