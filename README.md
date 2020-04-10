@@ -1,9 +1,25 @@
 ---
-
-useMath = true
-
+Markdown.UseMathematics = true
 ---
 
+<dl>
+<script type="text/x-mathjax-config">
+    // enable inline parsing with single $ instead of /
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'],['\\(','\\)']],
+            displayMath: [ ['$$','$$'], ['\\[','\\]'] ],
+            processEscapes: true
+        },
+    });
+    $(document).on('previewUpdated',function() {
+        setTimeout(function() {
+                    MathJax.Hub.Queue(['Typeset',MathJax.Hub,'#MainContent']);
+        },10);
+    });
+</script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script>
+</dl>
 
 # dataAndModelsCovid19
 
