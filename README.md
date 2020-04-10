@@ -103,7 +103,7 @@ This implementation comes from SIR model of [https://github.com/Lewuathe/COVID19
 
 It was added the K_0 value because SIRD model has initial deaths value in addition to S_0, I_0 and R_0.
 
-You can analyze several countries by making a CSV list like: Brazil,Italy,US,France. Do not put spaces before or after commas.
+You can analyze several countries by making a CSV list like: Brazil, Italy, US, France. Do not put spaces before or after commas.
 
 ```
  For other countries you can run at command line
@@ -271,12 +271,9 @@ Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://tripl
 ![](./equations/SEIR_Model.png)
 
 The last equation does not need to solved, because
-
-<div class="Math">
-\begin{equation}
-    s(t)+e(t)+i(t)+r(t) >= 1
-\end{equation}
-</div>
+$$$
+s(t)+e(t)+i(t)+r(t) >= 1
+$$$
 
 ![Model SEIR Covid-19 epidemics for Brazil](./results/modelSEIRBrazil.png)
 
@@ -309,7 +306,7 @@ b: mortality rate  [1/min]
 
 σ: is the rate at which individuals move from the exposed to the infectious classes. Its reciprocal (1/σ) is the average latent (exposed) period.
 
-$\sigma_2$: is the rate at which individuals move from the infectious to the dead and healed classes. Its reciprocal (1/$\sigma_2$) is the average latent (exposed) period.
+$$\sigma_2$$: is the rate at which individuals move from the infectious to the dead and healed classes. Its reciprocal (1/$$\sigma_2$$) is the average latent (exposed) period.
 
 ---
 
