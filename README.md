@@ -292,7 +292,7 @@ The last equation does not need to solved, because
 
 <img src="http://www.sciweavers.org/tex2img.php?eq=s%28t%29%2Be%28t%29%2Bi%28t%29%2Br%28t%29%2Bk%28t%29%20%5Cgeq%201%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="s(t)+e(t)+i(t)+r(t)+k(t) \geq 1" width="365" height="29" />
 
-The model takes SEIR Model and split the <img src="http://www.sciweavers.org/tex2img.php?eq=r%28t%29%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="r(t)" width="44" height="29" /> in <img src="http://www.sciweavers.org/tex2img.php?eq=r%28t%29%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="r(t)" width="44" height="29" /> and <img src="http://www.sciweavers.org/tex2img.php?eq=k%28t%29%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="k(t)" width="44" height="29" /> by making <img src="http://www.sciweavers.org/tex2img.php?eq=%5Cgamma%3Da%2Bb%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="\gamma=a+b" width="108" height="25" />.
+The model takes SEIR Model and split the r(t) and k(t) by making γ=a+b.
 
 #### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptibles, exposed, asymptomatic, infected and deaths with delay in recoveries ands deaths
 
