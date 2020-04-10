@@ -326,6 +326,7 @@ The model takes SEIR Model and split the r(t) and k(t) by making γ=a+b.
 a: recovery of healed  [1/min]
 
 b: mortality rate  [1/min]
+
 σ: is the rate at which individuals move from the exposed to the infectious classes. Its reciprocal (1/σ) is the average latent (exposed) period.
 
 σ_2: is the rate at which individuals move from the infectious to the deadas and healed classes. Its reciprocal (1/σ2) is the average latent (exposed) period
