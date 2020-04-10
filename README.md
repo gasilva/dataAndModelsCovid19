@@ -268,7 +268,19 @@ Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://tripl
 
 ---
 
-![](./equations/SEIR_Model.png)
+$$$
+\left\{
+\begin{array}{l}
+\frac{d s}{d t}=-\beta i(t) s(t) \\ 
+
+\frac{d e}{d t}=\beta s(t) i(t)-\sigma i(t) \\ 
+
+\frac{d i}{d t}=\sigma e(t) - (\gamma - \sigma_2) \cdot i(t) \\ 
+
+\frac{d r}{d t}=(\gamma + \sigma_2) \cdot i(t)
+\end{array}
+\right\}
+$$$
 
 The last equation does not need to solved, because
 $$$
