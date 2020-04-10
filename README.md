@@ -169,6 +169,9 @@ A simple mathematical description of the spread of a disease in a population is 
 - I(t) is the number of infectious individuals
 - R(t) are those individuals who have recovered (deads+healed)
 
+β : Effective contact rate [1/min]
+γ: Recovery(+Mortality) rate [1/min]
+
 The SIR model describes the change in the population of each of these compartments in terms of two parameters, β and γ. β describes the effective contact rate of the disease: an infected individual comes into contact with βN other individuals per unit time (of which the fraction that are susceptible to contracting the disease is S/N). γ is the mean recovery rate: that is, 1/γ is the mean period of time during which an infected individual can pass it on.
 
 The differential equations describing this model were first derived by Kermack and McKendrick [Proc. R. Soc. A, 115, 772 (1927)]:
@@ -200,6 +203,11 @@ So we can add a new variable k, (Kill rate), and add to the system of equations.
 - R(t) are those individuals who have healed
 - K(t) are those individuals who have died
 
+β : Effective contact rate [1/min]
+γ: Recovery(+Mortality) rate γ=(a+b) [1/min]
+a: recovery of healed  [1/min]
+b: mortality rate  [1/min]
+
 ![](https://user-images.githubusercontent.com/7212952/77828649-7f1e0f00-70fb-11ea-8b59-d7f722305847.gif)
 
 The SIR-D model code is based on the contribution of Giuliano Belinassi, from IME-USP, Brazil
@@ -216,6 +224,10 @@ https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
 - E(t) are those exposed to the virus
 - I(t) is the number of infectious individuals
 - R(t) are those individuals who have recovered (deads+healed)
+
+β : Effective contact rate [1/min]
+γ: Recovery(+Mortality) rate γ=(a+b) [1/min]
+σ: is the rate at which individuals move from the exposed to the infectious classes. Its reciprocal (1/σ) is the average latent (exposed) period.
 
 ![](./equations/SEIR_Model.png)
 
@@ -242,6 +254,13 @@ Matt J. Keeling & Pejman Rohani, Chaper 2.6, SEIR model
 - R(t) are those individuals who have healed
 - K(t) are those individuals who have died
 
+β : Effective contact rate [1/min]
+γ: Recovery(+Mortality) rate γ=(a+b) [1/min]
+a: recovery of healed  [1/min]
+b: mortality rate  [1/min]
+σ: is the rate at which individuals move from the exposed to the infectious classes. Its reciprocal (1/σ) is the average latent (exposed) period.
+σ2: is the rate at which individuals move from the infectious to the deadas and healed classes. Its reciprocal (1/σ2) is the average latent (exposed) period.
+
 The splitting of deaths and healed from recoveries of the SEIR model is necessary because death data is more accurate than healed data of several countries.
 
 ![](./equations/SEIRD_Model.png)
@@ -261,6 +280,14 @@ The model takes SEIR Model and split the <img src="http://www.sciweavers.org/tex
 - R(t) are those individuals who have healed
 - K(t) are those individuals who have died
 
+β : Effective contact rate [1/min]
+γ: Recovery(+Mortality) rate γ=(a+b) [1/min]
+a: recovery of healed  [1/min]
+b: mortality rate  [1/min]
+σ: is the rate at which individuals move from the exposed to the infectious classes. Its reciprocal (1/σ) is the average latent (exposed) period.
+σ2: is the rate at which individuals move from the infectious to the deadas and healed classes. Its reciprocal (1/σ2) is the average latent (exposed) period
+p: is the fraction of the exposed which become symptomatic infectious subpopulation.
+(1-p): is the fraction of the exposed which becomes asymptomatic infectious subpopulation.
 
 The inclusion of asymptomatic cases in SEIRD model generates SEAIRD equation system:
 
