@@ -194,7 +194,7 @@ The differential equations describing this model were first derived by Kermack a
 
 #### SIR - Susceptible, Infected and Recovered Model
 
-![](https://user-images.githubusercontent.com/7212952/77828643-775e6a80-70fb-11ea-8428-73d7a2f176a8.gif)
+![](./equations/SIR.gif)
 
 Here, the number of 'recovery' englobes both recovered and deaths. This parameter is represented by γ.
 
@@ -231,7 +231,7 @@ b: mortality rate  [1/min]
 
 ---
 
-![](https://user-images.githubusercontent.com/7212952/77828649-7f1e0f00-70fb-11ea-8b59-d7f722305847.gif)
+![](./equations/SIRD.gif)
 
 ![Model SIR-D Covid-19 epidemics for Brazil](./results/modelSIRDBrazil.png)
 
