@@ -269,7 +269,6 @@ Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://tripl
 ---
 
 $$$
-\left\{
 \begin{array}{l}
 \frac{d s}{d t}=-\beta i(t) s(t) \\ 
 
@@ -279,7 +278,6 @@ $$$
 
 \frac{d r}{d t}=(\gamma + \sigma_2) \cdot i(t)
 \end{array}
-\right\}
 $$$
 
 The last equation does not need to solved, because
