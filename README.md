@@ -1,23 +1,9 @@
 ---
-Markdown.UseMathematics = true
+
+useMath = true
+
 ---
 
-<script type="text/x-mathjax-config">
-    // enable inline parsing with single $ instead of /
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [['$','$'],['\\(','\\)']],
-            displayMath: [ ['$$','$$'], ['\\[','\\]'] ],
-            processEscapes: true
-        },
-    });
-    $(document).on('previewUpdated',function() {
-        setTimeout(function() {
-                    MathJax.Hub.Queue(['Typeset',MathJax.Hub,'#MainContent']);
-        },10);
-    });
-</script>
-<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML"></script>
 
 # dataAndModelsCovid19
 
@@ -208,7 +194,7 @@ The differential equations describing this model were first derived by Kermack a
 
 #### SIR - Susceptible, Infected and Recovered Model
 
-<img src="http://www.sciweavers.org/tex2img.php?eq=%5Cleft%5C%7B%5Cbegin%7Barray%7D%7Bl%7D%0A%5Cfrac%7Bd%20s%7D%7Bd%20t%7D%3D-%5Cbeta%20s%28t%29%20i%28t%29%20%5C%5C%0A%5Cfrac%7Bd%20i%7D%7Bd%20t%7D%3D%5Cbeta%20s%28t%29%20i%28t%29-%5Cgamma%20i%28t%29%20%5C%5C%0A%5Cfrac%7Bd%20r%7D%7Bd%20t%7D%3D%5Cgamma%20i%28t%29%0A%5Cend%7Barray%7D%5Cright%5C%7D&bc=White&fc=Black&im=png&fs=18&ff=concmath&edit=0" align="center" border="0" alt="\left\{\begin{array}{l}\frac{d s}{d t}=-\beta s(t) i(t) \\\frac{d i}{d t}=\beta s(t) i(t)-\gamma i(t) \\\frac{d r}{d t}=\gamma i(t)\end{array}\right\}" width="292" height="94" />
+![](https://user-images.githubusercontent.com/7212952/77828643-775e6a80-70fb-11ea-8428-73d7a2f176a8.gif)
 
 Here, the number of 'recovery' englobes both recovered and deaths. This parameter is represented by γ.
 
@@ -289,6 +275,12 @@ The last equation does not need to solved, because
 The last equation does not need to solved, because
 
 <img src="http://www.sciweavers.org/tex2img.php?eq=s%28t%29%2Be%28t%29%2Bi%28t%29%2Br%28t%29%20%5Cgeq%201%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="s(t)+e(t)+i(t)+r(t) \geq 1" width="365" height="29" />
+
+<div class="math">
+\begin{equation}
+s(t)+e(t)+i(t)+r(t) \geq 1
+\end{equation}
+</div>
 
 ![Model SEIR Covid-19 epidemics for Brazil](./results/modelSEIRBrazil.png)
 
@@ -371,17 +363,6 @@ p: is the fraction of the exposed which become symptomatic infectious sub-popula
 The inclusion of asymptomatic cases in SEIRD model generates SEAIRD equation system:
 
 ![](./equations/SEAIRD_Model.png)
-
-<div class="math">
-\begin{equation}\left\{\begin{array}{l}\frac{d s}{d t}=-\beta i(t) s(t) \\ 
-\frac{d e}{d t}=\beta s(t) i(t)-\sigma e(t) \\ 
-\frac{d a}{d t}=\sigma e(t) \cdot (1-p)+\gamma a \\
-\frac{d i}{d t}=\sigma e(t) \cdot p - (\gamma + \sigma_2) \cdot i(t) \\ 
-\frac{d r}{d t}=(1 + \frac{1}{\gamma}\sigma_2) \cdot a i(t) \\
-\frac{d k}{d t}=(1 + \frac{1}{\gamma}\sigma_2) \cdot b i(t)
-\end{array}\right\}
-\end{equation}
-</div>
 
 The last equation does not need to solved, because
 
