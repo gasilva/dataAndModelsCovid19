@@ -366,9 +366,9 @@ The inclusion of asymptomatic cases in SEIRD model generates SEAIRD equation sys
 \frac{d i}{d t}=\sigma e(t) \cdot p - (\gamma + \sigma_2) \cdot i(t) \\ 
 \frac{d r}{d t}=(1 + \frac{1}{\gamma}\sigma_2) \cdot a i(t) \\
 \frac{d k}{d t}=(1 + \frac{1}{\gamma}\sigma_2) \cdot b i(t)
-\end{array}\right\}" />
+\end{array}\right\}" width="365" height="180" />
 
-The last equation does not need to solved, because
+The last equation does not need to be solved, because
 
 <img src="http://www.sciweavers.org/tex2img.php?eq=s%28t%29%2Ba%28t%29%2Bi%28t%29%2Br%28t%29%2Bk%28t%29+%5Cgeq+1&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="s(t)+a(t)+e(t)+i(t)+r(t)+k(t) \geq 1" width="365" height="29" />
 
