@@ -7,6 +7,10 @@ useMath = true
 
 # dataAndModelsCovid19
 
+## Table of Contents
+
+[[toc]]
+
 ## Installation
 
 Clone this repository
@@ -268,18 +272,10 @@ Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://tripl
 
 ---
 
-$$$
-\left\{
-\begin{array}{l}
-\frac{d s}{d t}=-\beta i(t) s(t) \\ 
-\frac{d e}{d t}=\beta s(t) i(t)-\sigma i(t) \\ 
-\frac{d i}{d t}=\sigma e(t) - (\gamma - \sigma_2) \cdot i(t) \\ 
-\frac{d r}{d t}=(\gamma + \sigma_2) \cdot i(t)
-\end{array}
-\right\}
-$$$
+![](./equations/SEIR_Model.png)
 
 The last equation does not need to solved, because
+
 $$$
 s(t)+e(t)+i(t)+r(t) >= 1
 $$$
@@ -315,7 +311,7 @@ b: mortality rate  [1/min]
 
 σ: is the rate at which individuals move from the exposed to the infectious classes. Its reciprocal (1/σ) is the average latent (exposed) period.
 
-$$\sigma_2$$: is the rate at which individuals move from the infectious to the dead and healed classes. Its reciprocal ($$\frac{1}{\sigma_2}$$) is the average latent (exposed) period.
+σ:2: is the rate at which individuals move from the infectious to the dead and healed classes. Its reciprocal (1/σ2) is the average latent period.
 
 ---
 
