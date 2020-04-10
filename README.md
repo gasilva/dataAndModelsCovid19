@@ -357,7 +357,7 @@ b: mortality rate  [1/min]
 
 σ: is the rate at which individuals move from the exposed to the infectious classes. Its reciprocal (1/σ) is the average latent (exposed) period.
 
-$\sigma_2$: is the rate at which individuals move from the infectious to the deadas and healed classes. Its reciprocal (1/$\sigma_2$) is the average latent (exposed) period
+σ2: is the rate at which individuals move from the infectious to the dead and healed classes. Its reciprocal (1/σ2) is the average latent (exposed) period
 
 p: is the fraction of the exposed which become symptomatic infectious sub-population.
 
@@ -375,6 +375,11 @@ $$$
 \frac{d r}{d t}=(1 + \frac{1}{\gamma}\sigma_2) \cdot a i(t) \\
 \frac{d k}{d t}=(1 + \frac{1}{\gamma}\sigma_2) \cdot b i(t)
 \end{array}\right\}
+$$$
+
+The last equation does not need to solved, because
+$$$
+s(t)+a(t)+e(t)+i(t)+r(t)+k(t) >= 1
 $$$
 
 It is a new completely development model inspired on the paper below, because it does not have same equations and parameters:
