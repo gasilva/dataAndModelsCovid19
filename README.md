@@ -208,9 +208,9 @@ https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model
 
 https://triplebyte.com/blog/modeling-infectious-diseases
 
-The γ is split in two by $\gamma=a+b$, where a is the rate of recoveries, and b is the rate of death. Since the death rate seems to be linear (1.5% in China, for example), this linear decomposition of γ is precise enough. 
+The γ is split in two by γ = a + b, where a is the rate of recoveries, and b is the rate of death. Since the death rate seems to be linear (1.5% in China, for example), this linear decomposition of γ is precise enough. 
 
-So we can add a new variable k, kill rate, and add to the system of equations. Therefore:
+So we can add a new variable k, (Kill rate), and add to the system of equations. Therefore:
 
 #### SIR-D - SIR model extended to have deaths and recovered separated
 
@@ -275,6 +275,12 @@ The last equation does not need to solved, because
 The last equation does not need to solved, because
 
 <img src="http://www.sciweavers.org/tex2img.php?eq=s%28t%29%2Be%28t%29%2Bi%28t%29%2Br%28t%29%20%5Cgeq%201%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="s(t)+e(t)+i(t)+r(t) \geq 1" width="365" height="29" />
+
+<div class="math">
+\begin{equation}
+s(t)+e(t)+i(t)+r(t) \geq 1
+\end{equation}
+</div>
 
 ![Model SEIR Covid-19 epidemics for Brazil](./results/modelSEIRBrazil.png)
 
