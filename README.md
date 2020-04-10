@@ -204,6 +204,8 @@ So we can add a new variable k, (Kill rate), and add to the system of equations.
 - R(t) are those individuals who have healed
 - K(t) are those individuals who have died
 
+---
+
 β : Effective contact rate [1/min]
 
 γ: Recovery(+Mortality) rate γ=(a+b) [1/min]
@@ -211,6 +213,8 @@ So we can add a new variable k, (Kill rate), and add to the system of equations.
 a: recovery of healed  [1/min]
 
 b: mortality rate  [1/min]
+
+---
 
 ![](https://user-images.githubusercontent.com/7212952/77828649-7f1e0f00-70fb-11ea-8b59-d7f722305847.gif)
 
@@ -229,11 +233,15 @@ https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
 - I(t) is the number of infectious individuals
 - R(t) are those individuals who have recovered (deads+healed)
 
+---
+
 β : Effective contact rate [1/min]
 
 γ: Recovery(+Mortality) rate γ=(a+b) [1/min]
 
 σ: is the rate at which individuals move from the exposed to the infectious classes. Its reciprocal (1/σ) is the average latent (exposed) period.
+
+---
 
 ![](./equations/SEIR_Model.png)
 
@@ -260,6 +268,8 @@ Matt J. Keeling & Pejman Rohani, Chaper 2.6, SEIR model
 - R(t) are those individuals who have healed
 - K(t) are those individuals who have died
 
+---
+
 β : Effective contact rate [1/min]
 
 γ: Recovery(+Mortality) rate γ=(a+b) [1/min]
@@ -272,15 +282,17 @@ b: mortality rate  [1/min]
 
 σ2: is the rate at which individuals move from the infectious to the deadas and healed classes. Its reciprocal (1/σ2) is the average latent (exposed) period.
 
+---
+
 The splitting of deaths and healed from recoveries of the SEIR model is necessary because death data is more accurate than healed data of several countries.
 
 ![](./equations/SEIRD_Model.png)
 
 The last equation does not need to solved, because
+
 <img src="http://www.sciweavers.org/tex2img.php?eq=s%28t%29%2Be%28t%29%2Bi%28t%29%2Br%28t%29%2Bk%28t%29%20%5Cgeq%201%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="s(t)+e(t)+i(t)+r(t)+k(t) \geq 1" width="365" height="29" />
 
 The model takes SEIR Model and split the <img src="http://www.sciweavers.org/tex2img.php?eq=r%28t%29%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="r(t)" width="44" height="29" /> in <img src="http://www.sciweavers.org/tex2img.php?eq=r%28t%29%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="r(t)" width="44" height="29" /> and <img src="http://www.sciweavers.org/tex2img.php?eq=k%28t%29%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="k(t)" width="44" height="29" /> by making <img src="http://www.sciweavers.org/tex2img.php?eq=%5Cgamma%3Da%2Bb%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="\gamma=a+b" width="108" height="25" />.
-
 
 #### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptibles, exposed, asymptomatic, infected and deaths with delay in recoveries ands deaths
 
@@ -290,6 +302,8 @@ The model takes SEIR Model and split the <img src="http://www.sciweavers.org/tex
 - I(t) is the number of infectious individuals
 - R(t) are those individuals who have healed
 - K(t) are those individuals who have died
+
+---
 
 β : Effective contact rate [1/min]
 
@@ -305,6 +319,8 @@ b: mortality rate  [1/min]
 p: is the fraction of the exposed which become symptomatic infectious subpopulation.
 
 (1-p): is the fraction of the exposed which becomes asymptomatic infectious subpopulation.
+
+---
 
 The inclusion of asymptomatic cases in SEIRD model generates SEAIRD equation system:
 
