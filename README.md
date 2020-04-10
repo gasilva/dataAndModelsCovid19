@@ -1,6 +1,9 @@
 ---
-useMath= true
+
+useMath = true
+
 ---
+
 
 # dataAndModelsCovid19
 
@@ -88,7 +91,7 @@ If you are using Visual Code Studio, select the folder you are running.
 
 To run SEIAR-D model with Optimization of Sigma and Sigma2 with opt=5:
 
-```
+```python
 python dataFit_SEAIR_sigmaOpt.py
 ```
 
@@ -100,7 +103,7 @@ This implementation comes from SIR model of [https://github.com/Lewuathe/COVID19
 
 It was added the K_0 value because SIRD model has initial deaths value in addition to S_0, I_0 and R_0.
 
-You can analayze several countries by making a CSV list like: Brazil,Italy,US,France. Do not put spaces before or after commas.
+You can analyze several countries by making a CSV list like: Brazil,Italy,US,France. Do not put spaces before or after commas.
 
 ```
  For other countries you can run at command line
@@ -175,7 +178,7 @@ A simple mathematical description of the spread of a disease in a population is 
 
 - S(t) are those susceptible but not yet infected with the disease
 - I(t) is the number of infectious individuals
-- R(t) are those individuals who have recovered (deads+healed)
+- R(t) are those individuals who have recovered (dead+healed)
 
 ---
 
@@ -189,11 +192,11 @@ The SIR model describes the change in the population of each of these compartmen
 
 The differential equations describing this model were first derived by Kermack and McKendrick [Proc. R. Soc. A, 115, 772 (1927)]:
 
-#### SIR - Susceptible, Infected and Recovered Model
+#### SIR - Suscetible, Infected and Recovered Model
 
 ![](https://user-images.githubusercontent.com/7212952/77828643-775e6a80-70fb-11ea-8428-73d7a2f176a8.gif)
 
-Here, the number of 'recovery' comprises both recovered and deaths. This parameter is represented by γ.
+Here, the number of 'recovery' englobes both recovered and deaths. This parameter is represented by γ.
 
 The SIR model code is based on
 
@@ -242,7 +245,7 @@ The the Python notebook of
 
 https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
 
-#### SEIR - WHO model type for susceptibles, exposed, infected and recovered with delay in recoveries
+#### SEIR - WHO model type for susceptible, exposed, infected and recovered with delay in recoveries
 
 ![SEIR model general application](https://d25hn4jiqx5f7l.cloudfront.net/file_attachments/files/original/73be551d5ca0a993eafa0f5b53a66da1b9e8e012.png?1582334250)
 
@@ -251,7 +254,7 @@ Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://tripl
 - S(t) are those susceptible but not yet infected with the disease
 - E(t) are those exposed to the virus
 - I(t) is the number of infectious individuals
-- R(t) are those individuals who have recovered (dead+healed)
+- R(t) are those individuals who have recovered (deads+healed)
 
 ---
 
@@ -269,7 +272,7 @@ Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://tripl
 
 The last equation does not need to solved, because
 
-<div class="math">
+<div class="Math">
 \begin{equation}
     s(t)+e(t)+i(t)+r(t) >= 1
 \end{equation}
@@ -286,7 +289,7 @@ Matt J. Keeling & Pejman Rohani, Chaper 2.6, SEIR model
 
 [http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html](http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html)
 
-#### SEIR-D - Original variation, proposed by this author, from SEIR model for susceptibles, exposed, infected and deaths with delay in recoveries ands deaths
+#### SEIR-D - Original variation, proposed by this author, from SEIR model for susceptible, exposed, infected and deaths with delay in recoveries and deaths
 
 - S(t) are those susceptible but not yet infected with the disease
 - E(t) are those exposed to the virus
@@ -306,7 +309,7 @@ b: mortality rate  [1/min]
 
 σ: is the rate at which individuals move from the exposed to the infectious classes. Its reciprocal (1/σ) is the average latent (exposed) period.
 
-σ_2: is the rate at which individuals move from the infectious to the dead and healed classes. Its reciprocal (1/σ2) is the average latent (exposed) period.
+$\sigma_2$: is the rate at which individuals move from the infectious to the dead and healed classes. Its reciprocal (1/$\sigma_2$) is the average latent (exposed) period.
 
 ---
 
@@ -324,7 +327,7 @@ The model takes SEIR Model and split the r(t) and k(t) by making γ=a+b.
 
 ![Model SEIR-D Covid-19 epidemics for US](./results/modelSEIRD_sigamOptUS.png)
 
-#### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptibles, exposed, asymptomatic, infected and deaths with delay in recoveries ands deaths
+#### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptible, exposed, asymptomatic, infected and deaths with delay in recoveries and deaths
 
 - S(t) are those susceptible but not yet infected with the disease
 - E(t) are those exposed to the virus
@@ -345,11 +348,11 @@ b: mortality rate  [1/min]
 
 σ: is the rate at which individuals move from the exposed to the infectious classes. Its reciprocal (1/σ) is the average latent (exposed) period.
 
-σ_2: is the rate at which individuals move from the infectious to the deadas and healed classes. Its reciprocal (1/σ2) is the average latent (exposed) period
+$\sigma_2$: is the rate at which individuals move from the infectious to the deadas and healed classes. Its reciprocal (1/$\sigma_2$) is the average latent (exposed) period
 
-p: is the fraction of the exposed which become symptomatic infectious subpopulation.
+p: is the fraction of the exposed which become symptomatic infectious sub-population.
 
-(1-p): is the fraction of the exposed which becomes asymptomatic infectious subpopulation.
+(1-p): is the fraction of the exposed which becomes asymptomatic infectious sub-population.
 
 ---
 
