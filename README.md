@@ -1,3 +1,7 @@
+---
+useMath= true
+---
+
 # dataAndModelsCovid19
 
 ## Installation
@@ -101,7 +105,7 @@ You can analayze several countries by making a CSV list like: Brazil,Italy,US,Fr
 ```
  For other countries you can run at command line
  but be sure to define S_0, I_0, R_0, K_0
- the sucess of fitting will depend on these paramenters
+ the success of fitting will depend on these parameters
 
  usage: dataAndModelsCovid19.py [-h] [--countries COUNTRY_CSV] [--download-data]
                   [--start-date START_DATE] [--prediction-days PREDICT_RANGE]
@@ -161,7 +165,7 @@ https://towardsdatascience.com/covid-19-infection-in-italy-mathematical-models-a
 
 ### Mathematical Models
 
-The matematical Models are based in Lotka-Volterra equations, it is like a predator-prey type of model.
+The mathematical Models are based in Lotka-Volterra equations, it is like a predator-prey type of model.
 
 ![General explanation about SIR model](https://d25hn4jiqx5f7l.cloudfront.net/file_attachments/files/original/f92193ccb498ebc28d1af83c31de63314c959a58.png?1582329912)
 
@@ -185,11 +189,11 @@ The SIR model describes the change in the population of each of these compartmen
 
 The differential equations describing this model were first derived by Kermack and McKendrick [Proc. R. Soc. A, 115, 772 (1927)]:
 
-#### SIR - Suscetible, Infected and Recovered Model
+#### SIR - Susceptible, Infected and Recovered Model
 
 ![](https://user-images.githubusercontent.com/7212952/77828643-775e6a80-70fb-11ea-8428-73d7a2f176a8.gif)
 
-Here, the number of 'recovery' englobes both recovered and deaths. This parameter is represented by γ.
+Here, the number of 'recovery' comprises both recovered and deaths. This parameter is represented by γ.
 
 The SIR model code is based on
 
@@ -234,7 +238,7 @@ The SIR-D model code is based on the contribution of Giuliano Belinassi, from IM
 
 https://github.com/Lewuathe/COVID19-SIR/issues/13#issue-589616803
 
-The the Pyhton notebook of
+The the Python notebook of
 
 https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
 
@@ -247,7 +251,7 @@ Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://tripl
 - S(t) are those susceptible but not yet infected with the disease
 - E(t) are those exposed to the virus
 - I(t) is the number of infectious individuals
-- R(t) are those individuals who have recovered (deads+healed)
+- R(t) are those individuals who have recovered (dead+healed)
 
 ---
 
@@ -265,8 +269,10 @@ Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://tripl
 
 The last equation does not need to solved, because
 
-<div class="Math">
-s(t)+e(t)+i(t)+r(t) >= 1
+<div class="math">
+\begin{equation}
+    s(t)+e(t)+i(t)+r(t) >= 1
+\end{equation}
 </div>
 
 ![Model SEIR Covid-19 epidemics for Brazil](./results/modelSEIRBrazil.png)
