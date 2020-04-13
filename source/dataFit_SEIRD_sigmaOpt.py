@@ -58,7 +58,7 @@ def parse_arguments(country):
 
     if country1=="Brazil":
         date="3/3/20"
-        s0=65e3
+        s0=70e3
         e0=1e-4
         i0=27
         r0=0
@@ -200,7 +200,7 @@ def sumCases_province(input_file, output_file):
 def download_data(url_dictionary):
     #Lets download the files
     for url_title in url_dictionary.keys():
-        urllib.request.urlretrieve(url_dictionary[url_title], "../data/" + url_title)
+        urllib.request.urlretrieve(url_dictionary[url_title], "./data/" + url_title)
 
 
 def load_json(json_file_str):
@@ -226,19 +226,19 @@ class Learner(object):
         self.d_0 = d_0
 
     def load_confirmed(self, country):
-        df = pd.read_csv('../data/time_series_19-covid-Confirmed-country.csv')
+        df = pd.read_csv('./data/time_series_19-covid-Confirmed-country.csv')
         country_df = df[df['Country/Region'] == country]
         return country_df.iloc[0].loc[self.start_date:]
 
 
     def load_recovered(self, country):
-        df = pd.read_csv('../data/time_series_19-covid-Recovered-country.csv')
+        df = pd.read_csv('./data/time_series_19-covid-Recovered-country.csv')
         country_df = df[df['Country/Region'] == country]
         return country_df.iloc[0].loc[self.start_date:]
 
 
     def load_dead(self, country):
-        df = pd.read_csv('../data/time_series_19-covid-Deaths-country.csv')
+        df = pd.read_csv('./data/time_series_19-covid-Deaths-country.csv')
         country_df = df[df['Country/Region'] == country]
         return country_df.iloc[0].loc[self.start_date:]
     
@@ -328,10 +328,10 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
-        df.to_pickle('../data/SEIRD_sigmaOpt_'+self.country+'.pkl')
+        df.to_pickle('./data/SEIRD_sigmaOpt_'+self.country+'.pkl')
 
         country=self.country
-        savePlot("../results/modelSEIRD_sigamOpt"+country+".png")
+        savePlot("./results/modelSEIRD_sigamOpt"+country+".png")
 
         plt.show() 
         plt.close()
@@ -379,12 +379,12 @@ def main(country):
     countries, download, startdate, predict_range , s_0, e_0, i_0, r_0, d_0 = parse_arguments(country)
 
     if download:
-        data_d = load_json("../data_url.json")
+        data_d = load_json("./data_url.json")
         download_data(data_d)
 
-    sumCases_province('../data/time_series_19-covid-Confirmed.csv', '../data/time_series_19-covid-Confirmed-country.csv')
-    sumCases_province('../data/time_series_19-covid-Recovered.csv', '../data/time_series_19-covid-Recovered-country.csv')
-    sumCases_province('../data/time_series_19-covid-Deaths.csv', '../data/time_series_19-covid-Deaths-country.csv')
+    sumCases_province('./data/time_series_19-covid-Confirmed.csv', './data/time_series_19-covid-Confirmed-country.csv')
+    sumCases_province('./data/time_series_19-covid-Recovered.csv', './data/time_series_19-covid-Recovered-country.csv')
+    sumCases_province('./data/time_series_19-covid-Deaths.csv', './data/time_series_19-covid-Deaths-country.csv')
 
     for country in countries:
         #learner = Learner(country, loss, startdate, predict_range, s_0, i_0, r_0, d_0)
@@ -408,15 +408,15 @@ c = 0.0
 date = []
 
 #load new confirmed cases
-data_d = load_json("../data_url.json")
+data_d = load_json("./data_url.json")
 download_data(data_d)
 
 #sum provinces under same country
-sumCases_province('../data/time_series_19-covid-Confirmed.csv', '../data/time_series_19-covid-Confirmed-country.csv')
+sumCases_province('./data/time_series_19-covid-Confirmed.csv', './data/time_series_19-covid-Confirmed-country.csv')
 
 #load CSV file
 dateparse = lambda x: pd.datetime.strptime(x, '%m/%d/%Y')
-df=pd.read_csv('../data/time_series_19-covid-Confirmed-country.csv', \
+df=pd.read_csv('./data/time_series_19-covid-Confirmed-country.csv', \
     delimiter=',',parse_dates=True, date_parser=dateparse,header=None)
 df=df.transpose()
 
@@ -555,7 +555,7 @@ if opt==1 or opt==0 or opt==4:
     plt.legend()
 
     #save figs
-    savePlot('../results/coronaPythonEN_'+version+'.png', dpi = 600)
+    savePlot('./results/coronaPythonEN_'+version+'.png', dpi = 600)
 
     # Show the plot
     plt.show() 
@@ -652,7 +652,7 @@ if opt==2 or opt==0:
             ha='left',rotation=90)
 
     #save figs
-    savePlot('../results/coronaPythonModelEN'+country+'.png', dpi = 600)
+    savePlot('./results/coronaPythonModelEN'+country+'.png', dpi = 600)
 
     plt.show() 
     plt.close()
@@ -734,7 +734,7 @@ if opt==3 or opt==0 or opt==4:
             ha='left',rotation=90)
 
     #save figs
-    savePlot('../results/coronaPythonGrowthEN_'+country+'.png', dpi = 600)
+    savePlot('./results/coronaPythonGrowthEN_'+country+'.png', dpi = 600)
 
     plt.show() 
     plt.close()

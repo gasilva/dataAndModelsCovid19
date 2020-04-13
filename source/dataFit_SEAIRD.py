@@ -58,7 +58,7 @@ def parse_arguments(country):
 
     if country1=="Brazil":
         date="3/3/20"
-        s0=300e3
+        s0=350e3
         e0=1e-4
         i0=100
         r0=200
