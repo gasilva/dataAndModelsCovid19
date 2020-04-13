@@ -71,16 +71,30 @@ def loadDataFrame(filename):
 def parse_arguments(state):
     parser = argparse.ArgumentParser()
 
+    #select state of Brazil
     state1="SP"
+    #initial date for data fitting
     date="2020-03-15"
+    #initial condition for susceptible
     s0=280.0e3
+    #initial condition for exposed   
     e0=1e-4
+    #initial condition for infectious   
     i0=0
+    #initial condition for recovered
     r0=0
-    k0=0   
+    #initial condition for deaths   
+    k0=0
+    #initial condition for asymptomatic   
     a0=0
+    #start fitting when the number of cases >= start
     start=300
+    #as recovered data is not available, so recovered is in function of death
     ratioRecoveredDeath=0.1
+    #weigth for fitting data
+    weigthCases=0.4
+    weigthRecov=0.2
+    #weightDeaths = 1 - weigthCases - weigthRecov
 
     parser.add_argument(
         '--states',
@@ -154,6 +168,18 @@ def parse_arguments(state):
         type=int,
         default=ratioRecoveredDeath)
 
+    parser.add_argument(
+        '--WCASES',
+        dest='weigthCases',
+        type=int,
+        default=weigthCases)
+
+    parser.add_argument(
+        '--WREC',
+        dest='weigthRecov',
+        type=int,
+        default=weigthRecov)
+
     args = parser.parse_args()
 
     state_list = []
@@ -167,7 +193,7 @@ def parse_arguments(state):
         sys.exit("QUIT: You must pass a state list on CSV format.")
 
     return (state_list, args.download_data, args.start_date, args.predict_range, args.s_0, args.e_0, \
-        args.a_0, args.i_0, args.r_0, args.d_0, args.startNCases, args.ratio)
+        args.a_0, args.i_0, args.r_0, args.d_0, args.startNCases, args.ratio, args.weigthCases, args.weigthRecov)
 
 def download_data(url_dictionary):
     #Lets download the files
@@ -185,7 +211,7 @@ def load_json(json_file_str):
 
 
 class Learner(object):
-    def __init__(self, state, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio):
+    def __init__(self, state, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov):
         self.state = state
         self.loss = loss
         self.start_date = start_date
@@ -198,6 +224,8 @@ class Learner(object):
         self.a_0 = a_0
         self.startNCases = startNCases
         self.ratio = ratio
+        self.weigthCases = weigthCases
+        self.weigthRecov = weigthRecov
 
     def load_confirmed(self, state):
         dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
@@ -276,7 +304,8 @@ class Learner(object):
 
         optimal = minimize(lossOdeint,        
             [0.001, 0.001, 0.001, 0.001, 0.001],
-            args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, self.ratio),
+            args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
+                self.startNCases, self.ratio, self.weigthCases, self.weigthRecov),
             method='L-BFGS-B',
             bounds=[(1e-12, 5), (1./80.,0.2),  (1./100.,0.2), (1e-12, 0.6), (1e-12, 0.6)])
             #beta, sigma, sigma2, gamma, b
@@ -356,7 +385,7 @@ class Learner(object):
         plt.close()
 
 #objective function Odeint solver
-def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratioRecoved_Death):
+def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratioRecoved_Death, weigthCases, weigthRecov):
     size = len(data)
     beta, sigma, sigma2, gamma, b = point
     def SEAIRD(y,t):
@@ -400,8 +429,8 @@ def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ra
     # l1 = np.sqrt(np.mean((solution.y[3] - data.values)**2))
     # l2 = np.sqrt(np.mean((solution.y[5] - death.values)**2))
     #weight for cases
-    u = 0.4  #Brazil US 0.1
-    w = 0.2
+    u = weigthCases  #Brazil US 0.1
+    w = weigthRecov
     #weight for deaths
     v = max(0,1. - u - w)
     return u*l1 + v*l2 + w*l3
@@ -416,7 +445,8 @@ def main(state):
   'Republic of Korea': '1/22/20',
   'Iran (Islamic Republic of)': '2/19/20'}
 
-    states, download, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio = parse_arguments(state)
+    states, download, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, \
+        weigthCases, weigthRecov = parse_arguments(state)
 
     # if download:
     #     data_d = load_json("./data_url.json")
@@ -424,7 +454,8 @@ def main(state):
 
     for state in states:
         #learner = Learner(state, loss, startdate, predict_range, s_0, i_0, r_0, d_0)
-        learner = Learner(state, lossOdeint, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio )
+        learner = Learner(state, lossOdeint, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0, \
+            startNCases, ratio, weigthCases, weigthRecov)
         #try:
         learner.train()
         #except BaseException:
