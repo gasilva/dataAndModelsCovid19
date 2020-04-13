@@ -80,6 +80,7 @@ def parse_arguments(state):
     k0=0   
     a0=0
     start=300
+    ratioRecoveredDeath=0.1
 
     parser.add_argument(
         '--states',
@@ -147,6 +148,12 @@ def parse_arguments(state):
         type=int,
         default=start)
 
+    parser.add_argument(
+        '--RATIO',
+        dest='ratio',
+        type=int,
+        default=ratioRecoveredDeath)
+
     args = parser.parse_args()
 
     state_list = []
@@ -160,7 +167,7 @@ def parse_arguments(state):
         sys.exit("QUIT: You must pass a state list on CSV format.")
 
     return (state_list, args.download_data, args.start_date, args.predict_range, args.s_0, args.e_0, \
-        args.a_0, args.i_0, args.r_0, args.d_0, args.startNCases)
+        args.a_0, args.i_0, args.r_0, args.d_0, args.startNCases, args.ratio)
 
 def download_data(url_dictionary):
     #Lets download the files
@@ -178,7 +185,7 @@ def load_json(json_file_str):
 
 
 class Learner(object):
-    def __init__(self, state, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases):
+    def __init__(self, state, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio):
         self.state = state
         self.loss = loss
         self.start_date = start_date
@@ -190,6 +197,7 @@ class Learner(object):
         self.d_0 = d_0
         self.a_0 = a_0
         self.startNCases = startNCases
+        self.ratio = ratio
 
     def load_confirmed(self, state):
         dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
@@ -268,7 +276,7 @@ class Learner(object):
 
         optimal = minimize(lossOdeint,        
             [0.001, 0.001, 0.001, 0.001, 0.001],
-            args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases),
+            args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, self.ratio),
             method='L-BFGS-B',
             bounds=[(1e-12, 5), (1./80.,0.2),  (1./100.,0.2), (1e-12, 0.6), (1e-12, 0.6)])
             #beta, sigma, sigma2, gamma, b
@@ -297,7 +305,7 @@ class Learner(object):
         ax.plot(new_index[range(0,150)],y2,'b-',label="Asymptomatic")
         plt.xticks(np.arange(0, 150, 20))
         ax.plot(new_index[range(0,150)],y3,'y-',label="Infected")
-        # ax.plot(new_index[range(0,150)],y4,'c-',label="Recovered")
+        ax.plot(new_index[range(0,150)],y4,'c-',label="Recovered")
         ax.plot(new_index[range(0,150)],y5,'m-',label="Deaths")
         ax.plot(new_index[range(0,len(extended_actual))],extended_actual,'o',label="Infected data")
         ax.plot(new_index[range(0,len(extended_death))],extended_death,'x',label="Death data")
@@ -325,7 +333,7 @@ class Learner(object):
         plt.xticks(np.arange(0, 150, 20))
         ax.set_ylim(0,max(y3)+5e3)
         ax.plot(new_index[range(0,150)],y3,'y-',label="Infected")
-        # ax.plot(new_index[range(0,150)],y4,'c-',label="Recovered")
+        ax.plot(new_index[range(0,150)],y4,'c-',label="Recovered")
         ax.plot(new_index[range(0,150)],y5,'m-',label="Deaths")
         ax.plot(new_index[range(0,len(extended_actual))],extended_actual,'o',label="Infected data")
         ax.plot(new_index[range(0,len(extended_death))],extended_death,'x',label="Death data")
@@ -348,7 +356,7 @@ class Learner(object):
         plt.close()
 
 #objective function Odeint solver
-def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases):
+def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratioRecoved_Death):
     size = len(data)
     beta, sigma, sigma2, gamma, b = point
     def SEAIRD(y,t):
@@ -383,7 +391,7 @@ def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases):
         if data.values[i]>startNCases:
             l1 = l1+(res[i,3] - data.values[i])**2
             l2 = l2+(res[i,5] - death.values[i])**2
-            l3 = l3+(res[i,4] - death.values[i]*1.5)**2
+            l3 = l3+(res[i,4] - death.values[i]*ratioRecoved_Death)**2
             tot+=1
     l1=np.sqrt(l1/tot)
     l2=np.sqrt(l2/tot)
@@ -393,7 +401,7 @@ def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases):
     # l2 = np.sqrt(np.mean((solution.y[5] - death.values)**2))
     #weight for cases
     u = 0.4  #Brazil US 0.1
-    w = 0.0
+    w = 0.2
     #weight for deaths
     v = max(0,1. - u - w)
     return u*l1 + v*l2 + w*l3
@@ -408,7 +416,7 @@ def main(state):
   'Republic of Korea': '1/22/20',
   'Iran (Islamic Republic of)': '2/19/20'}
 
-    states, download, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0, startNCases = parse_arguments(state)
+    states, download, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio = parse_arguments(state)
 
     # if download:
     #     data_d = load_json("./data_url.json")
@@ -416,7 +424,7 @@ def main(state):
 
     for state in states:
         #learner = Learner(state, loss, startdate, predict_range, s_0, i_0, r_0, d_0)
-        learner = Learner(state, lossOdeint, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0, startNCases)
+        learner = Learner(state, lossOdeint, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio )
         #try:
         learner.train()
         #except BaseException:
@@ -433,8 +441,8 @@ def main(state):
 #opt=2 logistic model prediction
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
-#opt=5 SEIR-D Model
-opt=0
+#opt=5 SEAIR-D Model
+opt=5
 
 #load new confirmed cases
 # data_d = load_json("./data_url.json")
