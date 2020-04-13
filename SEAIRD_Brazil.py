@@ -79,6 +79,7 @@ def parse_arguments(state):
     r0=0
     k0=0   
     a0=0
+    start=300
 
     parser.add_argument(
         '--states',
@@ -140,6 +141,12 @@ def parse_arguments(state):
         type=int,
         default=k0)
 
+    parser.add_argument(
+        '--START',
+        dest='startNCases',
+        type=int,
+        default=start)
+
     args = parser.parse_args()
 
     state_list = []
@@ -152,7 +159,8 @@ def parse_arguments(state):
     else:
         sys.exit("QUIT: You must pass a state list on CSV format.")
 
-    return (state_list, args.download_data, args.start_date, args.predict_range, args.s_0, args.e_0, args.a_0, args.i_0, args.r_0, args.d_0)
+    return (state_list, args.download_data, args.start_date, args.predict_range, args.s_0, args.e_0, \
+        args.a_0, args.i_0, args.r_0, args.d_0, args.startNCases)
 
 def download_data(url_dictionary):
     #Lets download the files
@@ -170,7 +178,7 @@ def load_json(json_file_str):
 
 
 class Learner(object):
-    def __init__(self, state, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0):
+    def __init__(self, state, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases):
         self.state = state
         self.loss = loss
         self.start_date = start_date
@@ -181,6 +189,7 @@ class Learner(object):
         self.r_0 = r_0
         self.d_0 = d_0
         self.a_0 = a_0
+        self.startNCases = startNCases
 
     def load_confirmed(self, state):
         dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
@@ -259,7 +268,7 @@ class Learner(object):
 
         optimal = minimize(lossOdeint,        
             [0.001, 0.001, 0.001, 0.001, 0.001],
-            args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0),
+            args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases),
             method='L-BFGS-B',
             bounds=[(1e-12, 5), (1./80.,0.2),  (1./100.,0.2), (1e-12, 0.6), (1e-12, 0.6)])
             #beta, sigma, sigma2, gamma, b
@@ -339,7 +348,7 @@ class Learner(object):
         plt.close()
 
 #objective function Odeint solver
-def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0):
+def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases):
     size = len(data)
     beta, sigma, sigma2, gamma, b = point
     def SEAIRD(y,t):
@@ -371,7 +380,7 @@ def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0):
     tot=0
 
     for i in range(0,len(data.values)):
-        if data.values[i]>300:
+        if data.values[i]>startNCases:
             l1 = l1+(res[i,3] - data.values[i])**2
             l2 = l2+(res[i,5] - death.values[i])**2
             l3 = l3+(res[i,4] - death.values[i]*1.5)**2
@@ -399,7 +408,7 @@ def main(state):
   'Republic of Korea': '1/22/20',
   'Iran (Islamic Republic of)': '2/19/20'}
 
-    states, download, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0 = parse_arguments(state)
+    states, download, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0, startNCases = parse_arguments(state)
 
     # if download:
     #     data_d = load_json("./data_url.json")
@@ -407,7 +416,7 @@ def main(state):
 
     for state in states:
         #learner = Learner(state, loss, startdate, predict_range, s_0, i_0, r_0, d_0)
-        learner = Learner(state, lossOdeint, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0)
+        learner = Learner(state, lossOdeint, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0, startNCases)
         #try:
         learner.train()
         #except BaseException:
