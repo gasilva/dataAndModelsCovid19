@@ -80,22 +80,23 @@ def parse_arguments(state):
     #initial condition for exposed   
     e0=1e-4
     #initial condition for infectious   
-    i0=0
+    i0=1e-4
     #initial condition for recovered
-    r0=0
+    r0=1e-4
     #initial condition for deaths   
-    k0=0
+    k0=1e-4
     #initial condition for asymptomatic   
-    a0=0
+    a0=1e-4
     #start fitting when the number of cases >= start
     start=300
     #as recovered data is not available, so recovered is in function of death
     ratioRecoveredDeath=0.1
     #weigth for fitting data
     weigthCases=0.4
-    weigthRecov=0.2
+    weigthRecov=0.1
     #weightDeaths = 1 - weigthCases - weigthRecov
 
+    #command line arguments
     parser.add_argument(
         '--states',
         dest='states',
@@ -307,7 +308,7 @@ class Learner(object):
             args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
                 self.startNCases, self.ratio, self.weigthCases, self.weigthRecov),
             method='L-BFGS-B',
-            bounds=[(1e-12, 5), (1./80.,0.2),  (1./100.,0.2), (1e-12, 0.6), (1e-12, 0.6)])
+            bounds=[(1e-12, 5), (1./160.,0.2),  (1./160.,0.2), (1e-12, 0.6), (1e-12, 0.6)])
             #beta, sigma, sigma2, gamma, b
 
         # sigma=1/22
@@ -425,14 +426,17 @@ def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ra
     l1=np.sqrt(l1/tot)
     l2=np.sqrt(l2/tot)
     l3=np.sqrt(l3/tot)
+
     # solution = solve_ivp(SEAIRD, [0, size], [s_0,e_0,a_0,i_0,r_0,d_0], t_eval=np.arange(0, size, 1), vectorized=True)
     # l1 = np.sqrt(np.mean((solution.y[3] - data.values)**2))
     # l2 = np.sqrt(np.mean((solution.y[5] - death.values)**2))
+    
     #weight for cases
     u = weigthCases  #Brazil US 0.1
     w = weigthRecov
     #weight for deaths
     v = max(0,1. - u - w)
+    
     return u*l1 + v*l2 + w*l3
 
 #main program SIRD model
