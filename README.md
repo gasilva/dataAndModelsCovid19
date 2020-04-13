@@ -80,30 +80,30 @@ countrySIRD="Brazil"
 In SEAIR-D_Brazil.py change the initial conditions and select the state:
 
 ```python
-    #select state of Brazil
-    state1="SP"
-    #initial date for data fitting
-    date="2020-03-15"
-    #initial condition for susceptible
-    s0=280.0e3
-    #initial condition for exposed   
-    e0=1e-4
-    #initial condition for infectious   
-    i0=0
-    #initial condition for recovered
-    r0=0
-    #initial condition for deaths   
-    k0=0
-    #initial condition for asymptomatic   
-    a0=0
-    #start fitting when the number of cases >= start
-    start=300
-    #as recovered data is not available, so recovered is in function of death
-    ratioRecoveredDeath=0.1
-    #weigth for fitting data
-    weigthCases=0.4
-    weigthRecov=0.2
-    #weightDeaths = 1 - weigthCases - weigthRecov
+#select state of Brazil
+state1="SP"
+#initial date for data fitting
+date="2020-03-15"
+#initial condition for susceptible
+s0=280.0e3
+#initial condition for exposed   
+e0=1e-4
+#initial condition for infectious   
+i0=0
+#initial condition for recovered
+r0=0
+#initial condition for deaths   
+k0=0
+#initial condition for asymptomatic   
+a0=0
+#start fitting when the number of cases >= start
+start=300
+#as recovered data is not available, so recovered is in function of death
+ratioRecoveredDeath=0.1
+#weigth for fitting data
+weigthCases=0.4
+weigthRecov=0.2
+#weightDeaths = 1 - weigthCases - weigthRecov
 ```
 
 ## Run Code
