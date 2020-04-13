@@ -568,7 +568,7 @@ if opt==1 or opt==0 or opt==4:
     plt.legend()
 
     #save figs
-    savePlot('./results/coronaPythonEN_'+version+'.png')
+    savePlot('./results/coronaPythonEN_'+state+version+'.png')
 
     # Show the plot
     plt.show() 
@@ -666,7 +666,7 @@ if opt==2 or opt==0:
             ha='left',rotation=90)
 
     #save figs
-    strFile ='./results/coronaPythonModelEN'+state+'.png'
+    strFile ='./results/coronaPythonModelEN_'+state+'.png'
     savePlot(strFile)
 
     plt.show() 

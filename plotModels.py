@@ -35,17 +35,6 @@ df_SEAIRD = loadDataFrame('./data/SEAIRD_'+country+'.pkl')
 df_SEAIRDopt = loadDataFrame('./data/SEAIRD_sigmaOpt_'+country+'.pkl')
 df_SIRD = loadDataFrame('./data/SIRD_'+country+'.pkl')
 
-# print(df_SIRD)
-
-# print(df_SEIR.index)
-# print(df_SEIRD)
-# print(df_SEIRDopt)
-# print(df_SEAIRD)
-# print(df_SEAIRDopt)
-
-
-# sys.exit()
-
 # susceptible
 # exposed
 # asymptomatic
