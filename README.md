@@ -30,6 +30,8 @@ Select one option 1 to 5 by variable opt
 opt=0
 ```
 
+##### Model for Countries
+
 Select countries to be plotted in log to analyze growth rate. All countries available.
 
 ```python
@@ -64,7 +66,7 @@ country="Brazil"
 
 ```
 
-Choose country to analyze data by SIRD model. Some countries are already adjusted. Other countries may need extra work to adjust S_0, I_0, R_0 and K_0, i.e., the initial conditions. Plus it may required you to set the start date correctly. If a delay/lag exist in the recovery or dead data, it may be required to set negative values for R_0 and K_0. It may simulate the lag.
+Choose country to analyze data by SEAIRD model. Some countries are already adjusted. Other countries may need extra work to adjust S_0, I_0, R_0 and K_0, i.e., the initial conditions. Plus it may required you to set the start date correctly. If a delay/lag exist in the recovery or dead data, it may be required to set negative values for R_0 and K_0. It may simulate the lag.
 
 ```python
 #choose country for SIRD model
@@ -77,6 +79,45 @@ Choose country to analyze data by SIRD model. Some countries are already adjuste
 # Countries above are already adjusted
 countrySIRD="Brazil"
 ```
+##### Model for Brazilian States
+
+```python
+#prepare data for plotting
+state1="SP"
+[time1,cases1]=getCases(df,country1)
+state2="RJ"
+[time2,cases2]=getCases(df,country2)
+state3="AM"
+[time3,cases3]=getCases(df,country3)
+state4="CE"
+[time4,cases4]=getCases(df,country4)
+state5="MG"
+[time5,cases5]=getCases(df,country5)
+
+```
+Choose version to be place in the .png file name of log plot. This allows to you to analyze different set of states.
+
+```python
+#plot version - changes the file name png
+version="2"
+```
+
+Select country to have the exponential and logistic function fitting. Choose one of the states in the list above.
+
+```python
+#choose country for curve fitting
+#choose country for growth curve
+#one of countries above
+country="SP"
+
+```
+
+Choose country to analyze data by SEAIRD model.
+
+```python
+stateSIRD="SP"
+```
+
 In SEAIR-D_Brazil.py change the initial conditions and select the state:
 
 ```python
