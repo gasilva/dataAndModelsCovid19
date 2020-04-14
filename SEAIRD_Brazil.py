@@ -88,9 +88,9 @@ def parse_arguments(state):
     #initial condition for asymptomatic   
     a0=1e-4
     #start fitting when the number of cases >= start
-    start=300
+    start=350
     #as recovered data is not available, so recovered is in function of death
-    ratioRecoveredDeath=0.1
+    ratioRecoveredDeath=.15
     #weigth for fitting data
     weigthCases=0.4
     weigthRecov=0.1
