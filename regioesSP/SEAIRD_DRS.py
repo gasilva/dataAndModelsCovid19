@@ -519,6 +519,7 @@ def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ra
         R = y[4]
         D = y[5]
         p=0.2
+        gamma=b/ratioRecoved_Death+b
         # sigma=1./22.
         # sigma2=1./55.
         y0=-beta*(A+I)*S #S
