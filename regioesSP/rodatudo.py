@@ -2,7 +2,7 @@ import preparadados
 import pandas as pd
 import os
 
-#preparadados.preparadados() #baixa dados e organiza
+preparadados.preparadados() #baixa dados e organiza
 
 dfSP = pd.read_csv("data/dados_municipios_SP.csv")
 dfparam = pd.read_csv("data/param.csv")
