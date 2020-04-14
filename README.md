@@ -102,7 +102,7 @@ Choose version to be place in the .png file name of log plot. This allows to you
 version="2"
 ```
 
-Select country to have the exponential and logistic function fitting. Choose one of the states in the list above.
+Select state to have the exponential and logistic function fitting. Choose one of the states in the list above.
 
 ```python
 #choose country for curve fitting
@@ -112,7 +112,7 @@ state="SP"
 
 ```
 
-Choose country to analyze data by SEAIRD model.
+Choose state to analyze data by SEAIRD model.
 
 ```python
 stateSIRD="SP"
