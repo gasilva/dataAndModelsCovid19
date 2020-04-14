@@ -90,7 +90,7 @@ def parse_arguments(districtRegion):
     # DRS 17 - Taubaté,,,,,,,,
 
     #select district region of Sao Paulo State
-    districtRegion1="DRS 17 - Taubaté"
+    districtRegion1="DRS 01 - Grande São Paulo"
 
     if districtRegion1=="DRS 01 - Grande São Paulo":
         date="2020-03-15"
@@ -107,7 +107,7 @@ def parse_arguments(districtRegion):
         #initial condition for asymptomatic   
         a0=1e-4
         #start fitting when the number of cases >= start
-        start=350
+        start=1500
         #how many days is the prediction
         prediction_days=150
         #as recovered data is not available, so recovered is in function of death
@@ -186,7 +186,7 @@ def parse_arguments(districtRegion):
         #how many days is the prediction
         prediction_days=150
         #as recovered data is not available, so recovered is in function of death
-        ratioRecoveredDeath=.1
+        ratioRecoveredDeath=10
         #weigth for fitting data
         weigthCases=0.4
         weigthRecov=0.1
@@ -429,7 +429,7 @@ class Learner(object):
             args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
                 self.startNCases, self.ratio, self.weigthCases, self.weigthRecov),
             method='L-BFGS-B',
-            bounds=[(1e-12, 50), (1./160.,0.2),  (1./160.,0.2), (1e-12, 0.3), (1e-12, 0.3)])
+            bounds=[(1e-12, 50), (1./160.,0.2),  (1./160.,0.2), (1e-16, 0.4), (1e-12, 0.2)])
             #beta, sigma, sigma2, gamma, b
 
         # sigma=1/22
@@ -482,7 +482,7 @@ class Learner(object):
         fig, ax = plt.subplots(figsize=(15, 10))
         ax.set_title("Zoom SEAIR-D Model for "+self.districtRegion)
         plt.xticks(np.arange(0, self.predict_range, self.predict_range/8))
-        ax.set_ylim(0,max(y3))
+        ax.set_ylim(0,max(y3)+2e3)
         ax.plot(new_index[range(0,self.predict_range)],y3,'y-',label="Infected")
         ax.plot(new_index[range(0,self.predict_range)],y4,'c-',label="Recovered")
         ax.plot(new_index[range(0,self.predict_range)],y5,'m-',label="Deaths")
@@ -543,7 +543,7 @@ def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ra
         if data.values[i]>startNCases:
             l1 = l1+(res[i,3] - data.values[i])**2
             l2 = l2+(res[i,5] - death.values[i])**2
-            l3 = l3+(res[i,4] - death.values[i]*ratioRecoved_Death)**2
+            l3 = l3+(res[i,4] - data.values[i]*ratioRecoved_Death)**2
             tot+=1
     l1=np.sqrt(l1/tot)
     l2=np.sqrt(l2/tot)
