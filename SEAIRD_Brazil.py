@@ -6,7 +6,9 @@ import array
 import operator
 import argparse
 import sys
-import json
+import sys
+import sys
+import sys
 import ssl
 import os
 import urllib.request
@@ -71,14 +73,30 @@ def loadDataFrame(filename):
 def parse_arguments(state):
     parser = argparse.ArgumentParser()
 
-    #select state of Brazil
-    state1="SP"
     #initial date for data fitting
-    date="2020-03-15"
+    state1="SP"
     #initial condition for susceptible
-    s0=280.0e3
+    state1="SP"
     #initial condition for exposed   
+    #initial date for data fitting
+    #initial condition for infectious   
+    i0=1e-4
+    #initial condition for recovered
+    r0=1e-4
+    #initial condition for deaths   
+    k0=1e-4
+    #initial condition for asymptomatic   
+    a0=1e-4
+    #start fitting when the number of cases >= start
+    start=350
+    #as recovered data is not available, so recovered is in function of death
+    ratioRecoveredDeath=.15
+    #weigth for fitting data
+    weigthCases=0.4
+    weigthRecov=0.1
+    #weightDeaths = 1 - weigthCases - weigthRecov
     e0=1e-4
+    #command line arguments
     #initial condition for infectious   
     i0=1e-4
     #initial condition for recovered
@@ -124,13 +142,37 @@ def parse_arguments(state):
     parser.add_argument(
         '--S_0',
         dest='s_0',
+    parser.add_argument(
+        '--START',
+        dest='startNCases',
+        type=int,
+        default=start)
+
+    parser.add_argument(
+        '--RATIO',
+        dest='ratio',
+        type=int,
+        default=ratioRecoveredDeath)
+
+    return (state_list, args.download_data, args.start_date, args.predict_range, args.s_0, args.e_0, \
+        args.a_0, args.i_0, args.r_0, args.d_0, args.startNCases, args.ratio, args.weigthCases, args.weigthRecov)
+        '--WCASES',
+        dest='weigthCases',
+        type=int,
+        default=weigthCases)
+
+    parser.add_argument(
+        '--WREC',
+        dest='weigthRecov',
+        type=int,
+        default=weigthRecov)
         type=int,
         default=s0)
 
     parser.add_argument(
         '--E_0',
         dest='e_0',
-        type=int,
+    def __init__(self, state, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov):
         default=e0)
 
     parser.add_argument(
@@ -141,6 +183,10 @@ def parse_arguments(state):
 
     parser.add_argument(
         '--I_0',
+        self.startNCases = startNCases
+        self.ratio = ratio
+        self.weigthCases = weigthCases
+        self.weigthRecov = weigthRecov
         dest='i_0',
         type=int,
         default=i0)
@@ -215,9 +261,10 @@ class Learner(object):
     def __init__(self, state, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov):
         self.state = state
         self.loss = loss
-        self.start_date = start_date
+            args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
+                self.startNCases, self.ratio, self.weigthCases, self.weigthRecov),
         self.predict_range = predict_range
-        self.s_0 = s_0
+            bounds=[(1e-12, 5), (1./160.,0.2),  (1./160.,0.2), (1e-12, 0.6), (1e-12, 0.6)])
         self.e_0 = e_0
         self.i_0 = i_0
         self.r_0 = r_0
