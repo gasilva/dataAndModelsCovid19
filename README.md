@@ -108,7 +108,7 @@ Select country to have the exponential and logistic function fitting. Choose one
 #choose country for curve fitting
 #choose country for growth curve
 #one of countries above
-country="SP"
+state="SP"
 
 ```
 
