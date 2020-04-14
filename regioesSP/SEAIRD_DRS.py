@@ -195,7 +195,7 @@ def parse_arguments(districtRegion):
     if districtRegion1=="DRS 17 - Taubaté":
         date="2020-04-01"
         #initial condition for susceptible
-        s0=8.0e3
+        s0=10.0e3
         #initial condition for exposed   
         e0=1e-4
         #initial condition for infectious   
@@ -211,10 +211,10 @@ def parse_arguments(districtRegion):
         #how many days is the prediction
         prediction_days=70
         #as recovered data is not available, so recovered is in function of death
-        ratioRecoveredDeath=.1
+        ratioRecoveredDeath=.08
         #weigth for fitting data
         weigthCases=0.4
-        weigthRecov=0.1
+        weigthRecov=0.0
         #weightDeaths = 1 - weigthCases - weigthRecov
 
     #command line arguments
@@ -429,7 +429,7 @@ class Learner(object):
             args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
                 self.startNCases, self.ratio, self.weigthCases, self.weigthRecov),
             method='L-BFGS-B',
-            bounds=[(1e-12, 5), (1./160.,0.2),  (1./160.,0.2), (1e-12, 0.6), (1e-12, 0.6)])
+            bounds=[(1e-12, 50), (1./160.,0.2),  (1./160.,0.2), (1e-12, 0.3), (1e-12, 0.3)])
             #beta, sigma, sigma2, gamma, b
 
         # sigma=1/22
@@ -454,7 +454,7 @@ class Learner(object):
         ax.plot(new_index[range(0,self.predict_range)],y0,'g-',label="Susceptible")
         ax.plot(new_index[range(0,self.predict_range)],y1,'r-',label="Exposed")
         ax.plot(new_index[range(0,self.predict_range)],y2,'b-',label="Asymptomatic")
-        plt.xticks(np.arange(0, 150, 20))
+        plt.xticks(np.arange(0, self.predict_range, self.predict_range/8))
         ax.plot(new_index[range(0,self.predict_range)],y3,'y-',label="Infected")
         ax.plot(new_index[range(0,self.predict_range)],y4,'c-',label="Recovered")
         ax.plot(new_index[range(0,self.predict_range)],y5,'m-',label="Deaths")
@@ -481,8 +481,8 @@ class Learner(object):
 
         fig, ax = plt.subplots(figsize=(15, 10))
         ax.set_title("Zoom SEAIR-D Model for "+self.districtRegion)
-        plt.xticks(np.arange(0, 150, 20))
-        ax.set_ylim(0,max(y3)+5e3)
+        plt.xticks(np.arange(0, self.predict_range, self.predict_range/8))
+        ax.set_ylim(0,max(y3))
         ax.plot(new_index[range(0,self.predict_range)],y3,'y-',label="Infected")
         ax.plot(new_index[range(0,self.predict_range)],y4,'c-',label="Recovered")
         ax.plot(new_index[range(0,self.predict_range)],y5,'m-',label="Deaths")
