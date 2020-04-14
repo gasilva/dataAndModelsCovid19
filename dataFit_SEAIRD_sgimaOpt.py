@@ -475,7 +475,7 @@ df=df.transpose()
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
 #opt=5 SEAIR-D Model
-opt=0
+opt=1
 
 #prepare data for plotting
 country1="US"
@@ -580,13 +580,13 @@ if opt==1 or opt==0 or opt==4:
     plt.annotate(country2+" {:.1f} K".format(cases2[len(cases2)-1]/1000), # this is the text
         (time2[len(cases2)-1],cases2[len(cases2)-1]), # this is the point to label
         textcoords="offset points", # how to position the text
-        xytext=(0,10), # distance from text to points (x,y)
+        xytext=(0,-20), # distance from text to points (x,y)
         ha='center') # horizontal alignment can be left, right or center
     
     plt.annotate(country1+" {:.1f} K".format(cases1[len(cases1)-1]/1000), # this is the text
         (time1[len(cases1)-1],cases1[len(cases1)-1]), # this is the point to label
         textcoords="offset points", # how to position the text
-        xytext=(0,10), # distance from text to points (x,y)
+        xytext=(-10,10), # distance from text to points (x,y)
         ha='center') # horizontal alignment can be left, right or center
 
     style = dict(size=10, color='gray')
@@ -789,6 +789,58 @@ if opt==3 or opt==0 or opt==4:
 
     #save figs
     strFile ='./results/coronaPythonGrowthEN_'+country+'.png'
+    savePlot(strFile)
+
+    plt.show() 
+    plt.close()
+
+   #growth rate
+    growth=[]
+    for i in range(0,len(casesGrowth)-1):
+        growth.append(float(casesGrowth[i+1])-float(casesGrowth[i]))
+
+
+    #Setup dummy data
+    N = 10
+    ind = timeGrowth[1:]
+    bars = growth
+
+    colors = cm.rainbow(np.asfarray(growth,float) / float(max(np.asfarray(growth,float))))
+    plot = plt.scatter(growth, growth, c = growth, cmap = 'rainbow')
+    plt.clf()
+    plt.colorbar(plot)
+
+    #Plot bars
+    plt.bar(ind, bars, color=colors)
+    plt.xlabel('Days since 100th case')
+
+    # Make the y-axis label and tick labels match the line color.
+    plt.ylabel(country+' growth official cases per day [number]') 
+
+    # Plot a line
+    plt.axhline(y=300,color='r',linestyle='--')
+
+    plt.annotate("Expected per day", # this is the text
+        (5,310), # this is the point to label
+        textcoords="offset points", # how to position the text
+        xytext=(0,5), # distance from text to points (x,y)
+        ha='center') # horizontal alignment can be left, right or center
+
+    # Text on the top of each barplot
+    for i in range(1,len(ind)):
+        plt.text(x = ind[i]-0.5 , y = growth[i]+5, s = " {:.0f}".format(growth[i]), size = 7)
+
+    plt.annotate('Dr. Guilherme A. L. da Silva, www.ats4i.com', fontsize=10, 
+            xy=(1.24, 0.1), xycoords='axes fraction',
+            xytext=(0, 0), textcoords='offset points',
+            ha='right',rotation=90)
+    # plt.annotate('Source: https://github.com/CSSEGISandData/COVID-19.git', fontsize=10, 
+    #         xy=(1.25,0.1), xycoords='axes fraction',
+    #         xytext=(0, 0), textcoords='offset points',
+    #         ha='left',rotation=90)
+
+    #save figs
+    strFile ='./results/coronaPythonGrowthDeltaCasesEN_'+country+'.png'
     savePlot(strFile)
 
     plt.show() 
