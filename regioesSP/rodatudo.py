@@ -2,6 +2,9 @@ import preparadados
 import pandas as pd
 import os
 
+#precisa atualizar essa lista de parâmetros
+#e mudar o param.csv
+
 preparadados.preparadados() #baixa dados e organiza
 
 dfSP = pd.read_csv("data/dados_municipios_SP.csv")

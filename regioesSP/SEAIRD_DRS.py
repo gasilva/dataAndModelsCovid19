@@ -5,6 +5,7 @@ import math
 import array
 import operator
 import argparse
+import sys
 import json
 import ssl
 import os
@@ -51,12 +52,12 @@ def logistic_model(x,a,b,c):
 def exponential_model(x,a,b,c):
     return a*np.exp(b*(x-c))
 
-def getCases(df,state):
+def getCases(df,districtRegion):
     cases=[]
     time=[]
-    for i in range(len(df[state].values)):
-        if df[state].values[i]>=100:
-                cases.append(df[state].values[i])
+    for i in range(len(df[districtRegion].values)):
+        if df[districtRegion].values[i]>=100:
+                cases.append(df[districtRegion].values[i])
     time=np.linspace(0,len(cases)-1,len(cases))  
     return time,cases
 
@@ -67,23 +68,186 @@ def loadDataFrame(filename):
     df.columns = [c.lower().replace(')', '') for c in df.columns]
     return df
 
-def parse_arguments(state):
+def parse_arguments(districtRegion):
     parser = argparse.ArgumentParser()
 
-    state1="DRS 01 - Grande São Paulo"
-    date="2020-03-15"
-    s0=280.0e3
-    e0=1e-4
-    i0=1
-    r0=0
-    k0=0   
-    a0=0
+    # DRS 01 - Grande São Paulo,,,,,,,,
+    # DRS 02 - Araçatuba,2020-03-30,150,100,1,0,0,0,
+    # DRS 03 - Araraquara,2020-03-31,150,100,1,0,0,0,
+    # DRS 04 - Baixada Santista,2020-03-30,150,100,1,0,0,0,
+    # DRS 05 - Barretos,2020-04-05,,,,,,,
+    # DRS 06 - Bauru,,,,,,,,
+    # DRS 07 - Campinas,2020-03-25,150,100,1,0,0,0,
+    # DRS 08 - Franca,,,,,,,,
+    # DRS 09 - Marília,,,,,,,,
+    # DRS 10 - Piracicaba,,,,,,,,
+    # DRS 11 - Presidente Prudente,,,,,,,,
+    # DRS 12 - Registro,,,,,,,,
+    # DRS 13 - Ribeirão Preto,,,,,,,,
+    # DRS 14 - São João da Boa Vista,,,,,,,,
+    # DRS 15 - São José do Rio Preto,,,,,,,,
+    # DRS 16 - Sorocaba,,,,,,,,
+    # DRS 17 - Taubaté,,,,,,,,
 
+    #select district region of Sao Paulo State
+    districtRegion1="DRS 17 - Taubaté"
+
+    if districtRegion1=="DRS 01 - Grande São Paulo":
+        date="2020-03-15"
+        #initial condition for susceptible
+        s0=280.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=1e-4
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1e-4
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=350
+        #how many days is the prediction
+        prediction_days=150
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecoveredDeath=.1
+        #weigth for fitting data
+        weigthCases=0.4
+        weigthRecov=0.1
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 04 - Baixada Santista":
+        date="2020-04-01"
+        #initial condition for susceptible
+        s0=8.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=1e-4
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1e-4
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=150
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecoveredDeath=.1
+        #weigth for fitting data
+        weigthCases=0.4
+        weigthRecov=0.1
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 13 - Ribeirão Preto":
+        date="2020-04-01"
+        #initial condition for susceptible
+        s0=8.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=1e-4
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1e-4
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=70
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecoveredDeath=.1
+        #weigth for fitting data
+        weigthCases=0.4
+        weigthRecov=0.1
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 07 - Campinas":
+        date="2020-04-01"
+        #initial condition for susceptible
+        s0=8.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=1e-4
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1e-4
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=150
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecoveredDeath=.1
+        #weigth for fitting data
+        weigthCases=0.4
+        weigthRecov=0.1
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 07 - Campinas":
+        date="2020-04-01"
+        #initial condition for susceptible
+        s0=8.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=1e-4
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1e-4
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=150
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecoveredDeath=.1
+        #weigth for fitting data
+        weigthCases=0.4
+        weigthRecov=0.1
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 17 - Taubaté":
+        date="2020-04-01"
+        #initial condition for susceptible
+        s0=8.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=1e-4
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1e-4
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=70
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecoveredDeath=.1
+        #weigth for fitting data
+        weigthCases=0.4
+        weigthRecov=0.1
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    #command line arguments
     parser.add_argument(
-        '--states',
-        dest='states',
+        '--districtRegions',
+        dest='districtRegions',
         type=str,
-        default=state1)
+        default=districtRegion1)
     
     parser.add_argument(
         '--download-data',
@@ -101,7 +265,7 @@ def parse_arguments(state):
         '--prediction-days',
         dest='predict_range',
         type=int,
-        default=150)
+        default=prediction_days)
 
     parser.add_argument(
         '--S_0',
@@ -139,19 +303,44 @@ def parse_arguments(state):
         type=int,
         default=k0)
 
+    parser.add_argument(
+        '--START',
+        dest='startNCases',
+        type=int,
+        default=start)
+
+    parser.add_argument(
+        '--RATIO',
+        dest='ratio',
+        type=int,
+        default=ratioRecoveredDeath)
+
+    parser.add_argument(
+        '--WCASES',
+        dest='weigthCases',
+        type=int,
+        default=weigthCases)
+
+    parser.add_argument(
+        '--WREC',
+        dest='weigthRecov',
+        type=int,
+        default=weigthRecov)
+
     args = parser.parse_args()
 
-    state_list = []
-    if args.states != "":
+    districtRegion_list = []
+    if args.districtRegions != "":
         try:
-            states_raw = args.states
-            state_list = states_raw.split(",")
+            districtRegions_raw = args.districtRegions
+            districtRegion_list = districtRegions_raw.split(",")
         except Exception:
-            sys.exit("QUIT: states parameter is not on CSV format")
+            sys.exit("QUIT: districtRegions parameter is not on CSV format")
     else:
-        sys.exit("QUIT: You must pass a state list on CSV format.")
+        sys.exit("QUIT: You must pass a districtRegion list on CSV format.")
 
-    return (state_list, args.download_data, args.start_date, args.predict_range, args.s_0, args.e_0, args.a_0, args.i_0, args.r_0, args.d_0)
+    return (districtRegion_list, args.download_data, args.start_date, args.predict_range, args.s_0, args.e_0, \
+        args.a_0, args.i_0, args.r_0, args.d_0, args.startNCases, args.ratio, args.weigthCases, args.weigthRecov)
 
 def download_data(url_dictionary):
     #Lets download the files
@@ -169,8 +358,8 @@ def load_json(json_file_str):
 
 
 class Learner(object):
-    def __init__(self, state, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0):
-        self.state = state
+    def __init__(self, districtRegion, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov):
+        self.districtRegion = districtRegion
         self.loss = loss
         self.start_date = start_date
         self.predict_range = predict_range
@@ -180,26 +369,30 @@ class Learner(object):
         self.r_0 = r_0
         self.d_0 = d_0
         self.a_0 = a_0
+        self.startNCases = startNCases
+        self.ratio = ratio
+        self.weigthCases = weigthCases
+        self.weigthRecov = weigthRecov
 
-    def load_confirmed(self, state):
+    def load_confirmed(self, districtRegion):
         dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
         df = pd.read_csv('./data/DRS_confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
         y=[]
         x=[]
         for i in range(0,len(df.date)):
-            y.append(df[state].values[i])
+            y.append(df[districtRegion].values[i])
             x.append(df.date.values[i])
         df2=pd.DataFrame(data=y,index=x,columns=[""])
         df2=df2[self.start_date:]
         return df2
 
-    def load_dead(self, state):
+    def load_dead(self, districtRegion):
         dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
         df = pd.read_csv('./data/DRS_mortes.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
         y=[]
         x=[]
         for i in range(0,len(df.date)):
-            y.append(df[state].values[i])
+            y.append(df[districtRegion].values[i])
             x.append(df.date.values[i])
         df2=pd.DataFrame(data=y,index=x,columns=[""])
         df2=df2[self.start_date:]
@@ -214,7 +407,7 @@ class Learner(object):
         return values
 
     #predict final extended values
-    def predict(self, beta, sigma, sigma2, gamma, b, data, death, state, s_0, e_0, a_0, i_0, r_0, d_0):
+    def predict(self, beta, sigma, sigma2, gamma, b, data, death, districtRegion, s_0, e_0, a_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
         def SEAIRD(y,t):
@@ -253,14 +446,15 @@ class Learner(object):
 
     #run optimizer and plotting
     def train(self):
-        self.data = self.load_confirmed(self.state)
-        self.death = self.load_dead(self.state)
+        self.data = self.load_confirmed(self.districtRegion)
+        self.death = self.load_dead(self.districtRegion)
 
         optimal = minimize(lossOdeint,        
             [0.001, 0.001, 0.001, 0.001, 0.001],
-            args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0),
+            args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
+                self.startNCases, self.ratio, self.weigthCases, self.weigthRecov),
             method='L-BFGS-B',
-            bounds=[(1e-12, 5), (1./80.,0.2),  (1./100.,0.2), (1e-12, 0.6), (1e-12, 0.6)])
+            bounds=[(1e-12, 5), (1./160.,0.2),  (1./160.,0.2), (1e-12, 0.6), (1e-12, 0.6)])
             #beta, sigma, sigma2, gamma, b
 
         # sigma=1/22
@@ -270,7 +464,7 @@ class Learner(object):
         beta, sigma, sigma2, gamma, b = optimal.x
         new_index, extended_actual, extended_death, y0, y1, y2, y3, y4, y5, \
                 a, b = self.predict(beta, sigma, sigma2, gamma, b, self.data, \
-                self.death, self.state, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
+                self.death, self.districtRegion, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
 
         dataFr = [y0, y1, y2, y3, y4, y5]
         dataFr2 = np.array(dataFr).T
@@ -281,18 +475,18 @@ class Learner(object):
 
         plt.rc('font', size=14)
         fig, ax = plt.subplots(figsize=(15, 10))
-        ax.set_title("SEAIR-D Model for "+self.state)
-        ax.plot(new_index[range(0,150)],y0,'g-',label="Susceptible")
-        ax.plot(new_index[range(0,150)],y1,'r-',label="Exposed")
-        ax.plot(new_index[range(0,150)],y2,'b-',label="Asymptomatic")
+        ax.set_title("SEAIR-D Model for "+self.districtRegion)
+        ax.plot(new_index[range(0,self.predict_range)],y0,'g-',label="Susceptible")
+        ax.plot(new_index[range(0,self.predict_range)],y1,'r-',label="Exposed")
+        ax.plot(new_index[range(0,self.predict_range)],y2,'b-',label="Asymptomatic")
         plt.xticks(np.arange(0, 150, 20))
-        ax.plot(new_index[range(0,150)],y3,'y-',label="Infected")
-        # ax.plot(new_index[range(0,150)],y4,'c-',label="Recovered")
-        ax.plot(new_index[range(0,150)],y5,'m-',label="Deaths")
+        ax.plot(new_index[range(0,self.predict_range)],y3,'y-',label="Infected")
+        ax.plot(new_index[range(0,self.predict_range)],y4,'c-',label="Recovered")
+        ax.plot(new_index[range(0,self.predict_range)],y5,'m-',label="Deaths")
         ax.plot(new_index[range(0,len(extended_actual))],extended_actual,'o',label="Infected data")
         ax.plot(new_index[range(0,len(extended_death))],extended_death,'x',label="Death data")
         ax.legend()
-        print(f"state={self.state}, beta={beta:.8f}, 1/sigma={1/sigma:.8f}, 1/sigma2={1/sigma2:.8f},gamma={gamma:.8f}, b={b:.8f}, r_0:{(beta/gamma):.8f}")
+        print(f"districtRegion={self.districtRegion}, beta={beta:.8f}, 1/sigma={1/sigma:.8f}, 1/sigma2={1/sigma2:.8f},gamma={gamma:.8f}, b={b:.8f}, r_0:{(beta/gamma):.8f}")
         
         #plot margin annotation
         plt.annotate('Dr. Guilherme A. L. da Silva, www.ats4i.com', fontsize=10, 
@@ -305,18 +499,18 @@ class Learner(object):
         ha='left',rotation=90)
 
         #save simulation results for comparison and use in another codes/routines
-        df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.state+'.pkl')
-        state=self.state
-        strFile ="./results/modelSEAIRDOpt"+state+".png"
+        df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.districtRegion+'.pkl')
+        districtRegion=self.districtRegion
+        strFile ="./results/modelSEAIRDOpt"+districtRegion+".png"
         savePlot(strFile)
 
         fig, ax = plt.subplots(figsize=(15, 10))
-        ax.set_title("Zoom SEAIR-D Model for "+self.state)
+        ax.set_title("Zoom SEAIR-D Model for "+self.districtRegion)
         plt.xticks(np.arange(0, 150, 20))
         ax.set_ylim(0,max(y3)+5e3)
-        ax.plot(new_index[range(0,150)],y3,'y-',label="Infected")
-        # ax.plot(new_index[range(0,150)],y4,'c-',label="Recovered")
-        ax.plot(new_index[range(0,150)],y5,'m-',label="Deaths")
+        ax.plot(new_index[range(0,self.predict_range)],y3,'y-',label="Infected")
+        ax.plot(new_index[range(0,self.predict_range)],y4,'c-',label="Recovered")
+        ax.plot(new_index[range(0,self.predict_range)],y5,'m-',label="Deaths")
         ax.plot(new_index[range(0,len(extended_actual))],extended_actual,'o',label="Infected data")
         ax.plot(new_index[range(0,len(extended_death))],extended_death,'x',label="Death data")
         ax.legend()
@@ -330,15 +524,15 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
-        state=self.state
-        strFile ="./results/ZoomModelSEAIRDOpt"+state+".png"
+        districtRegion=self.districtRegion
+        strFile ="./results/ZoomModelSEAIRDOpt"+districtRegion+".png"
         savePlot(strFile)
 
         plt.show()
         plt.close()
 
 #objective function Odeint solver
-def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0):
+def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratioRecoved_Death, weigthCases, weigthRecov):
     size = len(data)
     beta, sigma, sigma2, gamma, b = point
     def SEAIRD(y,t):
@@ -370,10 +564,10 @@ def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0):
     tot=0
 
     for i in range(0,len(data.values)):
-        if data.values[i]>30:
+        if data.values[i]>startNCases:
             l1 = l1+(res[i,3] - data.values[i])**2
             l2 = l2+(res[i,5] - death.values[i])**2
-            l3 = l3+(res[i,4] - death.values[i]*1.5)**2
+            l3 = l3+(res[i,4] - death.values[i]*ratioRecoved_Death)**2
             tot+=1
     l1=np.sqrt(l1/tot)
     l2=np.sqrt(l2/tot)
@@ -381,16 +575,18 @@ def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0):
     # solution = solve_ivp(SEAIRD, [0, size], [s_0,e_0,a_0,i_0,r_0,d_0], t_eval=np.arange(0, size, 1), vectorized=True)
     # l1 = np.sqrt(np.mean((solution.y[3] - data.values)**2))
     # l2 = np.sqrt(np.mean((solution.y[5] - death.values)**2))
+    
     #weight for cases
-    u = 0.4  #Brazil US 0.1
-    w = 0.0
+    u = weigthCases  #Brazil US 0.1
+    w = weigthRecov
     #weight for deaths
     v = max(0,1. - u - w)
+    
     return u*l1 + v*l2 + w*l3
 
 #main program SIRD model
 
-def main(state):
+def main(districtRegion):
     
     START_DATE = {
   'Japan': '1/22/20',
@@ -398,19 +594,21 @@ def main(state):
   'Republic of Korea': '1/22/20',
   'Iran (Islamic Republic of)': '2/19/20'}
 
-    states, download, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0 = parse_arguments(state)
+    districtRegions, download, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, \
+        weigthCases, weigthRecov = parse_arguments(districtRegion)
 
     # if download:
     #     data_d = load_json("./data_url.json")
     #     download_data(data_d) 
 
-    for state in states:
-        #learner = Learner(state, loss, startdate, predict_range, s_0, i_0, r_0, d_0)
-        learner = Learner(state, lossOdeint, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0)
+    for districtRegion in districtRegions:
+        #learner = Learner(districtRegion, loss, startdate, predict_range, s_0, i_0, r_0, d_0)
+        learner = Learner(districtRegion, lossOdeint, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0, \
+            startNCases, ratio, weigthCases, weigthRecov)
         #try:
         learner.train()
         #except BaseException:
-        #    print('WARNING: Problem processing ' + str(state) +
+        #    print('WARNING: Problem processing ' + str(districtRegion) +
         #        '. Be sure it exists in the data exactly as you entry it.' +
         #        ' Also check date format if you passed it as parameter.')
 
@@ -423,8 +621,8 @@ def main(state):
 #opt=2 logistic model prediction
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
-#opt=5 SEIR-D Model
-opt=0
+#opt=5 SEAIR-D Model
+opt=5
 
 #load new confirmed cases
 # data_d = load_json("./data_url.json")
@@ -433,35 +631,29 @@ opt=0
 #plot version - changes the file name png
 version="1"
 
-#choose state for curve fitting
-#choose state for growth curve
-#one of states above
-#state="DRS 01 - Grande São Paulo"
-state = sys.argv[2]
+#choose districtRegion for curve fitting
+#choose districtRegion for growth curve
+#one of districtRegions above
+districtRegion="DRS 01 - Grande São Paulo"
+# districtRegion = sys.argv[2]
 
-#choose state for SEIRD model
-# "Brazil"
-# "China"
-# "Italy"
-# "France"
-# "United Kingdom"
-# "US"
-# states above are already adjusted
-#stateSEAIRD="DRS 01 - Grande São Paulo"
-stateSEAIRD = sys.argv[2]
+#choose districtRegion for SEIRD model
+# districtRegions above are already adjusted
+districtRegionSEAIRD="DRS 01 - Grande São Paulo"
+# districtRegionSEAIRD = sys.argv[2]
 
-# For other states you can run at command line
+# For other districtRegions you can run at command line
 # but be sure to define S_0, I_0, R_0, d_0
 # the sucess of fitting will depend on these paramenters
 #
-# usage: dataAndModelsCovid19.py [-h] [--states state_CSV] [--download-data]
+# usage: dataAndModelsCovid19.py [-h] [--districtRegions districtRegion_CSV] [--download-data]
 #                  [--start-date START_DATE] [--prediction-days PREDICT_RANGE]
 #                  [--S_0 S_0] [--I_0 I_0] [--R_0 R_0]
 
 # optional arguments:
 #   -h, --help            show this help message and exit
-#   --states state_CSV
-#                         states on CSV format. It must exact match the data
+#   --districtRegions districtRegion_CSV
+#                         districtRegions on CSV format. It must exact match the data
 #                         names or you will get out of bonds error.
 #   --download-data       Download fresh data and then run
 #   --start-date START_DATE
@@ -484,22 +676,22 @@ dateparse = lambda x: pd.datetime.strptime(x, '%Y-%m-%d')
 df = pd.read_csv('./data/DRS_confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
 
 #prepare data for plotting
-state1="DRS 01 - Grande São Paulo"
-[time1,cases1]=getCases(df,state1)
-state2="DRS 07 - Campinas"
-[time2,cases2]=getCases(df,state2)
-state3="DRS 04 - Baixada Santista"
-[time3,cases3]=getCases(df,state3)
-state4="DRS 13 - Ribeirão Preto"
-[time4,cases4]=getCases(df,state4)
-state5="DRS 03 - Araraquara"
-[time5,cases5]=getCases(df,state5)
+districtRegion1="DRS 01 - Grande São Paulo"
+[time1,cases1]=getCases(df,districtRegion1)
+districtRegion2="DRS 07 - Campinas"
+[time2,cases2]=getCases(df,districtRegion2)
+districtRegion3="DRS 04 - Baixada Santista"
+[time3,cases3]=getCases(df,districtRegion3)
+districtRegion4="DRS 13 - Ribeirão Preto"
+[time4,cases4]=getCases(df,districtRegion4)
+districtRegion5="DRS 03 - Araraquara"
+[time5,cases5]=getCases(df,districtRegion5)
 
 if opt==1 or opt==0 or opt==4:
 
     model='SEAIRD_sigmaOpt'
 
-    df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+state+'.pkl')
+    df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+districtRegion+'.pkl')
     # for col in df.columns: 
         # print(col) 
     time6, cases6 = predictionsPlot(df,180)
@@ -515,17 +707,17 @@ if opt==1 or opt==0 or opt==4:
     # Plot the data
     plt.rcParams['figure.figsize'] = [9, 7]
     plt.rc('font', size=14)
-    plt.plot(time2, cases2,'r+-',label=state2) 
-    plt.plot(time4, cases4,'mv-',label=state4) 
-    plt.plot(time5, cases5,'cx-',label=state5) 
-    plt.plot(time3, cases3,'go-',label=state3) 
-    plt.plot(time6, cases6,'--',c='0.6',label=state3+" "+model) 
-    plt.plot(time1, cases1,'b-',label=state1) 
+    plt.plot(time2, cases2,'r+-',label=districtRegion2) 
+    plt.plot(time4, cases4,'mv-',label=districtRegion4) 
+    plt.plot(time5, cases5,'cx-',label=districtRegion5) 
+    plt.plot(time3, cases3,'go-',label=districtRegion3) 
+    plt.plot(time6, cases6,'--',c='0.6',label=districtRegion3+" "+model) 
+    plt.plot(time1, cases1,'b-',label=districtRegion1) 
     plt.plot(x, y,'y--',label='{:.1f}'.format((growth-1)*100)+'% per day',alpha=0.3)
     plt.plot(x1, y1,'y-.',label='{:.1f}'.format((growth1-1)*100)+'% per day',alpha=0.3) 
     plt.rc('font', size=11)
 
-    plt.annotate(state3+" {:.1f} K".format(cases3[len(cases3)-1]/1000), # this is the text
+    plt.annotate(districtRegion3+" {:.1f} K".format(cases3[len(cases3)-1]/1000), # this is the text
         (time3[len(cases3)-1],cases3[len(cases3)-1]), # this is the point to label
         textcoords="offset points", # how to position the text
         xytext=(0,10), # distance from text to points (x,y)
@@ -538,13 +730,13 @@ if opt==1 or opt==0 or opt==4:
         xytext=(5,-15), # distance from text to points (x,y)
         ha='right') # horizontal alignment can be left, right or center
 
-    plt.annotate(state2+" {:.1f} K".format(cases2[len(cases2)-1]/1000), # this is the text
+    plt.annotate(districtRegion2+" {:.1f} K".format(cases2[len(cases2)-1]/1000), # this is the text
         (time2[len(cases2)-1],cases2[len(cases2)-1]), # this is the point to label
         textcoords="offset points", # how to position the text
         xytext=(0,10), # distance from text to points (x,y)
         ha='center') # horizontal alignment can be left, right or center
     
-    plt.annotate(state1+" {:.1f} K".format(cases1[len(cases1)-1]/1000), # this is the text
+    plt.annotate(districtRegion1+" {:.1f} K".format(cases1[len(cases1)-1]/1000), # this is the text
         (time1[len(cases1)-1],cases1[len(cases1)-1]), # this is the point to label
         textcoords="offset points", # how to position the text
         xytext=(0,10), # distance from text to points (x,y)
@@ -601,28 +793,28 @@ if opt==2 or opt==0:
 
     #model fitting
 
-    if state==state1:
+    if districtRegion==districtRegion1:
         casesFit=cases1
         timeFit=time1
         maxCases=27e4
         maxTime=80
         guessExp=2
 
-    if state==state2:
+    if districtRegion==districtRegion2:
         casesFit=cases2
         timeFit=time2
         maxCases=13e4
         maxTime=80
         guessExp=2
 
-    if state==state3:
+    if districtRegion==districtRegion3:
         casesFit=cases3
         timeFit=time3
         maxCases=10e3
         maxTime=50
         guessExp=0.5
 
-    if state==state4:
+    if districtRegion==districtRegion4:
         casesFit=cases4
         timeFit=time4
         maxCases=12e4
@@ -647,14 +839,14 @@ if opt==2 or opt==0:
     plt.rc('font', size=14)
 
     # Real data
-    plt.scatter(timeFit,casesFit,label="Real cases "+state,color="red")
+    plt.scatter(timeFit,casesFit,label="Real cases "+districtRegion,color="red")
     # Predicted logistic curve
     plt.plot(pred_x, [logistic_model(i,fit[0][0],fit[0][1],fit[0][2]) for i in pred_x], label="Logistic model" )
     # Predicted exponential curve
     plt.plot(pred_x, [exponential_model(i,exp_fit[0][0],exp_fit[0][1],exp_fit[0][2]) for i in pred_x], label="Exponential model" )
     plt.legend()
     plt.xlabel("Days since 100th case")
-    plt.ylabel("Total number of infected people in "+state)
+    plt.ylabel("Total number of infected people in "+districtRegion)
     plt.ylim((min(y)*0.9,maxCases))
 
     plt.annotate('Dr. Guilherme A. L. da Silva, www.ats4i.com', fontsize=10, 
@@ -667,7 +859,7 @@ if opt==2 or opt==0:
             ha='left',rotation=90)
 
     #save figs
-    strFile ='./results/coronaPythonModelEN'+state+'.png'
+    strFile ='./results/coronaPythonModelEN'+districtRegion+'.png'
     savePlot(strFile)
 
     plt.show() 
@@ -678,28 +870,28 @@ if opt==3 or opt==0 or opt==4:
     plt.rcParams['figure.figsize'] = [9, 7]
     plt.rc('font', size=14)
     
-    if state==state1:
+    if districtRegion==districtRegion1:
         casesGrowth=cases1
         timeGrowth=time1
         maxCases=27e4
         maxTime=80
         guessExp=2
 
-    if state==state2:
+    if districtRegion==districtRegion2:
         casesGrowth=cases2
         timeGrowth=time2
         maxCases=13e4
         maxTime=80
         guessExp=2
 
-    if state==state3:
+    if districtRegion==districtRegion3:
         casesGrowth=cases3
         timeGrowth=time3
         maxCases=30e3
         maxTime=50
         guessExp=0.5
 
-    if state==state4:
+    if districtRegion==districtRegion4:
         casesGrowth=cases4
         timeGrowth=time4
         maxCases=12e4
@@ -725,7 +917,7 @@ if opt==3 or opt==0 or opt==4:
     plt.xlabel('Days since 100th case')
 
     # Make the y-axis label and tick labels match the line color.
-    plt.ylabel(state+' growth official cases per day [%]') 
+    plt.ylabel(districtRegion+' growth official cases per day [%]') 
 
     #Plot a line
     plt.axhline(y=33,color='r',linestyle='--')
@@ -750,7 +942,7 @@ if opt==3 or opt==0 or opt==4:
     #         ha='left',rotation=90)
 
     #save figs
-    strFile ='./results/coronaPythonGrowthEN_'+state+'.png'
+    strFile ='./results/coronaPythonGrowthEN_'+districtRegion+'.png'
     savePlot(strFile)
 
     plt.show() 
@@ -777,7 +969,7 @@ if opt==3 or opt==0 or opt==4:
     plt.xlabel('Days since 100th case')
 
     # Make the y-axis label and tick labels match the line color.
-    plt.ylabel(state+' growth official cases per day [number]') 
+    plt.ylabel(districtRegion+' growth official cases per day [number]') 
 
     # Plot a line
     plt.axhline(y=300,color='r',linestyle='--')
@@ -802,7 +994,7 @@ if opt==3 or opt==0 or opt==4:
     #         ha='left',rotation=90)
 
     #save figs
-    strFile ='./results/coronaPythonGrowthDeltaCasesEN_'+state+'.png'
+    strFile ='./results/coronaPythonGrowthDeltaCasesEN_'+districtRegion+'.png'
     savePlot(strFile)
 
     plt.show() 
@@ -813,4 +1005,4 @@ if opt==5 or opt==0:
     #https://www.lewuathe.com/covid-19-dynamics-with-sir-model.html
 
     if __name__ == '__main__':
-        main(stateSEAIRD)
+        main(districtRegionSEAIRD)
