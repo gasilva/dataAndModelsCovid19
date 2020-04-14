@@ -369,7 +369,7 @@ b: mortality rate  [1/min]
 
 σ: is the rate at which individuals move from the exposed to the infectious classes. Its reciprocal (1/σ) is the average latent (exposed) period.
 
-$\sigma_2$: is the rate at which individuals move from the infectious to the deadas and healed classes. Its reciprocal (1/$\sigma_2$) is the average latent (exposed) period
+σ2: is the rate at which individuals move from the infectious to the deadas and healed classes. Its reciprocal (1/σ2) is the average latent (exposed) period
 
 p: is the fraction of the exposed which become symptomatic infectious sub-population.
 
