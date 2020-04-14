@@ -437,7 +437,7 @@ version="1"
 #choose state for growth curve
 #one of states above
 #state="DRS 01 - Grande São Paulo"
-state = sys.argv[1]
+state = sys.argv[2]
 
 #choose state for SEIRD model
 # "Brazil"
@@ -448,7 +448,7 @@ state = sys.argv[1]
 # "US"
 # states above are already adjusted
 #stateSEAIRD="DRS 01 - Grande São Paulo"
-stateSEAIRD = sys.argv[1]
+stateSEAIRD = sys.argv[2]
 
 # For other states you can run at command line
 # but be sure to define S_0, I_0, R_0, d_0
