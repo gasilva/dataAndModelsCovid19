@@ -17,7 +17,7 @@ for drs in DRS:
     command  = "python SEAIRD_DRS.py"
     query = dfparam.query('DRS == "{}"'.format(drs)).reset_index()
     try:
-        command  += " --states '{}'".format(drs)
+        command  += " --districtRegions '{}'".format(drs)
         if query['start-date'][0] == query['start-date'][0]:
             command  += " --start-date '{}'".format(query['start-date'][0])
         elif query['prediction-range'][0] == query['prediction-range'][0]:
