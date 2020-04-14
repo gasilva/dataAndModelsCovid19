@@ -10,7 +10,7 @@ def baixadados():
 def organiza_regiao_SP():
     dadosBR = pd.read_csv('data/dados_municipios_Brasil.csv', index_col=[0])
     dfSP = dadosBR.query('state == "SP"').reset_index()
-    infoMunicipios = pd.read_csv('Municipios_para_Predicao_Covid19.csv')
+    infoMunicipios = pd.read_csv('data/Municipios_para_Predicao_Covid19.csv')
     
     drs = []
     for i in range(len(dfSP)):
