@@ -2,10 +2,7 @@ import get_data
 import pandas as pd
 import os
 
-#precisa atualizar essa lista de parâmetros
-#e mudar o param.csv
-
-#get_data.get_data() #baixa dados e organiza
+get_data.get_data() #baixa dados e organiza
 
 dfSP = pd.read_csv("data/dados_municipios_SP.csv")
 dfparam = pd.read_csv("data/param.csv")
