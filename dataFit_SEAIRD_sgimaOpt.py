@@ -91,7 +91,7 @@ def parse_arguments(country):
 
     if country1=="Brazil":
         date="3/3/20"
-        s0=400e3
+        s0=300e3
         e0=1e-4
         i0=100
         r0=0
@@ -293,7 +293,7 @@ class Learner(object):
         return values
 
     #predict final extended values
-    def predict(self, beta, sigma, sigma2, gamma, b, data, recovered, death, healed, country, s_0, e_0, a_0, i_0, r_0, d_0):
+    def predict(self, beta, beta2, sigma, sigma2, sigma3, gamma, b, data, recovered, death, healed, country, s_0, e_0, a_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
         def SEAIRD(y,t):
@@ -304,13 +304,15 @@ class Learner(object):
             R = y[4]
             D = y[5]
             p=0.2
-            y0=-beta*(A+I)*S #S
-            y1=beta*S*(A+I)-sigma*E #E
+            # beta2=beta
+            y0=-(beta2*A+beta*I)*S #S
+            y1=(beta2*A+beta*I)*S-sigma*E #E
             y2=sigma*E*(1-p)-gamma*A #A
-            y3=sigma*E*p-gamma*I #-sigma2*I#I
-            y4=b*I+gamma*A #+b/gamma*sigma2*I #R
+            y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I#I
+            y4=b*I+gamma*A+sigma2*I #R
             y5=max(0,1.-(y0+y1+y2+y3+y4)) #D
             return [y0,y1,y2,y3,y4,y5]
+        
         y0=[s_0,e_0,a_0,i_0,r_0,d_0]
         tspan=np.arange(0, size, 1)
         res=odeint(SEAIRD,y0,tspan)
@@ -319,7 +321,7 @@ class Learner(object):
         extended_recovered = np.concatenate((recovered.values, [None] * (size - len(recovered.values))))
         extended_death = np.concatenate((death.values, [None] * (size - len(death.values))))
         extended_healed = np.concatenate((healed.values, [None] * (size - len(healed.values))))
-        return new_index, extended_actual, extended_recovered, extended_death, res[:,0], res[:,1],res[:,2],res[:,3],res[:,4], res[:,5], extended_healed, a, b
+        return new_index, extended_actual, extended_recovered, extended_death, res[:,0], res[:,1],res[:,2],res[:,3],res[:,4], res[:,5], extended_healed
 
     #run optimizer and plotting
     def train(self):
@@ -329,16 +331,16 @@ class Learner(object):
         self.data = self.load_confirmed(self.country) - self.recovered
 
         optimal = minimize(lossOdeint,        
-            [0.001, 0.001, 0.001, 0.001, 0.001],
+            [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
             args=(self.data, self.recovered, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0),
             method='L-BFGS-B',
-            bounds=[(1e-12, 5), (.5e-2,0.2),  (1e-12,0.2), (1e-3, 0.6), (1e-12, 0.6)])
-            #beta, sigma, gamma
+            bounds=[(1e-12, 50), (1e-12, 50), (1./160.,0.2),  (1./160.,0.2), (1./160.,0.2), (1e-16, 0.4), (1e-12, 0.2)])
+            #beta, beta2, sigma, sigma2, sigma3, gamma, b
 
         print(optimal)
-        beta, sigma, sigma2, gamma, b = optimal.x
+        beta, beta2, sigma, sigma2, sigma3, gamma, b = optimal.x
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5, \
-                extended_healed, a, b = self.predict(beta, sigma, sigma2, gamma, b, self.data, self.recovered, \
+                extended_healed = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, self.data, self.recovered, \
                 self.death, self.healed, self.country, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
 
         df = pd.DataFrame({
@@ -359,8 +361,9 @@ class Learner(object):
         ax.set_title("SEAIR-D Model for "+self.country)
         ax.set_ylim((0, max(y0+5e3)))
         df.plot(ax=ax)
-        print(f"country={self.country}, beta={beta:.8f}, 1/sigma={1/sigma:.8f}, 1/sigma2={1/sigma2:.8f},gamma={gamma:.8f}, b={b:.8f}, r_0:{(beta/gamma):.8f}")
-        
+        print(f"districtRegion={self.country}, beta={beta:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
+            f"1/sigma2={1/sigma2:.8f},1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f}, r_0:{(beta/gamma):.8f}")
+          
         plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=10, 
         xy=(1.04, 0.1), xycoords='axes fraction',
         xytext=(0, 0), textcoords='offset points',
@@ -386,7 +389,7 @@ class Learner(object):
 #objective function Odeint solver
 def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0):
     size = len(data)
-    beta, sigma, sigma2, gamma, b = point
+    beta, beta2, sigma, sigma2, sigma3, gamma, b = point
     def SEAIRD(y,t):
         S = y[0]
         E = y[1]
@@ -395,19 +398,33 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0):
         R = y[4]
         D = y[5]
         p=0.2
-        y0=-beta*(A+I)*S #S
-        y1=beta*S*(A+I)-sigma*E #E
+        # beta2=beta
+        y0=-(beta2*A+beta*I)*S #S
+        y1=(beta2*A+beta*I)*S-sigma*E #E
         y2=sigma*E*(1-p)-gamma*A #A
-        y3=sigma*E*p-gamma*I #-sigma2*I#I
-        y4=b*I+gamma*A #+b/gamma*sigma2*I #R
+        y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I#I
+        y4=b*I+gamma*A+sigma2*I #R
         y5=max(0,1.-(y0+y1+y2+y3+y4)) #D
         return [y0,y1,y2,y3,y4,y5]
+
     y0=[s_0,e_0,a_0,i_0,r_0,d_0]
     tspan=np.arange(0, size, 1)
     res=odeint(SEAIRD,y0,tspan)
-    l1 = np.sqrt(np.mean((res[:,3] - data)**2))
-    l2 = np.sqrt(np.mean((res[:,4]- recovered)**2))
-    l3 = np.sqrt(np.mean((res[:,5]- death)**2))
+
+    tot=0
+    l1=0
+    l2=0
+    l3=0
+    for i in range(0,len(data.values)):
+        if data.values[i]>50:
+            l1 = l1+(res[i,3] - data.values[i])**2
+            l2 = l2+(res[i,5] - death.values[i])**2
+            l3 = l3+(res[i,4] - recovered.values[i])**2
+            tot+=1
+    l1=np.sqrt(l1/max(1,tot))
+    l2=np.sqrt(l2/max(1,tot))
+    l3=np.sqrt(l3/max(1,tot))
+    
     #weight for cases
     u = 0.1  #Brazil US 0.1
     #weight for recovered
@@ -475,9 +492,9 @@ df=df.transpose()
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
 #opt=5 SEAIR-D Model
-opt=5
+opt=0
 
-#prepare data for plotting
+#prepare data for plotting log chart
 country1="US"
 [time1,cases1]=getCases(df,country1)
 country2="Italy"
@@ -497,7 +514,7 @@ version="1"
 #one of countries above
 country="Brazil"
 
-#choose country for SEIRD model
+#choose country for SEAIRD model
 # "Brazil"
 # "China"
 # "Italy"
@@ -505,7 +522,7 @@ country="Brazil"
 # "United Kingdom"
 # "US"
 # Countries above are already adjusted
-countrySIRD="Brazil"
+countrySEAIRD="Brazil"
 
 # For other countries you can run at command line
 # but be sure to define S_0, I_0, R_0, d_0
@@ -851,4 +868,4 @@ if opt==5 or opt==0:
     #https://www.lewuathe.com/covid-19-dynamics-with-sir-model.html
 
     if __name__ == '__main__':
-        main(countrySIRD)
+        main(countrySEAIRD)
