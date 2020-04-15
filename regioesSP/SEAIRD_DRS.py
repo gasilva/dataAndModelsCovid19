@@ -547,9 +547,9 @@ def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ra
             l2 = l2+(res[i,5] - death.values[i])**2
             l3 = l3+(res[i,4] - data.values[i]*ratioRecovered)**2
             tot+=1
-    l1=np.sqrt(l1/tot)
-    l2=np.sqrt(l2/tot)
-    l3=np.sqrt(l3/tot)
+    l1=np.sqrt(l1/max(1.,tot))
+    l2=np.sqrt(l2/max(1.,tot))
+    l3=np.sqrt(l3/max(1.,tot))
     
     #weight for cases
     u = weigthCases
