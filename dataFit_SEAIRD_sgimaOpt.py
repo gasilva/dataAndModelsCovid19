@@ -91,7 +91,7 @@ def parse_arguments(country):
 
     if country1=="Brazil":
         date="3/3/20"
-        s0=300e3
+        s0=400e3
         e0=1e-4
         i0=100
         r0=0
@@ -409,7 +409,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0):
 
     y0=[s_0,e_0,a_0,i_0,r_0,d_0]
     tspan=np.arange(0, size, 1)
-    res=odeint(SEAIRD,y0,tspan)
+    res=odeint(SEAIRD,y0,tspan,hmax=0.01)
 
     tot=0
     l1=0
@@ -426,7 +426,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0):
     l3=np.sqrt(l3/max(1,tot))
     
     #weight for cases
-    u = 0.1  #Brazil US 0.1
+    u = 0.5  #Brazil US 0.1
     #weight for recovered
     w = 0.2 #Brazil 0.2 US 0.1
     #weight for deaths
@@ -492,7 +492,7 @@ df=df.transpose()
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
 #opt=5 SEAIR-D Model
-opt=0
+opt=5
 
 #prepare data for plotting log chart
 country1="US"
@@ -616,7 +616,6 @@ if opt==1 or opt==0 or opt==4:
             xy=(1.06,0.1), xycoords='axes fraction',
             xytext=(0, 0), textcoords='offset points',
             ha='left',rotation=90)
-
   
     plt.xlabel('Days after 100th case')
     plt.ylabel('Official registered cases')
