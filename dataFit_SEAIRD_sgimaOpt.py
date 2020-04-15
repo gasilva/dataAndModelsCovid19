@@ -96,6 +96,14 @@ def parse_arguments(country):
         i0=100
         r0=0
         k0=0
+        #start fitting when the number of cases >= start
+        start=50
+        #how many days is the prediction
+        prediction_days=150
+        #weigth for fitting data
+        weigthCases=0.3
+        weigthRecov=0.1
+        #weightDeaths = 1 - weigthCases - weigthRecov
 
     if country1=="China":
         date="1/22/20"
@@ -199,6 +207,24 @@ def parse_arguments(country):
         type=int,
         default=k0)
 
+    parser.add_argument(
+        '--START',
+        dest='startNCases',
+        type=int,
+        default=start)
+
+    parser.add_argument(
+        '--WCASES',
+        dest='weigthCases',
+        type=float,
+        default=weigthCases)
+
+    parser.add_argument(
+        '--WREC',
+        dest='weigthRecov',
+        type=float,
+        default=weigthRecov)
+
     args = parser.parse_args()
 
     country_list = []
@@ -211,7 +237,10 @@ def parse_arguments(country):
     else:
         sys.exit("QUIT: You must pass a country list on CSV format.")
 
-    return (country_list, args.download_data, args.start_date, args.predict_range, args.s_0, args.e_0, args.a_0, args.i_0, args.r_0, args.d_0)
+    return (country_list, args.download_data, args.start_date, args.predict_range, \
+        args.s_0, args.e_0, args.a_0, args.i_0, args.r_0, args.d_0,\
+            args.startNCases, args.weigthCases, args.weigthRecov)
+
 
 def sumCases_province(input_file, output_file):
     with open(input_file, "r") as read_obj, open(output_file,'w',newline='') as write_obj:
@@ -255,7 +284,8 @@ def load_json(json_file_str):
 
 
 class Learner(object):
-    def __init__(self, country, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0):
+    def __init__(self, country, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0,\
+        startNCases, weigthCases, weigthRecov):
         self.country = country
         self.loss = loss
         self.start_date = start_date
@@ -266,6 +296,9 @@ class Learner(object):
         self.r_0 = r_0
         self.d_0 = d_0
         self.a_0 = a_0
+        self.startNCases = startNCases
+        self.weigthCases = weigthCases
+        self.weigthRecov = weigthRecov
 
     def load_confirmed(self, country):
         df = pd.read_csv('data/time_series_19-covid-Confirmed-country.csv')
@@ -293,7 +326,8 @@ class Learner(object):
         return values
 
     #predict final extended values
-    def predict(self, beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, data, recovered, death, healed, country, s_0, e_0, a_0, i_0, r_0, d_0):
+    def predict(self, beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, data, recovered, death, \
+        healed, country, s_0, e_0, a_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
         def SEAIRD(y,t):
@@ -321,7 +355,8 @@ class Learner(object):
         extended_recovered = np.concatenate((recovered.values, [None] * (size - len(recovered.values))))
         extended_death = np.concatenate((death.values, [None] * (size - len(death.values))))
         extended_healed = np.concatenate((healed.values, [None] * (size - len(healed.values))))
-        return new_index, extended_actual, extended_recovered, extended_death, res[:,0], res[:,1],res[:,2],res[:,3],res[:,4], res[:,5], extended_healed
+        return new_index, extended_actual, extended_recovered, extended_death, res[:,0], \
+            res[:,1],res[:,2],res[:,3],res[:,4], res[:,5], extended_healed
 
     #run optimizer and plotting
     def train(self):
@@ -332,16 +367,20 @@ class Learner(object):
 
         optimal = minimize(lossOdeint,        
             [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
-            args=(self.data, self.recovered, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0),
+            args=(self.data, self.recovered, self.death, self.s_0, self.e_0,\
+                self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, self.weigthCases, self.weigthRecov),
             method='L-BFGS-B',
-            bounds=[(1e-12, 50), (1e-12, 50), (1./160.,0.2),  (1./160.,0.2), (1./160.,0.2), (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)])
+            bounds=[(1e-12, 50), (1e-12, 50), (1./160.,0.2),  (1./160.,0.2), (1./160.,0.2),\
+                (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)])
             #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
 
         print(optimal)
         beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal.x
+        print(beta)
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5, \
-                extended_healed = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, self.data, self.recovered, \
-                self.death, self.healed, self.country, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
+                extended_healed = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, \
+                    self.data, self.recovered, self.death, self.healed, self.country, self.s_0, \
+                    self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
 
         df = pd.DataFrame({
                     'Susceptible': y0,
@@ -355,15 +394,14 @@ class Learner(object):
                     'Predicted Deaths': y5},
                     index=new_index)
 
-        #plt.rcParams['figure.figsize'] = [7, 7]
         plt.rc('font', size=14)
         fig, ax = plt.subplots(figsize=(15, 10))
         ax.set_title("SEAIR-D Model for "+self.country)
         ax.set_ylim((0, max(y0+5e3)))
         df.plot(ax=ax)
-        print(f"districtRegion={self.country}, beta={beta:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
-            f"1/sigma2={1/sigma2:.8f},1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f}, r_0:{(beta/gamma):.8f},"+\
-            f"mu={mu:.8f}")
+        print(f"country={self.country}, beta={beta:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
+            f" 1/sigma2={1/sigma2:.8f},1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f},"+\
+            f" mu={mu:.8f}, r_0:{(beta/gamma):.8f}")
           
         plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=10, 
         xy=(1.04, 0.1), xycoords='axes fraction',
@@ -388,7 +426,8 @@ class Learner(object):
         plt.close()
 
 #objective function Odeint solver
-def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0):
+def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
+    startNCases, weigthCases, weigthRecov):
     size = len(data)
     beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = point
     def SEAIRD(y,t):
@@ -417,7 +456,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0):
     l2=0
     l3=0
     for i in range(0,len(data.values)):
-        if data.values[i]>50:
+        if data.values[i]>startNCases:
             l1 = l1+(res[i,3] - data.values[i])**2
             l2 = l2+(res[i,5] - death.values[i])**2
             l3 = l3+(res[i,4] - recovered.values[i])**2
@@ -427,9 +466,9 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0):
     l3=np.sqrt(l3/max(1,tot))
     
     #weight for cases
-    u = 0.4  #Brazil US 0.1
+    u = weigthCases  #Brazil US 0.1
     #weight for recovered
-    w = 0.2 #Brazil 0.2 US 0.1
+    w = weigthRecov #Brazil 0.2 US 0.1
     #weight for deaths
     v = max(0,1. - u - w)
     return u*l1 + v*l2 + w*l3
@@ -444,7 +483,8 @@ def main(country):
   'Republic of Korea': '1/22/20',
   'Iran (Islamic Republic of)': '2/19/20'}
 
-    countries, download, startdate, predict_range , s_0, e_0, a_0, i_0, r_0, d_0 = parse_arguments(country)
+    countries, download, startdate, predict_range , s_0, e_0, a_0, i_0, r_0, d_0, startNCases, \
+        weigthCases, weigthRecov = parse_arguments(country)
 
     if download:
         data_d = load_json("./data_url.json")
@@ -456,7 +496,8 @@ def main(country):
 
     for country in countries:
         #learner = Learner(country, loss, startdate, predict_range, s_0, i_0, r_0, d_0)
-        learner = Learner(country, lossOdeint, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0)
+        learner = Learner(country, lossOdeint, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0, \
+            startNCases, weigthCases, weigthRecov)
         #try:
         learner.train()
         #except BaseException:
