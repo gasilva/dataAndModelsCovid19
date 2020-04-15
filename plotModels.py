@@ -73,7 +73,6 @@ df = pd.DataFrame({
 plt.rc('font', size=14)
 fig, ax = plt.subplots(figsize=(15, 10))
 ax.set_title("Compare Models Infected for "+country)
-# ax.set_ylim((0, max(y0+5e3)))
 df.plot(ax=ax)
 
 plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=10, 
