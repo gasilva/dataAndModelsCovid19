@@ -19,9 +19,9 @@ for drs in DRS:
     try:
         command  += ' --districtRegions "{}"'.format(drs)
         if query['start-date'][0] == query['start-date'][0]:
-            command  += ' --start-date "{}"'.format(query['start-date'][0])
+            command  += ' --start-date {}'.format(query['start-date'][0])
         elif query['prediction-range'][0] == query['prediction-range'][0]:
-            command  += ' --prediction-days "{}"'.format(query['prediction-range'][0])
+            command  += ' --prediction-days {}'.format(query['prediction-range'][0])
         elif query['s0'][0] == query['s0'][0]:
             command  += " --S_0 {}".format(query['s0'][0])
         elif query['e0'][0] == query['e0'][0]:
