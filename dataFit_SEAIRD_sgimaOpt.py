@@ -91,7 +91,7 @@ def parse_arguments(country):
 
     if country1=="Brazil":
         date="3/3/20"
-        s0=400e3
+        s0=450e3
         e0=1e-4
         i0=100
         r0=0
@@ -293,7 +293,7 @@ class Learner(object):
         return values
 
     #predict final extended values
-    def predict(self, beta, beta2, sigma, sigma2, sigma3, gamma, b, data, recovered, death, healed, country, s_0, e_0, a_0, i_0, r_0, d_0):
+    def predict(self, beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, data, recovered, death, healed, country, s_0, e_0, a_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
         def SEAIRD(y,t):
@@ -305,17 +305,17 @@ class Learner(object):
             D = y[5]
             p=0.2
             # beta2=beta
-            y0=-(beta2*A+beta*I)*S #S
-            y1=(beta2*A+beta*I)*S-sigma*E #E
-            y2=sigma*E*(1-p)-gamma*A #A
-            y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I#I
-            y4=b*I+gamma*A+sigma2*I #R
+            y0=-(beta2*A+beta*I)*S+mu*S #S
+            y1=(beta2*A+beta*I)*S-sigma*E-mu*E #E
+            y2=sigma*E*(1-p)-gamma*A-mu*A #A
+            y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-mu*I#I
+            y4=b*I+gamma*A+sigma2*I-mu*R #R
             y5=max(0,1.-(y0+y1+y2+y3+y4)) #D
             return [y0,y1,y2,y3,y4,y5]
         
         y0=[s_0,e_0,a_0,i_0,r_0,d_0]
         tspan=np.arange(0, size, 1)
-        res=odeint(SEAIRD,y0,tspan)
+        res=odeint(SEAIRD,y0,tspan,hmax=0.01)
 
         extended_actual = np.concatenate((data.values, [None] * (size - len(data.values))))
         extended_recovered = np.concatenate((recovered.values, [None] * (size - len(recovered.values))))
@@ -331,16 +331,16 @@ class Learner(object):
         self.data = self.load_confirmed(self.country) - self.recovered
 
         optimal = minimize(lossOdeint,        
-            [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
+            [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
             args=(self.data, self.recovered, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0),
             method='L-BFGS-B',
-            bounds=[(1e-12, 50), (1e-12, 50), (1./160.,0.2),  (1./160.,0.2), (1./160.,0.2), (1e-16, 0.4), (1e-12, 0.2)])
-            #beta, beta2, sigma, sigma2, sigma3, gamma, b
+            bounds=[(1e-12, 50), (1e-12, 50), (1./160.,0.2),  (1./160.,0.2), (1./160.,0.2), (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)])
+            #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
 
         print(optimal)
-        beta, beta2, sigma, sigma2, sigma3, gamma, b = optimal.x
+        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal.x
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5, \
-                extended_healed = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, self.data, self.recovered, \
+                extended_healed = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, self.data, self.recovered, \
                 self.death, self.healed, self.country, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
 
         df = pd.DataFrame({
@@ -362,7 +362,8 @@ class Learner(object):
         ax.set_ylim((0, max(y0+5e3)))
         df.plot(ax=ax)
         print(f"districtRegion={self.country}, beta={beta:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
-            f"1/sigma2={1/sigma2:.8f},1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f}, r_0:{(beta/gamma):.8f}")
+            f"1/sigma2={1/sigma2:.8f},1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f}, r_0:{(beta/gamma):.8f},"+\
+            f"mu={mu:.8f}")
           
         plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=10, 
         xy=(1.04, 0.1), xycoords='axes fraction',
@@ -389,7 +390,7 @@ class Learner(object):
 #objective function Odeint solver
 def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0):
     size = len(data)
-    beta, beta2, sigma, sigma2, sigma3, gamma, b = point
+    beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = point
     def SEAIRD(y,t):
         S = y[0]
         E = y[1]
@@ -399,11 +400,11 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0):
         D = y[5]
         p=0.2
         # beta2=beta
-        y0=-(beta2*A+beta*I)*S #S
-        y1=(beta2*A+beta*I)*S-sigma*E #E
-        y2=sigma*E*(1-p)-gamma*A #A
-        y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I#I
-        y4=b*I+gamma*A+sigma2*I #R
+        y0=-(beta2*A+beta*I)*S+mu*S #S
+        y1=(beta2*A+beta*I)*S-sigma*E-mu*E #E
+        y2=sigma*E*(1-p)-gamma*A-mu*A #A
+        y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-mu*I#I
+        y4=b*I+gamma*A+sigma2*I-mu*R #R
         y5=max(0,1.-(y0+y1+y2+y3+y4)) #D
         return [y0,y1,y2,y3,y4,y5]
 
@@ -426,7 +427,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0):
     l3=np.sqrt(l3/max(1,tot))
     
     #weight for cases
-    u = 0.5  #Brazil US 0.1
+    u = 0.4  #Brazil US 0.1
     #weight for recovered
     w = 0.2 #Brazil 0.2 US 0.1
     #weight for deaths
