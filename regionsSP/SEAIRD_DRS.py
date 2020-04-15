@@ -37,21 +37,9 @@ def logGrowth(growth,finalDay):
     return x,y
 
 def predictionsPlot(df,startCases):
+def predictionsPlot(df,startCases):
     cases=df.infected[df.infected > startCases]    
     time=np.linspace(0,len(cases)-1,len(cases))   
-    return time,cases
-
-def savePlot(strFile):
-    if os.path.isfile(strFile):
-        os.remove(strFile)   # Opt.: os.system("del "+strFile)
-    plt.savefig(strFile,dpi=600)
-
-def logistic_model(x,a,b,c):
-    return c/(1+np.exp(-(x-b)/max(1e-12,a)))
-
-def exponential_model(x,a,b,c):
-    return a*np.exp(b*(x-c))
-
 def getCases(df,districtRegion):
     cases=[]
     time=[]
