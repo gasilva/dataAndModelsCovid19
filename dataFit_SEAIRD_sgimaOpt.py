@@ -397,7 +397,7 @@ class Learner(object):
         plt.rc('font', size=14)
         fig, ax = plt.subplots(figsize=(15, 10))
         ax.set_title("SEAIR-D Model for "+self.country)
-        ax.set_ylim((0, max(y0+5e3)))
+        ax.set_ylim((0, max(y0)*1.1))
         df.plot(ax=ax)
         print(f"country={self.country}, beta={beta:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
             f" 1/sigma2={1/sigma2:.8f},1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f},"+\
