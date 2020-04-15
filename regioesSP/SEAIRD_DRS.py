@@ -109,9 +109,9 @@ def parse_arguments(districtRegion):
         #start fitting when the number of cases >= start
         start=1500
         #how many days is the prediction
-        prediction_days=90
+        prediction_days=150
         #as recovered data is not available, so recovered is in function of death
-        ratioRecovered=.1
+        ratioRecoveredDeath=0.1
         #weigth for fitting data
         weigthCases=0.4
         weigthRecov=0.1
@@ -136,7 +136,7 @@ def parse_arguments(districtRegion):
         #how many days is the prediction
         prediction_days=150
         #as recovered data is not available, so recovered is in function of death
-        ratioRecovered=.1
+        ratioRecoveredDeath=.1
         #weigth for fitting data
         weigthCases=0.4
         weigthRecov=0.1
@@ -161,7 +161,7 @@ def parse_arguments(districtRegion):
         #how many days is the prediction
         prediction_days=70
         #as recovered data is not available, so recovered is in function of death
-        ratioRecovered=.1
+        ratioRecoveredDeath=.1
         #weigth for fitting data
         weigthCases=0.4
         weigthRecov=0.1
@@ -186,7 +186,7 @@ def parse_arguments(districtRegion):
         #how many days is the prediction
         prediction_days=150
         #as recovered data is not available, so recovered is in function of death
-        ratioRecovered=10
+        ratioRecoveredDeath=10
         #weigth for fitting data
         weigthCases=0.4
         weigthRecov=0.1
@@ -211,7 +211,7 @@ def parse_arguments(districtRegion):
         #how many days is the prediction
         prediction_days=70
         #as recovered data is not available, so recovered is in function of death
-        ratioRecovered=.1
+        ratioRecoveredDeath=.08
         #weigth for fitting data
         weigthCases=0.4
         weigthRecov=0.0
@@ -245,37 +245,37 @@ def parse_arguments(districtRegion):
     parser.add_argument(
         '--S_0',
         dest='s_0',
-        type=int,
+        type=float,
         default=s0)
 
     parser.add_argument(
         '--E_0',
         dest='e_0',
-        type=int,
+        type=float,
         default=e0)
 
     parser.add_argument(
         '--A_0',
         dest='a_0',
-        type=int,
+        type=float,
         default=a0)
 
     parser.add_argument(
         '--I_0',
         dest='i_0',
-        type=int,
+        type=float,
         default=i0)
 
     parser.add_argument(
         '--R_0',
         dest='r_0',
-        type=int,
+        type=float,
         default=r0)
 
     parser.add_argument(
         '--D_0',
         dest='d_0',
-        type=int,
+        type=float,
         default=k0)
 
     parser.add_argument(
@@ -287,19 +287,19 @@ def parse_arguments(districtRegion):
     parser.add_argument(
         '--RATIO',
         dest='ratio',
-        type=int,
-        default=ratioRecovered)
+        type=float,
+        default=ratioRecoveredDeath)
 
     parser.add_argument(
         '--WCASES',
         dest='weigthCases',
-        type=int,
+        type=float,
         default=weigthCases)
 
     parser.add_argument(
         '--WREC',
         dest='weigthRecov',
-        type=int,
+        type=float,
         default=weigthRecov)
 
     args = parser.parse_args()
@@ -382,10 +382,11 @@ class Learner(object):
         return values
 
     #predict final extended values
-    def predict(self, beta, sigma, sigma2, sigma3, gamma, b, data, death, districtRegion, s_0, e_0, a_0, i_0, r_0, d_0):
+    def predict(self, beta, sigma, sigma2, gamma, b, data, death, districtRegion, s_0, e_0, a_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
         def SEAIRD(y,t):
+        # def SEAIRD(t,y):
             S = y[0]
             E = y[1]
             A = y[2]
@@ -393,27 +394,26 @@ class Learner(object):
             R = y[4]
             D = y[5]
             p=0.2
+            # sigma=1./22.
+            # sigma2=1./55.
             y0=-beta*(A+I)*S #S
             y1=beta*S*(A+I)-sigma*E #E
             y2=sigma*E*(1-p)-gamma*A #A
-            y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I #I
-            y4=b*I+gamma*A+sigma2*I #R
+            y3=sigma*E*p-gamma*I-sigma2*I#I
+            y4=b*I+gamma*A+b/gamma*sigma2*I #R
             y5=max(0,1.-(y0+y1+y2+y3+y4)) #D
             return [y0,y1,y2,y3,y4,y5]
 
-        #solve ODE's with odeint
         y0=[s_0,e_0,a_0,i_0,r_0,d_0]
         tspan=np.arange(0, size, 1)
         res=odeint(SEAIRD,y0,tspan)
+        # solution = solve_ivp(SEAIRD, [0, size], [s_0,e_0,a_0,i_0,r_0,d_0], t_eval=np.arange(0, size, 1), vectorized=True)
+        extended_actual = data.values
+        extended_death = death.values
 
-        #extend ranges of vector - not working
         # x=[None]*(size - len(data.values))
         # extended_actual = np.concatenate((data.values, x))
         # extended_death = np.concatenate((death.values, x))
-        
-        #not extend, send same values
-        extended_actual = data.values
-        extended_death = death.values
 
         # return new_index, extended_actual, extended_death, solution.y[0],solution.y[1],solution.y[2],solution.y[3],solution.y[4],solution.y[5], a, b
         return new_index, extended_actual, extended_death, res[:,0],res[:,1],res[:,2],res[:,3],res[:,4],res[:,5], a, b
@@ -424,24 +424,23 @@ class Learner(object):
         self.data = self.load_confirmed(self.districtRegion)
         self.death = self.load_dead(self.districtRegion)
 
-
-        #optimization
         optimal = minimize(lossOdeint,        
-            [0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
+            [0.001, 0.001, 0.001, 0.001, 0.001],
             args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
                 self.startNCases, self.ratio, self.weigthCases, self.weigthRecov),
             method='L-BFGS-B',
-            bounds=[(1e-12, 50), (1./160.,0.2),  (1./300.,0.2), (1./160.,0.2), (1e-16, 0.4), (1e-12, 0.2)])
+            bounds=[(1e-12, 50), (1./160.,0.2),  (1./160.,0.2), (1e-16, 0.4), (1e-12, 0.2)])
             #beta, sigma, sigma2, gamma, b
 
-        #prediction for final curve with optimized parameters
+        # sigma=1/22
+        # sigma2=1/55
+
         print(optimal)
-        beta, sigma, sigma2, sigma3, gamma, b = optimal.x
+        beta, sigma, sigma2, gamma, b = optimal.x
         new_index, extended_actual, extended_death, y0, y1, y2, y3, y4, y5, \
-                a, b = self.predict(beta, sigma, sigma2, sigma3, gamma, b, self.data, \
+                a, b = self.predict(beta, sigma, sigma2, gamma, b, self.data, \
                 self.death, self.districtRegion, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
 
-        #data frame for export with results
         dataFr = [y0, y1, y2, y3, y4, y5]
         dataFr2 = np.array(dataFr).T
         df = pd.DataFrame(data=dataFr2)
@@ -449,7 +448,6 @@ class Learner(object):
         df.index = pd.date_range(start=datetime.strptime(new_index[0],'%Y-%m-%d'), 
             end=datetime.strptime(new_index[len(new_index)-1],'%Y-%m-%d'))
 
-        #plotting
         plt.rc('font', size=14)
         fig, ax = plt.subplots(figsize=(15, 10))
         ax.set_title("SEAIR-D Model for "+self.districtRegion)
@@ -463,7 +461,7 @@ class Learner(object):
         ax.plot(new_index[range(0,len(extended_actual))],extended_actual,'o',label="Infected data")
         ax.plot(new_index[range(0,len(extended_death))],extended_death,'x',label="Death data")
         ax.legend()
-        print(f"districtRegion={self.districtRegion}, beta={beta:.8f}, 1/sigma={1/sigma:.8f}, 1/sigma2={1/sigma2:.8f}, 1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f}, r_0:{(beta/gamma):.8f}")
+        print(f"districtRegion={self.districtRegion}, beta={beta:.8f}, 1/sigma={1/sigma:.8f}, 1/sigma2={1/sigma2:.8f},gamma={gamma:.8f}, b={b:.8f}, r_0:{(beta/gamma):.8f}")
         
         #plot margin annotation
         plt.annotate('Dr. Guilherme A. L. da Silva, www.ats4i.com', fontsize=10, 
@@ -509,10 +507,11 @@ class Learner(object):
         plt.close()
 
 #objective function Odeint solver
-def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratioRecovered, weigthCases, weigthRecov):
+def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratioRecoved_Death, weigthCases, weigthRecov):
     size = len(data)
-    beta, sigma, sigma2, sigma3, gamma, b = point
+    beta, sigma, sigma2, gamma, b = point
     def SEAIRD(y,t):
+    # def SEAIRD(t,y):
         S = y[0]
         E = y[1]
         A = y[2]
@@ -520,39 +519,41 @@ def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ra
         R = y[4]
         D = y[5]
         p=0.2
-        gamma=b/ratioRecovered+b
+        gamma=b/ratioRecoved_Death+b
+        # sigma=1./22.
+        # sigma2=1./55.
         y0=-beta*(A+I)*S #S
         y1=beta*S*(A+I)-sigma*E #E
         y2=sigma*E*(1-p)-gamma*A #A
-        y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I#I
-        y4=b*I+gamma*A+sigma2*I #R
+        y3=sigma*E*p-gamma*I-sigma2*I #I
+        y4=b*I+gamma*A+b/gamma*sigma2*I #R
         y5=max(0,1.-(y0+y1+y2+y3+y4)) #D
         return [y0,y1,y2,y3,y4,y5]
 
-    #solve ODE's with odeint
     y0=[s_0,e_0,a_0,i_0,r_0,d_0]
     tspan=np.arange(0, size, 1)
     res=odeint(SEAIRD,y0,tspan)
 
-    #initialize variables for error
     l1=0
     l2=0
     l3=0
     tot=0
 
-    #calculate
     for i in range(0,len(data.values)):
         if data.values[i]>startNCases:
             l1 = l1+(res[i,3] - data.values[i])**2
             l2 = l2+(res[i,5] - death.values[i])**2
-            l3 = l3+(res[i,4] - data.values[i]*ratioRecovered)**2
+            l3 = l3+(res[i,4] - data.values[i]*ratioRecoved_Death)**2
             tot+=1
-    l1=np.sqrt(l1/max(1.,tot))
-    l2=np.sqrt(l2/max(1.,tot))
-    l3=np.sqrt(l3/max(1.,tot))
+    l1=np.sqrt(l1/tot)
+    l2=np.sqrt(l2/tot)
+    l3=np.sqrt(l3/tot)
+    # solution = solve_ivp(SEAIRD, [0, size], [s_0,e_0,a_0,i_0,r_0,d_0], t_eval=np.arange(0, size, 1), vectorized=True)
+    # l1 = np.sqrt(np.mean((solution.y[3] - data.values)**2))
+    # l2 = np.sqrt(np.mean((solution.y[5] - death.values)**2))
     
     #weight for cases
-    u = weigthCases
+    u = weigthCases  #Brazil US 0.1
     w = weigthRecov
     #weight for deaths
     v = max(0,1. - u - w)
