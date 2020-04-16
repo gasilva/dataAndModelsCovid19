@@ -24,6 +24,7 @@ from scipy.optimize import fsolve
 from scipy.integrate import odeint
 from scipy.integrate import solve_ivp
 from scipy.optimize import minimize
+from scipy.optimize import basinhopping
 
 def logGrowth(growth,finalDay):
     x =[]
@@ -90,7 +91,7 @@ def parse_arguments(districtRegion):
     #DRS 17 - Taubaté,,,,,,,,,,,,
 
     #select district region of Sao Paulo State
-    districtRegion1="DRS 13 - Ribeirão Preto"
+    districtRegion1="DRS 06 - Bauru"
 
     if districtRegion1=="DRS 01 - Grande São Paulo":
         date="2020-03-15"
@@ -103,14 +104,14 @@ def parse_arguments(districtRegion):
         #initial condition for recovered
         r0=1e-4
         #initial condition for deaths   
-        k0=1e-4
+        k0=80
         #initial condition for asymptomatic   
         a0=1e-4
         #start fitting when the number of cases >= start
         start=1500
         #how many days is the prediction
         prediction_days=70
-        #as recovered data is not available, so recovered is in function of death
+        #as recovered data is not available, so recovered is in function of infected
         ratioRecovered=0.1
         #weigth for fitting data
         weigthCases=0.6
@@ -134,7 +135,7 @@ def parse_arguments(districtRegion):
         #start fitting when the number of cases >= start
         start=0
         #how many days is the prediction
-        prediction_days=60
+        prediction_days=150
         #as recovered data is not available, so recovered is in function of death
         ratioRecovered=.1
         #weigth for fitting data
@@ -145,7 +146,7 @@ def parse_arguments(districtRegion):
     if districtRegion1=="DRS 13 - Ribeirão Preto":
         date="2020-03-25"
         #initial condition for susceptible
-        s0=1.0e3
+        s0=5.0e3
         #initial condition for exposed   
         e0=1e-4
         #initial condition for infectious   
@@ -153,14 +154,14 @@ def parse_arguments(districtRegion):
         #initial condition for recovered
         r0=1e-4
         #initial condition for deaths   
-        k0=80
+        k0=1e-4
         #initial condition for asymptomatic   
         a0=1e-4
         #start fitting when the number of cases >= start
         start=0
         #how many days is the prediction
         prediction_days=60
-        #as recovered data is not available, so recovered is in function of infected
+        #as recovered data is not available, so recovered is in function of death
         ratioRecovered=.1
         #weigth for fitting data
         weigthCases=0.4
@@ -193,6 +194,81 @@ def parse_arguments(districtRegion):
         #weightDeaths = 1 - weigthCases - weigthRecov
 
     if districtRegion1=="DRS 17 - Taubaté":
+        date="2020-04-01"
+        #initial condition for susceptible
+        s0=10.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=1e-4
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1e-4
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=70
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecovered=.08
+        #weigth for fitting data
+        weigthCases=0.4
+        weigthRecov=0.0
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 02 - Araçatuba":
+        date="2020-04-01"
+        #initial condition for susceptible
+        s0=10.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=1e-4
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1e-4
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=70
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecovered=.08
+        #weigth for fitting data
+        weigthCases=0.4
+        weigthRecov=0.0
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 05 - Barretos":
+        date="2020-04-01"
+        #initial condition for susceptible
+        s0=10.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=1e-4
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1e-4
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=70
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecovered=.08
+        #weigth for fitting data
+        weigthCases=0.4
+        weigthRecov=0.0
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 06 - Bauru":
         date="2020-04-01"
         #initial condition for susceptible
         s0=10.0e3
@@ -423,21 +499,31 @@ class Learner(object):
         self.data = self.load_confirmed(self.districtRegion)
         self.death = self.load_dead(self.districtRegion)
 
-        optimal = minimize(lossOdeint,        
-            [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
-            args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
-                self.startNCases, self.ratio, self.weigthCases, self.weigthRecov),
-            method='L-BFGS-B',
-            bounds=[(1e-12, 50), (1e-12, 50), (1./160.,0.2),  (1./160.,0.2), (1./160.,0.2),\
-                 (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)])
+        # optimal = minimize(lossOdeint,        
+        #     [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
+        #     args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
+        #         self.startNCases, self.ratio, self.weigthCases, self.weigthRecov),
+        #     method='L-BFGS-B',
+        #     bounds=[(1e-12, 50), (1e-12, 50), (1./160.,0.2),  (1./160.,0.2), (1./160.,0.2),\
+        #          (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)])
             #beta, beta2, sigma, sigma2, sigma3, gamma, b
+
+
+        bounds=[(1e-12, .4), (1e-12, .4), (1e-12,0.2),  (1e-12,0.2), (1e-12,0.2),\
+                (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
+        minimizer_kwargs = dict(method="L-BFGS-B", bounds=bounds, args=(self.data, self.death, self.s_0,\
+                 self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
+                self.startNCases, self.ratio, self.weigthCases, self.weigthRecov))
+        x0=[0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
+
+        optimal =  basinhopping(lossOdeint,x0,minimizer_kwargs=minimizer_kwargs)
+            #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
 
         print(optimal)
         beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal.x
         new_index, extended_actual, extended_death, y0, y1, y2, y3, y4, y5 \
                 = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, self.data, \
                 self.death, self.districtRegion, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
-
 
         #prepare dataframe to export
         dataFr = [y0, y1, y2, y3, y4, y5]
@@ -452,7 +538,7 @@ class Learner(object):
         plotXt=new_index[range(0,len(extended_actual))]
         plt.rc('font', size=14)
         fig, ax = plt.subplots(figsize=(15, 10))
-        ax.set_title("SEAIR-D Model for "+self.districtRegion)
+        ax.set_title("Global Optimization - SEAIR-D Model for "+self.districtRegion)
         ax.plot(plotX,y0,'g-',label="Susceptible")
         ax.plot(plotX,y1,'r-',label="Exposed")
         ax.plot(plotX,y2,'b-',label="Asymptomatic")
@@ -463,10 +549,9 @@ class Learner(object):
         ax.plot(plotXt,extended_actual,'o',label="Infected data")
         ax.plot(plotXt,extended_death,'x',label="Death data")
         ax.legend()
-        
         print(f"districtRegion={self.districtRegion}, beta={beta:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
             f"1/sigma2={1/sigma2:.8f},1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f}, r_0:{(beta/gamma):.8f}")
-
+        
         #plot margin annotation
         plt.annotate('Dr. Guilherme A. L. da Silva, www.ats4i.com', fontsize=10, 
         xy=(1.04, 0.1), xycoords='axes fraction',
@@ -484,7 +569,7 @@ class Learner(object):
         savePlot(strFile)
 
         fig, ax = plt.subplots(figsize=(15, 10))
-        ax.set_title("Zoom SEAIR-D Model for "+self.districtRegion)
+        ax.set_title("Global Optimization - Zoom SEAIR-D Model for "+self.districtRegion)
         plt.xticks(np.arange(0, self.predict_range, self.predict_range/8))
         ax.set_ylim(0,max(y3)*1.1)
         ax.plot(plotX,y3,'y-',label="Infected")
@@ -528,7 +613,7 @@ def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ra
         y2=sigma*E*(1-p)-gamma*A-mu*A #A
         y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-mu*I#I
         y4=b*I+gamma*A+sigma2*I-mu*R #R
-        y5=-(y0+y1+y2+y3+y4) #D
+        y5=(-(y0+y1+y2+y3+y4)) #D
         return [y0,y1,y2,y3,y4,y5]
 
     y0=[s_0,e_0,a_0,i_0,r_0,d_0]
