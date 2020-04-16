@@ -153,14 +153,14 @@ def parse_arguments(districtRegion):
         #initial condition for recovered
         r0=1e-4
         #initial condition for deaths   
-        k0=1e-4
+        k0=80
         #initial condition for asymptomatic   
         a0=1e-4
         #start fitting when the number of cases >= start
         start=0
         #how many days is the prediction
         prediction_days=70
-        #as recovered data is not available, so recovered is in function of death
+        #as recovered data is not available, so recovered is in function of infected
         ratioRecovered=.1
         #weigth for fitting data
         weigthCases=0.4

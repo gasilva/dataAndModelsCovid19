@@ -111,7 +111,7 @@ def parse_arguments(districtRegion):
         start=1500
         #how many days is the prediction
         prediction_days=70
-        #as recovered data is not available, so recovered is in function of death
+        #as recovered data is not available, so recovered is in function of infected
         ratioRecovered=0.1
         #weigth for fitting data
         weigthCases=0.6
