@@ -307,8 +307,8 @@ class Learner(object):
             y0=-beta*(A+I)*S #S
             y1=beta*S*(A+I)-sigma*E #E
             y2=sigma*E*(1-p)-gamma*A #A
-            y3=sigma*E*p-gamma*I-sigma2*I#I
-            y4=b*I+gamma*A+b/gamma*sigma2*I #R
+            y3=sigma*E*p-gamma*I #-sigma2*I#I
+            y4=b*I+gamma*A #+b/gamma*sigma2*I #R
             y5=max(0,1.-(y0+y1+y2+y3+y4)) #D
             return [y0,y1,y2,y3,y4,y5]
         y0=[s_0,e_0,a_0,i_0,r_0,d_0]
@@ -398,8 +398,8 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0):
         y0=-beta*(A+I)*S #S
         y1=beta*S*(A+I)-sigma*E #E
         y2=sigma*E*(1-p)-gamma*A #A
-        y3=sigma*E*p-gamma*I-sigma2*I#I
-        y4=b*I+gamma*A+b/gamma*sigma2*I #R
+        y3=sigma*E*p-gamma*I #-sigma2*I#I
+        y4=b*I+gamma*A #+b/gamma*sigma2*I #R
         y5=max(0,1.-(y0+y1+y2+y3+y4)) #D
         return [y0,y1,y2,y3,y4,y5]
     y0=[s_0,e_0,a_0,i_0,r_0,d_0]
@@ -475,7 +475,7 @@ df=df.transpose()
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
 #opt=5 SEAIR-D Model
-opt=1
+opt=5
 
 #prepare data for plotting
 country1="US"
