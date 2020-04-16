@@ -24,6 +24,7 @@ from scipy.optimize import fsolve
 from scipy.integrate import odeint
 from scipy.integrate import solve_ivp
 from scipy.optimize import minimize
+from scipy.optimize import basinhopping
 
 def logGrowth(growth,finalDay):
     x =[]
@@ -423,14 +424,25 @@ class Learner(object):
         self.data = self.load_confirmed(self.districtRegion)
         self.death = self.load_dead(self.districtRegion)
 
-        optimal = minimize(lossOdeint,        
-            [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
-            args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
-                self.startNCases, self.ratio, self.weigthCases, self.weigthRecov),
-            method='L-BFGS-B',
-            bounds=[(1e-12, 50), (1e-12, 50), (1./160.,0.2),  (1./160.,0.2), (1./160.,0.2),\
-                 (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)])
+        # optimal = minimize(lossOdeint,        
+        #     [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
+        #     args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
+        #         self.startNCases, self.ratio, self.weigthCases, self.weigthRecov),
+        #     method='L-BFGS-B',
+        #     bounds=[(1e-12, 50), (1e-12, 50), (1./160.,0.2),  (1./160.,0.2), (1./160.,0.2),\
+        #          (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)])
             #beta, beta2, sigma, sigma2, sigma3, gamma, b
+
+
+        bounds=[(1e-12, .4), (1e-12, .4), (1e-12,0.2),  (1e-12,0.2), (1e-12,0.2),\
+                (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
+        minimizer_kwargs = dict(method="L-BFGS-B", bounds=bounds, args=(self.data, self.death, self.s_0,\
+                 self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
+                self.startNCases, self.ratio, self.weigthCases, self.weigthRecov))
+        x0=[0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
+
+        optimal =  basinhopping(lossOdeint,x0,minimizer_kwargs=minimizer_kwargs)
+            #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
 
         print(optimal)
         beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal.x
@@ -526,7 +538,7 @@ def lossOdeint(point, data, death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ra
         y2=sigma*E*(1-p)-gamma*A-mu*A #A
         y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-mu*I#I
         y4=b*I+gamma*A+sigma2*I-mu*R #R
-        y5=-(y0+y1+y2+y3+y4) #D
+        y5=(-(y0+y1+y2+y3+y4)) #D
         return [y0,y1,y2,y3,y4,y5]
 
     y0=[s_0,e_0,a_0,i_0,r_0,d_0]
