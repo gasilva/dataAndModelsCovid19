@@ -91,7 +91,7 @@ def parse_arguments(districtRegion):
     #DRS 17 - Taubaté,,,,,,,,,,,,
 
     #select district region of Sao Paulo State
-    districtRegion1="DRS 01 - Grande São Paulo"
+    districtRegion1="DRS 13 - Ribeirão Preto"
 
     if districtRegion1=="DRS 01 - Grande São Paulo":
         date="2020-03-15"
@@ -144,9 +144,9 @@ def parse_arguments(districtRegion):
         #weightDeaths = 1 - weigthCases - weigthRecov
 
     if districtRegion1=="DRS 13 - Ribeirão Preto":
-        date="2020-04-01"
+        date="2020-03-25"
         #initial condition for susceptible
-        s0=8.0e3
+        s0=5.0e3
         #initial condition for exposed   
         e0=1e-4
         #initial condition for infectious   
@@ -160,7 +160,7 @@ def parse_arguments(districtRegion):
         #start fitting when the number of cases >= start
         start=0
         #how many days is the prediction
-        prediction_days=70
+        prediction_days=60
         #as recovered data is not available, so recovered is in function of death
         ratioRecovered=.1
         #weigth for fitting data
