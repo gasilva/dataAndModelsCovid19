@@ -438,6 +438,7 @@ class Learner(object):
                 = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, self.data, \
                 self.death, self.districtRegion, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
 
+
         #prepare dataframe to export
         dataFr = [y0, y1, y2, y3, y4, y5]
         dataFr2 = np.array(dataFr).T
@@ -462,9 +463,10 @@ class Learner(object):
         ax.plot(plotXt,extended_actual,'o',label="Infected data")
         ax.plot(plotXt,extended_death,'x',label="Death data")
         ax.legend()
+        
         print(f"districtRegion={self.districtRegion}, beta={beta:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
             f"1/sigma2={1/sigma2:.8f},1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f}, r_0:{(beta/gamma):.8f}")
-        
+
         #plot margin annotation
         plt.annotate('Dr. Guilherme A. L. da Silva, www.ats4i.com', fontsize=10, 
         xy=(1.04, 0.1), xycoords='axes fraction',
