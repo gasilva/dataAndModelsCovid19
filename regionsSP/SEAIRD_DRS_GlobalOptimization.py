@@ -104,7 +104,7 @@ def parse_arguments(districtRegion):
         #initial condition for recovered
         r0=1e-4
         #initial condition for deaths   
-        k0=1e-4
+        k0=80
         #initial condition for asymptomatic   
         a0=1e-4
         #start fitting when the number of cases >= start
@@ -463,7 +463,7 @@ class Learner(object):
         plotXt=new_index[range(0,len(extended_actual))]
         plt.rc('font', size=14)
         fig, ax = plt.subplots(figsize=(15, 10))
-        ax.set_title("SEAIR-D Model for "+self.districtRegion)
+        ax.set_title("Global Optimization - SEAIR-D Model for "+self.districtRegion)
         ax.plot(plotX,y0,'g-',label="Susceptible")
         ax.plot(plotX,y1,'r-',label="Exposed")
         ax.plot(plotX,y2,'b-',label="Asymptomatic")
@@ -494,7 +494,7 @@ class Learner(object):
         savePlot(strFile)
 
         fig, ax = plt.subplots(figsize=(15, 10))
-        ax.set_title("Zoom SEAIR-D Model for "+self.districtRegion)
+        ax.set_title("Global Optimization - Zoom SEAIR-D Model for "+self.districtRegion)
         plt.xticks(np.arange(0, self.predict_range, self.predict_range/8))
         ax.set_ylim(0,max(y3)*1.1)
         ax.plot(plotX,y3,'y-',label="Infected")
