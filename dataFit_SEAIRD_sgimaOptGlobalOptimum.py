@@ -25,6 +25,7 @@ from scipy.optimize import fsolve
 from scipy.integrate import odeint
 from scipy.integrate import solve_ivp
 from scipy.optimize import minimize
+from scipy.optimize import basinhopping
 
 def logGrowth(growth,finalDay):
     x =[]
@@ -95,14 +96,14 @@ def parse_arguments(country):
         e0=1e-4
         i0=100
         r0=0
-        k0=70
+        k0=50
         #start fitting when the number of cases >= start
         start=50
         #how many days is the prediction
         prediction_days=150
         #weigth for fitting data
-        weigthCases=0.62
-        weigthRecov=0.15
+        weigthCases=0.6
+        weigthRecov=0.1
         #weightDeaths = 1 - weigthCases - weigthRecov
 
     if country1=="China":
@@ -309,11 +310,8 @@ class Learner(object):
     def load_recovered(self, country):
         df = pd.read_csv('data/time_series_19-covid-Recovered-country.csv')
         country_df = df[df['Country/Region'] == country]
-        final=len(country_df)
-        # country_df['4/15/20']=220
-        # country_df['4/14/20']=190
-        # print(country_df)
         return country_df.iloc[0].loc[self.start_date:]
+
 
     def load_dead(self, country):
         df = pd.read_csv('data/time_series_19-covid-Deaths-country.csv')
@@ -352,7 +350,7 @@ class Learner(object):
         
         y0=[s_0,e_0,a_0,i_0,r_0,d_0]
         tspan=np.arange(0, size, 1)
-        res=odeint(SEAIRD,y0,tspan,hmax=0.01)
+        res=odeint(SEAIRD,y0,tspan,hmax=0.1)
 
         extended_actual = np.concatenate((data.values, [None] * (size - len(data.values))))
         extended_recovered = np.concatenate((recovered.values, [None] * (size - len(recovered.values))))
@@ -366,13 +364,14 @@ class Learner(object):
         self.recovered = self.load_recovered(self.country)
         self.data = self.load_confirmed(self.country)
 
-        optimal = minimize(lossOdeint,        
-            [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
-            args=(self.data, self.recovered, self.death, self.s_0, self.e_0,\
-                self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, self.weigthCases, self.weigthRecov),
-            method='L-BFGS-B',
-            bounds=[(1e-12, .4), (1e-12, .4), (1./160.,0.2),  (1./160.,0.2), (1./160.,0.2),\
-                (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)])
+        bounds=[(1e-12, .4), (1e-12, .4), (1e-12,0.2),  (1e-12,0.2), (1e-12,0.2),\
+                (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
+        minimizer_kwargs = dict(method="L-BFGS-B", bounds=bounds, args=(self.data, self.recovered, \
+            self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
+                self.weigthCases, self.weigthRecov))
+        x0=[0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
+
+        optimal =  basinhopping(lossOdeint,x0,minimizer_kwargs=minimizer_kwargs)
             #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
 
         beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal.x
@@ -396,9 +395,9 @@ class Learner(object):
 
         plt.rc('font', size=14)
         fig, ax = plt.subplots(figsize=(15, 10))
-        ax.set_title("SEAIR-D Model for "+self.country)
+        ax.set_title("Global Opt - SEAIR-D Model for "+self.country)
         ax.set_ylim((0, max(y0)*1.1))
-        df.plot(ax=ax) #style='.-')
+        df.plot(ax=ax)
         print(f"country={self.country}, beta={beta:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
             f" 1/sigma2={1/sigma2:.8f},1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f},"+\
             f" mu={mu:.8f}, r_0:{(beta/gamma):.8f}")
@@ -419,7 +418,7 @@ class Learner(object):
         df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
 
         country=self.country
-        strFile ="./results/modelSEAIRDOpt"+country+".png"
+        strFile ="./results/modelSEAIRDOptGlobalOptimum"+country+".png"
         savePlot(strFile)
 
         plt.show()
@@ -449,7 +448,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
 
     y0=[s_0,e_0,a_0,i_0,r_0,d_0]
     tspan=np.arange(0, size, 1)
-    res=odeint(SEAIRD,y0,tspan,hmax=0.01)
+    res=odeint(SEAIRD,y0,tspan,hmax=0.1)
 
     tot=0
     l1=0
