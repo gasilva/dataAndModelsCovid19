@@ -425,6 +425,35 @@ class Learner(object):
         plt.show()
         plt.close()
 
+        plotX=new_index[range(0,self.predict_range)]
+        plotXt=new_index[range(0,len(extended_actual))]
+        fig, ax = plt.subplots(figsize=(15, 10))
+        ax.set_title("Zoom SEAIR-D Model for "+self.country)
+        plt.xticks(np.arange(0, self.predict_range, self.predict_range/8))
+        ax.set_ylim(0,max(y3)*1.1)
+        ax.plot(plotX,y3,'y-',label="Infected")
+        ax.plot(plotX,y4,'c-',label="Recovered")
+        ax.plot(plotX,y5,'m-',label="Deaths")
+        ax.plot(plotXt,extended_actual,'o',label="Infected data")
+        ax.plot(plotXt,extended_death,'x',label="Death data")
+        ax.legend()
+       
+        plt.annotate('Dr. Guilherme A. L. da Silva, www.ats4i.com', fontsize=10, 
+        xy=(1.04, 0.1), xycoords='axes fraction',
+        xytext=(0, 0), textcoords='offset points',
+        ha='right',rotation=90)
+        plt.annotate('Original SEAIR-D with delay model, São Paulo, Brazil', fontsize=10, 
+        xy=(1.045,0.1), xycoords='axes fraction',
+        xytext=(0, 0), textcoords='offset points',
+        ha='left',rotation=90)
+
+        districtRegion=self.country
+        strFile ="./results/ZoomModelSEAIRDOpt"+country+".png"
+        savePlot(strFile)
+
+        plt.show()
+        plt.close()
+
 #objective function Odeint solver
 def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
     startNCases, weigthCases, weigthRecov):
