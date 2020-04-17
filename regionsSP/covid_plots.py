@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 import os
 from datetime import datetime,timedelta
+from scipy.optimize import curve_fit
+from matplotlib import cm
 
 def logGrowth(growth,finalDay):
     x =[]
@@ -81,7 +83,7 @@ def extend_index(index, new_size):
     return values
 
 
-def test(districtRegion, startdate="2020-03-15",predict_range = 60, opt = 5, version = "1", show = False):
+def covid_plots(districtRegion, startdate="2020-03-15",predict_range = 60, opt = 5, version = "1", show = False):
     #Initial parameters
     #Choose here your options
 
