@@ -139,7 +139,7 @@ class Learner(object):
         optimal =  basinhopping(self.loss,x0,minimizer_kwargs=minimizer_kwargs,disp=True, niter_success=1)
             #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
 
-        print(optimal)
+        print("\n", optimal)
         beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal.x
         new_index, extended_actual, extended_death, y0, y1, y2, y3, y4, y5 \
                 = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, self.data, \
