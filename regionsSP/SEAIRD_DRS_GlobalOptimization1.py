@@ -91,7 +91,7 @@ def parse_arguments(districtRegion):
     #DRS 17 - Taubaté,,,,,,,,,,,,
 
     #select district region of Sao Paulo State
-    districtRegion1="DRS 07 - Campinas"
+    districtRegion1="DRS 15 - São José do Rio Preto"
 
     if districtRegion1=="DRS 01 - Grande São Paulo":
         date="2020-03-15"
@@ -171,7 +171,7 @@ def parse_arguments(districtRegion):
     if districtRegion1=="DRS 07 - Campinas":
         date="2020-04-01"
         #initial condition for susceptible
-        s0=8.0e3
+        s0=20.0e3
         #initial condition for exposed   
         e0=1e-4
         #initial condition for infectious   
@@ -183,17 +183,67 @@ def parse_arguments(districtRegion):
         #initial condition for asymptomatic   
         a0=1e-4
         #start fitting when the number of cases >= start
-        start=25
+        start=0
         #how many days is the prediction
-        prediction_days=150
+        prediction_days=70
         #as recovered data is not available, so recovered is in function of death
         ratioRecovered=10
         #weigth for fitting data
-        weigthCases=0.4
+        weigthCases=0.5
         weigthRecov=0.1
         #weightDeaths = 1 - weigthCases - weigthRecov
 
     if districtRegion1=="DRS 17 - Taubaté":
+        date="2020-04-01"
+        #initial condition for susceptible
+        s0=10.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=1e-4
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1e-4
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=70
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecovered=.08
+        #weigth for fitting data
+        weigthCases=0.4
+        weigthRecov=0.0
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 12 - Registro":
+        date="2020-04-01"
+        #initial condition for susceptible
+        s0=10.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=1e-4
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1e-4
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=70
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecovered=.08
+        #weigth for fitting data
+        weigthCases=0.4
+        weigthRecov=0.0
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 15 - São José do Rio Preto":
         date="2020-04-01"
         #initial condition for susceptible
         s0=10.0e3

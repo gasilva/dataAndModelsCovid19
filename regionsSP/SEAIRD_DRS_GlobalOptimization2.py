@@ -91,7 +91,7 @@ def parse_arguments(districtRegion):
     #DRS 17 - Taubaté,,,,,,,,,,,,
 
     #select district region of Sao Paulo State
-    districtRegion1="DRS 06 - Bauru"
+    districtRegion1="DRS 03 - Araraquara"
 
     if districtRegion1=="DRS 01 - Grande São Paulo":
         date="2020-03-15"
@@ -275,7 +275,7 @@ def parse_arguments(districtRegion):
         #initial condition for exposed   
         e0=1e-4
         #initial condition for infectious   
-        i0=1e-4
+        i0=4
         #initial condition for recovered
         r0=1e-4
         #initial condition for deaths   
@@ -287,10 +287,60 @@ def parse_arguments(districtRegion):
         #how many days is the prediction
         prediction_days=70
         #as recovered data is not available, so recovered is in function of death
-        ratioRecovered=.08
+        ratioRecovered=.1
         #weigth for fitting data
         weigthCases=0.4
         weigthRecov=0.0
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 08 - Franca":
+        date="2020-03-25"
+        #initial condition for susceptible
+        s0=5.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=0
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1e-4
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=70
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecovered=.1
+        #weigth for fitting data
+        weigthCases=0.4 
+        weigthRecov=0.1
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 03 - Araraquara":
+        date="2020-03-25"
+        #initial condition for susceptible
+        s0=2.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=0
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1e-4
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=70
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecovered=.1
+        #weigth for fitting data
+        weigthCases=0.5 
+        weigthRecov=0.1
         #weightDeaths = 1 - weigthCases - weigthRecov
 
     #command line arguments
@@ -298,7 +348,8 @@ def parse_arguments(districtRegion):
         '--districtRegions',
         dest='districtRegions',
         type=str,
-        default=districtRegion1)
+        default=districtRegion1
+    )
     
     parser.add_argument(
         '--download-data',

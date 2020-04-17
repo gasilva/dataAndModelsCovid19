@@ -91,7 +91,7 @@ def parse_arguments(districtRegion):
     #DRS 17 - Taubaté,,,,,,,,,,,,
 
     #select district region of Sao Paulo State
-    districtRegion1="DRS 13 - Ribeirão Preto"
+    districtRegion1="DRS 03 - Araraquara"
 
     if districtRegion1=="DRS 01 - Grande São Paulo":
         date="2020-03-15"
@@ -158,13 +158,13 @@ def parse_arguments(districtRegion):
         #initial condition for asymptomatic   
         a0=1e-4
         #start fitting when the number of cases >= start
-        start=0
+        start=5
         #how many days is the prediction
         prediction_days=60
         #as recovered data is not available, so recovered is in function of death
         ratioRecovered=.1
         #weigth for fitting data
-        weigthCases=0.4
+        weigthCases=0.3
         weigthRecov=0.1
         #weightDeaths = 1 - weigthCases - weigthRecov
 
@@ -216,6 +216,106 @@ def parse_arguments(districtRegion):
         #weigth for fitting data
         weigthCases=0.4
         weigthRecov=0.0
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 09 - Marília":
+        date="2020-04-01"
+        #initial condition for susceptible
+        s0=5.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=1e-4
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1e-4
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=60
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecovered=.08
+        #weigth for fitting data
+        weigthCases=0.4
+        weigthRecov=0.0
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 11 - Presidente Prudente":
+        date="2020-04-01"
+        #initial condition for susceptible
+        s0=5.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=1e-4
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1e-4
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=60
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecovered=.08
+        #weigth for fitting data
+        weigthCases=0.4
+        weigthRecov=0.0
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 14 - São João da Boa Vista":
+        date="2020-04-01"
+        #initial condition for susceptible
+        s0=5.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=1e-4
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1e-4
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=60
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecovered=.08
+        #weigth for fitting data
+        weigthCases=0.4
+        weigthRecov=0.0
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 03 - Araraquara":
+        date="2020-03-25"
+        #initial condition for susceptible
+        s0=5.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=0
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1e-4
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=70
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecovered=.1
+        #weigth for fitting data
+        weigthCases=0.4 
+        weigthRecov=0.1
         #weightDeaths = 1 - weigthCases - weigthRecov
 
     #command line arguments
