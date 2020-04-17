@@ -95,8 +95,12 @@ def parse_arguments(districtRegion):
     districtRegion1="DRS 03 - Araraquara"
 =======
 
+<<<<<<< HEAD
     districtRegion1="DRS 13 - Ribeirão Preto"
 >>>>>>> b5b1b079e37e639d1a916cb13e79ff933199dfcf
+=======
+    districtRegion1="DRS 16 - Sorocaba"
+>>>>>>> 690efd25fadf68e77b09711fc3eeaad8a49f6e27
 
     if districtRegion1=="DRS 01 - Grande São Paulo":
         date="2020-03-15"
@@ -205,11 +209,11 @@ def parse_arguments(districtRegion):
         #initial condition for exposed   
         e0=1e-4
         #initial condition for infectious   
-        i0=1e-4
+        i0=17
         #initial condition for recovered
         r0=1e-4
         #initial condition for deaths   
-        k0=1e-4
+        k0=2
         #initial condition for asymptomatic   
         a0=1e-4
         #start fitting when the number of cases >= start
@@ -288,11 +292,11 @@ def parse_arguments(districtRegion):
         #initial condition for exposed   
         e0=1e-4
         #initial condition for infectious   
-        i0=1e-4
+        i0=2
         #initial condition for recovered
         r0=1e-4
         #initial condition for deaths   
-        k0=1e-4
+        k0=1
         #initial condition for asymptomatic   
         a0=1e-4
         #start fitting when the number of cases >= start
@@ -303,12 +307,13 @@ def parse_arguments(districtRegion):
         prediction_days=70
 >>>>>>> b5b1b079e37e639d1a916cb13e79ff933199dfcf
         #as recovered data is not available, so recovered is in function of death
-        ratioRecovered=.08
+        ratioRecovered=.1
         #weigth for fitting data
         weigthCases=0.4
         weigthRecov=0.0
         #weightDeaths = 1 - weigthCases - weigthRecov
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     if districtRegion1=="DRS 03 - Araraquara":
         date="2020-03-25"
@@ -322,6 +327,20 @@ def parse_arguments(districtRegion):
         r0=1e-4
         #initial condition for deaths   
         k0=1e-4
+=======
+    if districtRegion1=="DRS 10 - Piracicaba":
+        date="2020-04-01"
+        #initial condition for susceptible
+        s0=10.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=2
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1
+>>>>>>> 690efd25fadf68e77b09711fc3eeaad8a49f6e27
         #initial condition for asymptomatic   
         a0=1e-4
         #start fitting when the number of cases >= start
@@ -331,12 +350,44 @@ def parse_arguments(districtRegion):
         #as recovered data is not available, so recovered is in function of death
         ratioRecovered=.1
         #weigth for fitting data
+<<<<<<< HEAD
         weigthCases=0.4 
         weigthRecov=0.1
         #weightDeaths = 1 - weigthCases - weigthRecov
 
 =======
 >>>>>>> b5b1b079e37e639d1a916cb13e79ff933199dfcf
+=======
+        weigthCases=0.4
+        weigthRecov=0.0
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 16 - Sorocaba":
+        date="2020-04-01"
+        #initial condition for susceptible
+        s0=1.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=2
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=70
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecovered=.1
+        #weigth for fitting data
+        weigthCases=0.4
+        weigthRecov=0.1
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+>>>>>>> 690efd25fadf68e77b09711fc3eeaad8a49f6e27
     #command line arguments
     parser.add_argument(
         '--districtRegions',
