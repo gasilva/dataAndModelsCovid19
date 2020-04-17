@@ -91,7 +91,12 @@ def parse_arguments(districtRegion):
     #DRS 17 - Taubaté,,,,,,,,,,,,
 
     #select district region of Sao Paulo State
+<<<<<<< HEAD
     districtRegion1="DRS 03 - Araraquara"
+=======
+
+    districtRegion1="DRS 13 - Ribeirão Preto"
+>>>>>>> b5b1b079e37e639d1a916cb13e79ff933199dfcf
 
     if districtRegion1=="DRS 01 - Grande São Paulo":
         date="2020-03-15"
@@ -218,10 +223,17 @@ def parse_arguments(districtRegion):
         weigthRecov=0.0
         #weightDeaths = 1 - weigthCases - weigthRecov
 
+<<<<<<< HEAD
     if districtRegion1=="DRS 09 - Marília":
         date="2020-04-01"
         #initial condition for susceptible
         s0=5.0e3
+=======
+    if districtRegion1=="DRS 02 - Araçatuba":
+        date="2020-04-01"
+        #initial condition for susceptible
+        s0=10.0e3
+>>>>>>> b5b1b079e37e639d1a916cb13e79ff933199dfcf
         #initial condition for exposed   
         e0=1e-4
         #initial condition for infectious   
@@ -235,6 +247,7 @@ def parse_arguments(districtRegion):
         #start fitting when the number of cases >= start
         start=0
         #how many days is the prediction
+<<<<<<< HEAD
         prediction_days=60
         #as recovered data is not available, so recovered is in function of death
         ratioRecovered=.08
@@ -286,6 +299,9 @@ def parse_arguments(districtRegion):
         start=0
         #how many days is the prediction
         prediction_days=60
+=======
+        prediction_days=70
+>>>>>>> b5b1b079e37e639d1a916cb13e79ff933199dfcf
         #as recovered data is not available, so recovered is in function of death
         ratioRecovered=.08
         #weigth for fitting data
@@ -293,6 +309,7 @@ def parse_arguments(districtRegion):
         weigthRecov=0.0
         #weightDeaths = 1 - weigthCases - weigthRecov
 
+<<<<<<< HEAD
     if districtRegion1=="DRS 03 - Araraquara":
         date="2020-03-25"
         #initial condition for susceptible
@@ -318,6 +335,8 @@ def parse_arguments(districtRegion):
         weigthRecov=0.1
         #weightDeaths = 1 - weigthCases - weigthRecov
 
+=======
+>>>>>>> b5b1b079e37e639d1a916cb13e79ff933199dfcf
     #command line arguments
     parser.add_argument(
         '--districtRegions',
