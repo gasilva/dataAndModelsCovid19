@@ -92,7 +92,7 @@ def parse_arguments(districtRegion):
 
     #select district region of Sao Paulo State
 
-    districtRegion1="DRS 13 - Ribeirão Preto"
+    districtRegion1="DRS 16 - Sorocaba"
 
     if districtRegion1=="DRS 01 - Grande São Paulo":
         date="2020-03-15"
@@ -201,11 +201,11 @@ def parse_arguments(districtRegion):
         #initial condition for exposed   
         e0=1e-4
         #initial condition for infectious   
-        i0=1e-4
+        i0=17
         #initial condition for recovered
         r0=1e-4
         #initial condition for deaths   
-        k0=1e-4
+        k0=2
         #initial condition for asymptomatic   
         a0=1e-4
         #start fitting when the number of cases >= start
@@ -226,11 +226,11 @@ def parse_arguments(districtRegion):
         #initial condition for exposed   
         e0=1e-4
         #initial condition for infectious   
-        i0=1e-4
+        i0=2
         #initial condition for recovered
         r0=1e-4
         #initial condition for deaths   
-        k0=1e-4
+        k0=1
         #initial condition for asymptomatic   
         a0=1e-4
         #start fitting when the number of cases >= start
@@ -238,10 +238,60 @@ def parse_arguments(districtRegion):
         #how many days is the prediction
         prediction_days=70
         #as recovered data is not available, so recovered is in function of death
-        ratioRecovered=.08
+        ratioRecovered=.1
         #weigth for fitting data
         weigthCases=0.4
         weigthRecov=0.0
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 10 - Piracicaba":
+        date="2020-04-01"
+        #initial condition for susceptible
+        s0=10.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=2
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=70
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecovered=.1
+        #weigth for fitting data
+        weigthCases=0.4
+        weigthRecov=0.0
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
+    if districtRegion1=="DRS 16 - Sorocaba":
+        date="2020-04-01"
+        #initial condition for susceptible
+        s0=1.0e3
+        #initial condition for exposed   
+        e0=1e-4
+        #initial condition for infectious   
+        i0=2
+        #initial condition for recovered
+        r0=1e-4
+        #initial condition for deaths   
+        k0=1
+        #initial condition for asymptomatic   
+        a0=1e-4
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=70
+        #as recovered data is not available, so recovered is in function of death
+        ratioRecovered=.1
+        #weigth for fitting data
+        weigthCases=0.4
+        weigthRecov=0.1
         #weightDeaths = 1 - weigthCases - weigthRecov
 
     #command line arguments
