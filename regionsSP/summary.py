@@ -243,7 +243,7 @@ if districtRegion1=="DRS 06 - Bauru":
         #how many days is the prediction
         prediction_days=70
         #as recovered data is not available, so recovered is in function of death
-        ratioRecovered=10
+        ratioRecovered=.1
         #weigth for fitting data
         weigthCases=0.5
         weigthRecov=0.1
