@@ -72,7 +72,7 @@ class Learner(object):
         return values
 
     #predict final extended values
-    def predict(self, beta, beta2, sigma, sigma2, sigma3, gamma, b, data, \
+    def predict(self, beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, data, \
                     death, districtRegion, s_0, e_0, a_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
@@ -85,17 +85,17 @@ class Learner(object):
             D = y[5]
             p=0.2
             # beta2=beta
-            y0=-(beta2*A+beta*I)*S #S
-            y1=(beta2*A+beta*I)*S-sigma*E #E
-            y2=sigma*E*(1-p)-gamma*A #A
-            y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I#I
-            y4=b*I+gamma*A+sigma2*I #R
-            y5=max(0,1.-(y0+y1+y2+y3+y4)) #D
+            y0=-(beta2*A+beta*I)*S+mu*S #S
+            y1=(beta2*A+beta*I)*S-sigma*E-mu*E #E
+            y2=sigma*E*(1-p)-gamma*A-mu*A #A
+            y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-mu*I#I
+            y4=b*I+gamma*A+sigma2*I-mu*R #R
+            y5=-(y0+y1+y2+y3+y4) #D
             return [y0,y1,y2,y3,y4,y5]
 
         y0=[s_0,e_0,a_0,i_0,r_0,d_0]
         tspan=np.arange(0, size, 1)
-        res=odeint(SEAIRD,y0,tspan)
+        res=odeint(SEAIRD,y0,tspan,hmax=0.01)
 
         #data not extended
         extended_actual = data.values
@@ -106,8 +106,7 @@ class Learner(object):
         # extended_actual = np.concatenate((data.values, x))
         # extended_death = np.concatenate((death.values, x))
 
-        return new_index, extended_actual, extended_death, res[:,0],res[:,1],res[:,2],res[:,3],res[:,4],res[:,5]
-
+        return new_index, extended_actual, extended_death, res[:,0], res[:,1],res[:,2],res[:,3],res[:,4], res[:,5]
 
     #run optimizer and plotting
     def train(self):
@@ -115,17 +114,18 @@ class Learner(object):
         self.death = self.load_dead(self.districtRegion)
 
         optimal = minimize(self.loss,        
-            [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
+            [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
             args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
                 self.startNCases, self.ratio, self.weigthCases, self.weigthRecov),
             method='L-BFGS-B',
-            bounds=[(1e-12, 50), (1e-12, 50), (1./160.,0.2),  (1./160.,0.2), (1./160.,0.2), (1e-16, 0.4), (1e-12, 0.2)])
+            bounds=[(1e-12, 50), (1e-12, 50), (1./160.,0.2),  (1./160.,0.2), (1./160.,0.2),\
+                 (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)])
             #beta, beta2, sigma, sigma2, sigma3, gamma, b
 
         print("\n", optimal)
-        beta, beta2, sigma, sigma2, sigma3, gamma, b = optimal.x
+        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal.x
         new_index, extended_actual, extended_death, y0, y1, y2, y3, y4, y5 \
-                = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, self.data, \
+                = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, self.data, \
                 self.death, self.districtRegion, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
 
         dataFr = [y0, y1, y2, y3, y4, y5]
