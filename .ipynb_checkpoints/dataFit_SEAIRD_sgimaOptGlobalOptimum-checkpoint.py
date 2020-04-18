@@ -362,22 +362,17 @@ class Learner(object):
     def train(self):
         self.death = self.load_dead(self.country)
         self.recovered = self.load_recovered(self.country)
-        recoveredDiff=np.diff(self.recovered)
-        for i in range(0,len(recoveredDiff)):
-            if abs(recoveredDiff[i])>1000:
-                for k in range(10,0):
-                    self.recovered[max(0,i-k)]=self.recovered[max(0,i-10)]+(k-10)/10*self.recovered[i]
         self.data = self.load_confirmed(self.country)-self.recovered-self.death
 
         bounds=[(1e-12, .4), (1e-12, .4), (1e-12,0.2),  (1e-12,0.2), (1e-12,0.2),\
                 (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
-        #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
         minimizer_kwargs = dict(method="L-BFGS-B", bounds=bounds, args=(self.data, self.recovered, \
             self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
                 self.weigthCases, self.weigthRecov))
-        x0=[0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001]
+        x0=[0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
 
         optimal =  basinhopping(lossOdeint,x0,minimizer_kwargs=minimizer_kwargs)
+            #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
 
         beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal.x
         print(beta)
