@@ -1,5 +1,4 @@
 
-
 # Import the necessary packages and modules
 import sys
 import csv
@@ -360,14 +359,38 @@ class Learner(object):
 
     #run optimizer and plotting
     def train(self):
+        #data for deaths
         self.death = self.load_dead(self.country)
+        #data for recovered
         self.recovered = self.load_recovered(self.country)
-        recoveredDiff=np.diff(self.recovered)
-        for i in range(0,len(recoveredDiff)):
-            if abs(recoveredDiff[i])>1000:
-                for k in range(10,0):
-                    self.recovered[max(0,i-k)]=self.recovered[max(0,i-10)]+(k-10)/10*self.recovered[i]
-        self.data = self.load_confirmed(self.country)-self.recovered-self.death
+
+        #try to fix data with big jump
+        # recoveredDiff=np.asfarray(np.diff(self.recovered),float)
+        # def func(x, a, b, c):
+        #     return a * np.exp(b * (x-c))
+        # for i in range(0,len(recoveredDiff)):
+        #     if abs(recoveredDiff[i])>5000.:
+        #         backI=20
+        #         i += 3
+        #         if i<backI:
+        #             backI=i
+        #         #weigth for end data points
+        #         sigma = np.ones(backI)
+        #         #weigth for the middle points
+        #         sigma[[0, -1]] = 0.001
+        #         #curve fitting exponential
+        #         popt, pcov = curve_fit(func, range(i-backI,i,1), self.recovered[i-backI:i],\
+        #             [2.02,0.5,22], maxfev=1000, sigma=sigma)
+        #         # print(popt)
+        #         # plt.plot(range(i-backI,i,1),self.recovered[i-backI:i],'o')
+        #         #new recovered fitted data
+        #         self.recovered[i-backI:i]=func(range(i-backI,i), *popt)
+        #         # plt.plot(range(i-backI,i,1),self.recovered[i-backI:i],'-')
+        #         # plt.show()
+        #         # plt.close()
+
+        #new cases data
+        self.data = self.load_confirmed(self.country) #-self.death#-self.recovered
 
         bounds=[(1e-12, .4), (1e-12, .4), (1e-12,0.2),  (1e-12,0.2), (1e-12,0.2),\
                 (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
@@ -380,7 +403,6 @@ class Learner(object):
         optimal =  basinhopping(lossOdeint,x0,minimizer_kwargs=minimizer_kwargs)
 
         beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal.x
-        print(beta)
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5 \
                 = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, \
                     self.data, self.recovered, self.death, self.country, self.s_0, \
@@ -392,8 +414,8 @@ class Learner(object):
                     'Asymptomatic': y2,
                     'Infected data': extended_actual,
                     'Infected': y3,
-                    'Recovered (Alive)': extended_recovered,
-                    'Predicted Recovered (Alive)': y4,
+                    'Recovered': extended_recovered,
+                    'Predicted Recovered': y4,
                     'Death data': extended_death,
                     'Predicted Deaths': y5},
                     index=new_index)
@@ -436,9 +458,10 @@ class Learner(object):
         plt.xticks(np.arange(0, self.predict_range, self.predict_range/8))
         ax.set_ylim(0,max(y3)*1.1)
         ax.plot(plotX,y3,'y-',label="Infected")
-        ax.plot(plotX,y4,'c-',label="Recovered")
-        ax.plot(plotX,y5,'m-',label="Deaths")
         ax.plot(plotXt,extended_actual,'o',label="Infected data")
+        ax.plot(plotX,y4,'c-',label="Recovered")
+        ax.plot(plotXt,extended_recovered,'s',label="Recovered data")
+        ax.plot(plotX,y5,'m-',label="Deaths")
         ax.plot(plotXt,extended_death,'x',label="Death data")
         ax.legend()
        
