@@ -157,7 +157,7 @@ class Learner(object):
                  self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
                 self.startNCases, self.ratio, self.weigthCases, self.weigthRecov))
         x0=[0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
-        print("rodando")
+        print("rodando "+self.districtRegion)
         optimal =  basinhopping(self.loss,x0,minimizer_kwargs=minimizer_kwargs,disp=True, niter_success=1)
             #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
 
