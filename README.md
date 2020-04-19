@@ -334,11 +334,7 @@ Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://tripl
 
 The last equation does not need to solved, because
 
-<img src="http://www.sciweavers.org/tex2img.php?eq=s%28t%29%2Be%28t%29%2Bi%28t%29%2Br%28t%29%20%5Cgeq%201%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="s(t)+e(t)+i(t)+r(t) \geq 1" width="365" height="29" />
-
-$$$
-s(t)+e(t)+i(t)+r(t) \geq 1
-$$$
+<img src="http://www.sciweavers.org/tex2img.php?eq=s%28t%29%2Be%28t%29%2Bi%28t%29%2Br%28t%29%20%5C%20=0%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="s(t)+e(t)+i(t)+r(t) = 0" width="365" height="29" />
 
 ![Model SEIR Covid-19 epidemics for Brazil](./results/modelSEIRBrazil.png)
 
@@ -381,7 +377,7 @@ The splitting of deaths and healed from recoveries of the SEIR model is necessar
 
 The last equation does not need to solved, because
 
-<img src="http://www.sciweavers.org/tex2img.php?eq=s%28t%29%2Be%28t%29%2Bi%28t%29%2Br%28t%29%2Bk%28t%29%20%5Cgeq%201%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="s(t)+e(t)+i(t)+r(t)+k(t) \geq 1" width="365" height="29" />
+<img src="http://www.sciweavers.org/tex2img.php?eq=s%28t%29%2Be%28t%29%2Bi%28t%29%2Br%28t%29%2Bk%28t%29%20%5C%20=0%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="s(t)+e(t)+i(t)+r(t)+k(t) = 0" width="365" height="29" />
 
 The model takes SEIR Model and split the r(t) and k(t) by making γ=a+b.
 
@@ -424,7 +420,7 @@ The inclusion of asymptomatic cases in SEIRD model generates SEAIRD equation sys
 
 The last equation does not need to solved, because
 
-<img src="http://www.sciweavers.org/tex2img.php?eq=s%28t%29%2Ba%28t%29%2Bi%28t%29%2Br%28t%29%2Bk%28t%29+%5Cgeq+1&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="s(t)+a(t)+e(t)+i(t)+r(t)+k(t) \geq 1" width="365" height="29" />
+<img src="http://www.sciweavers.org/tex2img.php?eq=s%28t%29%2Be%28t%29%2Ba%28t%29%2Bi%28t%29%2Br%28t%29%2Bk%28t%29%20%5C%20=0%0A%0A&bc=White&fc=Black&im=jpg&fs=18&ff=modern&edit=0" align="center" border="0" alt="s(t)+e(t)+a(t)+i(t)+r(t)+k(t) = 0" width="365" height="29" />
 
 It is a new completely development model inspired on the paper below, because it does not have same equations and parameters:
 
