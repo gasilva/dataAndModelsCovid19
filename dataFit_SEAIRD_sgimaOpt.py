@@ -364,7 +364,7 @@ class Learner(object):
     def train(self):
         self.death = self.load_dead(self.country)
         self.recovered = self.load_recovered(self.country)
-        self.data = self.load_confirmed(self.country)
+        self.data = self.load_confirmed(self.country) #-self.death#-self.recovered
 
         optimal = minimize(lossOdeint,        
             [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
