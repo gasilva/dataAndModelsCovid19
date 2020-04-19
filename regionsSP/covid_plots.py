@@ -83,7 +83,7 @@ def extend_index(index, new_size):
     return values
 
 def covid_plots(districtRegion, districts4Plot,\
-                startdate="2020-03-15",predict_range = 60, opt = 5, version = "1", show = False):
+                startdate="2020-03-15",predict_range = 60, startCase = 180, opt = 5, version = "1", show = False):
     
     #Initial parameters
     #Choose here your options
@@ -151,7 +151,7 @@ def covid_plots(districtRegion, districts4Plot,\
         model='SEAIRD_sigmaOpt'
 
         df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+districtRegion+'.pkl')
-        time6, cases6 = predictionsPlot(df,180)
+        time6, cases6 = predictionsPlot(df,startCase)
         time6 = time6[0:60]
         cases6 = cases6[0:60]
 
@@ -164,6 +164,7 @@ def covid_plots(districtRegion, districts4Plot,\
         # Plot the data
         plt.rcParams['figure.figsize'] = [9, 7]
         plt.rc('font', size=14)
+        plt.ylim(1e2, 1e5)
         plt.plot(time2, cases2,'r+-',label=districtRegion2) 
         plt.plot(time4, cases4,'mv-',label=districtRegion4) 
         plt.plot(time5, cases5,'cx-',label=districtRegion5) 
