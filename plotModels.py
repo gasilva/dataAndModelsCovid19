@@ -17,7 +17,7 @@ from datetime import datetime,timedelta
 
 def savePlot(strFile):
     if os.path.isfile(strFile):
-        os.remove(strFile)   # Opt.: os.system("del "+strFile)
+        os.remove(strFile) 
     plt.savefig(strFile,dpi=600)
 
 def loadDataFrame(filename):
@@ -34,46 +34,27 @@ df_SEIRDopt = loadDataFrame('./data/SEIRD_sigmaOpt_'+country+'.pkl')
 df_SEAIRD = loadDataFrame('./data/SEAIRD_'+country+'.pkl')
 df_SEAIRDopt = loadDataFrame('./data/SEAIRD_sigmaOpt_'+country+'.pkl')
 df_SIRD = loadDataFrame('./data/SIRD_'+country+'.pkl')
+df_SEAIRDoptGlobal = loadDataFrame('./data/SEAIRD_sigmaOpt_Global'+country+'.pkl')
 
-# susceptible
-# exposed
-# asymptomatic
-# infected_data
-# infected
-# recovered_alive
-# predicted_recovered_alive
-# death_data
-# predicted_deaths
-
-# SIRD SEIR
-# susceptible
-# exposed
-# infected_data
-# infected
-# recovered_data
-# recovered
-# death_data
-# estimated_deaths
-
-# for col in df_SEIR.columns: 
-#     print(col) 
-
+# look at columns names of dataframe chosen
+# print("SEAIRDoptGlobal")
+# for col in df_SEAIRDoptGlobal.columns: 
+#      print(col) 
 # sys.exit()
-
-df = pd.DataFrame({
-            'Infected data': df_SEIRD.infected_data,
-            'SIRD': df_SIRD.infected,
-            'SEIR': df_SEIR.infected,
-            'SEIRD': df_SEIRD.infected,
-            'SEIRD Opt': df_SEIRDopt.infected,
-            'SEAIRD Opt': df_SEAIRDopt.infected},
-            index=df_SEIRD.index
-            )
 
 plt.rc('font', size=14)
 fig, ax = plt.subplots(figsize=(15, 10))
 ax.set_title("Compare Models Infected for "+country)
-df.plot(ax=ax)
+plt.xticks(np.arange(0, 150, 15))
+df_SEIRD.infected_data.plot(ax=ax,style="bo",label="data")
+df_SIRD.infected.plot(ax=ax,label="SIRD")
+df_SEIR.infected.plot(ax=ax,label="SEIR")
+df_SEIRD.infected.plot(ax=ax,label="SEIRD")
+df_SEIRDopt.infected.plot(ax=ax,label="SEIRDopt")
+df_SEAIRD.infected.plot(ax=ax,label="SEAIRD")
+df_SEAIRDopt.infected.plot(ax=ax,label="SEAIRDopt")
+df_SEAIRDoptGlobal.infected.plot(ax=ax,label="SEAIRDoptGlobal")
+plt.legend()
 
 plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=10, 
 xy=(1.04, 0.1), xycoords='axes fraction',
@@ -85,20 +66,19 @@ savePlot("./results/compareModelInfected"+country+".png")
 plt.show() 
 plt.close()
 
-df = pd.DataFrame({
-            'Death data': df_SEIRD.death_data,
-            'SIRD': df_SIRD.estimated_deaths,
-            'SEIR': df_SEIR.recovered,
-            'SEIRD': df_SEIRD.predicted_deaths,
-            'SEIRD Opt': df_SEIRDopt.predicted_deaths,
-            'SEAIRD Opt': df_SEAIRDopt.predicted_deaths},
-            index=df_SEIRD.index
-            )
-
 plt.rc('font', size=14)
 fig, ax = plt.subplots(figsize=(15, 10))
+plt.xticks(np.arange(0, 150, 15))
 ax.set_title("Compare Models Deaths for "+country)
-df.plot(ax=ax)
+df_SEIRD.death_data.plot(ax=ax,style="bo",label="data")
+df_SIRD.estimated_deaths.plot(ax=ax,label="SEIRD")
+df_SEIR.recovered.plot(ax=ax,label="SEIR")
+df_SEIRD.predicted_deaths.plot(ax=ax,label="SEIRD")
+df_SEIRDopt.predicted_deaths.plot(ax=ax,label="SEIRDopt")
+df_SEAIRD.infected.plot(ax=ax,label="SEAIRD")
+df_SEAIRDopt.predicted_deaths.plot(ax=ax,label="SEAIRDopt")
+df_SEAIRDoptGlobal.predicted_deaths.plot(ax=ax,label="SEAIRDoptGlobal")
+plt.legend()
 
 plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=10, 
 xy=(1.04, 0.1), xycoords='axes fraction',
@@ -110,20 +90,19 @@ savePlot("./results/compareModelDeaths"+country+".png")
 plt.show() 
 plt.close()
 
-df = pd.DataFrame({
-            'Recovered data': df_SEAIRDopt.recovered_alive,
-            'SIRD': df_SIRD.recovered,
-            'SEIR': df_SEIR.recovered,
-            'SEIRD': df_SEIRD.predicted_recovered_alive,
-            'SEIRD Opt': df_SEIRDopt.predicted_recovered_alive,
-            'SEAIRD Opt': df_SEAIRDopt.predicted_recovered_alive},
-            index=df_SEIRD.index
-            )
-
 plt.rc('font', size=14)
 fig, ax = plt.subplots(figsize=(15, 10))
+plt.xticks(np.arange(0, 150, 15))
 ax.set_title("Compare Models Recovered for "+country)
-df.plot(ax=ax)
+df_SEAIRDoptGlobal.recovered.plot(ax=ax,style="bo",label="data")
+df_SIRD.recovered.plot(ax=ax,label="SEIRD")
+df_SEIR.recovered.plot(ax=ax,label="SEIR")
+df_SEIRD.predicted_recovered_alive.plot(ax=ax,label="SEIRD")
+df_SEIRDopt.predicted_recovered_alive.plot(ax=ax,label="SEIRDopt")
+df_SEAIRD.predicted_recovered_alive.plot(ax=ax,label="SEAIRD")
+df_SEAIRDopt.predicted_recovered_alive.plot(ax=ax,label="SEAIRDopt")
+df_SEAIRDoptGlobal.predicted_recovered.plot(ax=ax,label="SEAIRDoptGlobal")
+plt.legend()
 
 plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=10, 
 xy=(1.04, 0.1), xycoords='axes fraction',

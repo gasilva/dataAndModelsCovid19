@@ -58,7 +58,7 @@ def parse_arguments(country):
 
     if country1=="Brazil":
         date="3/3/20"
-        s0=68e3
+        s0=85e3
         e0=1e-4
         i0=27
         r0=-200
@@ -266,7 +266,7 @@ class Learner(object):
             y1=mu-(beta*I+mu)*S
             y2=beta*S*I-(mu+sigma)*E
             y3=sigma*E-(mu+gamma)*I-sigma2*I
-            y4=max(0,1.-(y1+y2+y3)) #gamma*I-mu*R+sigma2*I #max(0,1.-(y1+y2+y3))
+            y4=-(y1+y2+y3) #gamma*I-mu*R+sigma2*I #max(0,1.-(y1+y2+y3))
             return [y1,y2,y3,y4]
         y0=[s_0,e_0,i_0,r_0]
         tspan=np.arange(0, size, 1)
@@ -279,7 +279,7 @@ class Learner(object):
     def train(self):
         death = self.load_dead(self.country)
         recovered = self.load_recovered(self.country)
-        data = (self.load_confirmed(self.country) - recovered - death)
+        data = (self.load_confirmed(self.country) ) #- recovered - death)
         recovered = recovered+death
 
         optimal = minimize(lossOdeint,        
@@ -342,7 +342,7 @@ def lossOdeint(point, data, recovered, s_0, e_0, i_0, r_0):
         y1=mu-(beta*I+mu)*S
         y2=beta*S*I-(mu+sigma)*E
         y3=sigma*E-(mu+gamma)*I-sigma2*I
-        y4=max(0,1.-(y1+y2+y3)) #gamma*I-mu*R+sigma2*I #max(0,1.-(y1+y2+y3))
+        y4=-(y1+y2+y3) #gamma*I-mu*R+sigma2*I #max(0,1.-(y1+y2+y3))
         return [y1,y2,y3,y4]
     y0=[s_0,e_0,i_0,r_0]
     tspan=np.arange(0, size, 1)
@@ -350,7 +350,7 @@ def lossOdeint(point, data, recovered, s_0, e_0, i_0, r_0):
     l1 = np.sqrt(np.mean((res[:,2]- data)**2))
     l2 = np.sqrt(np.mean((res[:,3]- recovered)**2))
     #weight for cases
-    u = 0.15
+    u = 0.6
    #weight for deaths
     v = 1 - u
     return u*l1 + v*l2
@@ -359,12 +359,6 @@ def lossOdeint(point, data, recovered, s_0, e_0, i_0, r_0):
 
 def main(country):
     
-    START_DATE = {
-  'Japan': '1/22/20',
-  'Italy': '1/31/20',
-  'Republic of Korea': '1/22/20',
-  'Iran (Islamic Republic of)': '2/19/20'}
-
     countries, download, startdate, predict_range , s_0, e_0, i_0, r_0, k_0 = parse_arguments(country)
 
     if download:

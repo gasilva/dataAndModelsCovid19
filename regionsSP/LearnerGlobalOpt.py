@@ -27,6 +27,39 @@ from scipy.optimize import minimize
 from scipy.optimize import basinhopping
 
 
+def load_confirmed(districtRegion, startdate):
+        dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
+        df = pd.read_csv('./data/DRS_confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
+        y=[]
+        x=[]
+        for i in range(0,len(df.date)):
+            y.append(df[districtRegion].values[i])
+            x.append(df.date.values[i])
+        df2=pd.DataFrame(data=y,index=x,columns=[""])
+        df2=df2[startdate:]
+        return df2
+
+def load_dead(districtRegion, startdate):
+    dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
+    df = pd.read_csv('./data/DRS_mortes.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
+    y=[]
+    x=[]
+    for i in range(0,len(df.date)):
+        y.append(df[districtRegion].values[i])
+        x.append(df.date.values[i])
+    df2=pd.DataFrame(data=y,index=x,columns=[""])
+    df2=df2[startdate:]
+    return df2
+
+def extend_index(index, new_size):
+    values = index.values
+    #current = datetime.strptime(index[-1], '%Y-%m-%d')
+    current = index[-1]
+    while len(values) < new_size:
+        current = current + timedelta(days=1)
+        values = np.append(values, current)
+    return values
+
 class Learner(object):
     def __init__(self, districtRegion, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov):
         self.districtRegion = districtRegion

@@ -49,41 +49,9 @@ def loadDataFrame(filename):
     df.columns = [c.lower().replace(')', '') for c in df.columns]
     return df
 
-def load_confirmed(districtRegion, startdate):
-        dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
-        df = pd.read_csv('./data/DRS_confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
-        y=[]
-        x=[]
-        for i in range(0,len(df.date)):
-            y.append(df[districtRegion].values[i])
-            x.append(df.date.values[i])
-        df2=pd.DataFrame(data=y,index=x,columns=[""])
-        df2=df2[startdate:]
-        return df2
-
-def load_dead(districtRegion, startdate):
-    dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
-    df = pd.read_csv('./data/DRS_mortes.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
-    y=[]
-    x=[]
-    for i in range(0,len(df.date)):
-        y.append(df[districtRegion].values[i])
-        x.append(df.date.values[i])
-    df2=pd.DataFrame(data=y,index=x,columns=[""])
-    df2=df2[startdate:]
-    return df2
-
-def extend_index(index, new_size):
-    values = index.values
-    #current = datetime.strptime(index[-1], '%Y-%m-%d')
-    current = index[-1]
-    while len(values) < new_size:
-        current = current + timedelta(days=1)
-        values = np.append(values, current)
-    return values
-
-
-def covid_plots(districtRegion, startdate="2020-03-15",predict_range = 60, opt = 5, version = "1", show = False):
+def covid_plots(districtRegion, districts4Plot,\
+                startdate="2020-03-15",predict_range = 60, opt = 5, version = "1", show = False):
+    
     #Initial parameters
     #Choose here your options
 
@@ -146,15 +114,15 @@ def covid_plots(districtRegion, startdate="2020-03-15",predict_range = 60, opt =
     df = pd.read_csv('./data/DRS_confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
 
     #prepare data for plotting
-    districtRegion1="DRS 01 - Grande São Paulo"
+    districtRegion1=districts4Plot[0]
     [time1,cases1]=getCases(df,districtRegion1)
-    districtRegion2="DRS 07 - Campinas"
+    districtRegion2=districts4Plot[1]
     [time2,cases2]=getCases(df,districtRegion2)
-    districtRegion3="DRS 04 - Baixada Santista"
+    districtRegion3=districts4Plot[2]
     [time3,cases3]=getCases(df,districtRegion3)
-    districtRegion4="DRS 13 - Ribeirão Preto"
+    districtRegion4=districts4Plot[3]
     [time4,cases4]=getCases(df,districtRegion4)
-    districtRegion5="DRS 03 - Araraquara"
+    districtRegion5=districts4Plot[4]
     [time5,cases5]=getCases(df,districtRegion5)
 
     if opt==1 or opt==0 or opt==4:
