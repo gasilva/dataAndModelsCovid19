@@ -26,7 +26,7 @@ Select one option 1 to 5 by variable opt
 #opt=2 logistic model prediction
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
-#opt=5 SIR-D Model
+#opt=5 SEAIR-D Model
 opt=0
 ```
 
