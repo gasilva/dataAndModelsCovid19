@@ -267,7 +267,7 @@ def covid_plots(districtRegion, startdate="2020-03-15",predict_range = 60, opt =
         if districtRegion==districtRegion1:
             casesFit=cases1
             timeFit=time1
-            maxCases=27e4
+            maxCases=50e3
             maxTime=80
             guessExp=2
 

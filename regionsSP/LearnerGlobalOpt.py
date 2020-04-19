@@ -117,24 +117,13 @@ class Learner(object):
     def train(self):
         self.data = self.load_confirmed(self.districtRegion)
         self.death = self.load_dead(self.districtRegion)
-
-        # optimal = minimize(self.loss,        
-        #     [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
-        #     args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
-        #         self.startNCases, self.ratio, self.weigthCases, self.weigthRecov),
-        #     method='L-BFGS-B',
-        #     bounds=[(1e-12, 50), (1e-12, 50), (1./160.,0.2),  (1./160.,0.2), (1./160.,0.2),\
-        #          (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)])
-            #beta, beta2, sigma, sigma2, sigma3, gamma, b
-
-        
+      
         bounds=[(1e-12, .4), (1e-12, .4), (1e-12,0.2),  (1e-12,0.2), (1e-12,0.2),\
                 (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
         minimizer_kwargs = dict(method="L-BFGS-B", bounds=bounds, args=(self.data, self.death, self.s_0,\
                  self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
                 self.startNCases, self.ratio, self.weigthCases, self.weigthRecov))
         x0=[0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
-
         print("rodando")
         optimal =  basinhopping(self.loss,x0,minimizer_kwargs=minimizer_kwargs,disp=True, niter_success=1)
             #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
