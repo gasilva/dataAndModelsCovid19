@@ -58,7 +58,7 @@ def parse_arguments(country):
 
     if country1=="Brazil":
         date="3/3/20"
-        s0=70e3
+        s0=250e3
         e0=1e-4
         i0=27
         r0=0
@@ -264,7 +264,7 @@ class Learner(object):
             y2=beta*S*I-(sigma)*E
             y3=sigma*E-(gamma)*I-sigma2*I
             y4=b*I+b/gamma*sigma2*I
-            y5=max(0,1.-(y1+y2+y3+y4))
+            y5=-(y1+y2+y3+y4)
             return [y1,y2,y3,y4,y5]
         y0=[s_0,e_0,i_0,r_0,d_0]
         tspan=np.arange(0, size, 1)
@@ -280,8 +280,8 @@ class Learner(object):
     def train(self):
         self.death = self.load_dead(self.country)
         self.healed = self.load_recovered(self.country)
-        self.recovered = self.healed + self.death
-        self.data = self.load_confirmed(self.country) - self.recovered
+        self.recovered = self.healed #+ self.death
+        self.data = self.load_confirmed(self.country) #- self.recovered
 
         optimal = minimize(lossOdeint,        
             [0.001, 0.001, 0.001, 0.001, 0.001],
@@ -350,7 +350,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, i_0, r_0, d_0):
         y2=beta*S*I-(sigma)*E
         y3=sigma*E-(gamma)*I-sigma2*I
         y4=b*I+b/gamma*sigma2*I
-        y5=max(0,1.-(y1+y2+y3+y4))
+        y5=-(y1+y2+y3+y4)
         return [y1,y2,y3,y4,y5]
     y0=[s_0,e_0,i_0,r_0,d_0]
     tspan=np.arange(0, size, 1)

@@ -78,6 +78,8 @@ def parse_arguments(country):
     parser = argparse.ArgumentParser()
 
     country1=country
+    prediction_days=150
+    a0=0
 
     if country1=="Brazil":
         date="3/3/20"
@@ -134,8 +136,15 @@ def parse_arguments(country):
         i0=70
         r0=0
         k0=300
-    
-    a0=0
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=150
+        #weigth for fitting data
+        weigthCases=0.6
+        weigthRecov=0.1
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
 
     parser.add_argument(
         '--countries',
@@ -434,7 +443,7 @@ class Learner(object):
         ha='left',rotation=90)
 
         #save simulation results
-        df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
+        df.to_pickle('./data/SEAIRD_sigmaOpt_Global'+self.country+'.pkl')
 
         #make picture
         country=self.country
