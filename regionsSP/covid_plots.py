@@ -63,22 +63,10 @@ def covid_plots(districtRegion, districts4Plot,\
     #opt=4 log plot + bar plot
     #opt=5 SEAIR-D Model
 
-    #load new confirmed cases
-    # data_d = load_json("./data_url.json")
-    # download_data(data_d)
-
     #plot version - changes the file name png
 
-    #choose districtRegion for curve fitting
-    #choose districtRegion for growth curve
-    #one of districtRegions above
-    #districtRegion="DRS 01 - Grande São Paulo"
-    # districtRegion = sys.argv[2]
-
-    #choose districtRegion for SEIRD model
-    # districtRegions above are already adjusted
+    #choose districtRegion
     districtRegionSEAIRD=districtRegion
-    # districtRegionSEAIRD = sys.argv[2]
 
     # For other districtRegions you can run at command line
     # but be sure to define S_0, I_0, R_0, d_0
@@ -130,8 +118,6 @@ def covid_plots(districtRegion, districts4Plot,\
         model='SEAIRD_sigmaOpt'
 
         df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+districtRegion+'.pkl')
-        # for col in df.columns: 
-            # print(col) 
         time6, cases6 = predictionsPlot(df,180)
         time6 = time6[0:60]
         cases6 = cases6[0:60]
@@ -182,15 +168,10 @@ def covid_plots(districtRegion, districts4Plot,\
 
         style = dict(size=10, color='gray')
 
-        plt.annotate('Dr. Guilherme A. L. da Silva, www.ats4i.com', fontsize=10, 
+        plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS', fontsize=10, 
                 xy=(1.05, 0.1), xycoords='axes fraction',
                 xytext=(0, 0), textcoords='offset points',
                 ha='right',rotation=90)
-        # plt.annotate('Source: https://github.com/CSSEGISandData/COVID-19.git', fontsize=10, 
-        #         xy=(1.06,0.1), xycoords='axes fraction',
-        #         xytext=(0, 0), textcoords='offset points',
-        #         ha='left',rotation=90)
-
 
         plt.xlabel('Days after 100th case')
         plt.ylabel('Official registered cases')
@@ -288,7 +269,7 @@ def covid_plots(districtRegion, districts4Plot,\
         plt.ylabel("Total number of infected people in "+districtRegion)
         plt.ylim((min(y)*0.9,maxCases))
 
-        plt.annotate('Dr. Guilherme A. L. da Silva, www.ats4i.com', fontsize=10, 
+        plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS', fontsize=10, 
                 xy=(1.05, -0.12), xycoords='axes fraction',
                 xytext=(0, 0), textcoords='offset points',
                 ha='right',rotation=90)
@@ -372,14 +353,10 @@ def covid_plots(districtRegion, districts4Plot,\
         for i in range(1,len(ind)):
             plt.text(x = ind[i]-0.5 , y = growth[i]+0.5, s = " {:.1f}%".format(growth[i]), size = 7)
 
-        plt.annotate('Dr. Guilherme A. L. da Silva, www.ats4i.com', fontsize=10, 
+        plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS', fontsize=10, 
                 xy=(1.24, 0.1), xycoords='axes fraction',
                 xytext=(0, 0), textcoords='offset points',
                 ha='right',rotation=90)
-        # plt.annotate('Source: https://github.com/CSSEGISandData/COVID-19.git', fontsize=10, 
-        #         xy=(1.25,0.1), xycoords='axes fraction',
-        #         xytext=(0, 0), textcoords='offset points',
-        #         ha='left',rotation=90)
 
         #save figs
         strFile ='./results/coronaPythonGrowthEN_'+districtRegion+'.png'
@@ -425,14 +402,10 @@ def covid_plots(districtRegion, districts4Plot,\
         for i in range(1,len(ind)):
             plt.text(x = ind[i]-0.5 , y = growth[i]+5, s = " {:.0f}".format(growth[i]), size = 7)
 
-        plt.annotate('Dr. Guilherme A. L. da Silva, www.ats4i.com', fontsize=10, 
+        plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS', fontsize=10, 
                 xy=(1.24, 0.1), xycoords='axes fraction',
                 xytext=(0, 0), textcoords='offset points',
                 ha='right',rotation=90)
-        # plt.annotate('Source: https://github.com/CSSEGISandData/COVID-19.git', fontsize=10, 
-        #         xy=(1.25,0.1), xycoords='axes fraction',
-        #         xytext=(0, 0), textcoords='offset points',
-        #         ha='left',rotation=90)
 
         #save figs
         strFile ='./results/coronaPythonGrowthDeltaCasesEN_'+districtRegion+'.png'
@@ -472,7 +445,7 @@ def covid_plots(districtRegion, districts4Plot,\
         print(f"districtRegion={districtRegion}, beta={beta:.8f}, 1/sigma={1/sigma:.8f}, 1/sigma2={1/sigma2:.8f},gamma={gamma:.8f}, b={b:.8f}, r_0:{(beta/gamma):.8f}")
         '''
         #plot margin annotation
-        plt.annotate('Dr. Guilherme A. L. da Silva, www.ats4i.com', fontsize=10, 
+        plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS', fontsize=10, 
         xy=(1.04, 0.1), xycoords='axes fraction',
         xytext=(0, 0), textcoords='offset points',
         ha='right',rotation=90)
@@ -497,7 +470,7 @@ def covid_plots(districtRegion, districts4Plot,\
         ax.plot(new_index[range(0,len(extended_death))],extended_death,'x',label="Death data")
         ax.legend()
        
-        plt.annotate('Dr. Guilherme A. L. da Silva, www.ats4i.com', fontsize=10, 
+        plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS', fontsize=10, 
         xy=(1.04, 0.1), xycoords='axes fraction',
         xytext=(0, 0), textcoords='offset points',
         ha='right',rotation=90)
