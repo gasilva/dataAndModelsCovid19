@@ -77,7 +77,7 @@ Choose country to analyze data by SEAIRD model. Some countries are already adjus
 # "United Kingdom"
 # "US"
 # Countries above are already adjusted
-countrySIRD="Brazil"
+countrySEAIRD="Brazil"
 ```
 ##### Model for Brazilian States
 
@@ -115,7 +115,7 @@ state="SP"
 Choose state to analyze data by SEAIRD model.
 
 ```python
-stateSIRD="SP"
+stateSEAIRD="SP"
 ```
 
 In SEAIR-D_Brazil.py change the initial conditions and select the state:

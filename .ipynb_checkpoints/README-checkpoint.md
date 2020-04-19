@@ -77,7 +77,7 @@ Choose country to analyze data by SEAIRD model. Some countries are already adjus
 # "United Kingdom"
 # "US"
 # Countries above are already adjusted
-countrySIRD="Brazil"
+countrySEAIRD="Brazil"
 ```
 ##### Model for Brazilian States
 
