@@ -158,9 +158,8 @@ class Learner(object):
                 self.startNCases, self.ratio, self.weigthCases, self.weigthRecov))
         x0=[0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
         print("rodando "+self.districtRegion)
-        optimal =  basinhopping(self.loss,x0,minimizer_kwargs=minimizer_kwargs,disp=True, niter_success=1)
+        optimal =  basinhopping(self.loss,x0,minimizer_kwargs=minimizer_kwargs, disp=True, niter_success=1)
             #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
-
         print("\n", optimal)
         beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal.x
         new_index, extended_actual, extended_death, y0, y1, y2, y3, y4, y5 \
