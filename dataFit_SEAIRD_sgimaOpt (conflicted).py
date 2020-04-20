@@ -364,7 +364,7 @@ class Learner(object):
     def train(self):
         self.death = self.load_dead(self.country)
         self.recovered = self.load_recovered(self.country)
-        self.data = self.load_confirmed(self.country)
+        self.data = self.load_confirmed(self.country) #-self.death#-self.recovered
 
         optimal = minimize(lossOdeint,        
             [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
@@ -447,7 +447,7 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
-        country=self.country
+        districtRegion=self.country
         strFile ="./results/ZoomModelSEAIRDOpt"+country+".png"
         savePlot(strFile)
 
