@@ -1,15 +1,9 @@
 
-
 # Import the necessary packages and modules
 import sys
-import csv
-import math
-import array
-import operator
 import argparse
 import sys
 import json
-import ssl
 import os
 import urllib.request
 import matplotlib.pyplot as plt
@@ -19,12 +13,9 @@ import pandas as pd
 from csv import reader
 from csv import writer
 from datetime import datetime,timedelta
-from sklearn.metrics import mean_squared_error
 from scipy.optimize import curve_fit
-from scipy.optimize import fsolve
 from scipy.integrate import odeint
-from scipy.integrate import solve_ivp
-from scipy.optimize import minimize
+from scipy.optimize import basinhopping
 
 def logGrowth(growth,finalDay):
     x =[]
@@ -66,7 +57,6 @@ def getCases(df,country):
     tamCol = np.shape(df)[1]
     jx=0
     for i in range(0,tamCol):
-        tamCountry=0
         j1=0
         if df[i][1]==country and not df[i][0]=="ignore":
             for j in range(4,tamLi):
@@ -88,6 +78,8 @@ def parse_arguments(country):
     parser = argparse.ArgumentParser()
 
     country1=country
+    prediction_days=150
+    a0=0
 
     if country1=="Brazil":
         date="3/3/20"
@@ -95,14 +87,14 @@ def parse_arguments(country):
         e0=1e-4
         i0=100
         r0=0
-        k0=70
+        k0=50
         #start fitting when the number of cases >= start
-        start=50
+        start=0
         #how many days is the prediction
         prediction_days=150
         #weigth for fitting data
-        weigthCases=0.62
-        weigthRecov=0.15
+        weigthCases=0.6
+        weigthRecov=0.1
         #weightDeaths = 1 - weigthCases - weigthRecov
 
     if country1=="China":
@@ -144,8 +136,15 @@ def parse_arguments(country):
         i0=70
         r0=0
         k0=300
-    
-    a0=0
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=150
+        #weigth for fitting data
+        weigthCases=0.6
+        weigthRecov=0.1
+        #weightDeaths = 1 - weigthCases - weigthRecov
+
 
     parser.add_argument(
         '--countries',
@@ -156,7 +155,7 @@ def parse_arguments(country):
     parser.add_argument(
         '--download-data',
         dest='download_data',
-        default=False
+        default=True
     )
 
     parser.add_argument(
@@ -169,7 +168,7 @@ def parse_arguments(country):
         '--prediction-days',
         dest='predict_range',
         type=int,
-        default=150)
+        default=prediction_days)
 
     parser.add_argument(
         '--S_0',
@@ -309,11 +308,8 @@ class Learner(object):
     def load_recovered(self, country):
         df = pd.read_csv('data/time_series_19-covid-Recovered-country.csv')
         country_df = df[df['Country/Region'] == country]
-        final=len(country_df)
-        # country_df['4/15/20']=220
-        # country_df['4/14/20']=190
-        # print(country_df)
         return country_df.iloc[0].loc[self.start_date:]
+
 
     def load_dead(self, country):
         df = pd.read_csv('data/time_series_19-covid-Deaths-country.csv')
@@ -339,7 +335,6 @@ class Learner(object):
             A = y[2]
             I = y[3]
             R = y[4]
-            D = y[5]
             p=0.2
             # beta2=beta
             y0=-(beta2*A+beta*I)*S+mu*S #S
@@ -352,7 +347,7 @@ class Learner(object):
         
         y0=[s_0,e_0,a_0,i_0,r_0,d_0]
         tspan=np.arange(0, size, 1)
-        res=odeint(SEAIRD,y0,tspan,hmax=0.01)
+        res=odeint(SEAIRD,y0,tspan,hmax=0.1)
 
         extended_actual = np.concatenate((data.values, [None] * (size - len(data.values))))
         extended_recovered = np.concatenate((recovered.values, [None] * (size - len(recovered.values))))
@@ -362,47 +357,78 @@ class Learner(object):
 
     #run optimizer and plotting
     def train(self):
+        #data for deaths
         self.death = self.load_dead(self.country)
+        #data for recovered
         self.recovered = self.load_recovered(self.country)
-        self.data = self.load_confirmed(self.country)
 
-        optimal = minimize(lossOdeint,        
-            [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
-            args=(self.data, self.recovered, self.death, self.s_0, self.e_0,\
-                self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, self.weigthCases, self.weigthRecov),
-            method='L-BFGS-B',
-            bounds=[(1e-12, .4), (1e-12, .4), (1./160.,0.2),  (1./160.,0.2), (1./160.,0.2),\
-                (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)])
-            #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
+        #try to fix data with big jump
+        # recoveredDiff=np.asfarray(np.diff(self.recovered),float)
+        # def func(x, a, b, c):
+        #     return a * np.exp(b * (x-c))
+        # for i in range(0,len(recoveredDiff)):
+        #     if abs(recoveredDiff[i])>5000.:
+        #         backI=20
+        #         i += 3
+        #         if i<backI:
+        #             backI=i
+        #         #weigth for end data points
+        #         sigma = np.ones(backI)
+        #         #weigth for the middle points
+        #         sigma[[0, -1]] = 0.001
+        #         #curve fitting exponential
+        #         popt, pcov = curve_fit(func, range(i-backI,i,1), self.recovered[i-backI:i],\
+        #             [2.02,0.5,22], maxfev=1000, sigma=sigma)
+        #         # print(popt)
+        #         # plt.plot(range(i-backI,i,1),self.recovered[i-backI:i],'o')
+        #         #new recovered fitted data
+        #         self.recovered[i-backI:i]=func(range(i-backI,i), *popt)
+        #         # plt.plot(range(i-backI,i,1),self.recovered[i-backI:i],'-')
+        #         # plt.show()
+        #         # plt.close()
 
+        #new cases data
+        self.data = self.load_confirmed(self.country) #-self.death#-self.recovered
+
+        #global optimization for parameters
+        bounds=[(1e-12, .4), (1e-12, .4), (1e-12,0.2),  (1e-12,0.2), (1e-12,0.2),\
+                (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
+        #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
+        minimizer_kwargs = dict(method="L-BFGS-B", bounds=bounds, args=(self.data, self.recovered, \
+            self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
+                self.weigthCases, self.weigthRecov))
+        x0=[0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001]
+        optimal =  basinhopping(lossOdeint,x0,minimizer_kwargs=minimizer_kwargs)
+
+        #predict results with optimum parameters
         beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal.x
-        print(beta)
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5 \
                 = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, \
                     self.data, self.recovered, self.death, self.country, self.s_0, \
                     self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
 
+        #dataframe for plotting and saving
         df = pd.DataFrame({
                     'Susceptible': y0,
                     'Exposed': y1,
                     'Asymptomatic': y2,
                     'Infected data': extended_actual,
                     'Infected': y3,
-                    'Recovered (Alive)': extended_recovered,
-                    'Predicted Recovered (Alive)': y4,
+                    'Recovered': extended_recovered,
+                    'Predicted Recovered': y4,
                     'Death data': extended_death,
                     'Predicted Deaths': y5},
                     index=new_index)
 
+        #plotting
         plt.rc('font', size=14)
         fig, ax = plt.subplots(figsize=(15, 10))
-        ax.set_title("SEAIR-D Model for "+self.country)
+        ax.set_title("Global Opt - SEAIR-D Model for "+self.country)
         ax.set_ylim((0, max(y0)*1.1))
-        df.plot(ax=ax) #style='.-')
+        df.plot(ax=ax)
         print(f"country={self.country}, beta={beta:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
             f" 1/sigma2={1/sigma2:.8f},1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f},"+\
             f" mu={mu:.8f}, r_0:{(beta/gamma):.8f}")
-          
         plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=10, 
         xy=(1.04, 0.1), xycoords='axes fraction',
         xytext=(0, 0), textcoords='offset points',
@@ -416,15 +442,17 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
-        df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
+        #save simulation results
+        df.to_pickle('./data/SEAIRD_sigmaOpt_Global'+self.country+'.pkl')
 
+        #make picture
         country=self.country
-        strFile ="./results/modelSEAIRDOpt"+country+".png"
+        strFile ="./results/modelSEAIRDOptGlobalOptimum"+country+".png"
         savePlot(strFile)
-
         plt.show()
         plt.close()
 
+        #second picture
         plotX=new_index[range(0,self.predict_range)]
         plotXt=new_index[range(0,len(extended_actual))]
         fig, ax = plt.subplots(figsize=(15, 10))
@@ -432,12 +460,12 @@ class Learner(object):
         plt.xticks(np.arange(0, self.predict_range, self.predict_range/8))
         ax.set_ylim(0,max(y3)*1.1)
         ax.plot(plotX,y3,'y-',label="Infected")
-        ax.plot(plotX,y4,'c-',label="Recovered")
-        ax.plot(plotX,y5,'m-',label="Deaths")
         ax.plot(plotXt,extended_actual,'o',label="Infected data")
+        ax.plot(plotX,y4,'c-',label="Recovered")
+        ax.plot(plotXt,extended_recovered,'s',label="Recovered data")
+        ax.plot(plotX,y5,'m-',label="Deaths")
         ax.plot(plotXt,extended_death,'x',label="Death data")
         ax.legend()
-       
         plt.annotate('Dr. Guilherme A. L. da Silva, www.ats4i.com', fontsize=10, 
         xy=(1.04, 0.1), xycoords='axes fraction',
         xytext=(0, 0), textcoords='offset points',
@@ -447,10 +475,10 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
+        #make a picture of the zoom
         country=self.country
-        strFile ="./results/ZoomModelSEAIRDOpt"+country+".png"
+        strFile ="./results/ZoomModelSEAIRDOptGlobalOptimum"+country+".png"
         savePlot(strFile)
-
         plt.show()
         plt.close()
 
@@ -465,7 +493,6 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
         A = y[2]
         I = y[3]
         R = y[4]
-        D = y[5]
         p=0.2
         # beta2=beta
         y0=-(beta2*A+beta*I)*S+mu*S #S
@@ -478,7 +505,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
 
     y0=[s_0,e_0,a_0,i_0,r_0,d_0]
     tspan=np.arange(0, size, 1)
-    res=odeint(SEAIRD,y0,tspan,hmax=0.01)
+    res=odeint(SEAIRD,y0,tspan,hmax=0.1)
 
     tot=0
     l1=0
@@ -506,11 +533,6 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
 
 def main(country):
     
-    START_DATE = {
-  'Japan': '1/22/20',
-  'Italy': '1/31/20',
-  'Republic of Korea': '1/22/20',
-  'Iran (Islamic Republic of)': '2/19/20'}
 
     countries, download, startdate, predict_range , s_0, e_0, a_0, i_0, r_0, d_0, startNCases, \
         weigthCases, weigthRecov = parse_arguments(country)
@@ -563,7 +585,7 @@ df=df.transpose()
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
 #opt=5 SEAIR-D Model
-opt=5
+opt=0
 
 #prepare data for plotting log chart
 country1="US"
@@ -627,7 +649,7 @@ if opt==1 or opt==0 or opt==4:
     # model='SIRD'
 
     df = loadDataFrame('./data/'+model+'_'+country+'.pkl')
-    time6, cases6 = predictionsPlot(df,80,180)
+    time6, cases6 = predictionsPlot(df,80,250)
 
     #model
     #33% per day
@@ -708,7 +730,7 @@ if opt==2 or opt==0:
         #33% per day
         x =[]
         y = []
-        x=np.linspace(0,30,31)
+        x=np.linspace(0,120,121)
         for i in range(0,len(x)):
             if i==0:
                 y.append(100)
@@ -718,7 +740,7 @@ if opt==2 or opt==0:
         #50% per day
         x1 =[]
         y1 = []
-        x1=np.linspace(0,30,31)
+        x1=np.linspace(0,120,121)
         for i in range(0,len(x1)):
             if i==0:
                 y1.append(100)
@@ -744,9 +766,9 @@ if opt==2 or opt==0:
     if country==country3:
         casesFit=cases3
         timeFit=time3
-        maxCases=50e3
-        maxTime=50
-        guessExp=0.5
+        maxCases=90e3
+        maxTime=100
+        guessExp=1
 
     if country==country4:
         casesFit=cases4
@@ -765,7 +787,7 @@ if opt==2 or opt==0:
     print("Errors = ",errors)
  
     #exponential curve
-    exp_fit = curve_fit(exponential_model,timeFit,casesFit,p0=[guessExp,guessExp,guessExp])
+    exp_fit = curve_fit(exponential_model,timeFit,casesFit,p0=[guessExp,guessExp,guessExp],maxfev=10000)
 
     #plot
     pred_x = list(range(len(time3)+1,maxTime))
