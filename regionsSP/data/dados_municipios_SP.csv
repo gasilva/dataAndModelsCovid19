@@ -1,5 +1,6 @@
 date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_ibge_code,confirmed_per_100k_inhabitants,death_rate,DRS
-2020-04-18,SP,TOTAL,state,13894,991,52,True,45919049.0,35.0,30.2576,0.0713,Indefinido
+2020-04-19,SP,TOTAL,state,14267,1015,53,True,45919049.0,35.0,31.06989,0.0711,Indefinido
+2020-04-18,SP,TOTAL,state,13894,991,52,False,45919049.0,35.0,30.2576,0.0713,Indefinido
 2020-04-17,SP,TOTAL,state,12841,928,51,False,45919049.0,35.0,27.96443,0.0723,Indefinido
 2020-04-16,SP,TOTAL,state,11568,853,50,False,45919049.0,35.0,25.19216,0.0737,Indefinido
 2020-04-15,SP,TOTAL,state,11043,778,49,False,45919049.0,35.0,24.04884,0.0705,Indefinido
@@ -51,7 +52,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-02-27,SP,TOTAL,state,1,0,3,False,45919049.0,35.0,0.00218,,Indefinido
 2020-02-26,SP,TOTAL,state,1,0,2,False,45919049.0,35.0,0.00218,,Indefinido
 2020-02-25,SP,TOTAL,state,1,0,1,False,45919049.0,35.0,0.00218,,Indefinido
-2020-04-18,SP,Adamantina,city,1,0,13,True,35068.0,3500105.0,2.8516,,DRS 09 - Marília
+2020-04-19,SP,Adamantina,city,1,0,14,True,35068.0,3500105.0,2.8516,,DRS 09 - Marília
+2020-04-18,SP,Adamantina,city,1,0,13,False,35068.0,3500105.0,2.8516,,DRS 09 - Marília
 2020-04-17,SP,Adamantina,city,1,0,12,False,35068.0,3500105.0,2.8516,,DRS 09 - Marília
 2020-04-16,SP,Adamantina,city,1,0,11,False,35068.0,3500105.0,2.8516,,DRS 09 - Marília
 2020-04-15,SP,Adamantina,city,1,0,10,False,35068.0,3500105.0,2.8516,,DRS 09 - Marília
@@ -64,7 +66,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-05,SP,Adamantina,city,0,0,3,False,35068.0,3500105.0,,,DRS 09 - Marília
 2020-04-04,SP,Adamantina,city,1,0,2,False,35068.0,3500105.0,2.8516,,DRS 09 - Marília
 2020-04-03,SP,Adamantina,city,1,0,1,False,35068.0,3500105.0,2.8516,,DRS 09 - Marília
-2020-04-18,SP,Agudos,city,5,1,17,True,37214.0,3500709.0,13.4358,0.2,DRS 06 - Bauru
+2020-04-19,SP,Agudos,city,6,1,18,True,37214.0,3500709.0,16.12296,0.1667,DRS 06 - Bauru
+2020-04-18,SP,Agudos,city,5,1,17,False,37214.0,3500709.0,13.4358,0.2,DRS 06 - Bauru
 2020-04-17,SP,Agudos,city,4,1,16,False,37214.0,3500709.0,10.74864,0.25,DRS 06 - Bauru
 2020-04-16,SP,Agudos,city,4,1,15,False,37214.0,3500709.0,10.74864,0.25,DRS 06 - Bauru
 2020-04-15,SP,Agudos,city,4,1,14,False,37214.0,3500709.0,10.74864,0.25,DRS 06 - Bauru
@@ -81,10 +84,12 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-04,SP,Agudos,city,1,0,3,False,37214.0,3500709.0,2.68716,,DRS 06 - Bauru
 2020-04-03,SP,Agudos,city,1,0,2,False,37214.0,3500709.0,2.68716,,DRS 06 - Bauru
 2020-04-02,SP,Agudos,city,1,0,1,False,37214.0,3500709.0,2.68716,,DRS 06 - Bauru
-2020-04-18,SP,Alambari,city,1,0,3,True,6025.0,3500758.0,16.59751,,DRS 16 - Sorocaba
+2020-04-19,SP,Alambari,city,1,0,4,True,6025.0,3500758.0,16.59751,,DRS 16 - Sorocaba
+2020-04-18,SP,Alambari,city,1,0,3,False,6025.0,3500758.0,16.59751,,DRS 16 - Sorocaba
 2020-04-17,SP,Alambari,city,1,0,2,False,6025.0,3500758.0,16.59751,,DRS 16 - Sorocaba
 2020-04-16,SP,Alambari,city,1,0,1,False,6025.0,3500758.0,16.59751,,DRS 16 - Sorocaba
-2020-04-18,SP,Americana,city,25,3,19,True,239597.0,3501608.0,10.43419,0.12,DRS 07 - Campinas
+2020-04-19,SP,Americana,city,25,3,20,True,239597.0,3501608.0,10.43419,0.12,DRS 07 - Campinas
+2020-04-18,SP,Americana,city,25,3,19,False,239597.0,3501608.0,10.43419,0.12,DRS 07 - Campinas
 2020-04-17,SP,Americana,city,24,3,18,False,239597.0,3501608.0,10.01682,0.125,DRS 07 - Campinas
 2020-04-16,SP,Americana,city,17,3,17,False,239597.0,3501608.0,7.09525,0.1765,DRS 07 - Campinas
 2020-04-15,SP,Americana,city,15,2,16,False,239597.0,3501608.0,6.26051,0.1333,DRS 07 - Campinas
@@ -103,7 +108,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,Americana,city,2,0,3,False,239597.0,3501608.0,0.83473,,DRS 07 - Campinas
 2020-04-01,SP,Americana,city,2,0,2,False,239597.0,3501608.0,0.83473,,DRS 07 - Campinas
 2020-03-31,SP,Americana,city,2,0,1,False,239597.0,3501608.0,0.83473,,DRS 07 - Campinas
-2020-04-18,SP,Amparo,city,5,0,8,True,72195.0,3501905.0,6.92569,,DRS 07 - Campinas
+2020-04-19,SP,Amparo,city,5,0,9,True,72195.0,3501905.0,6.92569,,DRS 07 - Campinas
+2020-04-18,SP,Amparo,city,5,0,8,False,72195.0,3501905.0,6.92569,,DRS 07 - Campinas
 2020-04-17,SP,Amparo,city,5,0,7,False,72195.0,3501905.0,6.92569,,DRS 07 - Campinas
 2020-04-16,SP,Amparo,city,3,0,6,False,72195.0,3501905.0,4.15541,,DRS 07 - Campinas
 2020-04-15,SP,Amparo,city,4,0,5,False,72195.0,3501905.0,5.54055,,DRS 07 - Campinas
@@ -111,7 +117,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-13,SP,Amparo,city,1,0,3,False,72195.0,3501905.0,1.38514,,DRS 07 - Campinas
 2020-04-12,SP,Amparo,city,1,0,2,False,72195.0,3501905.0,1.38514,,DRS 07 - Campinas
 2020-04-11,SP,Amparo,city,1,0,1,False,72195.0,3501905.0,1.38514,,DRS 07 - Campinas
-2020-04-18,SP,Américo Brasiliense,city,5,0,8,True,40504.0,3501707.0,12.34446,,DRS 03 - Araraquara
+2020-04-19,SP,Américo Brasiliense,city,5,0,9,True,40504.0,3501707.0,12.34446,,DRS 03 - Araraquara
+2020-04-18,SP,Américo Brasiliense,city,5,0,8,False,40504.0,3501707.0,12.34446,,DRS 03 - Araraquara
 2020-04-17,SP,Américo Brasiliense,city,5,0,7,False,40504.0,3501707.0,12.34446,,DRS 03 - Araraquara
 2020-04-16,SP,Américo Brasiliense,city,4,0,6,False,40504.0,3501707.0,9.87557,,DRS 03 - Araraquara
 2020-04-15,SP,Américo Brasiliense,city,3,0,5,False,40504.0,3501707.0,7.4066800000000015,,DRS 03 - Araraquara
@@ -119,19 +126,25 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-13,SP,Américo Brasiliense,city,1,0,3,False,40504.0,3501707.0,2.46889,,DRS 03 - Araraquara
 2020-04-12,SP,Américo Brasiliense,city,1,0,2,False,40504.0,3501707.0,2.46889,,DRS 03 - Araraquara
 2020-04-11,SP,Américo Brasiliense,city,1,0,1,False,40504.0,3501707.0,2.46889,,DRS 03 - Araraquara
-2020-04-18,SP,Andradina,city,2,0,4,True,57157.0,3502101.0,3.49913,,DRS 02 - Araçatuba
+2020-04-19,SP,Andradina,city,2,0,5,True,57157.0,3502101.0,3.49913,,DRS 02 - Araçatuba
+2020-04-18,SP,Andradina,city,2,0,4,False,57157.0,3502101.0,3.49913,,DRS 02 - Araçatuba
 2020-04-17,SP,Andradina,city,1,0,3,False,57157.0,3502101.0,1.74957,,DRS 02 - Araçatuba
 2020-04-16,SP,Andradina,city,1,0,2,False,57157.0,3502101.0,1.74957,,DRS 02 - Araçatuba
 2020-04-15,SP,Andradina,city,1,0,1,False,57157.0,3502101.0,1.74957,,DRS 02 - Araçatuba
-2020-04-18,SP,Angatuba,city,1,1,1,True,25228.0,3502200.0,3.96385,1.0,DRS 16 - Sorocaba
-2020-04-18,SP,Aparecida,city,1,0,1,True,36157.0,3502507.0,2.76572,,DRS 17 - Taubaté
-2020-04-18,SP,Apiaí,city,1,0,4,True,24374.0,3502705.0,4.10273,,DRS 16 - Sorocaba
+2020-04-19,SP,Angatuba,city,1,1,2,True,25228.0,3502200.0,3.96385,1.0,DRS 16 - Sorocaba
+2020-04-18,SP,Angatuba,city,1,1,1,False,25228.0,3502200.0,3.96385,1.0,DRS 16 - Sorocaba
+2020-04-19,SP,Aparecida,city,1,0,2,True,36157.0,3502507.0,2.76572,,DRS 17 - Taubaté
+2020-04-18,SP,Aparecida,city,1,0,1,False,36157.0,3502507.0,2.76572,,DRS 17 - Taubaté
+2020-04-19,SP,Apiaí,city,1,0,5,True,24374.0,3502705.0,4.10273,,DRS 16 - Sorocaba
+2020-04-18,SP,Apiaí,city,1,0,4,False,24374.0,3502705.0,4.10273,,DRS 16 - Sorocaba
 2020-04-17,SP,Apiaí,city,1,0,3,False,24374.0,3502705.0,4.10273,,DRS 16 - Sorocaba
 2020-04-16,SP,Apiaí,city,1,0,2,False,24374.0,3502705.0,4.10273,,DRS 16 - Sorocaba
 2020-04-15,SP,Apiaí,city,1,0,1,False,24374.0,3502705.0,4.10273,,DRS 16 - Sorocaba
-2020-04-18,SP,Arandu,city,7,0,2,True,6357.0,3503109.0,110.11483,,DRS 06 - Bauru
+2020-04-19,SP,Arandu,city,7,0,3,True,6357.0,3503109.0,110.11483,,DRS 06 - Bauru
+2020-04-18,SP,Arandu,city,7,0,2,False,6357.0,3503109.0,110.11483,,DRS 06 - Bauru
 2020-04-17,SP,Arandu,city,3,0,1,False,6357.0,3503109.0,47.19207,,DRS 06 - Bauru
-2020-04-18,SP,Araraquara,city,44,2,17,True,236072.0,3503208.0,18.63838,0.0455,DRS 03 - Araraquara
+2020-04-19,SP,Araraquara,city,44,2,18,True,236072.0,3503208.0,18.63838,0.0455,DRS 03 - Araraquara
+2020-04-18,SP,Araraquara,city,44,2,17,False,236072.0,3503208.0,18.63838,0.0455,DRS 03 - Araraquara
 2020-04-17,SP,Araraquara,city,39,2,16,False,236072.0,3503208.0,16.52038,0.0513,DRS 03 - Araraquara
 2020-04-16,SP,Araraquara,city,32,2,15,False,236072.0,3503208.0,13.55519,0.0625,DRS 03 - Araraquara
 2020-04-15,SP,Araraquara,city,27,2,14,False,236072.0,3503208.0,11.43719,0.0741,DRS 03 - Araraquara
@@ -148,7 +161,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-04,SP,Araraquara,city,2,0,3,False,236072.0,3503208.0,0.8472,,DRS 03 - Araraquara
 2020-04-03,SP,Araraquara,city,2,0,2,False,236072.0,3503208.0,0.8472,,DRS 03 - Araraquara
 2020-04-02,SP,Araraquara,city,1,0,1,False,236072.0,3503208.0,0.4236,,DRS 03 - Araraquara
-2020-04-18,SP,Araras,city,6,0,12,True,134236.0,3503307.0,4.46974,,DRS 10 - Piracicaba
+2020-04-19,SP,Araras,city,6,0,13,True,134236.0,3503307.0,4.46974,,DRS 10 - Piracicaba
+2020-04-18,SP,Araras,city,6,0,12,False,134236.0,3503307.0,4.46974,,DRS 10 - Piracicaba
 2020-04-17,SP,Araras,city,6,0,11,False,134236.0,3503307.0,4.46974,,DRS 10 - Piracicaba
 2020-04-16,SP,Araras,city,6,0,10,False,134236.0,3503307.0,4.46974,,DRS 10 - Piracicaba
 2020-04-15,SP,Araras,city,6,0,9,False,134236.0,3503307.0,4.46974,,DRS 10 - Piracicaba
@@ -160,7 +174,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-09,SP,Araras,city,2,0,3,False,134236.0,3503307.0,1.48991,,DRS 10 - Piracicaba
 2020-04-08,SP,Araras,city,2,0,2,False,134236.0,3503307.0,1.48991,,DRS 10 - Piracicaba
 2020-04-07,SP,Araras,city,2,0,1,False,134236.0,3503307.0,1.48991,,DRS 10 - Piracicaba
-2020-04-18,SP,Araçariguama,city,1,0,8,True,22364.0,3502754.0,4.47147,,DRS 16 - Sorocaba
+2020-04-19,SP,Araçariguama,city,1,0,9,True,22364.0,3502754.0,4.47147,,DRS 16 - Sorocaba
+2020-04-18,SP,Araçariguama,city,1,0,8,False,22364.0,3502754.0,4.47147,,DRS 16 - Sorocaba
 2020-04-17,SP,Araçariguama,city,1,0,7,False,22364.0,3502754.0,4.47147,,DRS 16 - Sorocaba
 2020-04-16,SP,Araçariguama,city,1,0,6,False,22364.0,3502754.0,4.47147,,DRS 16 - Sorocaba
 2020-04-15,SP,Araçariguama,city,1,0,5,False,22364.0,3502754.0,4.47147,,DRS 16 - Sorocaba
@@ -168,7 +183,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-13,SP,Araçariguama,city,1,0,3,False,22364.0,3502754.0,4.47147,,DRS 16 - Sorocaba
 2020-04-12,SP,Araçariguama,city,1,0,2,False,22364.0,3502754.0,4.47147,,DRS 16 - Sorocaba
 2020-04-11,SP,Araçariguama,city,1,0,1,False,22364.0,3502754.0,4.47147,,DRS 16 - Sorocaba
-2020-04-18,SP,Araçatuba,city,37,0,19,True,197016.0,3502804.0,18.7802,,DRS 02 - Araçatuba
+2020-04-19,SP,Araçatuba,city,37,0,20,True,197016.0,3502804.0,18.7802,,DRS 02 - Araçatuba
+2020-04-18,SP,Araçatuba,city,37,0,19,False,197016.0,3502804.0,18.7802,,DRS 02 - Araçatuba
 2020-04-17,SP,Araçatuba,city,37,0,18,False,197016.0,3502804.0,18.7802,,DRS 02 - Araçatuba
 2020-04-16,SP,Araçatuba,city,33,0,17,False,197016.0,3502804.0,16.74991,,DRS 02 - Araçatuba
 2020-04-15,SP,Araçatuba,city,28,0,16,False,197016.0,3502804.0,14.21204,,DRS 02 - Araçatuba
@@ -187,7 +203,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,Araçatuba,city,2,0,3,False,197016.0,3502804.0,1.01515,,DRS 02 - Araçatuba
 2020-04-01,SP,Araçatuba,city,2,0,2,False,197016.0,3502804.0,1.01515,,DRS 02 - Araçatuba
 2020-03-31,SP,Araçatuba,city,1,0,1,False,197016.0,3502804.0,0.50757,,DRS 02 - Araçatuba
-2020-04-18,SP,Araçoiaba da Serra,city,1,0,9,True,34146.0,3502903.0,2.9286,,DRS 16 - Sorocaba
+2020-04-19,SP,Araçoiaba da Serra,city,1,0,10,True,34146.0,3502903.0,2.9286,,DRS 16 - Sorocaba
+2020-04-18,SP,Araçoiaba da Serra,city,1,0,9,False,34146.0,3502903.0,2.9286,,DRS 16 - Sorocaba
 2020-04-17,SP,Araçoiaba da Serra,city,1,0,8,False,34146.0,3502903.0,2.9286,,DRS 16 - Sorocaba
 2020-04-16,SP,Araçoiaba da Serra,city,1,0,7,False,34146.0,3502903.0,2.9286,,DRS 16 - Sorocaba
 2020-04-15,SP,Araçoiaba da Serra,city,1,0,6,False,34146.0,3502903.0,2.9286,,DRS 16 - Sorocaba
@@ -196,7 +213,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-12,SP,Araçoiaba da Serra,city,1,0,3,False,34146.0,3502903.0,2.9286,,DRS 16 - Sorocaba
 2020-04-11,SP,Araçoiaba da Serra,city,1,0,2,False,34146.0,3502903.0,2.9286,,DRS 16 - Sorocaba
 2020-04-10,SP,Araçoiaba da Serra,city,1,0,1,False,34146.0,3502903.0,2.9286,,DRS 16 - Sorocaba
-2020-04-18,SP,Artur Nogueira,city,1,0,10,True,54408.0,3503802.0,1.83797,,DRS 07 - Campinas
+2020-04-19,SP,Artur Nogueira,city,1,0,11,True,54408.0,3503802.0,1.83797,,DRS 07 - Campinas
+2020-04-18,SP,Artur Nogueira,city,1,0,10,False,54408.0,3503802.0,1.83797,,DRS 07 - Campinas
 2020-04-17,SP,Artur Nogueira,city,1,0,9,False,54408.0,3503802.0,1.83797,,DRS 07 - Campinas
 2020-04-16,SP,Artur Nogueira,city,1,0,8,False,54408.0,3503802.0,1.83797,,DRS 07 - Campinas
 2020-04-15,SP,Artur Nogueira,city,1,0,7,False,54408.0,3503802.0,1.83797,,DRS 07 - Campinas
@@ -206,7 +224,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-11,SP,Artur Nogueira,city,1,0,3,False,54408.0,3503802.0,1.83797,,DRS 07 - Campinas
 2020-04-10,SP,Artur Nogueira,city,1,0,2,False,54408.0,3503802.0,1.83797,,DRS 07 - Campinas
 2020-04-09,SP,Artur Nogueira,city,1,0,1,False,54408.0,3503802.0,1.83797,,DRS 07 - Campinas
-2020-04-18,SP,Arujá,city,24,1,22,True,89824.0,3503901.0,26.71892,0.0417,DRS 01 - Grande São Paulo
+2020-04-19,SP,Arujá,city,25,1,23,True,89824.0,3503901.0,27.83221,0.04,DRS 01 - Grande São Paulo
+2020-04-18,SP,Arujá,city,24,1,22,False,89824.0,3503901.0,26.71892,0.0417,DRS 01 - Grande São Paulo
 2020-04-17,SP,Arujá,city,21,1,21,False,89824.0,3503901.0,23.37905,0.0476,DRS 01 - Grande São Paulo
 2020-04-16,SP,Arujá,city,17,1,20,False,89824.0,3503901.0,18.9259,0.0588,DRS 01 - Grande São Paulo
 2020-04-15,SP,Arujá,city,15,1,19,False,89824.0,3503901.0,16.69932,0.0667,DRS 01 - Grande São Paulo
@@ -228,7 +247,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-30,SP,Arujá,city,1,0,3,False,89824.0,3503901.0,1.11329,,DRS 01 - Grande São Paulo
 2020-03-27,SP,Arujá,city,1,0,2,False,89824.0,3503901.0,1.11329,,DRS 01 - Grande São Paulo
 2020-03-26,SP,Arujá,city,1,0,1,False,89824.0,3503901.0,1.11329,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Assis,city,6,1,17,True,104386.0,3504008.0,5.7479,0.1667,DRS 09 - Marília
+2020-04-19,SP,Assis,city,6,1,18,True,104386.0,3504008.0,5.7479,0.1667,DRS 09 - Marília
+2020-04-18,SP,Assis,city,6,1,17,False,104386.0,3504008.0,5.7479,0.1667,DRS 09 - Marília
 2020-04-17,SP,Assis,city,6,1,16,False,104386.0,3504008.0,5.7479,0.1667,DRS 09 - Marília
 2020-04-16,SP,Assis,city,6,1,15,False,104386.0,3504008.0,5.7479,0.1667,DRS 09 - Marília
 2020-04-15,SP,Assis,city,6,1,14,False,104386.0,3504008.0,5.7479,0.1667,DRS 09 - Marília
@@ -245,7 +265,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-04,SP,Assis,city,1,0,3,False,104386.0,3504008.0,0.95798,,DRS 09 - Marília
 2020-04-03,SP,Assis,city,1,0,2,False,104386.0,3504008.0,0.95798,,DRS 09 - Marília
 2020-04-02,SP,Assis,city,1,0,1,False,104386.0,3504008.0,0.95798,,DRS 09 - Marília
-2020-04-18,SP,Atibaia,city,22,1,16,True,142761.0,3504107.0,15.41037,0.0455,DRS 07 - Campinas
+2020-04-19,SP,Atibaia,city,22,1,17,True,142761.0,3504107.0,15.41037,0.0455,DRS 07 - Campinas
+2020-04-18,SP,Atibaia,city,22,1,16,False,142761.0,3504107.0,15.41037,0.0455,DRS 07 - Campinas
 2020-04-17,SP,Atibaia,city,18,1,15,False,142761.0,3504107.0,12.60849,0.0556,DRS 07 - Campinas
 2020-04-16,SP,Atibaia,city,17,1,14,False,142761.0,3504107.0,11.90801,0.0588,DRS 07 - Campinas
 2020-04-15,SP,Atibaia,city,14,1,13,False,142761.0,3504107.0,9.8066,0.0714,DRS 07 - Campinas
@@ -261,7 +282,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-05,SP,Atibaia,city,4,0,3,False,142761.0,3504107.0,2.80189,,DRS 07 - Campinas
 2020-04-04,SP,Atibaia,city,3,0,2,False,142761.0,3504107.0,2.10141,,DRS 07 - Campinas
 2020-04-03,SP,Atibaia,city,2,0,1,False,142761.0,3504107.0,1.40094,,DRS 07 - Campinas
-2020-04-18,SP,Avaré,city,9,1,11,True,90655.0,3504503.0,9.92775,0.1111,DRS 06 - Bauru
+2020-04-19,SP,Avaré,city,8,1,12,True,90655.0,3504503.0,8.82466,0.125,DRS 06 - Bauru
+2020-04-18,SP,Avaré,city,9,1,11,False,90655.0,3504503.0,9.92775,0.1111,DRS 06 - Bauru
 2020-04-17,SP,Avaré,city,9,1,10,False,90655.0,3504503.0,9.92775,0.1111,DRS 06 - Bauru
 2020-04-16,SP,Avaré,city,6,1,9,False,90655.0,3504503.0,6.6185,0.1667,DRS 06 - Bauru
 2020-04-15,SP,Avaré,city,5,1,8,False,90655.0,3504503.0,5.51542,0.2,DRS 06 - Bauru
@@ -272,8 +294,10 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-10,SP,Avaré,city,3,0,3,False,90655.0,3504503.0,3.30925,,DRS 06 - Bauru
 2020-04-09,SP,Avaré,city,3,0,2,False,90655.0,3504503.0,3.30925,,DRS 06 - Bauru
 2020-04-08,SP,Avaré,city,1,0,1,False,90655.0,3504503.0,1.1030799999999998,,DRS 06 - Bauru
-2020-04-18,SP,Avaí,city,1,0,1,True,5403.0,3504305.0,18.50824,,DRS 06 - Bauru
-2020-04-18,SP,Bady Bassitt,city,2,0,11,True,17502.0,3504602.0,11.42727,,DRS 15 - São José do Rio Preto
+2020-04-19,SP,Avaí,city,1,0,2,True,5403.0,3504305.0,18.50824,,DRS 06 - Bauru
+2020-04-18,SP,Avaí,city,1,0,1,False,5403.0,3504305.0,18.50824,,DRS 06 - Bauru
+2020-04-19,SP,Bady Bassitt,city,2,0,12,True,17502.0,3504602.0,11.42727,,DRS 15 - São José do Rio Preto
+2020-04-18,SP,Bady Bassitt,city,2,0,11,False,17502.0,3504602.0,11.42727,,DRS 15 - São José do Rio Preto
 2020-04-17,SP,Bady Bassitt,city,2,0,10,False,17502.0,3504602.0,11.42727,,DRS 15 - São José do Rio Preto
 2020-04-16,SP,Bady Bassitt,city,2,0,9,False,17502.0,3504602.0,11.42727,,DRS 15 - São José do Rio Preto
 2020-04-15,SP,Bady Bassitt,city,2,0,8,False,17502.0,3504602.0,11.42727,,DRS 15 - São José do Rio Preto
@@ -284,12 +308,14 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-10,SP,Bady Bassitt,city,1,0,3,False,17502.0,3504602.0,5.71363,,DRS 15 - São José do Rio Preto
 2020-04-09,SP,Bady Bassitt,city,1,0,2,False,17502.0,3504602.0,5.71363,,DRS 15 - São José do Rio Preto
 2020-04-08,SP,Bady Bassitt,city,1,0,1,False,17502.0,3504602.0,5.71363,,DRS 15 - São José do Rio Preto
-2020-04-18,SP,Bariri,city,1,0,5,True,35264.0,3505203.0,2.83575,,DRS 06 - Bauru
+2020-04-19,SP,Bariri,city,1,0,6,True,35264.0,3505203.0,2.83575,,DRS 06 - Bauru
+2020-04-18,SP,Bariri,city,1,0,5,False,35264.0,3505203.0,2.83575,,DRS 06 - Bauru
 2020-04-17,SP,Bariri,city,1,0,4,False,35264.0,3505203.0,2.83575,,DRS 06 - Bauru
 2020-04-16,SP,Bariri,city,1,0,3,False,35264.0,3505203.0,2.83575,,DRS 06 - Bauru
 2020-04-15,SP,Bariri,city,1,0,2,False,35264.0,3505203.0,2.83575,,DRS 06 - Bauru
 2020-04-14,SP,Bariri,city,1,0,1,False,35264.0,3505203.0,2.83575,,DRS 06 - Bauru
-2020-04-18,SP,Barra do Turvo,city,1,0,10,True,7659.0,3505401.0,13.05653,,DRS 12 - Registro
+2020-04-19,SP,Barra do Turvo,city,1,0,11,True,7659.0,3505401.0,13.05653,,DRS 12 - Registro
+2020-04-18,SP,Barra do Turvo,city,1,0,10,False,7659.0,3505401.0,13.05653,,DRS 12 - Registro
 2020-04-17,SP,Barra do Turvo,city,1,0,9,False,7659.0,3505401.0,13.05653,,DRS 12 - Registro
 2020-04-16,SP,Barra do Turvo,city,1,0,8,False,7659.0,3505401.0,13.05653,,DRS 12 - Registro
 2020-04-15,SP,Barra do Turvo,city,1,0,7,False,7659.0,3505401.0,13.05653,,DRS 12 - Registro
@@ -299,7 +325,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-11,SP,Barra do Turvo,city,1,0,3,False,7659.0,3505401.0,13.05653,,DRS 12 - Registro
 2020-04-10,SP,Barra do Turvo,city,1,0,2,False,7659.0,3505401.0,13.05653,,DRS 12 - Registro
 2020-04-09,SP,Barra do Turvo,city,1,0,1,False,7659.0,3505401.0,13.05653,,DRS 12 - Registro
-2020-04-18,SP,Barretos,city,9,0,12,True,122098.0,3505500.0,7.37113,,DRS 05 - Barretos
+2020-04-19,SP,Barretos,city,9,0,13,True,122098.0,3505500.0,7.37113,,DRS 05 - Barretos
+2020-04-18,SP,Barretos,city,9,0,12,False,122098.0,3505500.0,7.37113,,DRS 05 - Barretos
 2020-04-17,SP,Barretos,city,9,0,11,False,122098.0,3505500.0,7.37113,,DRS 05 - Barretos
 2020-04-16,SP,Barretos,city,7,0,10,False,122098.0,3505500.0,5.7331,,DRS 05 - Barretos
 2020-04-15,SP,Barretos,city,6,0,9,False,122098.0,3505500.0,4.91409,,DRS 05 - Barretos
@@ -311,7 +338,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-09,SP,Barretos,city,4,0,3,False,122098.0,3505500.0,3.27606,,DRS 05 - Barretos
 2020-04-08,SP,Barretos,city,4,0,2,False,122098.0,3505500.0,3.27606,,DRS 05 - Barretos
 2020-04-07,SP,Barretos,city,1,0,1,False,122098.0,3505500.0,0.81901,,DRS 05 - Barretos
-2020-04-18,SP,Barueri,city,116,5,26,True,274182.0,3505708.0,42.30766,0.0431,DRS 01 - Grande São Paulo
+2020-04-19,SP,Barueri,city,120,5,27,True,274182.0,3505708.0,43.76655,0.0417,DRS 01 - Grande São Paulo
+2020-04-18,SP,Barueri,city,116,5,26,False,274182.0,3505708.0,42.30766,0.0431,DRS 01 - Grande São Paulo
 2020-04-17,SP,Barueri,city,101,5,25,False,274182.0,3505708.0,36.83685,0.0495,DRS 01 - Grande São Paulo
 2020-04-16,SP,Barueri,city,97,5,24,False,274182.0,3505708.0,35.37795999999999,0.0515,DRS 01 - Grande São Paulo
 2020-04-15,SP,Barueri,city,64,4,23,False,274182.0,3505708.0,23.34216,0.0625,DRS 01 - Grande São Paulo
@@ -337,7 +365,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-20,SP,Barueri,city,1,0,3,False,274182.0,3505708.0,0.36472,,DRS 01 - Grande São Paulo
 2020-03-19,SP,Barueri,city,1,0,2,False,274182.0,3505708.0,0.36472,,DRS 01 - Grande São Paulo
 2020-03-18,SP,Barueri,city,1,0,1,False,274182.0,3505708.0,0.36472,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Batatais,city,1,0,11,True,62508.0,3505906.0,1.5998,,DRS 13 - Ribeirão Preto
+2020-04-19,SP,Batatais,city,1,0,12,True,62508.0,3505906.0,1.5998,,DRS 13 - Ribeirão Preto
+2020-04-18,SP,Batatais,city,1,0,11,False,62508.0,3505906.0,1.5998,,DRS 13 - Ribeirão Preto
 2020-04-17,SP,Batatais,city,1,0,10,False,62508.0,3505906.0,1.5998,,DRS 13 - Ribeirão Preto
 2020-04-16,SP,Batatais,city,1,0,9,False,62508.0,3505906.0,1.5998,,DRS 13 - Ribeirão Preto
 2020-04-15,SP,Batatais,city,1,0,8,False,62508.0,3505906.0,1.5998,,DRS 13 - Ribeirão Preto
@@ -348,7 +377,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-10,SP,Batatais,city,1,0,3,False,62508.0,3505906.0,1.5998,,DRS 13 - Ribeirão Preto
 2020-04-09,SP,Batatais,city,1,0,2,False,62508.0,3505906.0,1.5998,,DRS 13 - Ribeirão Preto
 2020-04-08,SP,Batatais,city,1,0,1,False,62508.0,3505906.0,1.5998,,DRS 13 - Ribeirão Preto
-2020-04-18,SP,Bauru,city,50,3,19,True,376818.0,3506003.0,13.26901,0.06,DRS 06 - Bauru
+2020-04-19,SP,Bauru,city,56,3,20,True,376818.0,3506003.0,14.86129,0.0536,DRS 06 - Bauru
+2020-04-18,SP,Bauru,city,50,3,19,False,376818.0,3506003.0,13.26901,0.06,DRS 06 - Bauru
 2020-04-17,SP,Bauru,city,33,4,18,False,376818.0,3506003.0,8.757539999999999,0.1212,DRS 06 - Bauru
 2020-04-16,SP,Bauru,city,23,3,17,False,376818.0,3506003.0,6.10374,0.1304,DRS 06 - Bauru
 2020-04-15,SP,Bauru,city,21,2,16,False,376818.0,3506003.0,5.57298,0.0952,DRS 06 - Bauru
@@ -367,7 +397,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,Bauru,city,0,0,3,False,376818.0,3506003.0,,,DRS 06 - Bauru
 2020-04-01,SP,Bauru,city,2,0,2,False,376818.0,3506003.0,0.53076,,DRS 06 - Bauru
 2020-03-31,SP,Bauru,city,1,0,1,False,376818.0,3506003.0,0.26538,,DRS 06 - Bauru
-2020-04-18,SP,Bebedouro,city,2,0,12,True,77496.0,3506102.0,2.58078,,DRS 05 - Barretos
+2020-04-19,SP,Bebedouro,city,2,0,13,True,77496.0,3506102.0,2.58078,,DRS 05 - Barretos
+2020-04-18,SP,Bebedouro,city,2,0,12,False,77496.0,3506102.0,2.58078,,DRS 05 - Barretos
 2020-04-17,SP,Bebedouro,city,2,0,11,False,77496.0,3506102.0,2.58078,,DRS 05 - Barretos
 2020-04-16,SP,Bebedouro,city,2,0,10,False,77496.0,3506102.0,2.58078,,DRS 05 - Barretos
 2020-04-15,SP,Bebedouro,city,1,0,9,False,77496.0,3506102.0,1.29039,,DRS 05 - Barretos
@@ -379,11 +410,13 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-09,SP,Bebedouro,city,2,0,3,False,77496.0,3506102.0,2.58078,,DRS 05 - Barretos
 2020-04-08,SP,Bebedouro,city,2,0,2,False,77496.0,3506102.0,2.58078,,DRS 05 - Barretos
 2020-04-07,SP,Bebedouro,city,1,0,1,False,77496.0,3506102.0,1.29039,,DRS 05 - Barretos
-2020-04-18,SP,Bilac,city,1,0,4,True,8034.0,3506409.0,12.4471,,DRS 02 - Araçatuba
+2020-04-19,SP,Bilac,city,1,0,5,True,8034.0,3506409.0,12.4471,,DRS 02 - Araçatuba
+2020-04-18,SP,Bilac,city,1,0,4,False,8034.0,3506409.0,12.4471,,DRS 02 - Araçatuba
 2020-04-17,SP,Bilac,city,1,0,3,False,8034.0,3506409.0,12.4471,,DRS 02 - Araçatuba
 2020-04-16,SP,Bilac,city,1,0,2,False,8034.0,3506409.0,12.4471,,DRS 02 - Araçatuba
 2020-04-15,SP,Bilac,city,1,0,1,False,8034.0,3506409.0,12.4471,,DRS 02 - Araçatuba
-2020-04-18,SP,Birigui,city,6,0,13,True,123638.0,3506508.0,4.85288,,DRS 02 - Araçatuba
+2020-04-19,SP,Birigui,city,6,0,14,True,123638.0,3506508.0,4.85288,,DRS 02 - Araçatuba
+2020-04-18,SP,Birigui,city,6,0,13,False,123638.0,3506508.0,4.85288,,DRS 02 - Araçatuba
 2020-04-17,SP,Birigui,city,6,0,12,False,123638.0,3506508.0,4.85288,,DRS 02 - Araçatuba
 2020-04-16,SP,Birigui,city,6,0,11,False,123638.0,3506508.0,4.85288,,DRS 02 - Araçatuba
 2020-04-15,SP,Birigui,city,6,0,10,False,123638.0,3506508.0,4.85288,,DRS 02 - Araçatuba
@@ -396,7 +429,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-08,SP,Birigui,city,2,0,3,False,123638.0,3506508.0,1.61763,,DRS 02 - Araçatuba
 2020-04-07,SP,Birigui,city,2,0,2,False,123638.0,3506508.0,1.61763,,DRS 02 - Araçatuba
 2020-04-06,SP,Birigui,city,1,0,1,False,123638.0,3506508.0,0.80881,,DRS 02 - Araçatuba
-2020-04-18,SP,Boituva,city,5,0,13,True,60997.0,3507001.0,8.19712,,DRS 16 - Sorocaba
+2020-04-19,SP,Boituva,city,6,0,14,True,60997.0,3507001.0,9.83655,,DRS 16 - Sorocaba
+2020-04-18,SP,Boituva,city,5,0,13,False,60997.0,3507001.0,8.19712,,DRS 16 - Sorocaba
 2020-04-17,SP,Boituva,city,5,0,12,False,60997.0,3507001.0,8.19712,,DRS 16 - Sorocaba
 2020-04-16,SP,Boituva,city,5,0,11,False,60997.0,3507001.0,8.19712,,DRS 16 - Sorocaba
 2020-04-15,SP,Boituva,city,4,0,10,False,60997.0,3507001.0,6.5577,,DRS 16 - Sorocaba
@@ -409,7 +443,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-08,SP,Boituva,city,2,0,3,False,60997.0,3507001.0,3.27885,,DRS 16 - Sorocaba
 2020-04-07,SP,Boituva,city,2,0,2,False,60997.0,3507001.0,3.27885,,DRS 16 - Sorocaba
 2020-04-06,SP,Boituva,city,1,0,1,False,60997.0,3507001.0,1.63942,,DRS 16 - Sorocaba
-2020-04-18,SP,Botucatu,city,27,2,15,True,146497.0,3507506.0,18.43041,0.0741,DRS 06 - Bauru
+2020-04-19,SP,Botucatu,city,27,2,16,True,146497.0,3507506.0,18.43041,0.0741,DRS 06 - Bauru
+2020-04-18,SP,Botucatu,city,27,2,15,False,146497.0,3507506.0,18.43041,0.0741,DRS 06 - Bauru
 2020-04-17,SP,Botucatu,city,27,2,14,False,146497.0,3507506.0,18.43041,0.0741,DRS 06 - Bauru
 2020-04-16,SP,Botucatu,city,24,2,13,False,146497.0,3507506.0,16.38259,0.0833,DRS 06 - Bauru
 2020-04-15,SP,Botucatu,city,23,2,12,False,146497.0,3507506.0,15.699979999999998,0.087,DRS 06 - Bauru
@@ -424,7 +459,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-06,SP,Botucatu,city,7,0,3,False,146497.0,3507506.0,4.77825,,DRS 06 - Bauru
 2020-04-05,SP,Botucatu,city,7,0,2,False,146497.0,3507506.0,4.77825,,DRS 06 - Bauru
 2020-04-04,SP,Botucatu,city,7,0,1,False,146497.0,3507506.0,4.77825,,DRS 06 - Bauru
-2020-04-18,SP,Bragança Paulista,city,36,7,12,True,168668.0,3507605.0,21.3437,0.1944,DRS 07 - Campinas
+2020-04-19,SP,Bragança Paulista,city,36,7,13,True,168668.0,3507605.0,21.3437,0.1944,DRS 07 - Campinas
+2020-04-18,SP,Bragança Paulista,city,36,7,12,False,168668.0,3507605.0,21.3437,0.1944,DRS 07 - Campinas
 2020-04-17,SP,Bragança Paulista,city,35,7,11,False,168668.0,3507605.0,20.75082,0.2,DRS 07 - Campinas
 2020-04-16,SP,Bragança Paulista,city,33,6,10,False,168668.0,3507605.0,19.56506,0.1818,DRS 07 - Campinas
 2020-04-15,SP,Bragança Paulista,city,28,5,9,False,168668.0,3507605.0,16.60066,0.1786,DRS 07 - Campinas
@@ -436,7 +472,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-09,SP,Bragança Paulista,city,16,3,3,False,168668.0,3507605.0,9.48609,0.1875,DRS 07 - Campinas
 2020-04-08,SP,Bragança Paulista,city,16,2,2,False,168668.0,3507605.0,9.48609,0.125,DRS 07 - Campinas
 2020-04-07,SP,Bragança Paulista,city,16,2,1,False,168668.0,3507605.0,9.48609,0.125,DRS 07 - Campinas
-2020-04-18,SP,Brodowski,city,4,0,20,True,24939.0,3507803.0,16.03914,,DRS 13 - Ribeirão Preto
+2020-04-19,SP,Brodowski,city,4,0,21,True,24939.0,3507803.0,16.03914,,DRS 13 - Ribeirão Preto
+2020-04-18,SP,Brodowski,city,4,0,20,False,24939.0,3507803.0,16.03914,,DRS 13 - Ribeirão Preto
 2020-04-17,SP,Brodowski,city,3,0,19,False,24939.0,3507803.0,12.02935,,DRS 13 - Ribeirão Preto
 2020-04-16,SP,Brodowski,city,3,0,18,False,24939.0,3507803.0,12.02935,,DRS 13 - Ribeirão Preto
 2020-04-15,SP,Brodowski,city,3,0,17,False,24939.0,3507803.0,12.02935,,DRS 13 - Ribeirão Preto
@@ -456,11 +493,13 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-01,SP,Brodowski,city,1,0,3,False,24939.0,3507803.0,4.00978,,DRS 13 - Ribeirão Preto
 2020-03-31,SP,Brodowski,city,1,0,2,False,24939.0,3507803.0,4.00978,,DRS 13 - Ribeirão Preto
 2020-03-30,SP,Brodowski,city,1,0,1,False,24939.0,3507803.0,4.00978,,DRS 13 - Ribeirão Preto
-2020-04-18,SP,Buritama,city,3,0,4,True,17144.0,3508108.0,17.498829999999998,,DRS 02 - Araçatuba
+2020-04-19,SP,Buritama,city,3,0,5,True,17144.0,3508108.0,17.498829999999998,,DRS 02 - Araçatuba
+2020-04-18,SP,Buritama,city,3,0,4,False,17144.0,3508108.0,17.498829999999998,,DRS 02 - Araçatuba
 2020-04-17,SP,Buritama,city,3,0,3,False,17144.0,3508108.0,17.498829999999998,,DRS 02 - Araçatuba
 2020-04-16,SP,Buritama,city,3,0,2,False,17144.0,3508108.0,17.498829999999998,,DRS 02 - Araçatuba
 2020-04-15,SP,Buritama,city,1,0,1,False,17144.0,3508108.0,5.83294,,DRS 02 - Araçatuba
-2020-04-18,SP,Cachoeira Paulista,city,3,0,19,True,33327.0,3508603.0,9.001710000000003,,DRS 17 - Taubaté
+2020-04-19,SP,Cachoeira Paulista,city,3,0,20,True,33327.0,3508603.0,9.001710000000003,,DRS 17 - Taubaté
+2020-04-18,SP,Cachoeira Paulista,city,3,0,19,False,33327.0,3508603.0,9.001710000000003,,DRS 17 - Taubaté
 2020-04-17,SP,Cachoeira Paulista,city,2,0,18,False,33327.0,3508603.0,6.00114,,DRS 17 - Taubaté
 2020-04-16,SP,Cachoeira Paulista,city,2,0,17,False,33327.0,3508603.0,6.00114,,DRS 17 - Taubaté
 2020-04-15,SP,Cachoeira Paulista,city,1,0,16,False,33327.0,3508603.0,3.00057,,DRS 17 - Taubaté
@@ -479,7 +518,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,Cachoeira Paulista,city,1,0,3,False,33327.0,3508603.0,3.00057,,DRS 17 - Taubaté
 2020-04-01,SP,Cachoeira Paulista,city,1,0,2,False,33327.0,3508603.0,3.00057,,DRS 17 - Taubaté
 2020-03-31,SP,Cachoeira Paulista,city,1,0,1,False,33327.0,3508603.0,3.00057,,DRS 17 - Taubaté
-2020-04-18,SP,Caiabu,city,1,1,8,True,4191.0,3508900.0,23.86065,1.0,DRS 11 - Presidente Prudente
+2020-04-19,SP,Caiabu,city,1,1,9,True,4191.0,3508900.0,23.86065,1.0,DRS 11 - Presidente Prudente
+2020-04-18,SP,Caiabu,city,1,1,8,False,4191.0,3508900.0,23.86065,1.0,DRS 11 - Presidente Prudente
 2020-04-17,SP,Caiabu,city,1,1,7,False,4191.0,3508900.0,23.86065,1.0,DRS 11 - Presidente Prudente
 2020-04-16,SP,Caiabu,city,1,1,6,False,4191.0,3508900.0,23.86065,1.0,DRS 11 - Presidente Prudente
 2020-04-15,SP,Caiabu,city,1,1,5,False,4191.0,3508900.0,23.86065,1.0,DRS 11 - Presidente Prudente
@@ -487,7 +527,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-13,SP,Caiabu,city,1,1,3,False,4191.0,3508900.0,23.86065,1.0,DRS 11 - Presidente Prudente
 2020-04-12,SP,Caiabu,city,1,1,2,False,4191.0,3508900.0,23.86065,1.0,DRS 11 - Presidente Prudente
 2020-04-11,SP,Caiabu,city,1,1,1,False,4191.0,3508900.0,23.86065,1.0,DRS 11 - Presidente Prudente
-2020-04-18,SP,Caieiras,city,48,6,23,True,101470.0,3509007.0,47.30462,0.125,DRS 01 - Grande São Paulo
+2020-04-19,SP,Caieiras,city,49,6,24,True,101470.0,3509007.0,48.29014,0.1224,DRS 01 - Grande São Paulo
+2020-04-18,SP,Caieiras,city,48,6,23,False,101470.0,3509007.0,47.30462,0.125,DRS 01 - Grande São Paulo
 2020-04-17,SP,Caieiras,city,48,6,22,False,101470.0,3509007.0,47.30462,0.125,DRS 01 - Grande São Paulo
 2020-04-16,SP,Caieiras,city,47,6,21,False,101470.0,3509007.0,46.31911,0.1277,DRS 01 - Grande São Paulo
 2020-04-15,SP,Caieiras,city,42,6,20,False,101470.0,3509007.0,41.39154,0.1429,DRS 01 - Grande São Paulo
@@ -510,7 +551,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-27,SP,Caieiras,city,2,0,3,False,101470.0,3509007.0,1.97103,,DRS 01 - Grande São Paulo
 2020-03-26,SP,Caieiras,city,2,0,2,False,101470.0,3509007.0,1.97103,,DRS 01 - Grande São Paulo
 2020-03-25,SP,Caieiras,city,1,0,1,False,101470.0,3509007.0,0.98551,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Cajamar,city,7,1,20,True,76801.0,3509205.0,9.11446,0.1429,DRS 01 - Grande São Paulo
+2020-04-19,SP,Cajamar,city,7,1,21,True,76801.0,3509205.0,9.11446,0.1429,DRS 01 - Grande São Paulo
+2020-04-18,SP,Cajamar,city,7,1,20,False,76801.0,3509205.0,9.11446,0.1429,DRS 01 - Grande São Paulo
 2020-04-17,SP,Cajamar,city,7,1,19,False,76801.0,3509205.0,9.11446,0.1429,DRS 01 - Grande São Paulo
 2020-04-16,SP,Cajamar,city,7,1,18,False,76801.0,3509205.0,9.11446,0.1429,DRS 01 - Grande São Paulo
 2020-04-15,SP,Cajamar,city,5,1,17,False,76801.0,3509205.0,6.5103300000000015,0.2,DRS 01 - Grande São Paulo
@@ -530,12 +572,14 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-01,SP,Cajamar,city,1,0,3,False,76801.0,3509205.0,1.30207,,DRS 01 - Grande São Paulo
 2020-03-31,SP,Cajamar,city,1,0,2,False,76801.0,3509205.0,1.30207,,DRS 01 - Grande São Paulo
 2020-03-30,SP,Cajamar,city,1,0,1,False,76801.0,3509205.0,1.30207,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Cajuru,city,2,0,5,True,26167.0,3509403.0,7.643210000000002,,DRS 13 - Ribeirão Preto
+2020-04-19,SP,Cajuru,city,2,0,6,True,26167.0,3509403.0,7.643210000000002,,DRS 13 - Ribeirão Preto
+2020-04-18,SP,Cajuru,city,2,0,5,False,26167.0,3509403.0,7.643210000000002,,DRS 13 - Ribeirão Preto
 2020-04-17,SP,Cajuru,city,2,0,4,False,26167.0,3509403.0,7.643210000000002,,DRS 13 - Ribeirão Preto
 2020-04-16,SP,Cajuru,city,2,0,3,False,26167.0,3509403.0,7.643210000000002,,DRS 13 - Ribeirão Preto
 2020-04-15,SP,Cajuru,city,2,0,2,False,26167.0,3509403.0,7.643210000000002,,DRS 13 - Ribeirão Preto
 2020-04-14,SP,Cajuru,city,1,0,1,False,26167.0,3509403.0,3.82161,,DRS 13 - Ribeirão Preto
-2020-04-18,SP,Campinas,city,184,7,26,True,1204073.0,3509502.0,15.28147,0.038,DRS 07 - Campinas
+2020-04-19,SP,Campinas,city,184,7,27,True,1204073.0,3509502.0,15.28147,0.038,DRS 07 - Campinas
+2020-04-18,SP,Campinas,city,184,7,26,False,1204073.0,3509502.0,15.28147,0.038,DRS 07 - Campinas
 2020-04-17,SP,Campinas,city,164,7,25,False,1204073.0,3509502.0,13.62044,0.0427,DRS 07 - Campinas
 2020-04-16,SP,Campinas,city,149,7,24,False,1204073.0,3509502.0,12.37466,0.047,DRS 07 - Campinas
 2020-04-15,SP,Campinas,city,142,5,23,False,1204073.0,3509502.0,11.7933,0.0352,DRS 07 - Campinas
@@ -561,21 +605,26 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-20,SP,Campinas,city,1,0,3,False,1204073.0,3509502.0,0.08305,,DRS 07 - Campinas
 2020-03-19,SP,Campinas,city,1,0,2,False,1204073.0,3509502.0,0.08305,,DRS 07 - Campinas
 2020-03-18,SP,Campinas,city,1,0,1,False,1204073.0,3509502.0,0.08305,,DRS 07 - Campinas
-2020-04-18,SP,Campo Limpo Paulista,city,5,1,3,True,84650.0,3509601.0,5.90667,0.2,DRS 07 - Campinas
+2020-04-19,SP,Campo Limpo Paulista,city,5,1,4,True,84650.0,3509601.0,5.90667,0.2,DRS 07 - Campinas
+2020-04-18,SP,Campo Limpo Paulista,city,5,1,3,False,84650.0,3509601.0,5.90667,0.2,DRS 07 - Campinas
 2020-04-17,SP,Campo Limpo Paulista,city,4,1,2,False,84650.0,3509601.0,4.72534,0.25,DRS 07 - Campinas
 2020-04-16,SP,Campo Limpo Paulista,city,1,0,1,False,84650.0,3509601.0,1.18133,,DRS 07 - Campinas
-2020-04-18,SP,Campos do Jordão,city,1,0,6,True,52088.0,3509700.0,1.91983,,DRS 17 - Taubaté
+2020-04-19,SP,Campos do Jordão,city,1,0,7,True,52088.0,3509700.0,1.91983,,DRS 17 - Taubaté
+2020-04-18,SP,Campos do Jordão,city,1,0,6,False,52088.0,3509700.0,1.91983,,DRS 17 - Taubaté
 2020-04-17,SP,Campos do Jordão,city,1,0,5,False,52088.0,3509700.0,1.91983,,DRS 17 - Taubaté
 2020-04-16,SP,Campos do Jordão,city,1,0,4,False,52088.0,3509700.0,1.91983,,DRS 17 - Taubaté
 2020-04-15,SP,Campos do Jordão,city,1,0,3,False,52088.0,3509700.0,1.91983,,DRS 17 - Taubaté
 2020-04-14,SP,Campos do Jordão,city,1,0,2,False,52088.0,3509700.0,1.91983,,DRS 17 - Taubaté
 2020-04-13,SP,Campos do Jordão,city,1,0,1,False,52088.0,3509700.0,1.91983,,DRS 17 - Taubaté
-2020-04-18,SP,Cananéia,city,1,0,1,True,12540.0,3509908.0,7.974480000000002,,DRS 12 - Registro
-2020-04-18,SP,Capão Bonito,city,1,0,4,True,47138.0,3510203.0,2.12143,,DRS 16 - Sorocaba
+2020-04-19,SP,Cananéia,city,1,0,2,True,12540.0,3509908.0,7.974480000000002,,DRS 12 - Registro
+2020-04-18,SP,Cananéia,city,1,0,1,False,12540.0,3509908.0,7.974480000000002,,DRS 12 - Registro
+2020-04-19,SP,Capão Bonito,city,1,0,5,True,47138.0,3510203.0,2.12143,,DRS 16 - Sorocaba
+2020-04-18,SP,Capão Bonito,city,1,0,4,False,47138.0,3510203.0,2.12143,,DRS 16 - Sorocaba
 2020-04-17,SP,Capão Bonito,city,1,0,3,False,47138.0,3510203.0,2.12143,,DRS 16 - Sorocaba
 2020-04-16,SP,Capão Bonito,city,1,0,2,False,47138.0,3510203.0,2.12143,,DRS 16 - Sorocaba
 2020-04-15,SP,Capão Bonito,city,1,0,1,False,47138.0,3510203.0,2.12143,,DRS 16 - Sorocaba
-2020-04-18,SP,Caraguatatuba,city,11,2,13,True,121532.0,3510500.0,9.05111,0.1818,DRS 17 - Taubaté
+2020-04-19,SP,Caraguatatuba,city,13,2,14,True,121532.0,3510500.0,10.69677,0.1538,DRS 17 - Taubaté
+2020-04-18,SP,Caraguatatuba,city,11,2,13,False,121532.0,3510500.0,9.05111,0.1818,DRS 17 - Taubaté
 2020-04-17,SP,Caraguatatuba,city,7,2,12,False,121532.0,3510500.0,5.7598,0.2857,DRS 17 - Taubaté
 2020-04-16,SP,Caraguatatuba,city,5,2,11,False,121532.0,3510500.0,4.11414,0.4,DRS 17 - Taubaté
 2020-04-15,SP,Caraguatatuba,city,4,2,10,False,121532.0,3510500.0,3.29131,0.5,DRS 17 - Taubaté
@@ -588,7 +637,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-08,SP,Caraguatatuba,city,2,1,3,False,121532.0,3510500.0,1.64566,0.5,DRS 17 - Taubaté
 2020-04-07,SP,Caraguatatuba,city,2,1,2,False,121532.0,3510500.0,1.64566,0.5,DRS 17 - Taubaté
 2020-04-06,SP,Caraguatatuba,city,1,0,1,False,121532.0,3510500.0,0.82283,,DRS 17 - Taubaté
-2020-04-18,SP,Carapicuíba,city,71,3,28,True,400927.0,3510609.0,17.70896,0.0423,DRS 01 - Grande São Paulo
+2020-04-19,SP,Carapicuíba,city,74,3,29,True,400927.0,3510609.0,18.45723,0.0405,DRS 01 - Grande São Paulo
+2020-04-18,SP,Carapicuíba,city,71,3,28,False,400927.0,3510609.0,17.70896,0.0423,DRS 01 - Grande São Paulo
 2020-04-17,SP,Carapicuíba,city,59,2,27,False,400927.0,3510609.0,14.7159,0.0339,DRS 01 - Grande São Paulo
 2020-04-16,SP,Carapicuíba,city,52,2,26,False,400927.0,3510609.0,12.96994,0.0385,DRS 01 - Grande São Paulo
 2020-04-15,SP,Carapicuíba,city,43,2,25,False,400927.0,3510609.0,10.72514,0.0465,DRS 01 - Grande São Paulo
@@ -616,10 +666,12 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-17,SP,Carapicuíba,city,1,0,3,False,400927.0,3510609.0,0.24942,,DRS 01 - Grande São Paulo
 2020-03-16,SP,Carapicuíba,city,1,0,2,False,400927.0,3510609.0,0.24942,,DRS 01 - Grande São Paulo
 2020-03-14,SP,Carapicuíba,city,1,0,1,False,400927.0,3510609.0,0.24942,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Castilho,city,1,0,3,True,21006.0,3511003.0,4.76054,,DRS 02 - Araçatuba
+2020-04-19,SP,Castilho,city,1,0,4,True,21006.0,3511003.0,4.76054,,DRS 02 - Araçatuba
+2020-04-18,SP,Castilho,city,1,0,3,False,21006.0,3511003.0,4.76054,,DRS 02 - Araçatuba
 2020-04-17,SP,Castilho,city,1,0,2,False,21006.0,3511003.0,4.76054,,DRS 02 - Araçatuba
 2020-04-16,SP,Castilho,city,1,0,1,False,21006.0,3511003.0,4.76054,,DRS 02 - Araçatuba
-2020-04-18,SP,Catanduva,city,9,2,12,True,121862.0,3511102.0,7.3854,0.2222,DRS 15 - São José do Rio Preto
+2020-04-19,SP,Catanduva,city,9,2,13,True,121862.0,3511102.0,7.3854,0.2222,DRS 15 - São José do Rio Preto
+2020-04-18,SP,Catanduva,city,9,2,12,False,121862.0,3511102.0,7.3854,0.2222,DRS 15 - São José do Rio Preto
 2020-04-17,SP,Catanduva,city,7,2,11,False,121862.0,3511102.0,5.7442,0.2857,DRS 15 - São José do Rio Preto
 2020-04-16,SP,Catanduva,city,7,2,10,False,121862.0,3511102.0,5.7442,0.2857,DRS 15 - São José do Rio Preto
 2020-04-15,SP,Catanduva,city,6,2,9,False,121862.0,3511102.0,4.9236,0.3333,DRS 15 - São José do Rio Preto
@@ -631,7 +683,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-09,SP,Catanduva,city,1,1,3,False,121862.0,3511102.0,0.8206,1.0,DRS 15 - São José do Rio Preto
 2020-04-08,SP,Catanduva,city,1,1,2,False,121862.0,3511102.0,0.8206,1.0,DRS 15 - São José do Rio Preto
 2020-04-07,SP,Catanduva,city,1,0,1,False,121862.0,3511102.0,0.8206,,DRS 15 - São José do Rio Preto
-2020-04-18,SP,Caçapava,city,8,0,11,True,94263.0,3508504.0,8.486889999999999,,DRS 17 - Taubaté
+2020-04-19,SP,Caçapava,city,7,0,12,True,94263.0,3508504.0,7.42603,,DRS 17 - Taubaté
+2020-04-18,SP,Caçapava,city,8,0,11,False,94263.0,3508504.0,8.486889999999999,,DRS 17 - Taubaté
 2020-04-17,SP,Caçapava,city,5,0,10,False,94263.0,3508504.0,5.30431,,DRS 17 - Taubaté
 2020-04-16,SP,Caçapava,city,6,0,9,False,94263.0,3508504.0,6.36517,,DRS 17 - Taubaté
 2020-04-15,SP,Caçapava,city,5,0,8,False,94263.0,3508504.0,5.30431,,DRS 17 - Taubaté
@@ -642,7 +695,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-10,SP,Caçapava,city,3,0,3,False,94263.0,3508504.0,3.18258,,DRS 17 - Taubaté
 2020-04-09,SP,Caçapava,city,3,0,2,False,94263.0,3508504.0,3.18258,,DRS 17 - Taubaté
 2020-04-08,SP,Caçapava,city,2,0,1,False,94263.0,3508504.0,2.1217200000000003,,DRS 17 - Taubaté
-2020-04-18,SP,Cedral,city,1,0,15,True,9237.0,3511300.0,10.82603,,DRS 15 - São José do Rio Preto
+2020-04-19,SP,Cedral,city,1,0,16,True,9237.0,3511300.0,10.82603,,DRS 15 - São José do Rio Preto
+2020-04-18,SP,Cedral,city,1,0,15,False,9237.0,3511300.0,10.82603,,DRS 15 - São José do Rio Preto
 2020-04-17,SP,Cedral,city,1,0,14,False,9237.0,3511300.0,10.82603,,DRS 15 - São José do Rio Preto
 2020-04-16,SP,Cedral,city,1,0,13,False,9237.0,3511300.0,10.82603,,DRS 15 - São José do Rio Preto
 2020-04-15,SP,Cedral,city,1,0,12,False,9237.0,3511300.0,10.82603,,DRS 15 - São José do Rio Preto
@@ -657,12 +711,14 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-06,SP,Cedral,city,1,0,3,False,9237.0,3511300.0,10.82603,,DRS 15 - São José do Rio Preto
 2020-04-05,SP,Cedral,city,1,0,2,False,9237.0,3511300.0,10.82603,,DRS 15 - São José do Rio Preto
 2020-04-04,SP,Cedral,city,1,0,1,False,9237.0,3511300.0,10.82603,,DRS 15 - São José do Rio Preto
-2020-04-18,SP,Conchas,city,1,1,5,True,17896.0,3512308.0,5.58784,1.0,DRS 06 - Bauru
+2020-04-19,SP,Conchas,city,1,1,6,True,17896.0,3512308.0,5.58784,1.0,DRS 06 - Bauru
+2020-04-18,SP,Conchas,city,1,1,5,False,17896.0,3512308.0,5.58784,1.0,DRS 06 - Bauru
 2020-04-17,SP,Conchas,city,1,1,4,False,17896.0,3512308.0,5.58784,1.0,DRS 06 - Bauru
 2020-04-16,SP,Conchas,city,1,1,3,False,17896.0,3512308.0,5.58784,1.0,DRS 06 - Bauru
 2020-04-15,SP,Conchas,city,1,0,2,False,17896.0,3512308.0,5.58784,,DRS 06 - Bauru
 2020-04-14,SP,Conchas,city,1,0,1,False,17896.0,3512308.0,5.58784,,DRS 06 - Bauru
-2020-04-18,SP,Cotia,city,79,5,26,True,249210.0,3513009.0,31.70017,0.0633,DRS 01 - Grande São Paulo
+2020-04-19,SP,Cotia,city,80,5,27,True,249210.0,3513009.0,32.101440000000004,0.0625,DRS 01 - Grande São Paulo
+2020-04-18,SP,Cotia,city,79,5,26,False,249210.0,3513009.0,31.70017,0.0633,DRS 01 - Grande São Paulo
 2020-04-17,SP,Cotia,city,76,4,25,False,249210.0,3513009.0,30.49637,0.0526,DRS 01 - Grande São Paulo
 2020-04-16,SP,Cotia,city,72,4,24,False,249210.0,3513009.0,28.8913,0.0556,DRS 01 - Grande São Paulo
 2020-04-15,SP,Cotia,city,70,4,23,False,249210.0,3513009.0,28.08876,0.0571,DRS 01 - Grande São Paulo
@@ -688,7 +744,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-20,SP,Cotia,city,2,0,3,False,249210.0,3513009.0,0.8025399999999999,,DRS 01 - Grande São Paulo
 2020-03-19,SP,Cotia,city,2,0,2,False,249210.0,3513009.0,0.8025399999999999,,DRS 01 - Grande São Paulo
 2020-03-18,SP,Cotia,city,1,0,1,False,249210.0,3513009.0,0.40127,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Cravinhos,city,6,1,16,True,35292.0,3513108.0,17.00102,0.1667,DRS 13 - Ribeirão Preto
+2020-04-19,SP,Cravinhos,city,6,1,17,True,35292.0,3513108.0,17.00102,0.1667,DRS 13 - Ribeirão Preto
+2020-04-18,SP,Cravinhos,city,6,1,16,False,35292.0,3513108.0,17.00102,0.1667,DRS 13 - Ribeirão Preto
 2020-04-17,SP,Cravinhos,city,6,1,15,False,35292.0,3513108.0,17.00102,0.1667,DRS 13 - Ribeirão Preto
 2020-04-16,SP,Cravinhos,city,6,1,14,False,35292.0,3513108.0,17.00102,0.1667,DRS 13 - Ribeirão Preto
 2020-04-15,SP,Cravinhos,city,6,1,13,False,35292.0,3513108.0,17.00102,0.1667,DRS 13 - Ribeirão Preto
@@ -704,11 +761,13 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-05,SP,Cravinhos,city,2,1,3,False,35292.0,3513108.0,5.6670099999999985,0.5,DRS 13 - Ribeirão Preto
 2020-04-04,SP,Cravinhos,city,2,1,2,False,35292.0,3513108.0,5.6670099999999985,0.5,DRS 13 - Ribeirão Preto
 2020-04-03,SP,Cravinhos,city,1,1,1,False,35292.0,3513108.0,2.8335,1.0,DRS 13 - Ribeirão Preto
-2020-04-18,SP,Cruzeiro,city,3,1,4,True,82238.0,3513405.0,3.64795,0.3333,DRS 17 - Taubaté
+2020-04-19,SP,Cruzeiro,city,3,1,5,True,82238.0,3513405.0,3.64795,0.3333,DRS 17 - Taubaté
+2020-04-18,SP,Cruzeiro,city,3,1,4,False,82238.0,3513405.0,3.64795,0.3333,DRS 17 - Taubaté
 2020-04-17,SP,Cruzeiro,city,3,1,3,False,82238.0,3513405.0,3.64795,0.3333,DRS 17 - Taubaté
 2020-04-16,SP,Cruzeiro,city,3,1,2,False,82238.0,3513405.0,3.64795,0.3333,DRS 17 - Taubaté
 2020-04-15,SP,Cruzeiro,city,1,0,1,False,82238.0,3513405.0,1.2159799999999998,,DRS 17 - Taubaté
-2020-04-18,SP,Cubatão,city,15,0,9,True,130705.0,3513504.0,11.47623,,DRS 04 - Baixada Santista
+2020-04-19,SP,Cubatão,city,22,0,10,True,130705.0,3513504.0,16.8318,,DRS 04 - Baixada Santista
+2020-04-18,SP,Cubatão,city,15,0,9,False,130705.0,3513504.0,11.47623,,DRS 04 - Baixada Santista
 2020-04-17,SP,Cubatão,city,8,0,8,False,130705.0,3513504.0,6.12065,,DRS 04 - Baixada Santista
 2020-04-16,SP,Cubatão,city,5,0,7,False,130705.0,3513504.0,3.82541,,DRS 04 - Baixada Santista
 2020-04-15,SP,Cubatão,city,4,0,6,False,130705.0,3513504.0,3.06033,,DRS 04 - Baixada Santista
@@ -717,7 +776,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-12,SP,Cubatão,city,2,0,3,False,130705.0,3513504.0,1.53016,,DRS 04 - Baixada Santista
 2020-04-11,SP,Cubatão,city,2,0,2,False,130705.0,3513504.0,1.53016,,DRS 04 - Baixada Santista
 2020-04-10,SP,Cubatão,city,2,0,1,False,130705.0,3513504.0,1.53016,,DRS 04 - Baixada Santista
-2020-04-18,SP,Diadema,city,118,5,21,True,423884.0,3513801.0,27.8378,0.0424,DRS 01 - Grande São Paulo
+2020-04-19,SP,Diadema,city,120,5,22,True,423884.0,3513801.0,28.30963,0.0417,DRS 01 - Grande São Paulo
+2020-04-18,SP,Diadema,city,118,5,21,False,423884.0,3513801.0,27.8378,0.0424,DRS 01 - Grande São Paulo
 2020-04-17,SP,Diadema,city,115,3,20,False,423884.0,3513801.0,27.13006,0.0261,DRS 01 - Grande São Paulo
 2020-04-16,SP,Diadema,city,100,3,19,False,423884.0,3513801.0,23.59136,0.03,DRS 01 - Grande São Paulo
 2020-04-15,SP,Diadema,city,94,2,18,False,423884.0,3513801.0,22.17588,0.0213,DRS 01 - Grande São Paulo
@@ -738,7 +798,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-31,SP,Diadema,city,5,0,3,False,423884.0,3513801.0,1.17957,,DRS 01 - Grande São Paulo
 2020-03-30,SP,Diadema,city,2,0,2,False,423884.0,3513801.0,0.47183,,DRS 01 - Grande São Paulo
 2020-03-27,SP,Diadema,city,1,0,1,False,423884.0,3513801.0,0.23591,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Dracena,city,3,2,17,True,46793.0,3514403.0,6.41122,0.6667,DRS 11 - Presidente Prudente
+2020-04-19,SP,Dracena,city,3,2,18,True,46793.0,3514403.0,6.41122,0.6667,DRS 11 - Presidente Prudente
+2020-04-18,SP,Dracena,city,3,2,17,False,46793.0,3514403.0,6.41122,0.6667,DRS 11 - Presidente Prudente
 2020-04-17,SP,Dracena,city,1,1,16,False,46793.0,3514403.0,2.13707,1.0,DRS 11 - Presidente Prudente
 2020-04-16,SP,Dracena,city,1,1,15,False,46793.0,3514403.0,2.13707,1.0,DRS 11 - Presidente Prudente
 2020-04-15,SP,Dracena,city,1,1,14,False,46793.0,3514403.0,2.13707,1.0,DRS 11 - Presidente Prudente
@@ -755,10 +816,12 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-04,SP,Dracena,city,1,1,3,False,46793.0,3514403.0,2.13707,1.0,DRS 11 - Presidente Prudente
 2020-04-03,SP,Dracena,city,1,0,2,False,46793.0,3514403.0,2.13707,,DRS 11 - Presidente Prudente
 2020-04-02,SP,Dracena,city,1,0,1,False,46793.0,3514403.0,2.13707,,DRS 11 - Presidente Prudente
-2020-04-18,SP,Duartina,city,1,0,3,True,12445.0,3514502.0,8.03536,,DRS 06 - Bauru
+2020-04-19,SP,Duartina,city,1,0,4,True,12445.0,3514502.0,8.03536,,DRS 06 - Bauru
+2020-04-18,SP,Duartina,city,1,0,3,False,12445.0,3514502.0,8.03536,,DRS 06 - Bauru
 2020-04-17,SP,Duartina,city,1,0,2,False,12445.0,3514502.0,8.03536,,DRS 06 - Bauru
 2020-04-16,SP,Duartina,city,1,0,1,False,12445.0,3514502.0,8.03536,,DRS 06 - Bauru
-2020-04-18,SP,Eldorado,city,1,1,10,True,15494.0,3514809.0,6.45411,1.0,DRS 12 - Registro
+2020-04-19,SP,Eldorado,city,1,1,11,True,15494.0,3514809.0,6.45411,1.0,DRS 12 - Registro
+2020-04-18,SP,Eldorado,city,1,1,10,False,15494.0,3514809.0,6.45411,1.0,DRS 12 - Registro
 2020-04-17,SP,Eldorado,city,1,1,9,False,15494.0,3514809.0,6.45411,1.0,DRS 12 - Registro
 2020-04-16,SP,Eldorado,city,1,1,8,False,15494.0,3514809.0,6.45411,1.0,DRS 12 - Registro
 2020-04-15,SP,Eldorado,city,1,1,7,False,15494.0,3514809.0,6.45411,1.0,DRS 12 - Registro
@@ -768,7 +831,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-11,SP,Eldorado,city,1,0,3,False,15494.0,3514809.0,6.45411,,DRS 12 - Registro
 2020-04-10,SP,Eldorado,city,1,0,2,False,15494.0,3514809.0,6.45411,,DRS 12 - Registro
 2020-04-09,SP,Eldorado,city,1,0,1,False,15494.0,3514809.0,6.45411,,DRS 12 - Registro
-2020-04-18,SP,Embu das Artes,city,57,3,23,True,273726.0,3515004.0,20.82374,0.0526,DRS 01 - Grande São Paulo
+2020-04-19,SP,Embu das Artes,city,56,3,24,True,273726.0,3515004.0,20.45841,0.0536,DRS 01 - Grande São Paulo
+2020-04-18,SP,Embu das Artes,city,57,3,23,False,273726.0,3515004.0,20.82374,0.0526,DRS 01 - Grande São Paulo
 2020-04-17,SP,Embu das Artes,city,55,3,22,False,273726.0,3515004.0,20.09309,0.0545,DRS 01 - Grande São Paulo
 2020-04-16,SP,Embu das Artes,city,50,2,21,False,273726.0,3515004.0,18.26644,0.04,DRS 01 - Grande São Paulo
 2020-04-15,SP,Embu das Artes,city,43,2,20,False,273726.0,3515004.0,15.70914,0.0465,DRS 01 - Grande São Paulo
@@ -791,7 +855,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-27,SP,Embu das Artes,city,1,0,3,False,273726.0,3515004.0,0.36533,,DRS 01 - Grande São Paulo
 2020-03-26,SP,Embu das Artes,city,1,0,2,False,273726.0,3515004.0,0.36533,,DRS 01 - Grande São Paulo
 2020-03-25,SP,Embu das Artes,city,1,0,1,False,273726.0,3515004.0,0.36533,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Embu-Guaçu,city,4,0,13,True,69385.0,3515103.0,5.7649300000000006,,DRS 01 - Grande São Paulo
+2020-04-19,SP,Embu-Guaçu,city,5,0,14,True,69385.0,3515103.0,7.206169999999998,,DRS 01 - Grande São Paulo
+2020-04-18,SP,Embu-Guaçu,city,4,0,13,False,69385.0,3515103.0,5.7649300000000006,,DRS 01 - Grande São Paulo
 2020-04-17,SP,Embu-Guaçu,city,4,0,12,False,69385.0,3515103.0,5.7649300000000006,,DRS 01 - Grande São Paulo
 2020-04-16,SP,Embu-Guaçu,city,4,0,11,False,69385.0,3515103.0,5.7649300000000006,,DRS 01 - Grande São Paulo
 2020-04-15,SP,Embu-Guaçu,city,4,0,10,False,69385.0,3515103.0,5.7649300000000006,,DRS 01 - Grande São Paulo
@@ -804,7 +869,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-08,SP,Embu-Guaçu,city,2,0,3,False,69385.0,3515103.0,2.88247,,DRS 01 - Grande São Paulo
 2020-04-07,SP,Embu-Guaçu,city,1,0,2,False,69385.0,3515103.0,1.44123,,DRS 01 - Grande São Paulo
 2020-04-06,SP,Embu-Guaçu,city,1,0,1,False,69385.0,3515103.0,1.44123,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Estiva Gerbi,city,1,0,8,True,11304.0,3557303.0,8.84643,,DRS 14 - São João da Boa Vista
+2020-04-19,SP,Estiva Gerbi,city,1,0,9,True,11304.0,3557303.0,8.84643,,DRS 14 - São João da Boa Vista
+2020-04-18,SP,Estiva Gerbi,city,1,0,8,False,11304.0,3557303.0,8.84643,,DRS 14 - São João da Boa Vista
 2020-04-17,SP,Estiva Gerbi,city,1,0,7,False,11304.0,3557303.0,8.84643,,DRS 14 - São João da Boa Vista
 2020-04-16,SP,Estiva Gerbi,city,1,0,6,False,11304.0,3557303.0,8.84643,,DRS 14 - São João da Boa Vista
 2020-04-15,SP,Estiva Gerbi,city,1,0,5,False,11304.0,3557303.0,8.84643,,DRS 14 - São João da Boa Vista
@@ -812,14 +878,17 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-13,SP,Estiva Gerbi,city,1,0,3,False,11304.0,3557303.0,8.84643,,DRS 14 - São João da Boa Vista
 2020-04-12,SP,Estiva Gerbi,city,1,0,2,False,11304.0,3557303.0,8.84643,,DRS 14 - São João da Boa Vista
 2020-04-11,SP,Estiva Gerbi,city,1,0,1,False,11304.0,3557303.0,8.84643,,DRS 14 - São João da Boa Vista
-2020-04-18,SP,Fartura,city,1,0,3,True,16036.0,3515400.0,6.23597,,DRS 06 - Bauru
+2020-04-19,SP,Fartura,city,1,0,4,True,16036.0,3515400.0,6.23597,,DRS 06 - Bauru
+2020-04-18,SP,Fartura,city,1,0,3,False,16036.0,3515400.0,6.23597,,DRS 06 - Bauru
 2020-04-17,SP,Fartura,city,1,0,2,False,16036.0,3515400.0,6.23597,,DRS 06 - Bauru
 2020-04-16,SP,Fartura,city,1,0,1,False,16036.0,3515400.0,6.23597,,DRS 06 - Bauru
-2020-04-18,SP,Fernandópolis,city,4,0,4,True,69116.0,3515509.0,5.78737,,DRS 15 - São José do Rio Preto
+2020-04-19,SP,Fernandópolis,city,4,0,5,True,69116.0,3515509.0,5.78737,,DRS 15 - São José do Rio Preto
+2020-04-18,SP,Fernandópolis,city,4,0,4,False,69116.0,3515509.0,5.78737,,DRS 15 - São José do Rio Preto
 2020-04-17,SP,Fernandópolis,city,4,0,3,False,69116.0,3515509.0,5.78737,,DRS 15 - São José do Rio Preto
 2020-04-16,SP,Fernandópolis,city,4,0,2,False,69116.0,3515509.0,5.78737,,DRS 15 - São José do Rio Preto
 2020-04-15,SP,Fernandópolis,city,4,0,1,False,69116.0,3515509.0,5.78737,,DRS 15 - São José do Rio Preto
-2020-04-18,SP,Ferraz de Vasconcelos,city,54,2,30,True,194276.0,3515707.0,27.79551,0.037000000000000005,DRS 01 - Grande São Paulo
+2020-04-19,SP,Ferraz de Vasconcelos,city,55,2,31,True,194276.0,3515707.0,28.310240000000004,0.0364,DRS 01 - Grande São Paulo
+2020-04-18,SP,Ferraz de Vasconcelos,city,54,2,30,False,194276.0,3515707.0,27.79551,0.037000000000000005,DRS 01 - Grande São Paulo
 2020-04-17,SP,Ferraz de Vasconcelos,city,52,2,29,False,194276.0,3515707.0,26.766040000000004,0.0385,DRS 01 - Grande São Paulo
 2020-04-16,SP,Ferraz de Vasconcelos,city,47,2,28,False,194276.0,3515707.0,24.19239,0.0426,DRS 01 - Grande São Paulo
 2020-04-15,SP,Ferraz de Vasconcelos,city,41,1,27,False,194276.0,3515707.0,21.104,0.0244,DRS 01 - Grande São Paulo
@@ -849,7 +918,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-16,SP,Ferraz de Vasconcelos,city,1,0,3,False,194276.0,3515707.0,0.51473,,DRS 01 - Grande São Paulo
 2020-03-14,SP,Ferraz de Vasconcelos,city,1,0,2,False,194276.0,3515707.0,0.51473,,DRS 01 - Grande São Paulo
 2020-03-12,SP,Ferraz de Vasconcelos,city,1,0,1,False,194276.0,3515707.0,0.51473,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Franca,city,6,0,17,True,353187.0,3516200.0,1.69882,,DRS 08 - Franca
+2020-04-19,SP,Franca,city,6,0,18,True,353187.0,3516200.0,1.69882,,DRS 08 - Franca
+2020-04-18,SP,Franca,city,6,0,17,False,353187.0,3516200.0,1.69882,,DRS 08 - Franca
 2020-04-17,SP,Franca,city,6,0,16,False,353187.0,3516200.0,1.69882,,DRS 08 - Franca
 2020-04-16,SP,Franca,city,6,1,15,False,353187.0,3516200.0,1.69882,0.1667,DRS 08 - Franca
 2020-04-15,SP,Franca,city,4,1,14,False,353187.0,3516200.0,1.13254,0.25,DRS 08 - Franca
@@ -866,7 +936,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-04,SP,Franca,city,2,0,3,False,353187.0,3516200.0,0.5662699999999999,,DRS 08 - Franca
 2020-04-03,SP,Franca,city,2,0,2,False,353187.0,3516200.0,0.5662699999999999,,DRS 08 - Franca
 2020-04-02,SP,Franca,city,1,0,1,False,353187.0,3516200.0,0.28314,,DRS 08 - Franca
-2020-04-18,SP,Francisco Morato,city,29,1,17,True,175844.0,3516309.0,16.491889999999998,0.0345,DRS 01 - Grande São Paulo
+2020-04-19,SP,Francisco Morato,city,30,1,18,True,175844.0,3516309.0,17.060579999999998,0.0333,DRS 01 - Grande São Paulo
+2020-04-18,SP,Francisco Morato,city,29,1,17,False,175844.0,3516309.0,16.491889999999998,0.0345,DRS 01 - Grande São Paulo
 2020-04-17,SP,Francisco Morato,city,21,1,16,False,175844.0,3516309.0,11.9424,0.0476,DRS 01 - Grande São Paulo
 2020-04-16,SP,Francisco Morato,city,19,1,15,False,175844.0,3516309.0,10.80503,0.0526,DRS 01 - Grande São Paulo
 2020-04-15,SP,Francisco Morato,city,20,1,14,False,175844.0,3516309.0,11.37372,0.05,DRS 01 - Grande São Paulo
@@ -883,7 +954,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-04,SP,Francisco Morato,city,8,1,3,False,175844.0,3516309.0,4.5494900000000005,0.125,DRS 01 - Grande São Paulo
 2020-04-03,SP,Francisco Morato,city,7,0,2,False,175844.0,3516309.0,3.9808,,DRS 01 - Grande São Paulo
 2020-04-02,SP,Francisco Morato,city,3,1,1,False,175844.0,3516309.0,1.70606,0.3333,DRS 01 - Grande São Paulo
-2020-04-18,SP,Franco da Rocha,city,60,3,19,True,154489.0,3516408.0,38.83772,0.05,DRS 01 - Grande São Paulo
+2020-04-19,SP,Franco da Rocha,city,61,3,20,True,154489.0,3516408.0,39.48501,0.0492,DRS 01 - Grande São Paulo
+2020-04-18,SP,Franco da Rocha,city,60,3,19,False,154489.0,3516408.0,38.83772,0.05,DRS 01 - Grande São Paulo
 2020-04-17,SP,Franco da Rocha,city,52,2,18,False,154489.0,3516408.0,33.65935,0.0385,DRS 01 - Grande São Paulo
 2020-04-16,SP,Franco da Rocha,city,47,2,17,False,154489.0,3516408.0,30.42288,0.0426,DRS 01 - Grande São Paulo
 2020-04-15,SP,Franco da Rocha,city,41,2,16,False,154489.0,3516408.0,26.53911,0.0488,DRS 01 - Grande São Paulo
@@ -902,13 +974,15 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,Franco da Rocha,city,6,0,3,False,154489.0,3516408.0,3.88377,,DRS 01 - Grande São Paulo
 2020-04-01,SP,Franco da Rocha,city,4,0,2,False,154489.0,3516408.0,2.58918,,DRS 01 - Grande São Paulo
 2020-03-31,SP,Franco da Rocha,city,3,0,1,False,154489.0,3516408.0,1.94189,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Garça,city,1,0,6,True,44390.0,3516705.0,2.25276,,DRS 09 - Marília
+2020-04-19,SP,Garça,city,1,0,7,True,44390.0,3516705.0,2.25276,,DRS 09 - Marília
+2020-04-18,SP,Garça,city,1,0,6,False,44390.0,3516705.0,2.25276,,DRS 09 - Marília
 2020-04-17,SP,Garça,city,1,0,5,False,44390.0,3516705.0,2.25276,,DRS 09 - Marília
 2020-04-16,SP,Garça,city,1,0,4,False,44390.0,3516705.0,2.25276,,DRS 09 - Marília
 2020-04-15,SP,Garça,city,2,0,3,False,44390.0,3516705.0,4.50552,,DRS 09 - Marília
 2020-04-14,SP,Garça,city,2,0,2,False,44390.0,3516705.0,4.50552,,DRS 09 - Marília
 2020-04-13,SP,Garça,city,1,0,1,False,44390.0,3516705.0,2.25276,,DRS 09 - Marília
-2020-04-18,SP,Guararapes,city,3,0,15,True,32939.0,3518206.0,9.10774,,DRS 02 - Araçatuba
+2020-04-19,SP,Guararapes,city,3,0,16,True,32939.0,3518206.0,9.10774,,DRS 02 - Araçatuba
+2020-04-18,SP,Guararapes,city,3,0,15,False,32939.0,3518206.0,9.10774,,DRS 02 - Araçatuba
 2020-04-17,SP,Guararapes,city,3,0,14,False,32939.0,3518206.0,9.10774,,DRS 02 - Araçatuba
 2020-04-16,SP,Guararapes,city,3,0,13,False,32939.0,3518206.0,9.10774,,DRS 02 - Araçatuba
 2020-04-15,SP,Guararapes,city,3,0,12,False,32939.0,3518206.0,9.10774,,DRS 02 - Araçatuba
@@ -923,7 +997,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-06,SP,Guararapes,city,2,0,3,False,32939.0,3518206.0,6.07183,,DRS 02 - Araçatuba
 2020-04-05,SP,Guararapes,city,2,0,2,False,32939.0,3518206.0,6.07183,,DRS 02 - Araçatuba
 2020-04-04,SP,Guararapes,city,2,0,1,False,32939.0,3518206.0,6.07183,,DRS 02 - Araçatuba
-2020-04-18,SP,Guararema,city,2,0,11,True,29798.0,3518305.0,6.7118600000000015,,DRS 01 - Grande São Paulo
+2020-04-19,SP,Guararema,city,2,0,12,True,29798.0,3518305.0,6.7118600000000015,,DRS 01 - Grande São Paulo
+2020-04-18,SP,Guararema,city,2,0,11,False,29798.0,3518305.0,6.7118600000000015,,DRS 01 - Grande São Paulo
 2020-04-17,SP,Guararema,city,2,0,10,False,29798.0,3518305.0,6.7118600000000015,,DRS 01 - Grande São Paulo
 2020-04-16,SP,Guararema,city,2,0,9,False,29798.0,3518305.0,6.7118600000000015,,DRS 01 - Grande São Paulo
 2020-04-15,SP,Guararema,city,2,0,8,False,29798.0,3518305.0,6.7118600000000015,,DRS 01 - Grande São Paulo
@@ -934,7 +1009,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-10,SP,Guararema,city,2,0,3,False,29798.0,3518305.0,6.7118600000000015,,DRS 01 - Grande São Paulo
 2020-04-09,SP,Guararema,city,2,0,2,False,29798.0,3518305.0,6.7118600000000015,,DRS 01 - Grande São Paulo
 2020-04-08,SP,Guararema,city,2,0,1,False,29798.0,3518305.0,6.7118600000000015,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Guaratinguetá,city,1,0,10,True,121798.0,3518404.0,0.8210299999999999,,DRS 17 - Taubaté
+2020-04-19,SP,Guaratinguetá,city,1,0,11,True,121798.0,3518404.0,0.8210299999999999,,DRS 17 - Taubaté
+2020-04-18,SP,Guaratinguetá,city,1,0,10,False,121798.0,3518404.0,0.8210299999999999,,DRS 17 - Taubaté
 2020-04-17,SP,Guaratinguetá,city,1,0,9,False,121798.0,3518404.0,0.8210299999999999,,DRS 17 - Taubaté
 2020-04-16,SP,Guaratinguetá,city,1,0,8,False,121798.0,3518404.0,0.8210299999999999,,DRS 17 - Taubaté
 2020-04-15,SP,Guaratinguetá,city,1,0,7,False,121798.0,3518404.0,0.8210299999999999,,DRS 17 - Taubaté
@@ -944,7 +1020,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-11,SP,Guaratinguetá,city,1,0,3,False,121798.0,3518404.0,0.8210299999999999,,DRS 17 - Taubaté
 2020-04-10,SP,Guaratinguetá,city,1,0,2,False,121798.0,3518404.0,0.8210299999999999,,DRS 17 - Taubaté
 2020-04-09,SP,Guaratinguetá,city,1,0,1,False,121798.0,3518404.0,0.8210299999999999,,DRS 17 - Taubaté
-2020-04-18,SP,Guarujá,city,44,2,19,True,320459.0,3518701.0,13.73031,0.0455,DRS 04 - Baixada Santista
+2020-04-19,SP,Guarujá,city,61,2,20,True,320459.0,3518701.0,19.0352,0.0328,DRS 04 - Baixada Santista
+2020-04-18,SP,Guarujá,city,44,2,19,False,320459.0,3518701.0,13.73031,0.0455,DRS 04 - Baixada Santista
 2020-04-17,SP,Guarujá,city,27,2,18,False,320459.0,3518701.0,8.425410000000001,0.0741,DRS 04 - Baixada Santista
 2020-04-16,SP,Guarujá,city,26,1,17,False,320459.0,3518701.0,8.11336,0.0385,DRS 04 - Baixada Santista
 2020-04-15,SP,Guarujá,city,17,0,16,False,320459.0,3518701.0,5.30489,,DRS 04 - Baixada Santista
@@ -963,7 +1040,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,Guarujá,city,3,0,3,False,320459.0,3518701.0,0.93616,,DRS 04 - Baixada Santista
 2020-04-01,SP,Guarujá,city,1,0,2,False,320459.0,3518701.0,0.31205,,DRS 04 - Baixada Santista
 2020-03-31,SP,Guarujá,city,1,0,1,False,320459.0,3518701.0,0.31205,,DRS 04 - Baixada Santista
-2020-04-18,SP,Guarulhos,city,305,28,27,True,1379182.0,3518800.0,22.11456,0.0918,DRS 01 - Grande São Paulo
+2020-04-19,SP,Guarulhos,city,308,28,28,True,1379182.0,3518800.0,22.33208,0.0909,DRS 01 - Grande São Paulo
+2020-04-18,SP,Guarulhos,city,305,28,27,False,1379182.0,3518800.0,22.11456,0.0918,DRS 01 - Grande São Paulo
 2020-04-17,SP,Guarulhos,city,295,28,26,False,1379182.0,3518800.0,21.38949,0.0949,DRS 01 - Grande São Paulo
 2020-04-16,SP,Guarulhos,city,269,25,25,False,1379182.0,3518800.0,19.50431,0.0929,DRS 01 - Grande São Paulo
 2020-04-15,SP,Guarulhos,city,253,22,24,False,1379182.0,3518800.0,18.34421,0.087,DRS 01 - Grande São Paulo
@@ -990,7 +1068,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-19,SP,Guarulhos,city,1,0,3,False,1379182.0,3518800.0,0.07251,,DRS 01 - Grande São Paulo
 2020-03-18,SP,Guarulhos,city,1,0,2,False,1379182.0,3518800.0,0.07251,,DRS 01 - Grande São Paulo
 2020-03-17,SP,Guarulhos,city,1,0,1,False,1379182.0,3518800.0,0.07251,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Hortolândia,city,9,0,24,True,230851.0,3519071.0,3.89862,,DRS 07 - Campinas
+2020-04-19,SP,Hortolândia,city,9,0,25,True,230851.0,3519071.0,3.89862,,DRS 07 - Campinas
+2020-04-18,SP,Hortolândia,city,9,0,24,False,230851.0,3519071.0,3.89862,,DRS 07 - Campinas
 2020-04-17,SP,Hortolândia,city,7,0,23,False,230851.0,3519071.0,3.03226,,DRS 07 - Campinas
 2020-04-16,SP,Hortolândia,city,5,0,22,False,230851.0,3519071.0,2.1659,,DRS 07 - Campinas
 2020-04-15,SP,Hortolândia,city,2,0,21,False,230851.0,3519071.0,0.86636,,DRS 07 - Campinas
@@ -1014,7 +1093,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-26,SP,Hortolândia,city,1,0,3,False,230851.0,3519071.0,0.43318,,DRS 07 - Campinas
 2020-03-25,SP,Hortolândia,city,2,0,2,False,230851.0,3519071.0,0.86636,,DRS 07 - Campinas
 2020-03-20,SP,Hortolândia,city,1,0,1,False,230851.0,3519071.0,0.43318,,DRS 07 - Campinas
-2020-04-18,SP,Ibirá,city,1,0,8,True,12393.0,3519402.0,8.06907,,DRS 15 - São José do Rio Preto
+2020-04-19,SP,Ibirá,city,1,0,9,True,12393.0,3519402.0,8.06907,,DRS 15 - São José do Rio Preto
+2020-04-18,SP,Ibirá,city,1,0,8,False,12393.0,3519402.0,8.06907,,DRS 15 - São José do Rio Preto
 2020-04-17,SP,Ibirá,city,1,0,7,False,12393.0,3519402.0,8.06907,,DRS 15 - São José do Rio Preto
 2020-04-16,SP,Ibirá,city,1,0,6,False,12393.0,3519402.0,8.06907,,DRS 15 - São José do Rio Preto
 2020-04-15,SP,Ibirá,city,1,0,5,False,12393.0,3519402.0,8.06907,,DRS 15 - São José do Rio Preto
@@ -1022,7 +1102,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-13,SP,Ibirá,city,1,0,3,False,12393.0,3519402.0,8.06907,,DRS 15 - São José do Rio Preto
 2020-04-12,SP,Ibirá,city,1,0,2,False,12393.0,3519402.0,8.06907,,DRS 15 - São José do Rio Preto
 2020-04-11,SP,Ibirá,city,1,0,1,False,12393.0,3519402.0,8.06907,,DRS 15 - São José do Rio Preto
-2020-04-18,SP,Ibiúna,city,3,0,12,True,78878.0,3519709.0,3.80334,,DRS 16 - Sorocaba
+2020-04-19,SP,Ibiúna,city,3,0,13,True,78878.0,3519709.0,3.80334,,DRS 16 - Sorocaba
+2020-04-18,SP,Ibiúna,city,3,0,12,False,78878.0,3519709.0,3.80334,,DRS 16 - Sorocaba
 2020-04-17,SP,Ibiúna,city,3,0,11,False,78878.0,3519709.0,3.80334,,DRS 16 - Sorocaba
 2020-04-16,SP,Ibiúna,city,1,0,10,False,78878.0,3519709.0,1.26778,,DRS 16 - Sorocaba
 2020-04-15,SP,Ibiúna,city,1,0,9,False,78878.0,3519709.0,1.26778,,DRS 16 - Sorocaba
@@ -1034,18 +1115,23 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-09,SP,Ibiúna,city,1,0,3,False,78878.0,3519709.0,1.26778,,DRS 16 - Sorocaba
 2020-04-08,SP,Ibiúna,city,1,0,2,False,78878.0,3519709.0,1.26778,,DRS 16 - Sorocaba
 2020-04-07,SP,Ibiúna,city,1,0,1,False,78878.0,3519709.0,1.26778,,DRS 16 - Sorocaba
-2020-04-18,SP,Igarapava,city,1,0,4,True,30432.0,3520103.0,3.28601,,DRS 08 - Franca
+2020-04-19,SP,Iepê,city,1,1,1,True,8159.0,3519907.0,12.2564,1.0,DRS 11 - Presidente Prudente
+2020-04-19,SP,Igarapava,city,1,0,5,True,30432.0,3520103.0,3.28601,,DRS 08 - Franca
+2020-04-18,SP,Igarapava,city,1,0,4,False,30432.0,3520103.0,3.28601,,DRS 08 - Franca
 2020-04-17,SP,Igarapava,city,1,0,3,False,30432.0,3520103.0,3.28601,,DRS 08 - Franca
 2020-04-16,SP,Igarapava,city,1,0,2,False,30432.0,3520103.0,3.28601,,DRS 08 - Franca
 2020-04-15,SP,Igarapava,city,1,0,1,False,30432.0,3520103.0,3.28601,,DRS 08 - Franca
-2020-04-18,SP,Igaratá,city,1,0,6,True,9534.0,3520202.0,10.48878,,DRS 17 - Taubaté
+2020-04-19,SP,Igaratá,city,1,0,7,True,9534.0,3520202.0,10.48878,,DRS 17 - Taubaté
+2020-04-18,SP,Igaratá,city,1,0,6,False,9534.0,3520202.0,10.48878,,DRS 17 - Taubaté
 2020-04-17,SP,Igaratá,city,1,0,5,False,9534.0,3520202.0,10.48878,,DRS 17 - Taubaté
 2020-04-16,SP,Igaratá,city,1,0,4,False,9534.0,3520202.0,10.48878,,DRS 17 - Taubaté
 2020-04-15,SP,Igaratá,city,1,0,3,False,9534.0,3520202.0,10.48878,,DRS 17 - Taubaté
 2020-04-14,SP,Igaratá,city,1,0,2,False,9534.0,3520202.0,10.48878,,DRS 17 - Taubaté
 2020-04-13,SP,Igaratá,city,1,0,1,False,9534.0,3520202.0,10.48878,,DRS 17 - Taubaté
-2020-04-18,SP,Iguape,city,3,0,1,True,30857.0,3520301.0,9.72227,,DRS 12 - Registro
-2020-04-18,SP,Ilha Comprida,city,15,0,13,True,11166.0,3520426.0,134.33638,,DRS 12 - Registro
+2020-04-19,SP,Iguape,city,3,0,2,True,30857.0,3520301.0,9.72227,,DRS 12 - Registro
+2020-04-18,SP,Iguape,city,3,0,1,False,30857.0,3520301.0,9.72227,,DRS 12 - Registro
+2020-04-19,SP,Ilha Comprida,city,15,0,14,True,11166.0,3520426.0,134.33638,,DRS 12 - Registro
+2020-04-18,SP,Ilha Comprida,city,15,0,13,False,11166.0,3520426.0,134.33638,,DRS 12 - Registro
 2020-04-17,SP,Ilha Comprida,city,12,0,12,False,11166.0,3520426.0,107.4691,,DRS 12 - Registro
 2020-04-16,SP,Ilha Comprida,city,9,0,11,False,11166.0,3520426.0,80.60183,,DRS 12 - Registro
 2020-04-15,SP,Ilha Comprida,city,9,0,10,False,11166.0,3520426.0,80.60183,,DRS 12 - Registro
@@ -1058,9 +1144,11 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-08,SP,Ilha Comprida,city,6,0,3,False,11166.0,3520426.0,53.73455,,DRS 12 - Registro
 2020-04-07,SP,Ilha Comprida,city,5,0,2,False,11166.0,3520426.0,44.77879,,DRS 12 - Registro
 2020-04-06,SP,Ilha Comprida,city,1,0,1,False,11166.0,3520426.0,8.95576,,DRS 12 - Registro
-2020-04-18,SP,Ilha Solteira,city,1,0,2,True,26686.0,3520442.0,3.74728,,DRS 02 - Araçatuba
+2020-04-19,SP,Ilha Solteira,city,1,0,3,True,26686.0,3520442.0,3.74728,,DRS 02 - Araçatuba
+2020-04-18,SP,Ilha Solteira,city,1,0,2,False,26686.0,3520442.0,3.74728,,DRS 02 - Araçatuba
 2020-04-17,SP,Ilha Solteira,city,1,0,1,False,26686.0,3520442.0,3.74728,,DRS 02 - Araçatuba
-2020-04-18,SP,Ilhabela,city,3,0,10,True,34970.0,3520400.0,8.57878,,DRS 17 - Taubaté
+2020-04-19,SP,Ilhabela,city,3,0,11,True,34970.0,3520400.0,8.57878,,DRS 17 - Taubaté
+2020-04-18,SP,Ilhabela,city,3,0,10,False,34970.0,3520400.0,8.57878,,DRS 17 - Taubaté
 2020-04-17,SP,Ilhabela,city,3,0,9,False,34970.0,3520400.0,8.57878,,DRS 17 - Taubaté
 2020-04-16,SP,Ilhabela,city,3,0,8,False,34970.0,3520400.0,8.57878,,DRS 17 - Taubaté
 2020-04-15,SP,Ilhabela,city,3,0,7,False,34970.0,3520400.0,8.57878,,DRS 17 - Taubaté
@@ -1070,7 +1158,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-11,SP,Ilhabela,city,1,0,3,False,34970.0,3520400.0,2.8595900000000003,,DRS 17 - Taubaté
 2020-04-10,SP,Ilhabela,city,1,0,2,False,34970.0,3520400.0,2.8595900000000003,,DRS 17 - Taubaté
 2020-04-09,SP,Ilhabela,city,1,0,1,False,34970.0,3520400.0,2.8595900000000003,,DRS 17 - Taubaté
-2020-04-18,SP,Importados/Indefinidos,city,63,0,30,True,,,,,Indefinido
+2020-04-19,SP,Importados/Indefinidos,city,63,0,31,True,,,,,Indefinido
+2020-04-18,SP,Importados/Indefinidos,city,63,0,30,False,,,,,Indefinido
 2020-04-17,SP,Importados/Indefinidos,city,63,0,29,False,,,,,Indefinido
 2020-04-16,SP,Importados/Indefinidos,city,63,0,28,False,,,,,Indefinido
 2020-04-15,SP,Importados/Indefinidos,city,92,0,27,False,,,,,Indefinido
@@ -1100,7 +1189,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-21,SP,Importados/Indefinidos,city,0,0,3,False,,,,,Indefinido
 2020-03-20,SP,Importados/Indefinidos,city,8,0,2,False,,,,,Indefinido
 2020-03-19,SP,Importados/Indefinidos,city,4,0,1,False,,,,,Indefinido
-2020-04-18,SP,Indaiatuba,city,9,0,18,True,251627.0,3520509.0,3.57672,,DRS 07 - Campinas
+2020-04-19,SP,Indaiatuba,city,9,0,19,True,251627.0,3520509.0,3.57672,,DRS 07 - Campinas
+2020-04-18,SP,Indaiatuba,city,9,0,18,False,251627.0,3520509.0,3.57672,,DRS 07 - Campinas
 2020-04-17,SP,Indaiatuba,city,9,0,17,False,251627.0,3520509.0,3.57672,,DRS 07 - Campinas
 2020-04-16,SP,Indaiatuba,city,6,0,16,False,251627.0,3520509.0,2.38448,,DRS 07 - Campinas
 2020-04-15,SP,Indaiatuba,city,4,0,15,False,251627.0,3520509.0,1.58965,,DRS 07 - Campinas
@@ -1118,7 +1208,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-03,SP,Indaiatuba,city,2,0,3,False,251627.0,3520509.0,0.79483,,DRS 07 - Campinas
 2020-04-02,SP,Indaiatuba,city,2,0,2,False,251627.0,3520509.0,0.79483,,DRS 07 - Campinas
 2020-04-01,SP,Indaiatuba,city,2,0,1,False,251627.0,3520509.0,0.79483,,DRS 07 - Campinas
-2020-04-18,SP,Iracemápolis,city,1,0,23,True,24235.0,3521408.0,4.12626,,DRS 10 - Piracicaba
+2020-04-19,SP,Iracemápolis,city,1,0,24,True,24235.0,3521408.0,4.12626,,DRS 10 - Piracicaba
+2020-04-18,SP,Iracemápolis,city,1,0,23,False,24235.0,3521408.0,4.12626,,DRS 10 - Piracicaba
 2020-04-17,SP,Iracemápolis,city,1,0,22,False,24235.0,3521408.0,4.12626,,DRS 10 - Piracicaba
 2020-04-16,SP,Iracemápolis,city,1,0,21,False,24235.0,3521408.0,4.12626,,DRS 10 - Piracicaba
 2020-04-15,SP,Iracemápolis,city,1,0,20,False,24235.0,3521408.0,4.12626,,DRS 10 - Piracicaba
@@ -1141,7 +1232,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-27,SP,Iracemápolis,city,1,0,3,False,24235.0,3521408.0,4.12626,,DRS 10 - Piracicaba
 2020-03-26,SP,Iracemápolis,city,1,0,2,False,24235.0,3521408.0,4.12626,,DRS 10 - Piracicaba
 2020-03-25,SP,Iracemápolis,city,1,0,1,False,24235.0,3521408.0,4.12626,,DRS 10 - Piracicaba
-2020-04-18,SP,Itanhaém,city,4,0,18,True,101816.0,3522109.0,3.92866,,DRS 04 - Baixada Santista
+2020-04-19,SP,Itanhaém,city,5,0,19,True,101816.0,3522109.0,4.910819999999998,,DRS 04 - Baixada Santista
+2020-04-18,SP,Itanhaém,city,4,0,18,False,101816.0,3522109.0,3.92866,,DRS 04 - Baixada Santista
 2020-04-17,SP,Itanhaém,city,3,0,17,False,101816.0,3522109.0,2.9464900000000003,,DRS 04 - Baixada Santista
 2020-04-16,SP,Itanhaém,city,3,0,16,False,101816.0,3522109.0,2.9464900000000003,,DRS 04 - Baixada Santista
 2020-04-15,SP,Itanhaém,city,3,0,15,False,101816.0,3522109.0,2.9464900000000003,,DRS 04 - Baixada Santista
@@ -1159,7 +1251,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-03,SP,Itanhaém,city,2,0,3,False,101816.0,3522109.0,1.96433,,DRS 04 - Baixada Santista
 2020-04-02,SP,Itanhaém,city,2,0,2,False,101816.0,3522109.0,1.96433,,DRS 04 - Baixada Santista
 2020-04-01,SP,Itanhaém,city,2,0,1,False,101816.0,3522109.0,1.96433,,DRS 04 - Baixada Santista
-2020-04-18,SP,Itapecerica da Serra,city,47,1,19,True,175693.0,3522208.0,26.75121,0.0213,DRS 01 - Grande São Paulo
+2020-04-19,SP,Itapecerica da Serra,city,48,1,20,True,175693.0,3522208.0,27.32038,0.0208,DRS 01 - Grande São Paulo
+2020-04-18,SP,Itapecerica da Serra,city,47,1,19,False,175693.0,3522208.0,26.75121,0.0213,DRS 01 - Grande São Paulo
 2020-04-17,SP,Itapecerica da Serra,city,42,1,18,False,175693.0,3522208.0,23.90533,0.0238,DRS 01 - Grande São Paulo
 2020-04-16,SP,Itapecerica da Serra,city,38,1,17,False,175693.0,3522208.0,21.62864,0.0263,DRS 01 - Grande São Paulo
 2020-04-15,SP,Itapecerica da Serra,city,33,1,16,False,175693.0,3522208.0,18.78276,0.0303,DRS 01 - Grande São Paulo
@@ -1178,7 +1271,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,Itapecerica da Serra,city,4,0,3,False,175693.0,3522208.0,2.2767,,DRS 01 - Grande São Paulo
 2020-04-01,SP,Itapecerica da Serra,city,4,0,2,False,175693.0,3522208.0,2.2767,,DRS 01 - Grande São Paulo
 2020-03-31,SP,Itapecerica da Serra,city,3,0,1,False,175693.0,3522208.0,1.70752,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Itapetininga,city,6,1,14,True,163901.0,3522307.0,3.66075,0.1667,DRS 16 - Sorocaba
+2020-04-19,SP,Itapetininga,city,6,1,15,True,163901.0,3522307.0,3.66075,0.1667,DRS 16 - Sorocaba
+2020-04-18,SP,Itapetininga,city,6,1,14,False,163901.0,3522307.0,3.66075,0.1667,DRS 16 - Sorocaba
 2020-04-17,SP,Itapetininga,city,6,1,13,False,163901.0,3522307.0,3.66075,0.1667,DRS 16 - Sorocaba
 2020-04-16,SP,Itapetininga,city,5,1,12,False,163901.0,3522307.0,3.05062,0.2,DRS 16 - Sorocaba
 2020-04-15,SP,Itapetininga,city,5,1,11,False,163901.0,3522307.0,3.05062,0.2,DRS 16 - Sorocaba
@@ -1192,7 +1286,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-07,SP,Itapetininga,city,1,0,3,False,163901.0,3522307.0,0.61012,,DRS 16 - Sorocaba
 2020-04-06,SP,Itapetininga,city,1,0,2,False,163901.0,3522307.0,0.61012,,DRS 16 - Sorocaba
 2020-04-05,SP,Itapetininga,city,1,0,1,False,163901.0,3522307.0,0.61012,,DRS 16 - Sorocaba
-2020-04-18,SP,Itapeva,city,1,0,10,True,94354.0,3522406.0,1.05984,,DRS 16 - Sorocaba
+2020-04-19,SP,Itapeva,city,1,0,11,True,94354.0,3522406.0,1.05984,,DRS 16 - Sorocaba
+2020-04-18,SP,Itapeva,city,1,0,10,False,94354.0,3522406.0,1.05984,,DRS 16 - Sorocaba
 2020-04-17,SP,Itapeva,city,1,0,9,False,94354.0,3522406.0,1.05984,,DRS 16 - Sorocaba
 2020-04-16,SP,Itapeva,city,1,0,8,False,94354.0,3522406.0,1.05984,,DRS 16 - Sorocaba
 2020-04-15,SP,Itapeva,city,1,0,7,False,94354.0,3522406.0,1.05984,,DRS 16 - Sorocaba
@@ -1202,7 +1297,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-11,SP,Itapeva,city,1,0,3,False,94354.0,3522406.0,1.05984,,DRS 16 - Sorocaba
 2020-04-10,SP,Itapeva,city,1,0,2,False,94354.0,3522406.0,1.05984,,DRS 16 - Sorocaba
 2020-04-09,SP,Itapeva,city,1,0,1,False,94354.0,3522406.0,1.05984,,DRS 16 - Sorocaba
-2020-04-18,SP,Itapevi,city,37,5,20,True,237700.0,3522505.0,15.56584,0.1351,DRS 01 - Grande São Paulo
+2020-04-19,SP,Itapevi,city,39,5,21,True,237700.0,3522505.0,16.407239999999998,0.1282,DRS 01 - Grande São Paulo
+2020-04-18,SP,Itapevi,city,37,5,20,False,237700.0,3522505.0,15.56584,0.1351,DRS 01 - Grande São Paulo
 2020-04-17,SP,Itapevi,city,29,5,19,False,237700.0,3522505.0,12.20025,0.1724,DRS 01 - Grande São Paulo
 2020-04-16,SP,Itapevi,city,28,5,18,False,237700.0,3522505.0,11.77955,0.1786,DRS 01 - Grande São Paulo
 2020-04-15,SP,Itapevi,city,27,5,17,False,237700.0,3522505.0,11.35886,0.1852,DRS 01 - Grande São Paulo
@@ -1222,7 +1318,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-01,SP,Itapevi,city,6,0,3,False,237700.0,3522505.0,2.52419,,DRS 01 - Grande São Paulo
 2020-03-31,SP,Itapevi,city,6,0,2,False,237700.0,3522505.0,2.52419,,DRS 01 - Grande São Paulo
 2020-03-30,SP,Itapevi,city,1,0,1,False,237700.0,3522505.0,0.4207,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Itapira,city,14,3,15,True,74773.0,3522604.0,18.72334,0.2143,DRS 14 - São João da Boa Vista
+2020-04-19,SP,Itapira,city,14,3,16,True,74773.0,3522604.0,18.72334,0.2143,DRS 14 - São João da Boa Vista
+2020-04-18,SP,Itapira,city,14,3,15,False,74773.0,3522604.0,18.72334,0.2143,DRS 14 - São João da Boa Vista
 2020-04-17,SP,Itapira,city,14,3,14,False,74773.0,3522604.0,18.72334,0.2143,DRS 14 - São João da Boa Vista
 2020-04-16,SP,Itapira,city,9,2,13,False,74773.0,3522604.0,12.03643,0.2222,DRS 14 - São João da Boa Vista
 2020-04-15,SP,Itapira,city,7,0,12,False,74773.0,3522604.0,9.36167,,DRS 14 - São João da Boa Vista
@@ -1237,7 +1334,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-06,SP,Itapira,city,1,0,3,False,74773.0,3522604.0,1.33738,,DRS 14 - São João da Boa Vista
 2020-04-05,SP,Itapira,city,1,0,2,False,74773.0,3522604.0,1.33738,,DRS 14 - São João da Boa Vista
 2020-04-04,SP,Itapira,city,1,0,1,False,74773.0,3522604.0,1.33738,,DRS 14 - São João da Boa Vista
-2020-04-18,SP,Itaquaquecetuba,city,48,0,19,True,370821.0,3523107.0,12.94425,,DRS 01 - Grande São Paulo
+2020-04-19,SP,Itaquaquecetuba,city,49,0,20,True,370821.0,3523107.0,13.213920000000002,,DRS 01 - Grande São Paulo
+2020-04-18,SP,Itaquaquecetuba,city,48,0,19,False,370821.0,3523107.0,12.94425,,DRS 01 - Grande São Paulo
 2020-04-17,SP,Itaquaquecetuba,city,47,0,18,False,370821.0,3523107.0,12.67458,,DRS 01 - Grande São Paulo
 2020-04-16,SP,Itaquaquecetuba,city,42,0,17,False,370821.0,3523107.0,11.32622,,DRS 01 - Grande São Paulo
 2020-04-15,SP,Itaquaquecetuba,city,37,0,16,False,370821.0,3523107.0,9.97786,,DRS 01 - Grande São Paulo
@@ -1256,7 +1354,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,Itaquaquecetuba,city,5,0,3,False,370821.0,3523107.0,1.34836,,DRS 01 - Grande São Paulo
 2020-04-01,SP,Itaquaquecetuba,city,3,0,2,False,370821.0,3523107.0,0.80902,,DRS 01 - Grande São Paulo
 2020-03-31,SP,Itaquaquecetuba,city,1,0,1,False,370821.0,3523107.0,0.26967,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Itararé,city,1,0,17,True,50503.0,3523206.0,1.98008,,DRS 16 - Sorocaba
+2020-04-19,SP,Itararé,city,1,0,18,True,50503.0,3523206.0,1.98008,,DRS 16 - Sorocaba
+2020-04-18,SP,Itararé,city,1,0,17,False,50503.0,3523206.0,1.98008,,DRS 16 - Sorocaba
 2020-04-17,SP,Itararé,city,1,0,16,False,50503.0,3523206.0,1.98008,,DRS 16 - Sorocaba
 2020-04-16,SP,Itararé,city,1,0,15,False,50503.0,3523206.0,1.98008,,DRS 16 - Sorocaba
 2020-04-15,SP,Itararé,city,1,0,14,False,50503.0,3523206.0,1.98008,,DRS 16 - Sorocaba
@@ -1273,7 +1372,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-04,SP,Itararé,city,1,0,3,False,50503.0,3523206.0,1.98008,,DRS 16 - Sorocaba
 2020-04-03,SP,Itararé,city,1,0,2,False,50503.0,3523206.0,1.98008,,DRS 16 - Sorocaba
 2020-04-02,SP,Itararé,city,1,0,1,False,50503.0,3523206.0,1.98008,,DRS 16 - Sorocaba
-2020-04-18,SP,Itatiba,city,2,1,12,True,120858.0,3523404.0,1.65483,0.5,DRS 07 - Campinas
+2020-04-19,SP,Itatiba,city,2,1,13,True,120858.0,3523404.0,1.65483,0.5,DRS 07 - Campinas
+2020-04-18,SP,Itatiba,city,2,1,12,False,120858.0,3523404.0,1.65483,0.5,DRS 07 - Campinas
 2020-04-17,SP,Itatiba,city,2,1,11,False,120858.0,3523404.0,1.65483,0.5,DRS 07 - Campinas
 2020-04-16,SP,Itatiba,city,1,1,10,False,120858.0,3523404.0,0.82742,1.0,DRS 07 - Campinas
 2020-04-15,SP,Itatiba,city,1,1,9,False,120858.0,3523404.0,0.82742,1.0,DRS 07 - Campinas
@@ -1285,7 +1385,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-09,SP,Itatiba,city,1,1,3,False,120858.0,3523404.0,0.82742,1.0,DRS 07 - Campinas
 2020-04-08,SP,Itatiba,city,1,1,2,False,120858.0,3523404.0,0.82742,1.0,DRS 07 - Campinas
 2020-04-07,SP,Itatiba,city,1,1,1,False,120858.0,3523404.0,0.82742,1.0,DRS 07 - Campinas
-2020-04-18,SP,Itatinga,city,1,0,10,True,20697.0,3523503.0,4.83162,,DRS 06 - Bauru
+2020-04-19,SP,Itatinga,city,1,0,11,True,20697.0,3523503.0,4.83162,,DRS 06 - Bauru
+2020-04-18,SP,Itatinga,city,1,0,10,False,20697.0,3523503.0,4.83162,,DRS 06 - Bauru
 2020-04-17,SP,Itatinga,city,1,0,9,False,20697.0,3523503.0,4.83162,,DRS 06 - Bauru
 2020-04-16,SP,Itatinga,city,1,0,8,False,20697.0,3523503.0,4.83162,,DRS 06 - Bauru
 2020-04-15,SP,Itatinga,city,1,0,7,False,20697.0,3523503.0,4.83162,,DRS 06 - Bauru
@@ -1295,7 +1396,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-11,SP,Itatinga,city,1,0,3,False,20697.0,3523503.0,4.83162,,DRS 06 - Bauru
 2020-04-10,SP,Itatinga,city,1,0,2,False,20697.0,3523503.0,4.83162,,DRS 06 - Bauru
 2020-04-09,SP,Itatinga,city,1,0,1,False,20697.0,3523503.0,4.83162,,DRS 06 - Bauru
-2020-04-18,SP,Itu,city,6,0,17,True,173939.0,3523909.0,3.44949,,DRS 16 - Sorocaba
+2020-04-19,SP,Itu,city,5,0,18,True,173939.0,3523909.0,2.8745700000000003,,DRS 16 - Sorocaba
+2020-04-18,SP,Itu,city,6,0,17,False,173939.0,3523909.0,3.44949,,DRS 16 - Sorocaba
 2020-04-17,SP,Itu,city,5,0,16,False,173939.0,3523909.0,2.8745700000000003,,DRS 16 - Sorocaba
 2020-04-16,SP,Itu,city,5,0,15,False,173939.0,3523909.0,2.8745700000000003,,DRS 16 - Sorocaba
 2020-04-15,SP,Itu,city,3,0,14,False,173939.0,3523909.0,1.7247400000000002,,DRS 16 - Sorocaba
@@ -1312,7 +1414,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-04,SP,Itu,city,1,0,3,False,173939.0,3523909.0,0.57491,,DRS 16 - Sorocaba
 2020-04-03,SP,Itu,city,1,0,2,False,173939.0,3523909.0,0.57491,,DRS 16 - Sorocaba
 2020-04-02,SP,Itu,city,1,0,1,False,173939.0,3523909.0,0.57491,,DRS 16 - Sorocaba
-2020-04-18,SP,Itupeva,city,2,0,20,True,61252.0,3524006.0,3.2652,,DRS 07 - Campinas
+2020-04-19,SP,Itupeva,city,2,0,21,True,61252.0,3524006.0,3.2652,,DRS 07 - Campinas
+2020-04-18,SP,Itupeva,city,2,0,20,False,61252.0,3524006.0,3.2652,,DRS 07 - Campinas
 2020-04-17,SP,Itupeva,city,2,0,19,False,61252.0,3524006.0,3.2652,,DRS 07 - Campinas
 2020-04-16,SP,Itupeva,city,2,0,18,False,61252.0,3524006.0,3.2652,,DRS 07 - Campinas
 2020-04-15,SP,Itupeva,city,1,0,17,False,61252.0,3524006.0,1.6326,,DRS 07 - Campinas
@@ -1332,7 +1435,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-01,SP,Itupeva,city,1,0,3,False,61252.0,3524006.0,1.6326,,DRS 07 - Campinas
 2020-03-31,SP,Itupeva,city,1,0,2,False,61252.0,3524006.0,1.6326,,DRS 07 - Campinas
 2020-03-30,SP,Itupeva,city,1,0,1,False,61252.0,3524006.0,1.6326,,DRS 07 - Campinas
-2020-04-18,SP,Jaboticabal,city,9,2,16,True,77263.0,3524303.0,11.64853,0.2222,DRS 13 - Ribeirão Preto
+2020-04-19,SP,Jaboticabal,city,9,2,17,True,77263.0,3524303.0,11.64853,0.2222,DRS 13 - Ribeirão Preto
+2020-04-18,SP,Jaboticabal,city,9,2,16,False,77263.0,3524303.0,11.64853,0.2222,DRS 13 - Ribeirão Preto
 2020-04-17,SP,Jaboticabal,city,7,2,15,False,77263.0,3524303.0,9.05996,0.2857,DRS 13 - Ribeirão Preto
 2020-04-16,SP,Jaboticabal,city,7,2,14,False,77263.0,3524303.0,9.05996,0.2857,DRS 13 - Ribeirão Preto
 2020-04-15,SP,Jaboticabal,city,7,2,13,False,77263.0,3524303.0,9.05996,0.2857,DRS 13 - Ribeirão Preto
@@ -1348,7 +1452,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-05,SP,Jaboticabal,city,3,1,3,False,77263.0,3524303.0,3.88284,0.3333,DRS 13 - Ribeirão Preto
 2020-04-04,SP,Jaboticabal,city,3,1,2,False,77263.0,3524303.0,3.88284,0.3333,DRS 13 - Ribeirão Preto
 2020-04-03,SP,Jaboticabal,city,3,1,1,False,77263.0,3524303.0,3.88284,0.3333,DRS 13 - Ribeirão Preto
-2020-04-18,SP,Jacareí,city,18,0,11,True,233662.0,3524402.0,7.70343,,DRS 17 - Taubaté
+2020-04-19,SP,Jacareí,city,19,0,12,True,233662.0,3524402.0,8.1314,,DRS 17 - Taubaté
+2020-04-18,SP,Jacareí,city,18,0,11,False,233662.0,3524402.0,7.70343,,DRS 17 - Taubaté
 2020-04-17,SP,Jacareí,city,17,0,10,False,233662.0,3524402.0,7.2754699999999985,,DRS 17 - Taubaté
 2020-04-16,SP,Jacareí,city,7,0,9,False,233662.0,3524402.0,2.99578,,DRS 17 - Taubaté
 2020-04-15,SP,Jacareí,city,6,0,8,False,233662.0,3524402.0,2.56781,,DRS 17 - Taubaté
@@ -1359,7 +1464,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-10,SP,Jacareí,city,1,0,3,False,233662.0,3524402.0,0.42797,,DRS 17 - Taubaté
 2020-04-09,SP,Jacareí,city,1,0,2,False,233662.0,3524402.0,0.42797,,DRS 17 - Taubaté
 2020-04-08,SP,Jacareí,city,1,0,1,False,233662.0,3524402.0,0.42797,,DRS 17 - Taubaté
-2020-04-18,SP,Jaci,city,5,0,10,True,7067.0,3524501.0,70.75138000000003,,DRS 15 - São José do Rio Preto
+2020-04-19,SP,Jaci,city,6,0,11,True,7067.0,3524501.0,84.90165999999998,,DRS 15 - São José do Rio Preto
+2020-04-18,SP,Jaci,city,5,0,10,False,7067.0,3524501.0,70.75138000000003,,DRS 15 - São José do Rio Preto
 2020-04-17,SP,Jaci,city,2,0,9,False,7067.0,3524501.0,28.30055,,DRS 15 - São José do Rio Preto
 2020-04-16,SP,Jaci,city,2,0,8,False,7067.0,3524501.0,28.30055,,DRS 15 - São José do Rio Preto
 2020-04-15,SP,Jaci,city,2,0,7,False,7067.0,3524501.0,28.30055,,DRS 15 - São José do Rio Preto
@@ -1369,7 +1475,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-11,SP,Jaci,city,1,0,3,False,7067.0,3524501.0,14.15028,,DRS 15 - São José do Rio Preto
 2020-04-10,SP,Jaci,city,1,0,2,False,7067.0,3524501.0,14.15028,,DRS 15 - São José do Rio Preto
 2020-04-09,SP,Jaci,city,1,0,1,False,7067.0,3524501.0,14.15028,,DRS 15 - São José do Rio Preto
-2020-04-18,SP,Jaguariúna,city,2,0,26,True,57488.0,3524709.0,3.47899,,DRS 07 - Campinas
+2020-04-19,SP,Jaguariúna,city,2,0,27,True,57488.0,3524709.0,3.47899,,DRS 07 - Campinas
+2020-04-18,SP,Jaguariúna,city,2,0,26,False,57488.0,3524709.0,3.47899,,DRS 07 - Campinas
 2020-04-17,SP,Jaguariúna,city,2,0,25,False,57488.0,3524709.0,3.47899,,DRS 07 - Campinas
 2020-04-16,SP,Jaguariúna,city,1,0,24,False,57488.0,3524709.0,1.7394900000000002,,DRS 07 - Campinas
 2020-04-15,SP,Jaguariúna,city,1,0,23,False,57488.0,3524709.0,1.7394900000000002,,DRS 07 - Campinas
@@ -1395,7 +1502,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-20,SP,Jaguariúna,city,1,0,3,False,57488.0,3524709.0,1.7394900000000002,,DRS 07 - Campinas
 2020-03-19,SP,Jaguariúna,city,1,0,2,False,57488.0,3524709.0,1.7394900000000002,,DRS 07 - Campinas
 2020-03-18,SP,Jaguariúna,city,1,0,1,False,57488.0,3524709.0,1.7394900000000002,,DRS 07 - Campinas
-2020-04-18,SP,Jales,city,2,0,11,True,49107.0,3524808.0,4.0727400000000005,,DRS 15 - São José do Rio Preto
+2020-04-19,SP,Jales,city,2,0,12,True,49107.0,3524808.0,4.0727400000000005,,DRS 15 - São José do Rio Preto
+2020-04-18,SP,Jales,city,2,0,11,False,49107.0,3524808.0,4.0727400000000005,,DRS 15 - São José do Rio Preto
 2020-04-17,SP,Jales,city,2,0,10,False,49107.0,3524808.0,4.0727400000000005,,DRS 15 - São José do Rio Preto
 2020-04-16,SP,Jales,city,2,0,9,False,49107.0,3524808.0,4.0727400000000005,,DRS 15 - São José do Rio Preto
 2020-04-15,SP,Jales,city,2,0,8,False,49107.0,3524808.0,4.0727400000000005,,DRS 15 - São José do Rio Preto
@@ -1406,7 +1514,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-10,SP,Jales,city,1,0,3,False,49107.0,3524808.0,2.03637,,DRS 15 - São José do Rio Preto
 2020-04-09,SP,Jales,city,1,0,2,False,49107.0,3524808.0,2.03637,,DRS 15 - São José do Rio Preto
 2020-04-08,SP,Jales,city,1,0,1,False,49107.0,3524808.0,2.03637,,DRS 15 - São José do Rio Preto
-2020-04-18,SP,Jandira,city,13,1,20,True,124937.0,3525003.0,10.40524,0.0769,DRS 01 - Grande São Paulo
+2020-04-19,SP,Jandira,city,13,1,21,True,124937.0,3525003.0,10.40524,0.0769,DRS 01 - Grande São Paulo
+2020-04-18,SP,Jandira,city,13,1,20,False,124937.0,3525003.0,10.40524,0.0769,DRS 01 - Grande São Paulo
 2020-04-17,SP,Jandira,city,11,1,19,False,124937.0,3525003.0,8.80444,0.0909,DRS 01 - Grande São Paulo
 2020-04-16,SP,Jandira,city,11,1,18,False,124937.0,3525003.0,8.80444,0.0909,DRS 01 - Grande São Paulo
 2020-04-15,SP,Jandira,city,8,1,17,False,124937.0,3525003.0,6.4032300000000015,0.125,DRS 01 - Grande São Paulo
@@ -1426,14 +1535,16 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-01,SP,Jandira,city,2,0,3,False,124937.0,3525003.0,1.60081,,DRS 01 - Grande São Paulo
 2020-03-31,SP,Jandira,city,2,0,2,False,124937.0,3525003.0,1.60081,,DRS 01 - Grande São Paulo
 2020-03-30,SP,Jandira,city,1,0,1,False,124937.0,3525003.0,0.8004,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Jardinópolis,city,3,0,7,True,44380.0,3525102.0,6.7598,,DRS 13 - Ribeirão Preto
+2020-04-19,SP,Jardinópolis,city,3,0,8,True,44380.0,3525102.0,6.7598,,DRS 13 - Ribeirão Preto
+2020-04-18,SP,Jardinópolis,city,3,0,7,False,44380.0,3525102.0,6.7598,,DRS 13 - Ribeirão Preto
 2020-04-17,SP,Jardinópolis,city,4,0,6,False,44380.0,3525102.0,9.01307,,DRS 13 - Ribeirão Preto
 2020-04-16,SP,Jardinópolis,city,4,0,5,False,44380.0,3525102.0,9.01307,,DRS 13 - Ribeirão Preto
 2020-04-15,SP,Jardinópolis,city,3,0,4,False,44380.0,3525102.0,6.7598,,DRS 13 - Ribeirão Preto
 2020-04-14,SP,Jardinópolis,city,2,0,3,False,44380.0,3525102.0,4.5065300000000015,,DRS 13 - Ribeirão Preto
 2020-04-13,SP,Jardinópolis,city,2,0,2,False,44380.0,3525102.0,4.5065300000000015,,DRS 13 - Ribeirão Preto
 2020-04-12,SP,Jardinópolis,city,2,0,1,False,44380.0,3525102.0,4.5065300000000015,,DRS 13 - Ribeirão Preto
-2020-04-18,SP,Jaú,city,4,0,17,True,150252.0,3525300.0,2.6621900000000003,,DRS 06 - Bauru
+2020-04-19,SP,Jaú,city,4,0,18,True,150252.0,3525300.0,2.6621900000000003,,DRS 06 - Bauru
+2020-04-18,SP,Jaú,city,4,0,17,False,150252.0,3525300.0,2.6621900000000003,,DRS 06 - Bauru
 2020-04-17,SP,Jaú,city,3,0,16,False,150252.0,3525300.0,1.99665,,DRS 06 - Bauru
 2020-04-16,SP,Jaú,city,3,0,15,False,150252.0,3525300.0,1.99665,,DRS 06 - Bauru
 2020-04-15,SP,Jaú,city,3,0,14,False,150252.0,3525300.0,1.99665,,DRS 06 - Bauru
@@ -1450,7 +1561,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-04,SP,Jaú,city,1,0,3,False,150252.0,3525300.0,0.66555,,DRS 06 - Bauru
 2020-04-03,SP,Jaú,city,1,0,2,False,150252.0,3525300.0,0.66555,,DRS 06 - Bauru
 2020-04-02,SP,Jaú,city,1,0,1,False,150252.0,3525300.0,0.66555,,DRS 06 - Bauru
-2020-04-18,SP,Joanópolis,city,1,0,11,True,13220.0,3525508.0,7.5643,,DRS 07 - Campinas
+2020-04-19,SP,Joanópolis,city,1,0,12,True,13220.0,3525508.0,7.5643,,DRS 07 - Campinas
+2020-04-18,SP,Joanópolis,city,1,0,11,False,13220.0,3525508.0,7.5643,,DRS 07 - Campinas
 2020-04-17,SP,Joanópolis,city,1,0,10,False,13220.0,3525508.0,7.5643,,DRS 07 - Campinas
 2020-04-16,SP,Joanópolis,city,1,0,9,False,13220.0,3525508.0,7.5643,,DRS 07 - Campinas
 2020-04-15,SP,Joanópolis,city,1,0,8,False,13220.0,3525508.0,7.5643,,DRS 07 - Campinas
@@ -1461,7 +1573,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-10,SP,Joanópolis,city,1,0,3,False,13220.0,3525508.0,7.5643,,DRS 07 - Campinas
 2020-04-09,SP,Joanópolis,city,1,0,2,False,13220.0,3525508.0,7.5643,,DRS 07 - Campinas
 2020-04-08,SP,Joanópolis,city,1,0,1,False,13220.0,3525508.0,7.5643,,DRS 07 - Campinas
-2020-04-18,SP,José Bonifácio,city,2,0,15,True,37015.0,3525706.0,5.40321,,DRS 15 - São José do Rio Preto
+2020-04-19,SP,José Bonifácio,city,2,0,16,True,37015.0,3525706.0,5.40321,,DRS 15 - São José do Rio Preto
+2020-04-18,SP,José Bonifácio,city,2,0,15,False,37015.0,3525706.0,5.40321,,DRS 15 - São José do Rio Preto
 2020-04-17,SP,José Bonifácio,city,2,0,14,False,37015.0,3525706.0,5.40321,,DRS 15 - São José do Rio Preto
 2020-04-16,SP,José Bonifácio,city,2,0,13,False,37015.0,3525706.0,5.40321,,DRS 15 - São José do Rio Preto
 2020-04-15,SP,José Bonifácio,city,2,0,12,False,37015.0,3525706.0,5.40321,,DRS 15 - São José do Rio Preto
@@ -1476,7 +1589,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-06,SP,José Bonifácio,city,1,0,3,False,37015.0,3525706.0,2.70161,,DRS 15 - São José do Rio Preto
 2020-04-05,SP,José Bonifácio,city,1,0,2,False,37015.0,3525706.0,2.70161,,DRS 15 - São José do Rio Preto
 2020-04-04,SP,José Bonifácio,city,1,0,1,False,37015.0,3525706.0,2.70161,,DRS 15 - São José do Rio Preto
-2020-04-18,SP,Jundiaí,city,44,4,23,True,418962.0,3525904.0,10.50215,0.0909,DRS 07 - Campinas
+2020-04-19,SP,Jundiaí,city,46,4,24,True,418962.0,3525904.0,10.97952,0.087,DRS 07 - Campinas
+2020-04-18,SP,Jundiaí,city,44,4,23,False,418962.0,3525904.0,10.50215,0.0909,DRS 07 - Campinas
 2020-04-17,SP,Jundiaí,city,38,4,22,False,418962.0,3525904.0,9.07003,0.1053,DRS 07 - Campinas
 2020-04-16,SP,Jundiaí,city,27,3,21,False,418962.0,3525904.0,6.4445,0.1111,DRS 07 - Campinas
 2020-04-15,SP,Jundiaí,city,19,3,20,False,418962.0,3525904.0,4.5350199999999985,0.1579,DRS 07 - Campinas
@@ -1499,10 +1613,13 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-27,SP,Jundiaí,city,3,0,3,False,418962.0,3525904.0,0.71606,,DRS 07 - Campinas
 2020-03-26,SP,Jundiaí,city,2,0,2,False,418962.0,3525904.0,0.47737,,DRS 07 - Campinas
 2020-03-25,SP,Jundiaí,city,1,0,1,False,418962.0,3525904.0,0.23869,,DRS 07 - Campinas
-2020-04-18,SP,Junqueirópolis,city,1,0,1,True,20679.0,3526001.0,4.83582,,DRS 11 - Presidente Prudente
-2020-04-18,SP,Juquitiba,city,1,1,2,True,31444.0,3526209.0,3.18026,1.0,DRS 01 - Grande São Paulo
+2020-04-19,SP,Junqueirópolis,city,1,0,2,True,20679.0,3526001.0,4.83582,,DRS 11 - Presidente Prudente
+2020-04-18,SP,Junqueirópolis,city,1,0,1,False,20679.0,3526001.0,4.83582,,DRS 11 - Presidente Prudente
+2020-04-19,SP,Juquitiba,city,1,1,3,True,31444.0,3526209.0,3.18026,1.0,DRS 01 - Grande São Paulo
+2020-04-18,SP,Juquitiba,city,1,1,2,False,31444.0,3526209.0,3.18026,1.0,DRS 01 - Grande São Paulo
 2020-04-17,SP,Juquitiba,city,1,1,1,False,31444.0,3526209.0,3.18026,1.0,DRS 01 - Grande São Paulo
-2020-04-18,SP,Laranjal Paulista,city,5,2,11,True,28516.0,3526407.0,17.53402,0.4,DRS 06 - Bauru
+2020-04-19,SP,Laranjal Paulista,city,5,2,12,True,28516.0,3526407.0,17.53402,0.4,DRS 06 - Bauru
+2020-04-18,SP,Laranjal Paulista,city,5,2,11,False,28516.0,3526407.0,17.53402,0.4,DRS 06 - Bauru
 2020-04-17,SP,Laranjal Paulista,city,5,2,10,False,28516.0,3526407.0,17.53402,0.4,DRS 06 - Bauru
 2020-04-16,SP,Laranjal Paulista,city,4,2,9,False,28516.0,3526407.0,14.02721,0.5,DRS 06 - Bauru
 2020-04-15,SP,Laranjal Paulista,city,4,2,8,False,28516.0,3526407.0,14.02721,0.5,DRS 06 - Bauru
@@ -1513,12 +1630,14 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-10,SP,Laranjal Paulista,city,2,1,3,False,28516.0,3526407.0,7.013610000000001,0.5,DRS 06 - Bauru
 2020-04-09,SP,Laranjal Paulista,city,2,1,2,False,28516.0,3526407.0,7.013610000000001,0.5,DRS 06 - Bauru
 2020-04-08,SP,Laranjal Paulista,city,2,1,1,False,28516.0,3526407.0,7.013610000000001,0.5,DRS 06 - Bauru
-2020-04-18,SP,Leme,city,4,2,5,True,103391.0,3526704.0,3.86881,0.5,DRS 10 - Piracicaba
+2020-04-19,SP,Leme,city,4,2,6,True,103391.0,3526704.0,3.86881,0.5,DRS 10 - Piracicaba
+2020-04-18,SP,Leme,city,4,2,5,False,103391.0,3526704.0,3.86881,0.5,DRS 10 - Piracicaba
 2020-04-17,SP,Leme,city,3,2,4,False,103391.0,3526704.0,2.90161,0.6667,DRS 10 - Piracicaba
 2020-04-16,SP,Leme,city,3,2,3,False,103391.0,3526704.0,2.90161,0.6667,DRS 10 - Piracicaba
 2020-04-15,SP,Leme,city,3,2,2,False,103391.0,3526704.0,2.90161,0.6667,DRS 10 - Piracicaba
 2020-04-14,SP,Leme,city,1,1,1,False,103391.0,3526704.0,0.9672,1.0,DRS 10 - Piracicaba
-2020-04-18,SP,Lençóis Paulista,city,3,0,19,True,68432.0,3526803.0,4.38391,,DRS 06 - Bauru
+2020-04-19,SP,Lençóis Paulista,city,3,0,20,True,68432.0,3526803.0,4.38391,,DRS 06 - Bauru
+2020-04-18,SP,Lençóis Paulista,city,3,0,19,False,68432.0,3526803.0,4.38391,,DRS 06 - Bauru
 2020-04-17,SP,Lençóis Paulista,city,3,0,18,False,68432.0,3526803.0,4.38391,,DRS 06 - Bauru
 2020-04-16,SP,Lençóis Paulista,city,3,0,17,False,68432.0,3526803.0,4.38391,,DRS 06 - Bauru
 2020-04-15,SP,Lençóis Paulista,city,3,0,16,False,68432.0,3526803.0,4.38391,,DRS 06 - Bauru
@@ -1537,7 +1656,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,Lençóis Paulista,city,1,0,3,False,68432.0,3526803.0,1.4613,,DRS 06 - Bauru
 2020-04-01,SP,Lençóis Paulista,city,1,0,2,False,68432.0,3526803.0,1.4613,,DRS 06 - Bauru
 2020-03-31,SP,Lençóis Paulista,city,1,0,1,False,68432.0,3526803.0,1.4613,,DRS 06 - Bauru
-2020-04-18,SP,Limeira,city,9,1,18,True,306114.0,3526902.0,2.94008,0.1111,DRS 10 - Piracicaba
+2020-04-19,SP,Limeira,city,9,1,19,True,306114.0,3526902.0,2.94008,0.1111,DRS 10 - Piracicaba
+2020-04-18,SP,Limeira,city,9,1,18,False,306114.0,3526902.0,2.94008,0.1111,DRS 10 - Piracicaba
 2020-04-17,SP,Limeira,city,8,1,17,False,306114.0,3526902.0,2.61341,0.125,DRS 10 - Piracicaba
 2020-04-16,SP,Limeira,city,7,1,16,False,306114.0,3526902.0,2.28673,0.1429,DRS 10 - Piracicaba
 2020-04-15,SP,Limeira,city,7,1,15,False,306114.0,3526902.0,2.28673,0.1429,DRS 10 - Piracicaba
@@ -1555,16 +1675,19 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-03,SP,Limeira,city,2,0,3,False,306114.0,3526902.0,0.65335,,DRS 10 - Piracicaba
 2020-04-02,SP,Limeira,city,2,0,2,False,306114.0,3526902.0,0.65335,,DRS 10 - Piracicaba
 2020-04-01,SP,Limeira,city,2,0,1,False,306114.0,3526902.0,0.65335,,DRS 10 - Piracicaba
-2020-04-18,SP,Lins,city,5,2,5,True,78013.0,3527108.0,6.40919,0.4,DRS 06 - Bauru
+2020-04-19,SP,Lins,city,5,2,6,True,78013.0,3527108.0,6.40919,0.4,DRS 06 - Bauru
+2020-04-18,SP,Lins,city,5,2,5,False,78013.0,3527108.0,6.40919,0.4,DRS 06 - Bauru
 2020-04-17,SP,Lins,city,2,2,4,False,78013.0,3527108.0,2.56368,1.0,DRS 06 - Bauru
 2020-04-16,SP,Lins,city,1,1,3,False,78013.0,3527108.0,1.28184,1.0,DRS 06 - Bauru
 2020-04-15,SP,Lins,city,1,1,2,False,78013.0,3527108.0,1.28184,1.0,DRS 06 - Bauru
 2020-04-14,SP,Lins,city,1,1,1,False,78013.0,3527108.0,1.28184,1.0,DRS 06 - Bauru
-2020-04-18,SP,Lorena,city,1,0,4,True,88706.0,3527207.0,1.12732,,DRS 17 - Taubaté
+2020-04-19,SP,Lorena,city,1,0,5,True,88706.0,3527207.0,1.12732,,DRS 17 - Taubaté
+2020-04-18,SP,Lorena,city,1,0,4,False,88706.0,3527207.0,1.12732,,DRS 17 - Taubaté
 2020-04-17,SP,Lorena,city,1,0,3,False,88706.0,3527207.0,1.12732,,DRS 17 - Taubaté
 2020-04-16,SP,Lorena,city,1,0,2,False,88706.0,3527207.0,1.12732,,DRS 17 - Taubaté
 2020-04-15,SP,Lorena,city,1,0,1,False,88706.0,3527207.0,1.12732,,DRS 17 - Taubaté
-2020-04-18,SP,Louveira,city,1,0,22,True,48885.0,3527306.0,2.04562,,DRS 07 - Campinas
+2020-04-19,SP,Louveira,city,1,0,23,True,48885.0,3527306.0,2.04562,,DRS 07 - Campinas
+2020-04-18,SP,Louveira,city,1,0,22,False,48885.0,3527306.0,2.04562,,DRS 07 - Campinas
 2020-04-17,SP,Louveira,city,1,0,21,False,48885.0,3527306.0,2.04562,,DRS 07 - Campinas
 2020-04-16,SP,Louveira,city,1,0,20,False,48885.0,3527306.0,2.04562,,DRS 07 - Campinas
 2020-04-15,SP,Louveira,city,1,0,19,False,48885.0,3527306.0,2.04562,,DRS 07 - Campinas
@@ -1586,22 +1709,26 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-30,SP,Louveira,city,1,0,3,False,48885.0,3527306.0,2.04562,,DRS 07 - Campinas
 2020-03-27,SP,Louveira,city,1,0,2,False,48885.0,3527306.0,2.04562,,DRS 07 - Campinas
 2020-03-26,SP,Louveira,city,2,0,1,False,48885.0,3527306.0,4.09123,,DRS 07 - Campinas
-2020-04-18,SP,Macatuba,city,1,0,6,True,17163.0,3528007.0,5.82649,,DRS 06 - Bauru
+2020-04-19,SP,Macatuba,city,1,0,7,True,17163.0,3528007.0,5.82649,,DRS 06 - Bauru
+2020-04-18,SP,Macatuba,city,1,0,6,False,17163.0,3528007.0,5.82649,,DRS 06 - Bauru
 2020-04-17,SP,Macatuba,city,1,0,5,False,17163.0,3528007.0,5.82649,,DRS 06 - Bauru
 2020-04-16,SP,Macatuba,city,1,0,4,False,17163.0,3528007.0,5.82649,,DRS 06 - Bauru
 2020-04-15,SP,Macatuba,city,1,0,3,False,17163.0,3528007.0,5.82649,,DRS 06 - Bauru
 2020-04-14,SP,Macatuba,city,1,0,2,False,17163.0,3528007.0,5.82649,,DRS 06 - Bauru
 2020-04-13,SP,Macatuba,city,1,0,1,False,17163.0,3528007.0,5.82649,,DRS 06 - Bauru
-2020-04-18,SP,Macedônia,city,0,0,4,True,3698.0,3528205.0,,,DRS 15 - São José do Rio Preto
+2020-04-19,SP,Macedônia,city,0,0,5,True,3698.0,3528205.0,,,DRS 15 - São José do Rio Preto
+2020-04-18,SP,Macedônia,city,0,0,4,False,3698.0,3528205.0,,,DRS 15 - São José do Rio Preto
 2020-04-17,SP,Macedônia,city,0,0,3,False,3698.0,3528205.0,,,DRS 15 - São José do Rio Preto
 2020-04-16,SP,Macedônia,city,0,0,2,False,3698.0,3528205.0,,,DRS 15 - São José do Rio Preto
 2020-04-15,SP,Macedônia,city,1,0,1,False,3698.0,3528205.0,27.04164,,DRS 15 - São José do Rio Preto
-2020-04-18,SP,Mairinque,city,1,0,5,True,47150.0,3528403.0,2.12089,,DRS 16 - Sorocaba
+2020-04-19,SP,Mairinque,city,1,0,6,True,47150.0,3528403.0,2.12089,,DRS 16 - Sorocaba
+2020-04-18,SP,Mairinque,city,1,0,5,False,47150.0,3528403.0,2.12089,,DRS 16 - Sorocaba
 2020-04-17,SP,Mairinque,city,1,0,4,False,47150.0,3528403.0,2.12089,,DRS 16 - Sorocaba
 2020-04-16,SP,Mairinque,city,1,0,3,False,47150.0,3528403.0,2.12089,,DRS 16 - Sorocaba
 2020-04-15,SP,Mairinque,city,1,0,2,False,47150.0,3528403.0,2.12089,,DRS 16 - Sorocaba
 2020-04-14,SP,Mairinque,city,1,0,1,False,47150.0,3528403.0,2.12089,,DRS 16 - Sorocaba
-2020-04-18,SP,Mairiporã,city,11,2,22,True,100179.0,3528502.0,10.98035,0.1818,DRS 01 - Grande São Paulo
+2020-04-19,SP,Mairiporã,city,10,2,23,True,100179.0,3528502.0,9.98213,0.2,DRS 01 - Grande São Paulo
+2020-04-18,SP,Mairiporã,city,11,2,22,False,100179.0,3528502.0,10.98035,0.1818,DRS 01 - Grande São Paulo
 2020-04-17,SP,Mairiporã,city,10,2,21,False,100179.0,3528502.0,9.98213,0.2,DRS 01 - Grande São Paulo
 2020-04-16,SP,Mairiporã,city,9,2,20,False,100179.0,3528502.0,8.98392,0.2222,DRS 01 - Grande São Paulo
 2020-04-15,SP,Mairiporã,city,9,2,19,False,100179.0,3528502.0,8.98392,0.2222,DRS 01 - Grande São Paulo
@@ -1623,7 +1750,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-30,SP,Mairiporã,city,2,0,3,False,100179.0,3528502.0,1.99643,,DRS 01 - Grande São Paulo
 2020-03-27,SP,Mairiporã,city,2,0,2,False,100179.0,3528502.0,1.99643,,DRS 01 - Grande São Paulo
 2020-03-26,SP,Mairiporã,city,1,0,1,False,100179.0,3528502.0,0.99821,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Marília,city,8,1,16,True,238882.0,3529005.0,3.34893,0.125,DRS 09 - Marília
+2020-04-19,SP,Marília,city,8,1,17,True,238882.0,3529005.0,3.34893,0.125,DRS 09 - Marília
+2020-04-18,SP,Marília,city,8,1,16,False,238882.0,3529005.0,3.34893,0.125,DRS 09 - Marília
 2020-04-17,SP,Marília,city,8,1,15,False,238882.0,3529005.0,3.34893,0.125,DRS 09 - Marília
 2020-04-16,SP,Marília,city,8,1,14,False,238882.0,3529005.0,3.34893,0.125,DRS 09 - Marília
 2020-04-15,SP,Marília,city,7,1,13,False,238882.0,3529005.0,2.93032,0.1429,DRS 09 - Marília
@@ -1639,7 +1767,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-05,SP,Marília,city,1,0,3,False,238882.0,3529005.0,0.41862,,DRS 09 - Marília
 2020-04-04,SP,Marília,city,1,0,2,False,238882.0,3529005.0,0.41862,,DRS 09 - Marília
 2020-04-03,SP,Marília,city,1,0,1,False,238882.0,3529005.0,0.41862,,DRS 09 - Marília
-2020-04-18,SP,Matão,city,3,0,19,True,83170.0,3529302.0,3.60707,,DRS 03 - Araraquara
+2020-04-19,SP,Matão,city,3,0,20,True,83170.0,3529302.0,3.60707,,DRS 03 - Araraquara
+2020-04-18,SP,Matão,city,3,0,19,False,83170.0,3529302.0,3.60707,,DRS 03 - Araraquara
 2020-04-17,SP,Matão,city,3,0,18,False,83170.0,3529302.0,3.60707,,DRS 03 - Araraquara
 2020-04-16,SP,Matão,city,3,0,17,False,83170.0,3529302.0,3.60707,,DRS 03 - Araraquara
 2020-04-15,SP,Matão,city,3,0,16,False,83170.0,3529302.0,3.60707,,DRS 03 - Araraquara
@@ -1658,7 +1787,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,Matão,city,2,0,3,False,83170.0,3529302.0,2.40471,,DRS 03 - Araraquara
 2020-04-01,SP,Matão,city,1,0,2,False,83170.0,3529302.0,1.20236,,DRS 03 - Araraquara
 2020-03-31,SP,Matão,city,1,0,1,False,83170.0,3529302.0,1.20236,,DRS 03 - Araraquara
-2020-04-18,SP,Mauá,city,82,4,28,True,472912.0,3529401.0,17.33938,0.0488,DRS 01 - Grande São Paulo
+2020-04-19,SP,Mauá,city,87,4,29,True,472912.0,3529401.0,18.39666,0.046,DRS 01 - Grande São Paulo
+2020-04-18,SP,Mauá,city,82,4,28,False,472912.0,3529401.0,17.33938,0.0488,DRS 01 - Grande São Paulo
 2020-04-17,SP,Mauá,city,77,4,27,False,472912.0,3529401.0,16.2821,0.0519,DRS 01 - Grande São Paulo
 2020-04-16,SP,Mauá,city,71,2,26,False,472912.0,3529401.0,15.01336,0.0282,DRS 01 - Grande São Paulo
 2020-04-15,SP,Mauá,city,66,2,25,False,472912.0,3529401.0,13.956079999999998,0.0303,DRS 01 - Grande São Paulo
@@ -1686,9 +1816,11 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-18,SP,Mauá,city,1,0,3,False,472912.0,3529401.0,0.21146,,DRS 01 - Grande São Paulo
 2020-03-17,SP,Mauá,city,1,0,2,False,472912.0,3529401.0,0.21146,,DRS 01 - Grande São Paulo
 2020-03-16,SP,Mauá,city,1,0,1,False,472912.0,3529401.0,0.21146,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Mineiros do Tietê,city,2,1,2,True,12908.0,3529807.0,15.494270000000002,0.5,DRS 06 - Bauru
+2020-04-19,SP,Mineiros do Tietê,city,2,1,3,True,12908.0,3529807.0,15.494270000000002,0.5,DRS 06 - Bauru
+2020-04-18,SP,Mineiros do Tietê,city,2,1,2,False,12908.0,3529807.0,15.494270000000002,0.5,DRS 06 - Bauru
 2020-04-17,SP,Mineiros do Tietê,city,2,1,1,False,12908.0,3529807.0,15.494270000000002,0.5,DRS 06 - Bauru
-2020-04-18,SP,Mirassol,city,7,0,13,True,59824.0,3530300.0,11.70099,,DRS 15 - São José do Rio Preto
+2020-04-19,SP,Mirassol,city,6,0,14,True,59824.0,3530300.0,10.02942,,DRS 15 - São José do Rio Preto
+2020-04-18,SP,Mirassol,city,7,0,13,False,59824.0,3530300.0,11.70099,,DRS 15 - São José do Rio Preto
 2020-04-17,SP,Mirassol,city,5,0,12,False,59824.0,3530300.0,8.35785,,DRS 15 - São José do Rio Preto
 2020-04-16,SP,Mirassol,city,5,0,11,False,59824.0,3530300.0,8.35785,,DRS 15 - São José do Rio Preto
 2020-04-15,SP,Mirassol,city,7,0,10,False,59824.0,3530300.0,11.70099,,DRS 15 - São José do Rio Preto
@@ -1701,7 +1833,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-08,SP,Mirassol,city,3,0,3,False,59824.0,3530300.0,5.01471,,DRS 15 - São José do Rio Preto
 2020-04-07,SP,Mirassol,city,2,0,2,False,59824.0,3530300.0,3.34314,,DRS 15 - São José do Rio Preto
 2020-04-06,SP,Mirassol,city,1,0,1,False,59824.0,3530300.0,1.67157,,DRS 15 - São José do Rio Preto
-2020-04-18,SP,Mococa,city,2,1,11,True,68885.0,3530508.0,2.9033900000000004,0.5,DRS 14 - São João da Boa Vista
+2020-04-19,SP,Mococa,city,2,1,12,True,68885.0,3530508.0,2.9033900000000004,0.5,DRS 14 - São João da Boa Vista
+2020-04-18,SP,Mococa,city,2,1,11,False,68885.0,3530508.0,2.9033900000000004,0.5,DRS 14 - São João da Boa Vista
 2020-04-17,SP,Mococa,city,2,1,10,False,68885.0,3530508.0,2.9033900000000004,0.5,DRS 14 - São João da Boa Vista
 2020-04-16,SP,Mococa,city,2,1,9,False,68885.0,3530508.0,2.9033900000000004,0.5,DRS 14 - São João da Boa Vista
 2020-04-15,SP,Mococa,city,2,1,8,False,68885.0,3530508.0,2.9033900000000004,0.5,DRS 14 - São João da Boa Vista
@@ -1712,7 +1845,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-10,SP,Mococa,city,2,1,3,False,68885.0,3530508.0,2.9033900000000004,0.5,DRS 14 - São João da Boa Vista
 2020-04-09,SP,Mococa,city,2,1,2,False,68885.0,3530508.0,2.9033900000000004,0.5,DRS 14 - São João da Boa Vista
 2020-04-08,SP,Mococa,city,1,0,1,False,68885.0,3530508.0,1.45169,,DRS 14 - São João da Boa Vista
-2020-04-18,SP,Mogi Guaçu,city,9,1,19,True,151888.0,3530706.0,5.92542,0.1111,DRS 14 - São João da Boa Vista
+2020-04-19,SP,Mogi Guaçu,city,9,1,20,True,151888.0,3530706.0,5.92542,0.1111,DRS 14 - São João da Boa Vista
+2020-04-18,SP,Mogi Guaçu,city,9,1,19,False,151888.0,3530706.0,5.92542,0.1111,DRS 14 - São João da Boa Vista
 2020-04-17,SP,Mogi Guaçu,city,8,1,18,False,151888.0,3530706.0,5.26704,0.125,DRS 14 - São João da Boa Vista
 2020-04-16,SP,Mogi Guaçu,city,7,1,17,False,151888.0,3530706.0,4.60866,0.1429,DRS 14 - São João da Boa Vista
 2020-04-15,SP,Mogi Guaçu,city,6,1,16,False,151888.0,3530706.0,3.95028,0.1667,DRS 14 - São João da Boa Vista
@@ -1731,11 +1865,13 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,Mogi Guaçu,city,1,0,3,False,151888.0,3530706.0,0.65838,,DRS 14 - São João da Boa Vista
 2020-04-01,SP,Mogi Guaçu,city,1,0,2,False,151888.0,3530706.0,0.65838,,DRS 14 - São João da Boa Vista
 2020-03-31,SP,Mogi Guaçu,city,1,0,1,False,151888.0,3530706.0,0.65838,,DRS 14 - São João da Boa Vista
-2020-04-18,SP,Mogi Mirim,city,1,0,4,True,93189.0,3530805.0,1.07309,,DRS 14 - São João da Boa Vista
+2020-04-19,SP,Mogi Mirim,city,1,0,5,True,93189.0,3530805.0,1.07309,,DRS 14 - São João da Boa Vista
+2020-04-18,SP,Mogi Mirim,city,1,0,4,False,93189.0,3530805.0,1.07309,,DRS 14 - São João da Boa Vista
 2020-04-17,SP,Mogi Mirim,city,1,0,3,False,93189.0,3530805.0,1.07309,,DRS 14 - São João da Boa Vista
 2020-04-16,SP,Mogi Mirim,city,1,0,2,False,93189.0,3530805.0,1.07309,,DRS 14 - São João da Boa Vista
 2020-04-15,SP,Mogi Mirim,city,1,0,1,False,93189.0,3530805.0,1.07309,,DRS 14 - São João da Boa Vista
-2020-04-18,SP,Mogi das Cruzes,city,120,7,24,True,445842.0,3530607.0,26.91536,0.0583,DRS 01 - Grande São Paulo
+2020-04-19,SP,Mogi das Cruzes,city,120,7,25,True,445842.0,3530607.0,26.91536,0.0583,DRS 01 - Grande São Paulo
+2020-04-18,SP,Mogi das Cruzes,city,120,7,24,False,445842.0,3530607.0,26.91536,0.0583,DRS 01 - Grande São Paulo
 2020-04-17,SP,Mogi das Cruzes,city,107,7,23,False,445842.0,3530607.0,23.99953,0.0654,DRS 01 - Grande São Paulo
 2020-04-16,SP,Mogi das Cruzes,city,86,6,22,False,445842.0,3530607.0,19.28934,0.0698,DRS 01 - Grande São Paulo
 2020-04-15,SP,Mogi das Cruzes,city,80,5,21,False,445842.0,3530607.0,17.943579999999994,0.0625,DRS 01 - Grande São Paulo
@@ -1759,12 +1895,14 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-26,SP,Mogi das Cruzes,city,7,0,3,False,445842.0,3530607.0,1.57006,,DRS 01 - Grande São Paulo
 2020-03-25,SP,Mogi das Cruzes,city,4,0,2,False,445842.0,3530607.0,0.89718,,DRS 01 - Grande São Paulo
 2020-03-20,SP,Mogi das Cruzes,city,1,0,1,False,445842.0,3530607.0,0.22429,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Mongaguá,city,3,1,5,True,56702.0,3531100.0,5.29082,0.3333,DRS 04 - Baixada Santista
+2020-04-19,SP,Mongaguá,city,3,1,6,True,56702.0,3531100.0,5.29082,0.3333,DRS 04 - Baixada Santista
+2020-04-18,SP,Mongaguá,city,3,1,5,False,56702.0,3531100.0,5.29082,0.3333,DRS 04 - Baixada Santista
 2020-04-17,SP,Mongaguá,city,2,1,4,False,56702.0,3531100.0,3.52721,0.5,DRS 04 - Baixada Santista
 2020-04-16,SP,Mongaguá,city,2,1,3,False,56702.0,3531100.0,3.52721,0.5,DRS 04 - Baixada Santista
 2020-04-15,SP,Mongaguá,city,2,1,2,False,56702.0,3531100.0,3.52721,0.5,DRS 04 - Baixada Santista
 2020-04-14,SP,Mongaguá,city,1,0,1,False,56702.0,3531100.0,1.76361,,DRS 04 - Baixada Santista
-2020-04-18,SP,Monte Alto,city,9,1,12,True,50498.0,3531308.0,17.82249,0.1111,DRS 13 - Ribeirão Preto
+2020-04-19,SP,Monte Alto,city,9,1,13,True,50498.0,3531308.0,17.82249,0.1111,DRS 13 - Ribeirão Preto
+2020-04-18,SP,Monte Alto,city,9,1,12,False,50498.0,3531308.0,17.82249,0.1111,DRS 13 - Ribeirão Preto
 2020-04-17,SP,Monte Alto,city,6,1,11,False,50498.0,3531308.0,11.88166,0.1667,DRS 13 - Ribeirão Preto
 2020-04-16,SP,Monte Alto,city,6,1,10,False,50498.0,3531308.0,11.88166,0.1667,DRS 13 - Ribeirão Preto
 2020-04-15,SP,Monte Alto,city,5,1,9,False,50498.0,3531308.0,9.90138,0.2,DRS 13 - Ribeirão Preto
@@ -1776,24 +1914,29 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-09,SP,Monte Alto,city,1,0,3,False,50498.0,3531308.0,1.98028,,DRS 13 - Ribeirão Preto
 2020-04-08,SP,Monte Alto,city,1,0,2,False,50498.0,3531308.0,1.98028,,DRS 13 - Ribeirão Preto
 2020-04-07,SP,Monte Alto,city,1,0,1,False,50498.0,3531308.0,1.98028,,DRS 13 - Ribeirão Preto
-2020-04-18,SP,Monte Mor,city,1,0,4,True,59772.0,3531803.0,1.6730200000000002,,DRS 07 - Campinas
+2020-04-19,SP,Monte Mor,city,1,0,5,True,59772.0,3531803.0,1.6730200000000002,,DRS 07 - Campinas
+2020-04-18,SP,Monte Mor,city,1,0,4,False,59772.0,3531803.0,1.6730200000000002,,DRS 07 - Campinas
 2020-04-17,SP,Monte Mor,city,1,0,3,False,59772.0,3531803.0,1.6730200000000002,,DRS 07 - Campinas
 2020-04-16,SP,Monte Mor,city,1,0,2,False,59772.0,3531803.0,1.6730200000000002,,DRS 07 - Campinas
 2020-04-15,SP,Monte Mor,city,1,0,1,False,59772.0,3531803.0,1.6730200000000002,,DRS 07 - Campinas
-2020-04-18,SP,Morro Agudo,city,2,0,4,True,32968.0,3531902.0,6.06649,,DRS 08 - Franca
+2020-04-19,SP,Morro Agudo,city,2,0,5,True,32968.0,3531902.0,6.06649,,DRS 08 - Franca
+2020-04-18,SP,Morro Agudo,city,2,0,4,False,32968.0,3531902.0,6.06649,,DRS 08 - Franca
 2020-04-17,SP,Morro Agudo,city,2,0,3,False,32968.0,3531902.0,6.06649,,DRS 08 - Franca
 2020-04-16,SP,Morro Agudo,city,2,0,2,False,32968.0,3531902.0,6.06649,,DRS 08 - Franca
 2020-04-15,SP,Morro Agudo,city,2,0,1,False,32968.0,3531902.0,6.06649,,DRS 08 - Franca
-2020-04-18,SP,Morungaba,city,4,0,4,True,13622.0,3532009.0,29.36426,,DRS 07 - Campinas
+2020-04-19,SP,Morungaba,city,4,0,5,True,13622.0,3532009.0,29.36426,,DRS 07 - Campinas
+2020-04-18,SP,Morungaba,city,4,0,4,False,13622.0,3532009.0,29.36426,,DRS 07 - Campinas
 2020-04-17,SP,Morungaba,city,4,0,3,False,13622.0,3532009.0,29.36426,,DRS 07 - Campinas
 2020-04-16,SP,Morungaba,city,4,0,2,False,13622.0,3532009.0,29.36426,,DRS 07 - Campinas
 2020-04-15,SP,Morungaba,city,1,0,1,False,13622.0,3532009.0,7.341069999999998,,DRS 07 - Campinas
-2020-04-18,SP,Nhandeara,city,1,0,5,True,11478.0,3532603.0,8.71232,,DRS 15 - São José do Rio Preto
+2020-04-19,SP,Nhandeara,city,1,0,6,True,11478.0,3532603.0,8.71232,,DRS 15 - São José do Rio Preto
+2020-04-18,SP,Nhandeara,city,1,0,5,False,11478.0,3532603.0,8.71232,,DRS 15 - São José do Rio Preto
 2020-04-17,SP,Nhandeara,city,1,1,4,False,11478.0,3532603.0,8.71232,1.0,DRS 15 - São José do Rio Preto
 2020-04-16,SP,Nhandeara,city,1,0,3,False,11478.0,3532603.0,8.71232,,DRS 15 - São José do Rio Preto
 2020-04-15,SP,Nhandeara,city,1,0,2,False,11478.0,3532603.0,8.71232,,DRS 15 - São José do Rio Preto
 2020-04-14,SP,Nhandeara,city,1,0,1,False,11478.0,3532603.0,8.71232,,DRS 15 - São José do Rio Preto
-2020-04-18,SP,Nova Odessa,city,1,1,19,True,60174.0,3533403.0,1.66185,1.0,DRS 07 - Campinas
+2020-04-19,SP,Nova Odessa,city,1,1,20,True,60174.0,3533403.0,1.66185,1.0,DRS 07 - Campinas
+2020-04-18,SP,Nova Odessa,city,1,1,19,False,60174.0,3533403.0,1.66185,1.0,DRS 07 - Campinas
 2020-04-17,SP,Nova Odessa,city,1,0,18,False,60174.0,3533403.0,1.66185,,DRS 07 - Campinas
 2020-04-16,SP,Nova Odessa,city,1,1,17,False,60174.0,3533403.0,1.66185,1.0,DRS 07 - Campinas
 2020-04-15,SP,Nova Odessa,city,1,1,16,False,60174.0,3533403.0,1.66185,1.0,DRS 07 - Campinas
@@ -1812,7 +1955,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,Nova Odessa,city,1,0,3,False,60174.0,3533403.0,1.66185,,DRS 07 - Campinas
 2020-04-01,SP,Nova Odessa,city,1,0,2,False,60174.0,3533403.0,1.66185,,DRS 07 - Campinas
 2020-03-31,SP,Nova Odessa,city,1,0,1,False,60174.0,3533403.0,1.66185,,DRS 07 - Campinas
-2020-04-18,SP,Olímpia,city,4,0,11,True,54772.0,3533908.0,7.303,,DRS 05 - Barretos
+2020-04-19,SP,Olímpia,city,4,0,12,True,54772.0,3533908.0,7.303,,DRS 05 - Barretos
+2020-04-18,SP,Olímpia,city,4,0,11,False,54772.0,3533908.0,7.303,,DRS 05 - Barretos
 2020-04-17,SP,Olímpia,city,4,0,10,False,54772.0,3533908.0,7.303,,DRS 05 - Barretos
 2020-04-16,SP,Olímpia,city,4,0,9,False,54772.0,3533908.0,7.303,,DRS 05 - Barretos
 2020-04-15,SP,Olímpia,city,4,0,8,False,54772.0,3533908.0,7.303,,DRS 05 - Barretos
@@ -1823,7 +1967,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-10,SP,Olímpia,city,2,0,3,False,54772.0,3533908.0,3.6515,,DRS 05 - Barretos
 2020-04-09,SP,Olímpia,city,2,0,2,False,54772.0,3533908.0,3.6515,,DRS 05 - Barretos
 2020-04-08,SP,Olímpia,city,2,0,1,False,54772.0,3533908.0,3.6515,,DRS 05 - Barretos
-2020-04-18,SP,Orlândia,city,4,0,15,True,44028.0,3534302.0,9.08513,,DRS 08 - Franca
+2020-04-19,SP,Orlândia,city,4,0,16,True,44028.0,3534302.0,9.08513,,DRS 08 - Franca
+2020-04-18,SP,Orlândia,city,4,0,15,False,44028.0,3534302.0,9.08513,,DRS 08 - Franca
 2020-04-17,SP,Orlândia,city,4,0,14,False,44028.0,3534302.0,9.08513,,DRS 08 - Franca
 2020-04-16,SP,Orlândia,city,4,0,13,False,44028.0,3534302.0,9.08513,,DRS 08 - Franca
 2020-04-15,SP,Orlândia,city,4,0,12,False,44028.0,3534302.0,9.08513,,DRS 08 - Franca
@@ -1838,7 +1983,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-06,SP,Orlândia,city,2,0,3,False,44028.0,3534302.0,4.54256,,DRS 08 - Franca
 2020-04-05,SP,Orlândia,city,1,0,2,False,44028.0,3534302.0,2.27128,,DRS 08 - Franca
 2020-04-04,SP,Orlândia,city,1,0,1,False,44028.0,3534302.0,2.27128,,DRS 08 - Franca
-2020-04-18,SP,Osasco,city,253,23,25,True,698418.0,3534401.0,36.22473,0.0909,DRS 01 - Grande São Paulo
+2020-04-19,SP,Osasco,city,269,27,26,True,698418.0,3534401.0,38.51562,0.1004,DRS 01 - Grande São Paulo
+2020-04-18,SP,Osasco,city,253,23,25,False,698418.0,3534401.0,36.22473,0.0909,DRS 01 - Grande São Paulo
 2020-04-17,SP,Osasco,city,224,20,24,False,698418.0,3534401.0,32.07248,0.0893,DRS 01 - Grande São Paulo
 2020-04-16,SP,Osasco,city,203,18,23,False,698418.0,3534401.0,29.065690000000004,0.0887,DRS 01 - Grande São Paulo
 2020-04-15,SP,Osasco,city,172,16,22,False,698418.0,3534401.0,24.62709,0.09300000000000001,DRS 01 - Grande São Paulo
@@ -1863,7 +2009,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-25,SP,Osasco,city,3,1,3,False,698418.0,3534401.0,0.42954,0.3333,DRS 01 - Grande São Paulo
 2020-03-20,SP,Osasco,city,1,0,2,False,698418.0,3534401.0,0.14318,,DRS 01 - Grande São Paulo
 2020-03-18,SP,Osasco,city,1,0,1,False,698418.0,3534401.0,0.14318,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Ourinhos,city,7,0,9,True,113542.0,3534708.0,6.16512,,DRS 09 - Marília
+2020-04-19,SP,Ourinhos,city,7,0,10,True,113542.0,3534708.0,6.16512,,DRS 09 - Marília
+2020-04-18,SP,Ourinhos,city,7,0,9,False,113542.0,3534708.0,6.16512,,DRS 09 - Marília
 2020-04-17,SP,Ourinhos,city,7,0,8,False,113542.0,3534708.0,6.16512,,DRS 09 - Marília
 2020-04-16,SP,Ourinhos,city,7,0,7,False,113542.0,3534708.0,6.16512,,DRS 09 - Marília
 2020-04-15,SP,Ourinhos,city,1,0,6,False,113542.0,3534708.0,0.8807299999999999,,DRS 09 - Marília
@@ -1872,7 +2019,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-12,SP,Ourinhos,city,1,0,3,False,113542.0,3534708.0,0.8807299999999999,,DRS 09 - Marília
 2020-04-11,SP,Ourinhos,city,1,0,2,False,113542.0,3534708.0,0.8807299999999999,,DRS 09 - Marília
 2020-04-10,SP,Ourinhos,city,1,0,1,False,113542.0,3534708.0,0.8807299999999999,,DRS 09 - Marília
-2020-04-18,SP,Pariquera-Açu,city,3,0,15,True,19648.0,3536208.0,15.26873,,DRS 12 - Registro
+2020-04-19,SP,Pariquera-Açu,city,3,0,16,True,19648.0,3536208.0,15.26873,,DRS 12 - Registro
+2020-04-18,SP,Pariquera-Açu,city,3,0,15,False,19648.0,3536208.0,15.26873,,DRS 12 - Registro
 2020-04-17,SP,Pariquera-Açu,city,3,0,14,False,19648.0,3536208.0,15.26873,,DRS 12 - Registro
 2020-04-16,SP,Pariquera-Açu,city,3,0,13,False,19648.0,3536208.0,15.26873,,DRS 12 - Registro
 2020-04-15,SP,Pariquera-Açu,city,2,0,12,False,19648.0,3536208.0,10.17915,,DRS 12 - Registro
@@ -1887,9 +2035,11 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-06,SP,Pariquera-Açu,city,1,0,3,False,19648.0,3536208.0,5.0895800000000015,,DRS 12 - Registro
 2020-04-05,SP,Pariquera-Açu,city,1,0,2,False,19648.0,3536208.0,5.0895800000000015,,DRS 12 - Registro
 2020-04-04,SP,Pariquera-Açu,city,1,0,1,False,19648.0,3536208.0,5.0895800000000015,,DRS 12 - Registro
-2020-04-18,SP,Paulistânia,city,1,0,2,True,1833.0,3536570.0,54.55537,,DRS 06 - Bauru
+2020-04-19,SP,Paulistânia,city,1,0,3,True,1833.0,3536570.0,54.55537,,DRS 06 - Bauru
+2020-04-18,SP,Paulistânia,city,1,0,2,False,1833.0,3536570.0,54.55537,,DRS 06 - Bauru
 2020-04-17,SP,Paulistânia,city,1,0,1,False,1833.0,3536570.0,54.55537,,DRS 06 - Bauru
-2020-04-18,SP,Paulínia,city,8,0,20,True,109424.0,3536505.0,7.31101,,DRS 07 - Campinas
+2020-04-19,SP,Paulínia,city,8,0,21,True,109424.0,3536505.0,7.31101,,DRS 07 - Campinas
+2020-04-18,SP,Paulínia,city,8,0,20,False,109424.0,3536505.0,7.31101,,DRS 07 - Campinas
 2020-04-17,SP,Paulínia,city,8,0,19,False,109424.0,3536505.0,7.31101,,DRS 07 - Campinas
 2020-04-16,SP,Paulínia,city,6,0,18,False,109424.0,3536505.0,5.48326,,DRS 07 - Campinas
 2020-04-15,SP,Paulínia,city,5,0,17,False,109424.0,3536505.0,4.5693800000000016,,DRS 07 - Campinas
@@ -1909,11 +2059,13 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-01,SP,Paulínia,city,1,0,3,False,109424.0,3536505.0,0.91388,,DRS 07 - Campinas
 2020-03-31,SP,Paulínia,city,1,0,2,False,109424.0,3536505.0,0.91388,,DRS 07 - Campinas
 2020-03-30,SP,Paulínia,city,1,0,1,False,109424.0,3536505.0,0.91388,,DRS 07 - Campinas
-2020-04-18,SP,Pederneiras,city,1,0,4,True,46687.0,3536703.0,2.1419200000000003,,DRS 06 - Bauru
+2020-04-19,SP,Pederneiras,city,1,0,5,True,46687.0,3536703.0,2.1419200000000003,,DRS 06 - Bauru
+2020-04-18,SP,Pederneiras,city,1,0,4,False,46687.0,3536703.0,2.1419200000000003,,DRS 06 - Bauru
 2020-04-17,SP,Pederneiras,city,1,0,3,False,46687.0,3536703.0,2.1419200000000003,,DRS 06 - Bauru
 2020-04-16,SP,Pederneiras,city,1,0,2,False,46687.0,3536703.0,2.1419200000000003,,DRS 06 - Bauru
 2020-04-15,SP,Pederneiras,city,1,0,1,False,46687.0,3536703.0,2.1419200000000003,,DRS 06 - Bauru
-2020-04-18,SP,Pedra Bela,city,1,0,9,True,6093.0,3536802.0,16.41228,,DRS 07 - Campinas
+2020-04-19,SP,Pedra Bela,city,1,0,10,True,6093.0,3536802.0,16.41228,,DRS 07 - Campinas
+2020-04-18,SP,Pedra Bela,city,1,0,9,False,6093.0,3536802.0,16.41228,,DRS 07 - Campinas
 2020-04-17,SP,Pedra Bela,city,1,0,8,False,6093.0,3536802.0,16.41228,,DRS 07 - Campinas
 2020-04-16,SP,Pedra Bela,city,1,0,7,False,6093.0,3536802.0,16.41228,,DRS 07 - Campinas
 2020-04-15,SP,Pedra Bela,city,1,0,6,False,6093.0,3536802.0,16.41228,,DRS 07 - Campinas
@@ -1922,7 +2074,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-12,SP,Pedra Bela,city,1,0,3,False,6093.0,3536802.0,16.41228,,DRS 07 - Campinas
 2020-04-11,SP,Pedra Bela,city,1,0,2,False,6093.0,3536802.0,16.41228,,DRS 07 - Campinas
 2020-04-10,SP,Pedra Bela,city,1,0,1,False,6093.0,3536802.0,16.41228,,DRS 07 - Campinas
-2020-04-18,SP,Penápolis,city,1,1,20,True,63407.0,3537305.0,1.57711,1.0,DRS 02 - Araçatuba
+2020-04-19,SP,Penápolis,city,1,1,21,True,63407.0,3537305.0,1.57711,1.0,DRS 02 - Araçatuba
+2020-04-18,SP,Penápolis,city,1,1,20,False,63407.0,3537305.0,1.57711,1.0,DRS 02 - Araçatuba
 2020-04-17,SP,Penápolis,city,1,1,19,False,63407.0,3537305.0,1.57711,1.0,DRS 02 - Araçatuba
 2020-04-16,SP,Penápolis,city,1,1,18,False,63407.0,3537305.0,1.57711,1.0,DRS 02 - Araçatuba
 2020-04-15,SP,Penápolis,city,1,1,17,False,63407.0,3537305.0,1.57711,1.0,DRS 02 - Araçatuba
@@ -1942,7 +2095,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-01,SP,Penápolis,city,1,0,3,False,63407.0,3537305.0,1.57711,,DRS 02 - Araçatuba
 2020-03-31,SP,Penápolis,city,1,0,2,False,63407.0,3537305.0,1.57711,,DRS 02 - Araçatuba
 2020-03-30,SP,Penápolis,city,1,0,1,False,63407.0,3537305.0,1.57711,,DRS 02 - Araçatuba
-2020-04-18,SP,Peruíbe,city,5,0,12,True,68284.0,3537602.0,7.3223600000000015,,DRS 04 - Baixada Santista
+2020-04-19,SP,Peruíbe,city,6,0,13,True,68284.0,3537602.0,8.78683,,DRS 04 - Baixada Santista
+2020-04-18,SP,Peruíbe,city,5,0,12,False,68284.0,3537602.0,7.3223600000000015,,DRS 04 - Baixada Santista
 2020-04-17,SP,Peruíbe,city,4,0,11,False,68284.0,3537602.0,5.85789,,DRS 04 - Baixada Santista
 2020-04-16,SP,Peruíbe,city,4,0,10,False,68284.0,3537602.0,5.85789,,DRS 04 - Baixada Santista
 2020-04-15,SP,Peruíbe,city,4,0,9,False,68284.0,3537602.0,5.85789,,DRS 04 - Baixada Santista
@@ -1954,13 +2108,16 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-09,SP,Peruíbe,city,3,0,3,False,68284.0,3537602.0,4.39342,,DRS 04 - Baixada Santista
 2020-04-08,SP,Peruíbe,city,3,0,2,False,68284.0,3537602.0,4.39342,,DRS 04 - Baixada Santista
 2020-04-07,SP,Peruíbe,city,2,0,1,False,68284.0,3537602.0,2.9289400000000003,,DRS 04 - Baixada Santista
-2020-04-18,SP,Piedade,city,1,0,1,True,55348.0,3537800.0,1.80675,,DRS 16 - Sorocaba
-2020-04-18,SP,Pilar do Sul,city,3,0,5,True,29185.0,3537909.0,10.27925,,DRS 16 - Sorocaba
+2020-04-19,SP,Piedade,city,1,0,2,True,55348.0,3537800.0,1.80675,,DRS 16 - Sorocaba
+2020-04-18,SP,Piedade,city,1,0,1,False,55348.0,3537800.0,1.80675,,DRS 16 - Sorocaba
+2020-04-19,SP,Pilar do Sul,city,3,0,6,True,29185.0,3537909.0,10.27925,,DRS 16 - Sorocaba
+2020-04-18,SP,Pilar do Sul,city,3,0,5,False,29185.0,3537909.0,10.27925,,DRS 16 - Sorocaba
 2020-04-17,SP,Pilar do Sul,city,3,0,4,False,29185.0,3537909.0,10.27925,,DRS 16 - Sorocaba
 2020-04-16,SP,Pilar do Sul,city,3,0,3,False,29185.0,3537909.0,10.27925,,DRS 16 - Sorocaba
 2020-04-15,SP,Pilar do Sul,city,3,0,2,False,29185.0,3537909.0,10.27925,,DRS 16 - Sorocaba
 2020-04-14,SP,Pilar do Sul,city,1,0,1,False,29185.0,3537909.0,3.42642,,DRS 16 - Sorocaba
-2020-04-18,SP,Pindamonhangaba,city,2,1,12,True,168328.0,3538006.0,1.18816,0.5,DRS 17 - Taubaté
+2020-04-19,SP,Pindamonhangaba,city,2,1,13,True,168328.0,3538006.0,1.18816,0.5,DRS 17 - Taubaté
+2020-04-18,SP,Pindamonhangaba,city,2,1,12,False,168328.0,3538006.0,1.18816,0.5,DRS 17 - Taubaté
 2020-04-17,SP,Pindamonhangaba,city,2,1,11,False,168328.0,3538006.0,1.18816,0.5,DRS 17 - Taubaté
 2020-04-16,SP,Pindamonhangaba,city,2,1,10,False,168328.0,3538006.0,1.18816,0.5,DRS 17 - Taubaté
 2020-04-15,SP,Pindamonhangaba,city,2,1,9,False,168328.0,3538006.0,1.18816,0.5,DRS 17 - Taubaté
@@ -1972,7 +2129,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-09,SP,Pindamonhangaba,city,1,0,3,False,168328.0,3538006.0,0.59408,,DRS 17 - Taubaté
 2020-04-08,SP,Pindamonhangaba,city,1,0,2,False,168328.0,3538006.0,0.59408,,DRS 17 - Taubaté
 2020-04-07,SP,Pindamonhangaba,city,1,0,1,False,168328.0,3538006.0,0.59408,,DRS 17 - Taubaté
-2020-04-18,SP,Pindorama,city,2,0,11,True,17049.0,3538105.0,11.73089,,DRS 15 - São José do Rio Preto
+2020-04-19,SP,Pindorama,city,2,0,12,True,17049.0,3538105.0,11.73089,,DRS 15 - São José do Rio Preto
+2020-04-18,SP,Pindorama,city,2,0,11,False,17049.0,3538105.0,11.73089,,DRS 15 - São José do Rio Preto
 2020-04-17,SP,Pindorama,city,2,0,10,False,17049.0,3538105.0,11.73089,,DRS 15 - São José do Rio Preto
 2020-04-16,SP,Pindorama,city,2,0,9,False,17049.0,3538105.0,11.73089,,DRS 15 - São José do Rio Preto
 2020-04-15,SP,Pindorama,city,1,0,8,False,17049.0,3538105.0,5.86545,,DRS 15 - São José do Rio Preto
@@ -1983,10 +2141,12 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-10,SP,Pindorama,city,1,0,3,False,17049.0,3538105.0,5.86545,,DRS 15 - São José do Rio Preto
 2020-04-09,SP,Pindorama,city,1,0,2,False,17049.0,3538105.0,5.86545,,DRS 15 - São José do Rio Preto
 2020-04-08,SP,Pindorama,city,1,0,1,False,17049.0,3538105.0,5.86545,,DRS 15 - São José do Rio Preto
-2020-04-18,SP,Piracaia,city,1,0,3,True,27303.0,3538600.0,3.6626,,DRS 07 - Campinas
+2020-04-19,SP,Piracaia,city,1,0,4,True,27303.0,3538600.0,3.6626,,DRS 07 - Campinas
+2020-04-18,SP,Piracaia,city,1,0,3,False,27303.0,3538600.0,3.6626,,DRS 07 - Campinas
 2020-04-17,SP,Piracaia,city,1,0,2,False,27303.0,3538600.0,3.6626,,DRS 07 - Campinas
 2020-04-16,SP,Piracaia,city,1,0,1,False,27303.0,3538600.0,3.6626,,DRS 07 - Campinas
-2020-04-18,SP,Piracicaba,city,19,2,20,True,404142.0,3538709.0,4.70132,0.1053,DRS 10 - Piracicaba
+2020-04-19,SP,Piracicaba,city,19,2,21,True,404142.0,3538709.0,4.70132,0.1053,DRS 10 - Piracicaba
+2020-04-18,SP,Piracicaba,city,19,2,20,False,404142.0,3538709.0,4.70132,0.1053,DRS 10 - Piracicaba
 2020-04-17,SP,Piracicaba,city,19,2,19,False,404142.0,3538709.0,4.70132,0.1053,DRS 10 - Piracicaba
 2020-04-16,SP,Piracicaba,city,18,1,18,False,404142.0,3538709.0,4.453880000000002,0.0556,DRS 10 - Piracicaba
 2020-04-15,SP,Piracicaba,city,17,1,17,False,404142.0,3538709.0,4.20644,0.0588,DRS 10 - Piracicaba
@@ -2006,7 +2166,9 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-01,SP,Piracicaba,city,5,0,3,False,404142.0,3538709.0,1.23719,,DRS 10 - Piracicaba
 2020-03-31,SP,Piracicaba,city,5,0,2,False,404142.0,3538709.0,1.23719,,DRS 10 - Piracicaba
 2020-03-30,SP,Piracicaba,city,3,0,1,False,404142.0,3538709.0,0.74231,,DRS 10 - Piracicaba
-2020-04-18,SP,Pirajuí,city,1,0,19,True,25492.0,3538907.0,3.9228,,DRS 06 - Bauru
+2020-04-19,SP,Piraju,city,3,0,1,True,29806.0,3538808.0,10.06509,,DRS 06 - Bauru
+2020-04-19,SP,Pirajuí,city,1,0,20,True,25492.0,3538907.0,3.9228,,DRS 06 - Bauru
+2020-04-18,SP,Pirajuí,city,1,0,19,False,25492.0,3538907.0,3.9228,,DRS 06 - Bauru
 2020-04-17,SP,Pirajuí,city,1,0,18,False,25492.0,3538907.0,3.9228,,DRS 06 - Bauru
 2020-04-16,SP,Pirajuí,city,1,0,17,False,25492.0,3538907.0,3.9228,,DRS 06 - Bauru
 2020-04-15,SP,Pirajuí,city,1,0,16,False,25492.0,3538907.0,3.9228,,DRS 06 - Bauru
@@ -2025,17 +2187,21 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,Pirajuí,city,1,0,3,False,25492.0,3538907.0,3.9228,,DRS 06 - Bauru
 2020-04-01,SP,Pirajuí,city,1,0,2,False,25492.0,3538907.0,3.9228,,DRS 06 - Bauru
 2020-03-31,SP,Pirajuí,city,1,0,1,False,25492.0,3538907.0,3.9228,,DRS 06 - Bauru
-2020-04-18,SP,Piratininga,city,3,0,4,True,13636.0,3539400.0,22.00059,,DRS 06 - Bauru
+2020-04-19,SP,Piratininga,city,3,0,5,True,13636.0,3539400.0,22.00059,,DRS 06 - Bauru
+2020-04-18,SP,Piratininga,city,3,0,4,False,13636.0,3539400.0,22.00059,,DRS 06 - Bauru
 2020-04-17,SP,Piratininga,city,3,0,3,False,13636.0,3539400.0,22.00059,,DRS 06 - Bauru
 2020-04-16,SP,Piratininga,city,2,0,2,False,13636.0,3539400.0,14.66706,,DRS 06 - Bauru
 2020-04-15,SP,Piratininga,city,1,0,1,False,13636.0,3539400.0,7.33353,,DRS 06 - Bauru
-2020-04-18,SP,Pontal,city,4,0,5,True,49961.0,3540200.0,8.00624,,DRS 13 - Ribeirão Preto
+2020-04-19,SP,Pontal,city,4,0,6,True,49961.0,3540200.0,8.00624,,DRS 13 - Ribeirão Preto
+2020-04-18,SP,Pontal,city,4,0,5,False,49961.0,3540200.0,8.00624,,DRS 13 - Ribeirão Preto
 2020-04-17,SP,Pontal,city,4,0,4,False,49961.0,3540200.0,8.00624,,DRS 13 - Ribeirão Preto
 2020-04-16,SP,Pontal,city,4,0,3,False,49961.0,3540200.0,8.00624,,DRS 13 - Ribeirão Preto
 2020-04-15,SP,Pontal,city,4,0,2,False,49961.0,3540200.0,8.00624,,DRS 13 - Ribeirão Preto
 2020-04-14,SP,Pontal,city,2,0,1,False,49961.0,3540200.0,4.00312,,DRS 13 - Ribeirão Preto
-2020-04-18,SP,Populina,city,1,0,1,True,4169.0,3540408.0,23.98657,,DRS 15 - São José do Rio Preto
-2020-04-18,SP,Porto Feliz,city,1,0,17,True,53098.0,3540606.0,1.88331,,DRS 16 - Sorocaba
+2020-04-19,SP,Populina,city,1,0,2,True,4169.0,3540408.0,23.98657,,DRS 15 - São José do Rio Preto
+2020-04-18,SP,Populina,city,1,0,1,False,4169.0,3540408.0,23.98657,,DRS 15 - São José do Rio Preto
+2020-04-19,SP,Porto Feliz,city,2,0,18,True,53098.0,3540606.0,3.76662,,DRS 16 - Sorocaba
+2020-04-18,SP,Porto Feliz,city,1,0,17,False,53098.0,3540606.0,1.88331,,DRS 16 - Sorocaba
 2020-04-17,SP,Porto Feliz,city,1,0,16,False,53098.0,3540606.0,1.88331,,DRS 16 - Sorocaba
 2020-04-16,SP,Porto Feliz,city,1,0,15,False,53098.0,3540606.0,1.88331,,DRS 16 - Sorocaba
 2020-04-15,SP,Porto Feliz,city,1,0,14,False,53098.0,3540606.0,1.88331,,DRS 16 - Sorocaba
@@ -2052,7 +2218,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-01,SP,Porto Feliz,city,1,0,3,False,53098.0,3540606.0,1.88331,,DRS 16 - Sorocaba
 2020-03-31,SP,Porto Feliz,city,0,0,2,False,53098.0,3540606.0,,,DRS 16 - Sorocaba
 2020-03-30,SP,Porto Feliz,city,1,0,1,False,53098.0,3540606.0,1.88331,,DRS 16 - Sorocaba
-2020-04-18,SP,Porto Ferreira,city,2,1,9,True,56150.0,3540705.0,3.56189,0.5,DRS 03 - Araraquara
+2020-04-19,SP,Porto Ferreira,city,2,1,10,True,56150.0,3540705.0,3.56189,0.5,DRS 03 - Araraquara
+2020-04-18,SP,Porto Ferreira,city,2,1,9,False,56150.0,3540705.0,3.56189,0.5,DRS 03 - Araraquara
 2020-04-17,SP,Porto Ferreira,city,2,1,8,False,56150.0,3540705.0,3.56189,0.5,DRS 03 - Araraquara
 2020-04-16,SP,Porto Ferreira,city,2,1,7,False,56150.0,3540705.0,3.56189,0.5,DRS 03 - Araraquara
 2020-04-15,SP,Porto Ferreira,city,2,1,6,False,56150.0,3540705.0,3.56189,0.5,DRS 03 - Araraquara
@@ -2061,7 +2228,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-12,SP,Porto Ferreira,city,2,1,3,False,56150.0,3540705.0,3.56189,0.5,DRS 03 - Araraquara
 2020-04-11,SP,Porto Ferreira,city,2,1,2,False,56150.0,3540705.0,3.56189,0.5,DRS 03 - Araraquara
 2020-04-10,SP,Porto Ferreira,city,2,1,1,False,56150.0,3540705.0,3.56189,0.5,DRS 03 - Araraquara
-2020-04-18,SP,Poá,city,25,3,23,True,117452.0,3539806.0,21.28529,0.12,DRS 01 - Grande São Paulo
+2020-04-19,SP,Poá,city,25,3,24,True,117452.0,3539806.0,21.28529,0.12,DRS 01 - Grande São Paulo
+2020-04-18,SP,Poá,city,25,3,23,False,117452.0,3539806.0,21.28529,0.12,DRS 01 - Grande São Paulo
 2020-04-17,SP,Poá,city,22,3,22,False,117452.0,3539806.0,18.73106,0.1364,DRS 01 - Grande São Paulo
 2020-04-16,SP,Poá,city,15,2,21,False,117452.0,3539806.0,12.77117,0.1333,DRS 01 - Grande São Paulo
 2020-04-15,SP,Poá,city,11,2,20,False,117452.0,3539806.0,9.36553,0.1818,DRS 01 - Grande São Paulo
@@ -2084,7 +2252,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-27,SP,Poá,city,1,0,3,False,117452.0,3539806.0,0.85141,,DRS 01 - Grande São Paulo
 2020-03-26,SP,Poá,city,1,0,2,False,117452.0,3539806.0,0.85141,,DRS 01 - Grande São Paulo
 2020-03-25,SP,Poá,city,1,0,1,False,117452.0,3539806.0,0.85141,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Praia Grande,city,50,7,18,True,325073.0,3541000.0,15.38116,0.14,DRS 04 - Baixada Santista
+2020-04-19,SP,Praia Grande,city,54,7,19,True,325073.0,3541000.0,16.61165,0.1296,DRS 04 - Baixada Santista
+2020-04-18,SP,Praia Grande,city,50,7,18,False,325073.0,3541000.0,15.38116,0.14,DRS 04 - Baixada Santista
 2020-04-17,SP,Praia Grande,city,46,7,17,False,325073.0,3541000.0,14.150670000000002,0.1522,DRS 04 - Baixada Santista
 2020-04-16,SP,Praia Grande,city,33,6,16,False,325073.0,3541000.0,10.15157,0.1818,DRS 04 - Baixada Santista
 2020-04-15,SP,Praia Grande,city,27,6,15,False,325073.0,3541000.0,8.30583,0.2222,DRS 04 - Baixada Santista
@@ -2102,11 +2271,13 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-03,SP,Praia Grande,city,2,0,3,False,325073.0,3541000.0,0.61525,,DRS 04 - Baixada Santista
 2020-04-02,SP,Praia Grande,city,1,0,2,False,325073.0,3541000.0,0.30762,,DRS 04 - Baixada Santista
 2020-04-01,SP,Praia Grande,city,1,0,1,False,325073.0,3541000.0,0.30762,,DRS 04 - Baixada Santista
-2020-04-18,SP,Pratânia,city,2,0,4,True,5261.0,3541059.0,38.01559,,DRS 06 - Bauru
+2020-04-19,SP,Pratânia,city,2,0,5,True,5261.0,3541059.0,38.01559,,DRS 06 - Bauru
+2020-04-18,SP,Pratânia,city,2,0,4,False,5261.0,3541059.0,38.01559,,DRS 06 - Bauru
 2020-04-17,SP,Pratânia,city,2,0,3,False,5261.0,3541059.0,38.01559,,DRS 06 - Bauru
 2020-04-16,SP,Pratânia,city,2,0,2,False,5261.0,3541059.0,38.01559,,DRS 06 - Bauru
 2020-04-15,SP,Pratânia,city,2,0,1,False,5261.0,3541059.0,38.01559,,DRS 06 - Bauru
-2020-04-18,SP,Presidente Prudente,city,6,2,11,True,228743.0,3541406.0,2.62303,0.3333,DRS 11 - Presidente Prudente
+2020-04-19,SP,Presidente Prudente,city,6,2,12,True,228743.0,3541406.0,2.62303,0.3333,DRS 11 - Presidente Prudente
+2020-04-18,SP,Presidente Prudente,city,6,2,11,False,228743.0,3541406.0,2.62303,0.3333,DRS 11 - Presidente Prudente
 2020-04-17,SP,Presidente Prudente,city,6,2,10,False,228743.0,3541406.0,2.62303,0.3333,DRS 11 - Presidente Prudente
 2020-04-16,SP,Presidente Prudente,city,4,2,9,False,228743.0,3541406.0,1.74869,0.5,DRS 11 - Presidente Prudente
 2020-04-15,SP,Presidente Prudente,city,4,2,8,False,228743.0,3541406.0,1.74869,0.5,DRS 11 - Presidente Prudente
@@ -2117,7 +2288,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-10,SP,Presidente Prudente,city,3,2,3,False,228743.0,3541406.0,1.31152,0.6667,DRS 11 - Presidente Prudente
 2020-04-09,SP,Presidente Prudente,city,3,2,2,False,228743.0,3541406.0,1.31152,0.6667,DRS 11 - Presidente Prudente
 2020-04-08,SP,Presidente Prudente,city,1,0,1,False,228743.0,3541406.0,0.43717,,DRS 11 - Presidente Prudente
-2020-04-18,SP,Presidente Venceslau,city,8,3,13,True,39516.0,3541505.0,20.24496,0.375,DRS 11 - Presidente Prudente
+2020-04-19,SP,Presidente Venceslau,city,8,3,14,True,39516.0,3541505.0,20.24496,0.375,DRS 11 - Presidente Prudente
+2020-04-18,SP,Presidente Venceslau,city,8,3,13,False,39516.0,3541505.0,20.24496,0.375,DRS 11 - Presidente Prudente
 2020-04-17,SP,Presidente Venceslau,city,8,3,12,False,39516.0,3541505.0,20.24496,0.375,DRS 11 - Presidente Prudente
 2020-04-16,SP,Presidente Venceslau,city,8,3,11,False,39516.0,3541505.0,20.24496,0.375,DRS 11 - Presidente Prudente
 2020-04-15,SP,Presidente Venceslau,city,5,2,10,False,39516.0,3541505.0,12.6531,0.4,DRS 11 - Presidente Prudente
@@ -2130,7 +2302,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-08,SP,Presidente Venceslau,city,2,1,3,False,39516.0,3541505.0,5.06124,0.5,DRS 11 - Presidente Prudente
 2020-04-07,SP,Presidente Venceslau,city,2,1,2,False,39516.0,3541505.0,5.06124,0.5,DRS 11 - Presidente Prudente
 2020-04-06,SP,Presidente Venceslau,city,2,1,1,False,39516.0,3541505.0,5.06124,0.5,DRS 11 - Presidente Prudente
-2020-04-18,SP,Promissão,city,2,0,16,True,40432.0,3541604.0,4.94658,,DRS 06 - Bauru
+2020-04-19,SP,Promissão,city,2,0,17,True,40432.0,3541604.0,4.94658,,DRS 06 - Bauru
+2020-04-18,SP,Promissão,city,2,0,16,False,40432.0,3541604.0,4.94658,,DRS 06 - Bauru
 2020-04-17,SP,Promissão,city,2,0,15,False,40432.0,3541604.0,4.94658,,DRS 06 - Bauru
 2020-04-16,SP,Promissão,city,2,0,14,False,40432.0,3541604.0,4.94658,,DRS 06 - Bauru
 2020-04-15,SP,Promissão,city,2,0,13,False,40432.0,3541604.0,4.94658,,DRS 06 - Bauru
@@ -2146,11 +2319,14 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-05,SP,Promissão,city,1,0,3,False,40432.0,3541604.0,2.47329,,DRS 06 - Bauru
 2020-04-04,SP,Promissão,city,1,0,2,False,40432.0,3541604.0,2.47329,,DRS 06 - Bauru
 2020-04-03,SP,Promissão,city,1,0,1,False,40432.0,3541604.0,2.47329,,DRS 06 - Bauru
-2020-04-18,SP,Rancharia,city,1,0,2,True,29707.0,3542206.0,3.36621,,DRS 11 - Presidente Prudente
+2020-04-19,SP,Rancharia,city,1,0,3,True,29707.0,3542206.0,3.36621,,DRS 11 - Presidente Prudente
+2020-04-18,SP,Rancharia,city,1,0,2,False,29707.0,3542206.0,3.36621,,DRS 11 - Presidente Prudente
 2020-04-17,SP,Rancharia,city,1,0,1,False,29707.0,3542206.0,3.36621,,DRS 11 - Presidente Prudente
-2020-04-18,SP,Registro,city,4,1,2,True,56322.0,3542602.0,7.10202,0.25,DRS 12 - Registro
+2020-04-19,SP,Registro,city,4,1,3,True,56322.0,3542602.0,7.10202,0.25,DRS 12 - Registro
+2020-04-18,SP,Registro,city,4,1,2,False,56322.0,3542602.0,7.10202,0.25,DRS 12 - Registro
 2020-04-17,SP,Registro,city,1,1,1,False,56322.0,3542602.0,1.77551,1.0,DRS 12 - Registro
-2020-04-18,SP,Ribeirão Pires,city,31,0,23,True,123393.0,3543303.0,25.12298,,DRS 01 - Grande São Paulo
+2020-04-19,SP,Ribeirão Pires,city,33,1,24,True,123393.0,3543303.0,26.74382,0.0303,DRS 01 - Grande São Paulo
+2020-04-18,SP,Ribeirão Pires,city,31,0,23,False,123393.0,3543303.0,25.12298,,DRS 01 - Grande São Paulo
 2020-04-17,SP,Ribeirão Pires,city,28,0,22,False,123393.0,3543303.0,22.69172,,DRS 01 - Grande São Paulo
 2020-04-16,SP,Ribeirão Pires,city,26,0,21,False,123393.0,3543303.0,21.07089,,DRS 01 - Grande São Paulo
 2020-04-15,SP,Ribeirão Pires,city,23,0,20,False,123393.0,3543303.0,18.63963,,DRS 01 - Grande São Paulo
@@ -2173,7 +2349,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-27,SP,Ribeirão Pires,city,1,0,3,False,123393.0,3543303.0,0.81042,,DRS 01 - Grande São Paulo
 2020-03-26,SP,Ribeirão Pires,city,1,0,2,False,123393.0,3543303.0,0.81042,,DRS 01 - Grande São Paulo
 2020-03-25,SP,Ribeirão Pires,city,1,0,1,False,123393.0,3543303.0,0.81042,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Ribeirão Preto,city,76,5,22,True,703293.0,3543402.0,10.80631,0.0658,DRS 13 - Ribeirão Preto
+2020-04-19,SP,Ribeirão Preto,city,80,5,23,True,703293.0,3543402.0,11.37506,0.0625,DRS 13 - Ribeirão Preto
+2020-04-18,SP,Ribeirão Preto,city,76,5,22,False,703293.0,3543402.0,10.80631,0.0658,DRS 13 - Ribeirão Preto
 2020-04-17,SP,Ribeirão Preto,city,72,5,21,False,703293.0,3543402.0,10.23755,0.0694,DRS 13 - Ribeirão Preto
 2020-04-16,SP,Ribeirão Preto,city,68,5,20,False,703293.0,3543402.0,9.6688,0.0735,DRS 13 - Ribeirão Preto
 2020-04-15,SP,Ribeirão Preto,city,65,5,19,False,703293.0,3543402.0,9.24224,0.0769,DRS 13 - Ribeirão Preto
@@ -2195,16 +2372,19 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-30,SP,Ribeirão Preto,city,5,1,3,False,703293.0,3543402.0,0.71094,0.2,DRS 13 - Ribeirão Preto
 2020-03-27,SP,Ribeirão Preto,city,3,1,2,False,703293.0,3543402.0,0.4265600000000001,0.3333,DRS 13 - Ribeirão Preto
 2020-03-26,SP,Ribeirão Preto,city,1,1,1,False,703293.0,3543402.0,0.14219,1.0,DRS 13 - Ribeirão Preto
-2020-04-18,SP,Rincão,city,1,0,5,True,10799.0,3543709.0,9.26012,,DRS 03 - Araraquara
+2020-04-19,SP,Rincão,city,1,0,6,True,10799.0,3543709.0,9.26012,,DRS 03 - Araraquara
+2020-04-18,SP,Rincão,city,1,0,5,False,10799.0,3543709.0,9.26012,,DRS 03 - Araraquara
 2020-04-17,SP,Rincão,city,1,0,4,False,10799.0,3543709.0,9.26012,,DRS 03 - Araraquara
 2020-04-16,SP,Rincão,city,1,0,3,False,10799.0,3543709.0,9.26012,,DRS 03 - Araraquara
 2020-04-15,SP,Rincão,city,1,0,2,False,10799.0,3543709.0,9.26012,,DRS 03 - Araraquara
 2020-04-14,SP,Rincão,city,1,0,1,False,10799.0,3543709.0,9.26012,,DRS 03 - Araraquara
-2020-04-18,SP,Rinópolis,city,1,0,4,True,9981.0,3543808.0,10.01904,,DRS 09 - Marília
+2020-04-19,SP,Rinópolis,city,1,0,5,True,9981.0,3543808.0,10.01904,,DRS 09 - Marília
+2020-04-18,SP,Rinópolis,city,1,0,4,False,9981.0,3543808.0,10.01904,,DRS 09 - Marília
 2020-04-17,SP,Rinópolis,city,1,0,3,False,9981.0,3543808.0,10.01904,,DRS 09 - Marília
 2020-04-16,SP,Rinópolis,city,1,0,2,False,9981.0,3543808.0,10.01904,,DRS 09 - Marília
 2020-04-15,SP,Rinópolis,city,1,0,1,False,9981.0,3543808.0,10.01904,,DRS 09 - Marília
-2020-04-18,SP,Rio Claro,city,14,3,23,True,206424.0,3543907.0,6.78216,0.2143,DRS 10 - Piracicaba
+2020-04-19,SP,Rio Claro,city,14,3,24,True,206424.0,3543907.0,6.78216,0.2143,DRS 10 - Piracicaba
+2020-04-18,SP,Rio Claro,city,14,3,23,False,206424.0,3543907.0,6.78216,0.2143,DRS 10 - Piracicaba
 2020-04-17,SP,Rio Claro,city,12,3,22,False,206424.0,3543907.0,5.813280000000002,0.25,DRS 10 - Piracicaba
 2020-04-16,SP,Rio Claro,city,12,3,21,False,206424.0,3543907.0,5.813280000000002,0.25,DRS 10 - Piracicaba
 2020-04-15,SP,Rio Claro,city,8,2,20,False,206424.0,3543907.0,3.87552,0.25,DRS 10 - Piracicaba
@@ -2227,7 +2407,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-27,SP,Rio Claro,city,1,0,3,False,206424.0,3543907.0,0.48444,,DRS 10 - Piracicaba
 2020-03-26,SP,Rio Claro,city,1,0,2,False,206424.0,3543907.0,0.48444,,DRS 10 - Piracicaba
 2020-03-25,SP,Rio Claro,city,1,0,1,False,206424.0,3543907.0,0.48444,,DRS 10 - Piracicaba
-2020-04-18,SP,Rio Grande da Serra,city,9,0,12,True,50846.0,3544103.0,17.70051,,DRS 01 - Grande São Paulo
+2020-04-19,SP,Rio Grande da Serra,city,9,0,13,True,50846.0,3544103.0,17.70051,,DRS 01 - Grande São Paulo
+2020-04-18,SP,Rio Grande da Serra,city,9,0,12,False,50846.0,3544103.0,17.70051,,DRS 01 - Grande São Paulo
 2020-04-17,SP,Rio Grande da Serra,city,7,0,11,False,50846.0,3544103.0,13.76706,,DRS 01 - Grande São Paulo
 2020-04-16,SP,Rio Grande da Serra,city,7,0,10,False,50846.0,3544103.0,13.76706,,DRS 01 - Grande São Paulo
 2020-04-15,SP,Rio Grande da Serra,city,7,0,9,False,50846.0,3544103.0,13.76706,,DRS 01 - Grande São Paulo
@@ -2239,7 +2420,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-09,SP,Rio Grande da Serra,city,4,0,3,False,50846.0,3544103.0,7.86689,,DRS 01 - Grande São Paulo
 2020-04-08,SP,Rio Grande da Serra,city,4,0,2,False,50846.0,3544103.0,7.86689,,DRS 01 - Grande São Paulo
 2020-04-07,SP,Rio Grande da Serra,city,1,0,1,False,50846.0,3544103.0,1.96672,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Salto,city,5,0,12,True,118663.0,3545209.0,4.21361,,DRS 16 - Sorocaba
+2020-04-19,SP,Salto,city,5,0,13,True,118663.0,3545209.0,4.21361,,DRS 16 - Sorocaba
+2020-04-18,SP,Salto,city,5,0,12,False,118663.0,3545209.0,4.21361,,DRS 16 - Sorocaba
 2020-04-17,SP,Salto,city,4,0,11,False,118663.0,3545209.0,3.37089,,DRS 16 - Sorocaba
 2020-04-16,SP,Salto,city,3,0,10,False,118663.0,3545209.0,2.5281700000000003,,DRS 16 - Sorocaba
 2020-04-15,SP,Salto,city,3,0,9,False,118663.0,3545209.0,2.5281700000000003,,DRS 16 - Sorocaba
@@ -2251,7 +2433,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-09,SP,Salto,city,3,0,3,False,118663.0,3545209.0,2.5281700000000003,,DRS 16 - Sorocaba
 2020-04-08,SP,Salto,city,2,0,2,False,118663.0,3545209.0,1.68545,,DRS 16 - Sorocaba
 2020-04-07,SP,Salto,city,1,0,1,False,118663.0,3545209.0,0.84272,,DRS 16 - Sorocaba
-2020-04-18,SP,Salto de Pirapora,city,6,0,19,True,45422.0,3545308.0,13.20946,,DRS 16 - Sorocaba
+2020-04-19,SP,Salto de Pirapora,city,6,0,20,True,45422.0,3545308.0,13.20946,,DRS 16 - Sorocaba
+2020-04-18,SP,Salto de Pirapora,city,6,0,19,False,45422.0,3545308.0,13.20946,,DRS 16 - Sorocaba
 2020-04-17,SP,Salto de Pirapora,city,6,0,18,False,45422.0,3545308.0,13.20946,,DRS 16 - Sorocaba
 2020-04-16,SP,Salto de Pirapora,city,4,0,17,False,45422.0,3545308.0,8.80631,,DRS 16 - Sorocaba
 2020-04-15,SP,Salto de Pirapora,city,2,0,16,False,45422.0,3545308.0,4.40315,,DRS 16 - Sorocaba
@@ -2270,7 +2453,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,Salto de Pirapora,city,1,0,3,False,45422.0,3545308.0,2.20158,,DRS 16 - Sorocaba
 2020-04-01,SP,Salto de Pirapora,city,1,0,2,False,45422.0,3545308.0,2.20158,,DRS 16 - Sorocaba
 2020-03-31,SP,Salto de Pirapora,city,1,0,1,False,45422.0,3545308.0,2.20158,,DRS 16 - Sorocaba
-2020-04-18,SP,Santa Branca,city,2,1,15,True,14788.0,3546009.0,13.52448,0.5,DRS 17 - Taubaté
+2020-04-19,SP,Santa Branca,city,2,1,16,True,14788.0,3546009.0,13.52448,0.5,DRS 17 - Taubaté
+2020-04-18,SP,Santa Branca,city,2,1,15,False,14788.0,3546009.0,13.52448,0.5,DRS 17 - Taubaté
 2020-04-17,SP,Santa Branca,city,2,1,14,False,14788.0,3546009.0,13.52448,0.5,DRS 17 - Taubaté
 2020-04-16,SP,Santa Branca,city,2,1,13,False,14788.0,3546009.0,13.52448,0.5,DRS 17 - Taubaté
 2020-04-15,SP,Santa Branca,city,2,1,12,False,14788.0,3546009.0,13.52448,0.5,DRS 17 - Taubaté
@@ -2285,7 +2469,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-06,SP,Santa Branca,city,2,0,3,False,14788.0,3546009.0,13.52448,,DRS 17 - Taubaté
 2020-04-05,SP,Santa Branca,city,2,0,2,False,14788.0,3546009.0,13.52448,,DRS 17 - Taubaté
 2020-04-04,SP,Santa Branca,city,2,0,1,False,14788.0,3546009.0,13.52448,,DRS 17 - Taubaté
-2020-04-18,SP,Santa Bárbara d'Oeste,city,2,1,9,True,193475.0,3545803.0,1.03373,0.5,DRS 07 - Campinas
+2020-04-19,SP,Santa Bárbara d'Oeste,city,2,1,10,True,193475.0,3545803.0,1.03373,0.5,DRS 07 - Campinas
+2020-04-18,SP,Santa Bárbara d'Oeste,city,2,1,9,False,193475.0,3545803.0,1.03373,0.5,DRS 07 - Campinas
 2020-04-17,SP,Santa Bárbara d'Oeste,city,2,0,8,False,193475.0,3545803.0,1.03373,,DRS 07 - Campinas
 2020-04-16,SP,Santa Bárbara d'Oeste,city,1,0,7,False,193475.0,3545803.0,0.51686,,DRS 07 - Campinas
 2020-04-15,SP,Santa Bárbara d'Oeste,city,1,0,6,False,193475.0,3545803.0,0.51686,,DRS 07 - Campinas
@@ -2294,7 +2479,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-12,SP,Santa Bárbara d'Oeste,city,1,0,3,False,193475.0,3545803.0,0.51686,,DRS 07 - Campinas
 2020-04-11,SP,Santa Bárbara d'Oeste,city,1,0,2,False,193475.0,3545803.0,0.51686,,DRS 07 - Campinas
 2020-04-10,SP,Santa Bárbara d'Oeste,city,1,0,1,False,193475.0,3545803.0,0.51686,,DRS 07 - Campinas
-2020-04-18,SP,Santa Cruz do Rio Pardo,city,5,0,13,True,47673.0,3546405.0,10.48812,,DRS 09 - Marília
+2020-04-19,SP,Santa Cruz do Rio Pardo,city,5,0,14,True,47673.0,3546405.0,10.48812,,DRS 09 - Marília
+2020-04-18,SP,Santa Cruz do Rio Pardo,city,5,0,13,False,47673.0,3546405.0,10.48812,,DRS 09 - Marília
 2020-04-17,SP,Santa Cruz do Rio Pardo,city,4,0,12,False,47673.0,3546405.0,8.39049,,DRS 09 - Marília
 2020-04-16,SP,Santa Cruz do Rio Pardo,city,4,0,11,False,47673.0,3546405.0,8.39049,,DRS 09 - Marília
 2020-04-15,SP,Santa Cruz do Rio Pardo,city,5,0,10,False,47673.0,3546405.0,10.48812,,DRS 09 - Marília
@@ -2307,10 +2493,12 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-08,SP,Santa Cruz do Rio Pardo,city,1,0,3,False,47673.0,3546405.0,2.09762,,DRS 09 - Marília
 2020-04-07,SP,Santa Cruz do Rio Pardo,city,2,0,2,False,47673.0,3546405.0,4.19525,,DRS 09 - Marília
 2020-04-06,SP,Santa Cruz do Rio Pardo,city,2,0,1,False,47673.0,3546405.0,4.19525,,DRS 09 - Marília
-2020-04-18,SP,Santa Gertrudes,city,1,0,3,True,26898.0,3546702.0,3.71775,,DRS 10 - Piracicaba
+2020-04-19,SP,Santa Gertrudes,city,1,0,4,True,26898.0,3546702.0,3.71775,,DRS 10 - Piracicaba
+2020-04-18,SP,Santa Gertrudes,city,1,0,3,False,26898.0,3546702.0,3.71775,,DRS 10 - Piracicaba
 2020-04-17,SP,Santa Gertrudes,city,1,0,2,False,26898.0,3546702.0,3.71775,,DRS 10 - Piracicaba
 2020-04-16,SP,Santa Gertrudes,city,1,0,1,False,26898.0,3546702.0,3.71775,,DRS 10 - Piracicaba
-2020-04-18,SP,Santa Isabel,city,3,1,19,True,57386.0,3546801.0,5.22776,0.3333,DRS 01 - Grande São Paulo
+2020-04-19,SP,Santa Isabel,city,3,1,20,True,57386.0,3546801.0,5.22776,0.3333,DRS 01 - Grande São Paulo
+2020-04-18,SP,Santa Isabel,city,3,1,19,False,57386.0,3546801.0,5.22776,0.3333,DRS 01 - Grande São Paulo
 2020-04-17,SP,Santa Isabel,city,3,1,18,False,57386.0,3546801.0,5.22776,0.3333,DRS 01 - Grande São Paulo
 2020-04-16,SP,Santa Isabel,city,3,1,17,False,57386.0,3546801.0,5.22776,0.3333,DRS 01 - Grande São Paulo
 2020-04-15,SP,Santa Isabel,city,1,1,16,False,57386.0,3546801.0,1.74259,1.0,DRS 01 - Grande São Paulo
@@ -2329,7 +2517,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,Santa Isabel,city,1,0,3,False,57386.0,3546801.0,1.74259,,DRS 01 - Grande São Paulo
 2020-04-01,SP,Santa Isabel,city,1,0,2,False,57386.0,3546801.0,1.74259,,DRS 01 - Grande São Paulo
 2020-03-31,SP,Santa Isabel,city,1,0,1,False,57386.0,3546801.0,1.74259,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Santa Lúcia,city,2,0,8,True,8817.0,3546900.0,22.68345,,DRS 03 - Araraquara
+2020-04-19,SP,Santa Lúcia,city,2,0,9,True,8817.0,3546900.0,22.68345,,DRS 03 - Araraquara
+2020-04-18,SP,Santa Lúcia,city,2,0,8,False,8817.0,3546900.0,22.68345,,DRS 03 - Araraquara
 2020-04-17,SP,Santa Lúcia,city,3,0,7,False,8817.0,3546900.0,34.02518,,DRS 03 - Araraquara
 2020-04-16,SP,Santa Lúcia,city,3,0,6,False,8817.0,3546900.0,34.02518,,DRS 03 - Araraquara
 2020-04-15,SP,Santa Lúcia,city,1,0,5,False,8817.0,3546900.0,11.34173,,DRS 03 - Araraquara
@@ -2337,7 +2526,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-13,SP,Santa Lúcia,city,1,0,3,False,8817.0,3546900.0,11.34173,,DRS 03 - Araraquara
 2020-04-12,SP,Santa Lúcia,city,1,0,2,False,8817.0,3546900.0,11.34173,,DRS 03 - Araraquara
 2020-04-11,SP,Santa Lúcia,city,1,0,1,False,8817.0,3546900.0,11.34173,,DRS 03 - Araraquara
-2020-04-18,SP,Santana de Parnaíba,city,54,0,35,True,139447.0,3547304.0,38.72439,,DRS 01 - Grande São Paulo
+2020-04-19,SP,Santana de Parnaíba,city,55,0,36,True,139447.0,3547304.0,39.44151,,DRS 01 - Grande São Paulo
+2020-04-18,SP,Santana de Parnaíba,city,54,0,35,False,139447.0,3547304.0,38.72439,,DRS 01 - Grande São Paulo
 2020-04-17,SP,Santana de Parnaíba,city,53,0,34,False,139447.0,3547304.0,38.00727,,DRS 01 - Grande São Paulo
 2020-04-16,SP,Santana de Parnaíba,city,50,0,33,False,139447.0,3547304.0,35.85592000000001,,DRS 01 - Grande São Paulo
 2020-04-15,SP,Santana de Parnaíba,city,41,0,32,False,139447.0,3547304.0,29.40185,,DRS 01 - Grande São Paulo
@@ -2372,7 +2562,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-09,SP,Santana de Parnaíba,city,1,0,3,False,139447.0,3547304.0,0.71712,,DRS 01 - Grande São Paulo
 2020-03-08,SP,Santana de Parnaíba,city,1,0,2,False,139447.0,3547304.0,0.71712,,DRS 01 - Grande São Paulo
 2020-03-07,SP,Santana de Parnaíba,city,1,0,1,False,139447.0,3547304.0,0.71712,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Santo André,city,236,12,28,True,718773.0,3547809.0,32.83373,0.0508,DRS 01 - Grande São Paulo
+2020-04-19,SP,Santo André,city,247,12,29,True,718773.0,3547809.0,34.36412,0.0486,DRS 01 - Grande São Paulo
+2020-04-18,SP,Santo André,city,236,12,28,False,718773.0,3547809.0,32.83373,0.0508,DRS 01 - Grande São Paulo
 2020-04-17,SP,Santo André,city,222,10,27,False,718773.0,3547809.0,30.88597,0.045,DRS 01 - Grande São Paulo
 2020-04-16,SP,Santo André,city,205,7,26,False,718773.0,3547809.0,28.52083,0.0341,DRS 01 - Grande São Paulo
 2020-04-15,SP,Santo André,city,186,6,25,False,718773.0,3547809.0,25.87743,0.0323,DRS 01 - Grande São Paulo
@@ -2400,9 +2591,11 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-18,SP,Santo André,city,6,0,3,False,718773.0,3547809.0,0.8347600000000001,,DRS 01 - Grande São Paulo
 2020-03-17,SP,Santo André,city,1,0,2,False,718773.0,3547809.0,0.13913,,DRS 01 - Grande São Paulo
 2020-03-16,SP,Santo André,city,1,0,1,False,718773.0,3547809.0,0.13913,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Santo Antônio da Alegria,city,1,1,2,True,6929.0,3547908.0,14.4321,1.0,DRS 13 - Ribeirão Preto
+2020-04-19,SP,Santo Antônio da Alegria,city,1,1,3,True,6929.0,3547908.0,14.4321,1.0,DRS 13 - Ribeirão Preto
+2020-04-18,SP,Santo Antônio da Alegria,city,1,1,2,False,6929.0,3547908.0,14.4321,1.0,DRS 13 - Ribeirão Preto
 2020-04-17,SP,Santo Antônio da Alegria,city,1,1,1,False,6929.0,3547908.0,14.4321,1.0,DRS 13 - Ribeirão Preto
-2020-04-18,SP,Santos,city,287,19,20,True,433311.0,3548500.0,66.23418000000001,0.0662,DRS 04 - Baixada Santista
+2020-04-19,SP,Santos,city,293,19,21,True,433311.0,3548500.0,67.61887,0.0648,DRS 04 - Baixada Santista
+2020-04-18,SP,Santos,city,287,19,20,False,433311.0,3548500.0,66.23418000000001,0.0662,DRS 04 - Baixada Santista
 2020-04-17,SP,Santos,city,276,19,19,False,433311.0,3548500.0,63.69559,0.0688,DRS 04 - Baixada Santista
 2020-04-16,SP,Santos,city,247,15,18,False,433311.0,3548500.0,57.00294,0.0607,DRS 04 - Baixada Santista
 2020-04-15,SP,Santos,city,216,12,17,False,433311.0,3548500.0,49.84872,0.0556,DRS 04 - Baixada Santista
@@ -2422,8 +2615,10 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-01,SP,Santos,city,23,0,3,False,433311.0,3548500.0,5.30797,,DRS 04 - Baixada Santista
 2020-03-31,SP,Santos,city,14,0,2,False,433311.0,3548500.0,3.2309400000000004,,DRS 04 - Baixada Santista
 2020-03-30,SP,Santos,city,1,0,1,False,433311.0,3548500.0,0.23078,,DRS 04 - Baixada Santista
-2020-04-18,SP,Serrana,city,1,0,1,True,45107.0,3551504.0,2.21695,,DRS 13 - Ribeirão Preto
-2020-04-18,SP,Sertãozinho,city,8,1,11,True,125815.0,3551702.0,6.3585400000000005,0.125,DRS 13 - Ribeirão Preto
+2020-04-19,SP,Serrana,city,1,0,2,True,45107.0,3551504.0,2.21695,,DRS 13 - Ribeirão Preto
+2020-04-18,SP,Serrana,city,1,0,1,False,45107.0,3551504.0,2.21695,,DRS 13 - Ribeirão Preto
+2020-04-19,SP,Sertãozinho,city,9,1,12,True,125815.0,3551702.0,7.15336,0.1111,DRS 13 - Ribeirão Preto
+2020-04-18,SP,Sertãozinho,city,8,1,11,False,125815.0,3551702.0,6.3585400000000005,0.125,DRS 13 - Ribeirão Preto
 2020-04-17,SP,Sertãozinho,city,8,1,10,False,125815.0,3551702.0,6.3585400000000005,0.125,DRS 13 - Ribeirão Preto
 2020-04-16,SP,Sertãozinho,city,7,0,9,False,125815.0,3551702.0,5.56372,,DRS 13 - Ribeirão Preto
 2020-04-15,SP,Sertãozinho,city,6,0,8,False,125815.0,3551702.0,4.76891,,DRS 13 - Ribeirão Preto
@@ -2434,7 +2629,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-10,SP,Sertãozinho,city,2,0,3,False,125815.0,3551702.0,1.58964,,DRS 13 - Ribeirão Preto
 2020-04-09,SP,Sertãozinho,city,2,0,2,False,125815.0,3551702.0,1.58964,,DRS 13 - Ribeirão Preto
 2020-04-08,SP,Sertãozinho,city,1,0,1,False,125815.0,3551702.0,0.79482,,DRS 13 - Ribeirão Preto
-2020-04-18,SP,Sorocaba,city,41,8,21,True,679378.0,3552205.0,6.03493,0.1951,DRS 16 - Sorocaba
+2020-04-19,SP,Sorocaba,city,47,9,22,True,679378.0,3552205.0,6.9180899999999985,0.1915,DRS 16 - Sorocaba
+2020-04-18,SP,Sorocaba,city,41,8,21,False,679378.0,3552205.0,6.03493,0.1951,DRS 16 - Sorocaba
 2020-04-17,SP,Sorocaba,city,39,6,20,False,679378.0,3552205.0,5.74055,0.1538,DRS 16 - Sorocaba
 2020-04-16,SP,Sorocaba,city,36,5,19,False,679378.0,3552205.0,5.29896,0.1389,DRS 16 - Sorocaba
 2020-04-15,SP,Sorocaba,city,29,3,18,False,679378.0,3552205.0,4.26861,0.1034,DRS 16 - Sorocaba
@@ -2455,7 +2651,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-31,SP,Sorocaba,city,3,1,3,False,679378.0,3552205.0,0.44158,0.3333,DRS 16 - Sorocaba
 2020-03-30,SP,Sorocaba,city,3,1,2,False,679378.0,3552205.0,0.44158,0.3333,DRS 16 - Sorocaba
 2020-03-27,SP,Sorocaba,city,1,0,1,False,679378.0,3552205.0,0.14719000000000002,,DRS 16 - Sorocaba
-2020-04-18,SP,Sumaré,city,5,0,12,True,282441.0,3552403.0,1.77028,,DRS 07 - Campinas
+2020-04-19,SP,Sumaré,city,5,0,13,True,282441.0,3552403.0,1.77028,,DRS 07 - Campinas
+2020-04-18,SP,Sumaré,city,5,0,12,False,282441.0,3552403.0,1.77028,,DRS 07 - Campinas
 2020-04-17,SP,Sumaré,city,5,0,11,False,282441.0,3552403.0,1.77028,,DRS 07 - Campinas
 2020-04-16,SP,Sumaré,city,4,0,10,False,282441.0,3552403.0,1.41622,,DRS 07 - Campinas
 2020-04-15,SP,Sumaré,city,3,0,9,False,282441.0,3552403.0,1.06217,,DRS 07 - Campinas
@@ -2467,7 +2664,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-09,SP,Sumaré,city,2,0,3,False,282441.0,3552403.0,0.70811,,DRS 07 - Campinas
 2020-04-08,SP,Sumaré,city,2,0,2,False,282441.0,3552403.0,0.70811,,DRS 07 - Campinas
 2020-04-07,SP,Sumaré,city,2,0,1,False,282441.0,3552403.0,0.70811,,DRS 07 - Campinas
-2020-04-18,SP,Suzano,city,81,6,25,True,297637.0,3552502.0,27.21436,0.0741,DRS 01 - Grande São Paulo
+2020-04-19,SP,Suzano,city,80,6,26,True,297637.0,3552502.0,26.87838,0.075,DRS 01 - Grande São Paulo
+2020-04-18,SP,Suzano,city,81,6,25,False,297637.0,3552502.0,27.21436,0.0741,DRS 01 - Grande São Paulo
 2020-04-17,SP,Suzano,city,74,6,24,False,297637.0,3552502.0,24.8625,0.0811,DRS 01 - Grande São Paulo
 2020-04-16,SP,Suzano,city,57,6,23,False,297637.0,3552502.0,19.15084,0.1053,DRS 01 - Grande São Paulo
 2020-04-15,SP,Suzano,city,44,6,22,False,297637.0,3552502.0,14.78311,0.1364,DRS 01 - Grande São Paulo
@@ -2492,7 +2690,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-25,SP,Suzano,city,1,0,3,False,297637.0,3552502.0,0.33598,,DRS 01 - Grande São Paulo
 2020-03-20,SP,Suzano,city,1,0,2,False,297637.0,3552502.0,0.33598,,DRS 01 - Grande São Paulo
 2020-03-19,SP,Suzano,city,1,0,1,False,297637.0,3552502.0,0.33598,,DRS 01 - Grande São Paulo
-2020-04-18,SP,São Bernardo do Campo,city,294,20,28,True,838936.0,3548708.0,35.04439,0.068,DRS 01 - Grande São Paulo
+2020-04-19,SP,São Bernardo do Campo,city,297,20,29,True,838936.0,3548708.0,35.40199000000001,0.0673,DRS 01 - Grande São Paulo
+2020-04-18,SP,São Bernardo do Campo,city,294,20,28,False,838936.0,3548708.0,35.04439,0.068,DRS 01 - Grande São Paulo
 2020-04-17,SP,São Bernardo do Campo,city,281,17,27,False,838936.0,3548708.0,33.49481,0.0605,DRS 01 - Grande São Paulo
 2020-04-16,SP,São Bernardo do Campo,city,255,16,26,False,838936.0,3548708.0,30.395640000000004,0.0627,DRS 01 - Grande São Paulo
 2020-04-15,SP,São Bernardo do Campo,city,231,15,25,False,838936.0,3548708.0,27.53488,0.0649,DRS 01 - Grande São Paulo
@@ -2520,7 +2719,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-18,SP,São Bernardo do Campo,city,3,0,3,False,838936.0,3548708.0,0.3576,,DRS 01 - Grande São Paulo
 2020-03-17,SP,São Bernardo do Campo,city,1,0,2,False,838936.0,3548708.0,0.1192,,DRS 01 - Grande São Paulo
 2020-03-16,SP,São Bernardo do Campo,city,1,0,1,False,838936.0,3548708.0,0.1192,,DRS 01 - Grande São Paulo
-2020-04-18,SP,São Caetano do Sul,city,98,4,28,True,161127.0,3548807.0,60.82159,0.0408,DRS 01 - Grande São Paulo
+2020-04-19,SP,São Caetano do Sul,city,98,4,29,True,161127.0,3548807.0,60.82159,0.0408,DRS 01 - Grande São Paulo
+2020-04-18,SP,São Caetano do Sul,city,98,4,28,False,161127.0,3548807.0,60.82159,0.0408,DRS 01 - Grande São Paulo
 2020-04-17,SP,São Caetano do Sul,city,94,4,27,False,161127.0,3548807.0,58.33906999999999,0.0426,DRS 01 - Grande São Paulo
 2020-04-16,SP,São Caetano do Sul,city,90,3,26,False,161127.0,3548807.0,55.85656,0.0333,DRS 01 - Grande São Paulo
 2020-04-15,SP,São Caetano do Sul,city,85,3,25,False,161127.0,3548807.0,52.75342,0.0353,DRS 01 - Grande São Paulo
@@ -2548,7 +2748,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-18,SP,São Caetano do Sul,city,6,0,3,False,161127.0,3548807.0,3.72377,,DRS 01 - Grande São Paulo
 2020-03-17,SP,São Caetano do Sul,city,1,0,2,False,161127.0,3548807.0,0.62063,,DRS 01 - Grande São Paulo
 2020-03-16,SP,São Caetano do Sul,city,1,0,1,False,161127.0,3548807.0,0.62063,,DRS 01 - Grande São Paulo
-2020-04-18,SP,São Carlos,city,7,2,13,True,251983.0,3548906.0,2.7779700000000003,0.2857,DRS 03 - Araraquara
+2020-04-19,SP,São Carlos,city,9,2,14,True,251983.0,3548906.0,3.57167,0.2222,DRS 03 - Araraquara
+2020-04-18,SP,São Carlos,city,7,2,13,False,251983.0,3548906.0,2.7779700000000003,0.2857,DRS 03 - Araraquara
 2020-04-17,SP,São Carlos,city,6,2,12,False,251983.0,3548906.0,2.38111,0.3333,DRS 03 - Araraquara
 2020-04-16,SP,São Carlos,city,6,2,11,False,251983.0,3548906.0,2.38111,0.3333,DRS 03 - Araraquara
 2020-04-15,SP,São Carlos,city,6,2,10,False,251983.0,3548906.0,2.38111,0.3333,DRS 03 - Araraquara
@@ -2561,10 +2762,12 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-08,SP,São Carlos,city,1,0,3,False,251983.0,3548906.0,0.39685,,DRS 03 - Araraquara
 2020-04-07,SP,São Carlos,city,1,0,2,False,251983.0,3548906.0,0.39685,,DRS 03 - Araraquara
 2020-04-06,SP,São Carlos,city,1,0,1,False,251983.0,3548906.0,0.39685,,DRS 03 - Araraquara
-2020-04-18,SP,São Joaquim da Barra,city,2,0,3,True,51888.0,3549409.0,3.85446,,DRS 08 - Franca
+2020-04-19,SP,São Joaquim da Barra,city,2,0,4,True,51888.0,3549409.0,3.85446,,DRS 08 - Franca
+2020-04-18,SP,São Joaquim da Barra,city,2,0,3,False,51888.0,3549409.0,3.85446,,DRS 08 - Franca
 2020-04-17,SP,São Joaquim da Barra,city,2,0,2,False,51888.0,3549409.0,3.85446,,DRS 08 - Franca
 2020-04-16,SP,São Joaquim da Barra,city,1,0,1,False,51888.0,3549409.0,1.92723,,DRS 08 - Franca
-2020-04-18,SP,São José do Rio Pardo,city,1,0,19,True,54946.0,3549706.0,1.81997,,DRS 14 - São João da Boa Vista
+2020-04-19,SP,São José do Rio Pardo,city,1,0,20,True,54946.0,3549706.0,1.81997,,DRS 14 - São João da Boa Vista
+2020-04-18,SP,São José do Rio Pardo,city,1,0,19,False,54946.0,3549706.0,1.81997,,DRS 14 - São João da Boa Vista
 2020-04-17,SP,São José do Rio Pardo,city,1,0,18,False,54946.0,3549706.0,1.81997,,DRS 14 - São João da Boa Vista
 2020-04-16,SP,São José do Rio Pardo,city,1,0,17,False,54946.0,3549706.0,1.81997,,DRS 14 - São João da Boa Vista
 2020-04-15,SP,São José do Rio Pardo,city,1,0,16,False,54946.0,3549706.0,1.81997,,DRS 14 - São João da Boa Vista
@@ -2583,7 +2786,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,São José do Rio Pardo,city,1,0,3,False,54946.0,3549706.0,1.81997,,DRS 14 - São João da Boa Vista
 2020-04-01,SP,São José do Rio Pardo,city,1,0,2,False,54946.0,3549706.0,1.81997,,DRS 14 - São João da Boa Vista
 2020-03-31,SP,São José do Rio Pardo,city,1,0,1,False,54946.0,3549706.0,1.81997,,DRS 14 - São João da Boa Vista
-2020-04-18,SP,São José do Rio Preto,city,70,4,26,True,460671.0,3549805.0,15.19523,0.0571,DRS 15 - São José do Rio Preto
+2020-04-19,SP,São José do Rio Preto,city,71,6,27,True,460671.0,3549805.0,15.4123,0.0845,DRS 15 - São José do Rio Preto
+2020-04-18,SP,São José do Rio Preto,city,70,4,26,False,460671.0,3549805.0,15.19523,0.0571,DRS 15 - São José do Rio Preto
 2020-04-17,SP,São José do Rio Preto,city,68,4,25,False,460671.0,3549805.0,14.761079999999998,0.0588,DRS 15 - São José do Rio Preto
 2020-04-16,SP,São José do Rio Preto,city,65,3,24,False,460671.0,3549805.0,14.10985,0.0462,DRS 15 - São José do Rio Preto
 2020-04-15,SP,São José do Rio Preto,city,61,3,23,False,460671.0,3549805.0,13.24155,0.0492,DRS 15 - São José do Rio Preto
@@ -2609,7 +2813,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-20,SP,São José do Rio Preto,city,1,0,3,False,460671.0,3549805.0,0.21707,,DRS 15 - São José do Rio Preto
 2020-03-19,SP,São José do Rio Preto,city,1,0,2,False,460671.0,3549805.0,0.21707,,DRS 15 - São José do Rio Preto
 2020-03-18,SP,São José do Rio Preto,city,1,0,1,False,460671.0,3549805.0,0.21707,,DRS 15 - São José do Rio Preto
-2020-04-18,SP,São José dos Campos,city,138,3,25,True,721944.0,3549904.0,19.11506,0.0217,DRS 17 - Taubaté
+2020-04-19,SP,São José dos Campos,city,136,3,26,True,721944.0,3549904.0,18.83803,0.0221,DRS 17 - Taubaté
+2020-04-18,SP,São José dos Campos,city,138,3,25,False,721944.0,3549904.0,19.11506,0.0217,DRS 17 - Taubaté
 2020-04-17,SP,São José dos Campos,city,135,3,24,False,721944.0,3549904.0,18.69951,0.0222,DRS 17 - Taubaté
 2020-04-16,SP,São José dos Campos,city,116,3,23,False,721944.0,3549904.0,16.067729999999994,0.0259,DRS 17 - Taubaté
 2020-04-15,SP,São José dos Campos,city,113,3,22,False,721944.0,3549904.0,15.65218,0.0265,DRS 17 - Taubaté
@@ -2634,7 +2839,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-25,SP,São José dos Campos,city,2,0,3,False,721944.0,3549904.0,0.27703,,DRS 17 - Taubaté
 2020-03-20,SP,São José dos Campos,city,1,0,2,False,721944.0,3549904.0,0.13851,,DRS 17 - Taubaté
 2020-03-18,SP,São José dos Campos,city,1,0,1,False,721944.0,3549904.0,0.13851,,DRS 17 - Taubaté
-2020-04-18,SP,São João da Boa Vista,city,5,0,10,True,91211.0,3549102.0,5.48179,,DRS 14 - São João da Boa Vista
+2020-04-19,SP,São João da Boa Vista,city,5,0,11,True,91211.0,3549102.0,5.48179,,DRS 14 - São João da Boa Vista
+2020-04-18,SP,São João da Boa Vista,city,5,0,10,False,91211.0,3549102.0,5.48179,,DRS 14 - São João da Boa Vista
 2020-04-17,SP,São João da Boa Vista,city,4,0,9,False,91211.0,3549102.0,4.38544,,DRS 14 - São João da Boa Vista
 2020-04-16,SP,São João da Boa Vista,city,4,0,8,False,91211.0,3549102.0,4.38544,,DRS 14 - São João da Boa Vista
 2020-04-15,SP,São João da Boa Vista,city,4,0,7,False,91211.0,3549102.0,4.38544,,DRS 14 - São João da Boa Vista
@@ -2644,7 +2850,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-11,SP,São João da Boa Vista,city,1,0,3,False,91211.0,3549102.0,1.09636,,DRS 14 - São João da Boa Vista
 2020-04-10,SP,São João da Boa Vista,city,1,0,2,False,91211.0,3549102.0,1.09636,,DRS 14 - São João da Boa Vista
 2020-04-09,SP,São João da Boa Vista,city,1,0,1,False,91211.0,3549102.0,1.09636,,DRS 14 - São João da Boa Vista
-2020-04-18,SP,São Manuel,city,3,1,15,True,40954.0,3550100.0,7.32529,0.3333,DRS 06 - Bauru
+2020-04-19,SP,São Manuel,city,3,1,16,True,40954.0,3550100.0,7.32529,0.3333,DRS 06 - Bauru
+2020-04-18,SP,São Manuel,city,3,1,15,False,40954.0,3550100.0,7.32529,0.3333,DRS 06 - Bauru
 2020-04-17,SP,São Manuel,city,3,1,14,False,40954.0,3550100.0,7.32529,0.3333,DRS 06 - Bauru
 2020-04-16,SP,São Manuel,city,3,1,13,False,40954.0,3550100.0,7.32529,0.3333,DRS 06 - Bauru
 2020-04-15,SP,São Manuel,city,3,1,12,False,40954.0,3550100.0,7.32529,0.3333,DRS 06 - Bauru
@@ -2659,7 +2866,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-06,SP,São Manuel,city,1,0,3,False,40954.0,3550100.0,2.44176,,DRS 06 - Bauru
 2020-04-05,SP,São Manuel,city,1,0,2,False,40954.0,3550100.0,2.44176,,DRS 06 - Bauru
 2020-04-04,SP,São Manuel,city,1,0,1,False,40954.0,3550100.0,2.44176,,DRS 06 - Bauru
-2020-04-18,SP,São Miguel Arcanjo,city,2,0,9,True,32931.0,3550209.0,6.0733,,DRS 16 - Sorocaba
+2020-04-19,SP,São Miguel Arcanjo,city,2,0,10,True,32931.0,3550209.0,6.0733,,DRS 16 - Sorocaba
+2020-04-18,SP,São Miguel Arcanjo,city,2,0,9,False,32931.0,3550209.0,6.0733,,DRS 16 - Sorocaba
 2020-04-17,SP,São Miguel Arcanjo,city,2,0,8,False,32931.0,3550209.0,6.0733,,DRS 16 - Sorocaba
 2020-04-16,SP,São Miguel Arcanjo,city,2,0,7,False,32931.0,3550209.0,6.0733,,DRS 16 - Sorocaba
 2020-04-15,SP,São Miguel Arcanjo,city,2,0,6,False,32931.0,3550209.0,6.0733,,DRS 16 - Sorocaba
@@ -2668,7 +2876,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-12,SP,São Miguel Arcanjo,city,1,0,3,False,32931.0,3550209.0,3.03665,,DRS 16 - Sorocaba
 2020-04-11,SP,São Miguel Arcanjo,city,1,0,2,False,32931.0,3550209.0,3.03665,,DRS 16 - Sorocaba
 2020-04-10,SP,São Miguel Arcanjo,city,1,0,1,False,32931.0,3550209.0,3.03665,,DRS 16 - Sorocaba
-2020-04-18,SP,São Paulo,city,9428,686,45,True,12252023.0,3550308.0,76.95056,0.0728,DRS 01 - Grande São Paulo
+2020-04-19,SP,São Paulo,city,9668,700,46,True,12252023.0,3550308.0,78.90942,0.0724,DRS 01 - Grande São Paulo
+2020-04-18,SP,São Paulo,city,9428,686,45,False,12252023.0,3550308.0,76.95056,0.0728,DRS 01 - Grande São Paulo
 2020-04-17,SP,São Paulo,city,8744,643,44,False,12252023.0,3550308.0,71.36780999999998,0.0735,DRS 01 - Grande São Paulo
 2020-04-16,SP,São Paulo,city,7908,603,43,False,12252023.0,3550308.0,64.54444000000001,0.0763,DRS 01 - Grande São Paulo
 2020-04-15,SP,São Paulo,city,7764,558,42,False,12252023.0,3550308.0,63.36913000000001,0.0719,DRS 01 - Grande São Paulo
@@ -2713,7 +2922,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-02-27,SP,São Paulo,city,1,0,3,False,12252023.0,3550308.0,0.008159999999999999,,DRS 01 - Grande São Paulo
 2020-02-26,SP,São Paulo,city,1,0,2,False,12252023.0,3550308.0,0.008159999999999999,,DRS 01 - Grande São Paulo
 2020-02-25,SP,São Paulo,city,1,0,1,False,12252023.0,3550308.0,0.008159999999999999,,DRS 01 - Grande São Paulo
-2020-04-18,SP,São Pedro,city,1,0,18,True,35653.0,3550407.0,2.80481,,DRS 10 - Piracicaba
+2020-04-19,SP,São Pedro,city,1,0,19,True,35653.0,3550407.0,2.80481,,DRS 10 - Piracicaba
+2020-04-18,SP,São Pedro,city,1,0,18,False,35653.0,3550407.0,2.80481,,DRS 10 - Piracicaba
 2020-04-17,SP,São Pedro,city,1,0,17,False,35653.0,3550407.0,2.80481,,DRS 10 - Piracicaba
 2020-04-16,SP,São Pedro,city,1,0,16,False,35653.0,3550407.0,2.80481,,DRS 10 - Piracicaba
 2020-04-15,SP,São Pedro,city,1,0,15,False,35653.0,3550407.0,2.80481,,DRS 10 - Piracicaba
@@ -2731,7 +2941,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-01,SP,São Pedro,city,1,0,3,False,35653.0,3550407.0,2.80481,,DRS 10 - Piracicaba
 2020-03-31,SP,São Pedro,city,1,0,2,False,35653.0,3550407.0,2.80481,,DRS 10 - Piracicaba
 2020-03-30,SP,São Pedro,city,1,0,1,False,35653.0,3550407.0,2.80481,,DRS 10 - Piracicaba
-2020-04-18,SP,São Roque,city,8,0,12,True,91016.0,3550605.0,8.789660000000001,,DRS 16 - Sorocaba
+2020-04-19,SP,São Roque,city,8,0,13,True,91016.0,3550605.0,8.789660000000001,,DRS 16 - Sorocaba
+2020-04-18,SP,São Roque,city,8,0,12,False,91016.0,3550605.0,8.789660000000001,,DRS 16 - Sorocaba
 2020-04-17,SP,São Roque,city,5,0,11,False,91016.0,3550605.0,5.49354,,DRS 16 - Sorocaba
 2020-04-16,SP,São Roque,city,5,0,10,False,91016.0,3550605.0,5.49354,,DRS 16 - Sorocaba
 2020-04-15,SP,São Roque,city,5,0,9,False,91016.0,3550605.0,5.49354,,DRS 16 - Sorocaba
@@ -2743,7 +2954,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-09,SP,São Roque,city,3,0,3,False,91016.0,3550605.0,3.29612,,DRS 16 - Sorocaba
 2020-04-08,SP,São Roque,city,2,0,2,False,91016.0,3550605.0,2.19742,,DRS 16 - Sorocaba
 2020-04-07,SP,São Roque,city,1,0,1,False,91016.0,3550605.0,1.09871,,DRS 16 - Sorocaba
-2020-04-18,SP,São Sebastião,city,6,2,23,True,88980.0,3550704.0,6.74309,0.3333,DRS 17 - Taubaté
+2020-04-19,SP,São Sebastião,city,6,2,24,True,88980.0,3550704.0,6.74309,0.3333,DRS 17 - Taubaté
+2020-04-18,SP,São Sebastião,city,6,2,23,False,88980.0,3550704.0,6.74309,0.3333,DRS 17 - Taubaté
 2020-04-17,SP,São Sebastião,city,6,2,22,False,88980.0,3550704.0,6.74309,0.3333,DRS 17 - Taubaté
 2020-04-16,SP,São Sebastião,city,5,2,21,False,88980.0,3550704.0,5.6192400000000005,0.4,DRS 17 - Taubaté
 2020-04-15,SP,São Sebastião,city,4,1,20,False,88980.0,3550704.0,4.49539,0.25,DRS 17 - Taubaté
@@ -2766,7 +2978,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-27,SP,São Sebastião,city,2,0,3,False,88980.0,3550704.0,2.2477,,DRS 17 - Taubaté
 2020-03-26,SP,São Sebastião,city,2,0,2,False,88980.0,3550704.0,2.2477,,DRS 17 - Taubaté
 2020-03-25,SP,São Sebastião,city,2,0,1,False,88980.0,3550704.0,2.2477,,DRS 17 - Taubaté
-2020-04-18,SP,São Vicente,city,40,0,19,True,365798.0,3551009.0,10.935,,DRS 04 - Baixada Santista
+2020-04-19,SP,São Vicente,city,48,1,20,True,365798.0,3551009.0,13.122,0.0208,DRS 04 - Baixada Santista
+2020-04-18,SP,São Vicente,city,40,0,19,False,365798.0,3551009.0,10.935,,DRS 04 - Baixada Santista
 2020-04-17,SP,São Vicente,city,39,0,18,False,365798.0,3551009.0,10.66162,,DRS 04 - Baixada Santista
 2020-04-16,SP,São Vicente,city,36,0,17,False,365798.0,3551009.0,9.8415,,DRS 04 - Baixada Santista
 2020-04-15,SP,São Vicente,city,27,0,16,False,365798.0,3551009.0,7.38112,,DRS 04 - Baixada Santista
@@ -2785,7 +2998,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,São Vicente,city,3,1,3,False,365798.0,3551009.0,0.8201200000000001,0.3333,DRS 04 - Baixada Santista
 2020-04-01,SP,São Vicente,city,2,0,2,False,365798.0,3551009.0,0.54675,,DRS 04 - Baixada Santista
 2020-03-31,SP,São Vicente,city,1,0,1,False,365798.0,3551009.0,0.27337,,DRS 04 - Baixada Santista
-2020-04-18,SP,Taboão da Serra,city,116,7,23,True,289664.0,3552809.0,40.0464,0.0603,DRS 01 - Grande São Paulo
+2020-04-19,SP,Taboão da Serra,city,116,7,24,True,289664.0,3552809.0,40.0464,0.0603,DRS 01 - Grande São Paulo
+2020-04-18,SP,Taboão da Serra,city,116,7,23,False,289664.0,3552809.0,40.0464,0.0603,DRS 01 - Grande São Paulo
 2020-04-17,SP,Taboão da Serra,city,110,6,22,False,289664.0,3552809.0,37.97503,0.0545,DRS 01 - Grande São Paulo
 2020-04-16,SP,Taboão da Serra,city,100,5,21,False,289664.0,3552809.0,34.52276,0.05,DRS 01 - Grande São Paulo
 2020-04-15,SP,Taboão da Serra,city,92,5,20,False,289664.0,3552809.0,31.76094,0.0543,DRS 01 - Grande São Paulo
@@ -2808,10 +3022,12 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-27,SP,Taboão da Serra,city,2,1,3,False,289664.0,3552809.0,0.6904600000000001,0.5,DRS 01 - Grande São Paulo
 2020-03-26,SP,Taboão da Serra,city,2,1,2,False,289664.0,3552809.0,0.6904600000000001,0.5,DRS 01 - Grande São Paulo
 2020-03-25,SP,Taboão da Serra,city,1,1,1,False,289664.0,3552809.0,0.34523000000000004,1.0,DRS 01 - Grande São Paulo
-2020-04-18,SP,Taiaçu,city,0,0,3,True,6295.0,3553104.0,,,DRS 05 - Barretos
+2020-04-19,SP,Taiaçu,city,0,0,4,True,6295.0,3553104.0,,,DRS 05 - Barretos
+2020-04-18,SP,Taiaçu,city,0,0,3,False,6295.0,3553104.0,,,DRS 05 - Barretos
 2020-04-17,SP,Taiaçu,city,2,0,2,False,6295.0,3553104.0,31.77125,,DRS 05 - Barretos
 2020-04-16,SP,Taiaçu,city,2,0,1,False,6295.0,3553104.0,31.77125,,DRS 05 - Barretos
-2020-04-18,SP,Tanabi,city,3,0,11,True,25967.0,3553401.0,11.55313,,DRS 15 - São José do Rio Preto
+2020-04-19,SP,Tanabi,city,3,0,12,True,25967.0,3553401.0,11.55313,,DRS 15 - São José do Rio Preto
+2020-04-18,SP,Tanabi,city,3,0,11,False,25967.0,3553401.0,11.55313,,DRS 15 - São José do Rio Preto
 2020-04-17,SP,Tanabi,city,1,0,10,False,25967.0,3553401.0,3.85104,,DRS 15 - São José do Rio Preto
 2020-04-16,SP,Tanabi,city,1,0,9,False,25967.0,3553401.0,3.85104,,DRS 15 - São José do Rio Preto
 2020-04-15,SP,Tanabi,city,1,0,8,False,25967.0,3553401.0,3.85104,,DRS 15 - São José do Rio Preto
@@ -2822,9 +3038,13 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-10,SP,Tanabi,city,1,0,3,False,25967.0,3553401.0,3.85104,,DRS 15 - São José do Rio Preto
 2020-04-09,SP,Tanabi,city,1,0,2,False,25967.0,3553401.0,3.85104,,DRS 15 - São José do Rio Preto
 2020-04-08,SP,Tanabi,city,1,0,1,False,25967.0,3553401.0,3.85104,,DRS 15 - São José do Rio Preto
-2020-04-18,SP,Taquarituba,city,1,0,1,True,23218.0,3553807.0,4.3069999999999995,,DRS 06 - Bauru
-2020-04-18,SP,Tarabai,city,2,0,1,True,7468.0,3553906.0,26.78093,,DRS 11 - Presidente Prudente
-2020-04-18,SP,Tatuí,city,6,0,22,True,121766.0,3554003.0,4.92748,,DRS 16 - Sorocaba
+2020-04-19,SP,Taquaritinga,city,1,0,1,True,57177.0,3553708.0,1.74895,,DRS 03 - Araraquara
+2020-04-19,SP,Taquarituba,city,1,0,2,True,23218.0,3553807.0,4.3069999999999995,,DRS 06 - Bauru
+2020-04-18,SP,Taquarituba,city,1,0,1,False,23218.0,3553807.0,4.3069999999999995,,DRS 06 - Bauru
+2020-04-19,SP,Tarabai,city,2,0,2,True,7468.0,3553906.0,26.78093,,DRS 11 - Presidente Prudente
+2020-04-18,SP,Tarabai,city,2,0,1,False,7468.0,3553906.0,26.78093,,DRS 11 - Presidente Prudente
+2020-04-19,SP,Tatuí,city,6,0,23,True,121766.0,3554003.0,4.92748,,DRS 16 - Sorocaba
+2020-04-18,SP,Tatuí,city,6,0,22,False,121766.0,3554003.0,4.92748,,DRS 16 - Sorocaba
 2020-04-17,SP,Tatuí,city,6,0,21,False,121766.0,3554003.0,4.92748,,DRS 16 - Sorocaba
 2020-04-16,SP,Tatuí,city,6,0,20,False,121766.0,3554003.0,4.92748,,DRS 16 - Sorocaba
 2020-04-15,SP,Tatuí,city,6,0,19,False,121766.0,3554003.0,4.92748,,DRS 16 - Sorocaba
@@ -2846,7 +3066,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-30,SP,Tatuí,city,1,0,3,False,121766.0,3554003.0,0.82125,,DRS 16 - Sorocaba
 2020-03-27,SP,Tatuí,city,1,0,2,False,121766.0,3554003.0,0.82125,,DRS 16 - Sorocaba
 2020-03-26,SP,Tatuí,city,1,0,1,False,121766.0,3554003.0,0.82125,,DRS 16 - Sorocaba
-2020-04-18,SP,Taubaté,city,6,0,25,True,314924.0,3554102.0,1.90522,,DRS 17 - Taubaté
+2020-04-19,SP,Taubaté,city,6,0,26,True,314924.0,3554102.0,1.90522,,DRS 17 - Taubaté
+2020-04-18,SP,Taubaté,city,6,0,25,False,314924.0,3554102.0,1.90522,,DRS 17 - Taubaté
 2020-04-17,SP,Taubaté,city,6,0,24,False,314924.0,3554102.0,1.90522,,DRS 17 - Taubaté
 2020-04-16,SP,Taubaté,city,6,0,23,False,314924.0,3554102.0,1.90522,,DRS 17 - Taubaté
 2020-04-15,SP,Taubaté,city,8,0,22,False,314924.0,3554102.0,2.5403,,DRS 17 - Taubaté
@@ -2871,7 +3092,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-25,SP,Taubaté,city,1,0,3,False,314924.0,3554102.0,0.31754,,DRS 17 - Taubaté
 2020-03-20,SP,Taubaté,city,1,0,2,False,314924.0,3554102.0,0.31754,,DRS 17 - Taubaté
 2020-03-19,SP,Taubaté,city,1,0,1,False,314924.0,3554102.0,0.31754,,DRS 17 - Taubaté
-2020-04-18,SP,Terra Roxa,city,1,0,14,True,9370.0,3554409.0,10.67236,,DRS 05 - Barretos
+2020-04-19,SP,Terra Roxa,city,1,0,15,True,9370.0,3554409.0,10.67236,,DRS 05 - Barretos
+2020-04-18,SP,Terra Roxa,city,1,0,14,False,9370.0,3554409.0,10.67236,,DRS 05 - Barretos
 2020-04-17,SP,Terra Roxa,city,1,0,13,False,9370.0,3554409.0,10.67236,,DRS 05 - Barretos
 2020-04-16,SP,Terra Roxa,city,1,0,12,False,9370.0,3554409.0,10.67236,,DRS 05 - Barretos
 2020-04-15,SP,Terra Roxa,city,1,0,11,False,9370.0,3554409.0,10.67236,,DRS 05 - Barretos
@@ -2885,7 +3107,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-07,SP,Terra Roxa,city,1,0,3,False,9370.0,3554409.0,10.67236,,DRS 05 - Barretos
 2020-04-06,SP,Terra Roxa,city,1,0,2,False,9370.0,3554409.0,10.67236,,DRS 05 - Barretos
 2020-04-05,SP,Terra Roxa,city,1,0,1,False,9370.0,3554409.0,10.67236,,DRS 05 - Barretos
-2020-04-18,SP,Tupã,city,2,0,9,True,65524.0,3555000.0,3.05232,,DRS 09 - Marília
+2020-04-19,SP,Tupã,city,2,0,10,True,65524.0,3555000.0,3.05232,,DRS 09 - Marília
+2020-04-18,SP,Tupã,city,2,0,9,False,65524.0,3555000.0,3.05232,,DRS 09 - Marília
 2020-04-17,SP,Tupã,city,2,0,8,False,65524.0,3555000.0,3.05232,,DRS 09 - Marília
 2020-04-16,SP,Tupã,city,1,0,7,False,65524.0,3555000.0,1.52616,,DRS 09 - Marília
 2020-04-15,SP,Tupã,city,1,0,6,False,65524.0,3555000.0,1.52616,,DRS 09 - Marília
@@ -2894,13 +3117,15 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-12,SP,Tupã,city,1,0,3,False,65524.0,3555000.0,1.52616,,DRS 09 - Marília
 2020-04-11,SP,Tupã,city,1,0,2,False,65524.0,3555000.0,1.52616,,DRS 09 - Marília
 2020-04-10,SP,Tupã,city,1,0,1,False,65524.0,3555000.0,1.52616,,DRS 09 - Marília
-2020-04-18,SP,Ubatuba,city,2,0,6,True,90799.0,3555406.0,2.20267,,DRS 17 - Taubaté
+2020-04-19,SP,Ubatuba,city,2,0,7,True,90799.0,3555406.0,2.20267,,DRS 17 - Taubaté
+2020-04-18,SP,Ubatuba,city,2,0,6,False,90799.0,3555406.0,2.20267,,DRS 17 - Taubaté
 2020-04-17,SP,Ubatuba,city,2,0,5,False,90799.0,3555406.0,2.20267,,DRS 17 - Taubaté
 2020-04-16,SP,Ubatuba,city,2,0,4,False,90799.0,3555406.0,2.20267,,DRS 17 - Taubaté
 2020-04-15,SP,Ubatuba,city,2,0,3,False,90799.0,3555406.0,2.20267,,DRS 17 - Taubaté
 2020-04-14,SP,Ubatuba,city,1,0,2,False,90799.0,3555406.0,1.10133,,DRS 17 - Taubaté
 2020-04-13,SP,Ubatuba,city,1,0,1,False,90799.0,3555406.0,1.10133,,DRS 17 - Taubaté
-2020-04-18,SP,Valinhos,city,11,3,23,True,129193.0,3556206.0,8.514389999999999,0.2727,DRS 07 - Campinas
+2020-04-19,SP,Valinhos,city,11,3,24,True,129193.0,3556206.0,8.514389999999999,0.2727,DRS 07 - Campinas
+2020-04-18,SP,Valinhos,city,11,3,23,False,129193.0,3556206.0,8.514389999999999,0.2727,DRS 07 - Campinas
 2020-04-17,SP,Valinhos,city,6,1,22,False,129193.0,3556206.0,4.64421,0.1667,DRS 07 - Campinas
 2020-04-16,SP,Valinhos,city,5,1,21,False,129193.0,3556206.0,3.87018,0.2,DRS 07 - Campinas
 2020-04-15,SP,Valinhos,city,7,1,20,False,129193.0,3556206.0,5.41825,0.1429,DRS 07 - Campinas
@@ -2923,7 +3148,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-27,SP,Valinhos,city,1,0,3,False,129193.0,3556206.0,0.77404,,DRS 07 - Campinas
 2020-03-26,SP,Valinhos,city,1,0,2,False,129193.0,3556206.0,0.77404,,DRS 07 - Campinas
 2020-03-25,SP,Valinhos,city,1,0,1,False,129193.0,3556206.0,0.77404,,DRS 07 - Campinas
-2020-04-18,SP,Vargem Grande Paulista,city,9,3,24,True,52597.0,3556453.0,17.11124,0.3333,DRS 01 - Grande São Paulo
+2020-04-19,SP,Vargem Grande Paulista,city,9,3,25,True,52597.0,3556453.0,17.11124,0.3333,DRS 01 - Grande São Paulo
+2020-04-18,SP,Vargem Grande Paulista,city,9,3,24,False,52597.0,3556453.0,17.11124,0.3333,DRS 01 - Grande São Paulo
 2020-04-17,SP,Vargem Grande Paulista,city,9,3,23,False,52597.0,3556453.0,17.11124,0.3333,DRS 01 - Grande São Paulo
 2020-04-16,SP,Vargem Grande Paulista,city,6,3,22,False,52597.0,3556453.0,11.40749,0.5,DRS 01 - Grande São Paulo
 2020-04-15,SP,Vargem Grande Paulista,city,5,3,21,False,52597.0,3556453.0,9.50625,0.6,DRS 01 - Grande São Paulo
@@ -2947,7 +3173,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-03-26,SP,Vargem Grande Paulista,city,1,1,3,False,52597.0,3556453.0,1.90125,1.0,DRS 01 - Grande São Paulo
 2020-03-25,SP,Vargem Grande Paulista,city,0,1,2,False,52597.0,3556453.0,,,DRS 01 - Grande São Paulo
 2020-03-19,SP,Vargem Grande Paulista,city,1,0,1,False,52597.0,3556453.0,1.90125,,DRS 01 - Grande São Paulo
-2020-04-18,SP,Vinhedo,city,14,0,19,True,78728.0,3556701.0,17.78275,,DRS 07 - Campinas
+2020-04-19,SP,Vinhedo,city,14,0,20,True,78728.0,3556701.0,17.78275,,DRS 07 - Campinas
+2020-04-18,SP,Vinhedo,city,14,0,19,False,78728.0,3556701.0,17.78275,,DRS 07 - Campinas
 2020-04-17,SP,Vinhedo,city,12,0,18,False,78728.0,3556701.0,15.24235,,DRS 07 - Campinas
 2020-04-16,SP,Vinhedo,city,10,0,17,False,78728.0,3556701.0,12.70196,,DRS 07 - Campinas
 2020-04-15,SP,Vinhedo,city,8,0,16,False,78728.0,3556701.0,10.16157,,DRS 07 - Campinas
@@ -2966,7 +3193,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,Vinhedo,city,1,0,3,False,78728.0,3556701.0,1.2702,,DRS 07 - Campinas
 2020-04-01,SP,Vinhedo,city,1,0,2,False,78728.0,3556701.0,1.2702,,DRS 07 - Campinas
 2020-03-31,SP,Vinhedo,city,1,0,1,False,78728.0,3556701.0,1.2702,,DRS 07 - Campinas
-2020-04-18,SP,Votorantim,city,4,1,19,True,122480.0,3557006.0,3.2658400000000003,0.25,DRS 16 - Sorocaba
+2020-04-19,SP,Votorantim,city,6,1,20,True,122480.0,3557006.0,4.89876,0.1667,DRS 16 - Sorocaba
+2020-04-18,SP,Votorantim,city,4,1,19,False,122480.0,3557006.0,3.2658400000000003,0.25,DRS 16 - Sorocaba
 2020-04-17,SP,Votorantim,city,4,1,18,False,122480.0,3557006.0,3.2658400000000003,0.25,DRS 16 - Sorocaba
 2020-04-16,SP,Votorantim,city,4,1,17,False,122480.0,3557006.0,3.2658400000000003,0.25,DRS 16 - Sorocaba
 2020-04-15,SP,Votorantim,city,3,0,16,False,122480.0,3557006.0,2.44938,,DRS 16 - Sorocaba
@@ -2985,7 +3213,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,Votorantim,city,2,0,3,False,122480.0,3557006.0,1.63292,,DRS 16 - Sorocaba
 2020-04-01,SP,Votorantim,city,1,0,2,False,122480.0,3557006.0,0.8164600000000001,,DRS 16 - Sorocaba
 2020-03-31,SP,Votorantim,city,1,0,1,False,122480.0,3557006.0,0.8164600000000001,,DRS 16 - Sorocaba
-2020-04-18,SP,Votuporanga,city,7,0,19,True,94547.0,3557105.0,7.40373,,DRS 15 - São José do Rio Preto
+2020-04-19,SP,Votuporanga,city,8,0,20,True,94547.0,3557105.0,8.4614,,DRS 15 - São José do Rio Preto
+2020-04-18,SP,Votuporanga,city,7,0,19,False,94547.0,3557105.0,7.40373,,DRS 15 - São José do Rio Preto
 2020-04-17,SP,Votuporanga,city,6,0,18,False,94547.0,3557105.0,6.34605,,DRS 15 - São José do Rio Preto
 2020-04-16,SP,Votuporanga,city,6,0,17,False,94547.0,3557105.0,6.34605,,DRS 15 - São José do Rio Preto
 2020-04-15,SP,Votuporanga,city,6,0,16,False,94547.0,3557105.0,6.34605,,DRS 15 - São José do Rio Preto
@@ -3004,12 +3233,14 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-02,SP,Votuporanga,city,1,0,3,False,94547.0,3557105.0,1.05768,,DRS 15 - São José do Rio Preto
 2020-04-01,SP,Votuporanga,city,1,0,2,False,94547.0,3557105.0,1.05768,,DRS 15 - São José do Rio Preto
 2020-03-31,SP,Votuporanga,city,1,0,1,False,94547.0,3557105.0,1.05768,,DRS 15 - São José do Rio Preto
-2020-04-18,SP,Várzea Paulista,city,4,0,5,True,121838.0,3556503.0,3.28305,,DRS 07 - Campinas
+2020-04-19,SP,Várzea Paulista,city,4,0,6,True,121838.0,3556503.0,3.28305,,DRS 07 - Campinas
+2020-04-18,SP,Várzea Paulista,city,4,0,5,False,121838.0,3556503.0,3.28305,,DRS 07 - Campinas
 2020-04-17,SP,Várzea Paulista,city,2,0,4,False,121838.0,3556503.0,1.64152,,DRS 07 - Campinas
 2020-04-16,SP,Várzea Paulista,city,2,0,3,False,121838.0,3556503.0,1.64152,,DRS 07 - Campinas
 2020-04-15,SP,Várzea Paulista,city,1,0,2,False,121838.0,3556503.0,0.82076,,DRS 07 - Campinas
 2020-04-14,SP,Várzea Paulista,city,1,0,1,False,121838.0,3556503.0,0.82076,,DRS 07 - Campinas
-2020-04-18,SP,Águas de Lindóia,city,1,1,17,True,18705.0,3500501.0,5.34616,1.0,DRS 07 - Campinas
+2020-04-19,SP,Águas de Lindóia,city,1,1,18,True,18705.0,3500501.0,5.34616,1.0,DRS 07 - Campinas
+2020-04-18,SP,Águas de Lindóia,city,1,1,17,False,18705.0,3500501.0,5.34616,1.0,DRS 07 - Campinas
 2020-04-17,SP,Águas de Lindóia,city,1,1,16,False,18705.0,3500501.0,5.34616,1.0,DRS 07 - Campinas
 2020-04-16,SP,Águas de Lindóia,city,1,1,15,False,18705.0,3500501.0,5.34616,1.0,DRS 07 - Campinas
 2020-04-15,SP,Águas de Lindóia,city,1,1,14,False,18705.0,3500501.0,5.34616,1.0,DRS 07 - Campinas
@@ -3026,7 +3257,8 @@ date,state,city,place_type,confirmed,deaths,order_for_place,is_last,popEst,city_
 2020-04-04,SP,Águas de Lindóia,city,1,0,3,False,18705.0,3500501.0,5.34616,,DRS 07 - Campinas
 2020-04-03,SP,Águas de Lindóia,city,1,0,2,False,18705.0,3500501.0,5.34616,,DRS 07 - Campinas
 2020-04-02,SP,Águas de Lindóia,city,1,0,1,False,18705.0,3500501.0,5.34616,,DRS 07 - Campinas
-2020-04-18,SP,Águas de São Pedro,city,1,0,9,True,3451.0,3500600.0,28.97711,,DRS 10 - Piracicaba
+2020-04-19,SP,Águas de São Pedro,city,1,0,10,True,3451.0,3500600.0,28.97711,,DRS 10 - Piracicaba
+2020-04-18,SP,Águas de São Pedro,city,1,0,9,False,3451.0,3500600.0,28.97711,,DRS 10 - Piracicaba
 2020-04-17,SP,Águas de São Pedro,city,1,0,8,False,3451.0,3500600.0,28.97711,,DRS 10 - Piracicaba
 2020-04-16,SP,Águas de São Pedro,city,1,0,7,False,3451.0,3500600.0,28.97711,,DRS 10 - Piracicaba
 2020-04-15,SP,Águas de São Pedro,city,1,0,6,False,3451.0,3500600.0,28.97711,,DRS 10 - Piracicaba
