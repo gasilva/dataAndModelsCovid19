@@ -28,9 +28,9 @@ from scipy.optimize import basinhopping
 
 
 class Learner(object):
-    def __init__(self, districtRegion, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov):
+    def __init__(self, districtRegion, lossOdeint, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov):
         self.districtRegion = districtRegion
-        self.loss = loss
+        self.loss = lossOdeint
         self.start_date = start_date
         self.predict_range = predict_range
         self.s_0 = s_0
