@@ -155,7 +155,7 @@ def parse_arguments(country):
     parser.add_argument(
         '--download-data',
         dest='download_data',
-        default=False
+        default=True
     )
 
     parser.add_argument(
@@ -585,7 +585,7 @@ df=df.transpose()
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
 #opt=5 SEAIR-D Model
-opt=5
+opt=0
 
 #prepare data for plotting log chart
 country1="US"
@@ -730,7 +730,7 @@ if opt==2 or opt==0:
         #33% per day
         x =[]
         y = []
-        x=np.linspace(0,30,31)
+        x=np.linspace(0,120,121)
         for i in range(0,len(x)):
             if i==0:
                 y.append(100)
@@ -740,7 +740,7 @@ if opt==2 or opt==0:
         #50% per day
         x1 =[]
         y1 = []
-        x1=np.linspace(0,30,31)
+        x1=np.linspace(0,120,121)
         for i in range(0,len(x1)):
             if i==0:
                 y1.append(100)
@@ -766,9 +766,9 @@ if opt==2 or opt==0:
     if country==country3:
         casesFit=cases3
         timeFit=time3
-        maxCases=50e3
-        maxTime=50
-        guessExp=0.5
+        maxCases=90e3
+        maxTime=100
+        guessExp=1
 
     if country==country4:
         casesFit=cases4
@@ -787,7 +787,7 @@ if opt==2 or opt==0:
     print("Errors = ",errors)
  
     #exponential curve
-    exp_fit = curve_fit(exponential_model,timeFit,casesFit,p0=[guessExp,guessExp,guessExp])
+    exp_fit = curve_fit(exponential_model,timeFit,casesFit,p0=[guessExp,guessExp,guessExp],maxfev=10000)
 
     #plot
     pred_x = list(range(len(time3)+1,maxTime))
