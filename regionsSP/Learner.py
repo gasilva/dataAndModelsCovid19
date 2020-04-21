@@ -112,7 +112,7 @@ class Learner(object):
         self.data = self.load_confirmed(self.districtRegion)
         self.death = self.load_dead(self.districtRegion)
 
-        print("rodando "+self.districtRegion)
+        print("\n running model for "+self.districtRegion)
         optimal = minimize(self.loss,        
             [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
             args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
@@ -137,4 +137,4 @@ class Learner(object):
 
         #save simulation results for comparison and use in another codes/routines
         df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.districtRegion+'.pkl')
-        df.to_csv('./data/SEAIRD_sigmaOpt_'+self.districtRegion+'.csv', sep=",")
+        df.to_csv('./results/data/SEAIRD_sigmaOpt_'+self.districtRegion+'.csv', sep=",")
