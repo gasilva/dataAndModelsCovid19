@@ -143,3 +143,4 @@ class Learner(object):
         
         #save simulation results for comparison and use in another codes/routines
         df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.districtRegion+'.pkl')
+        df.to_csv('./data/SEAIRD_sigmaOpt_'+self.districtRegion+'.csv', sep=",")
