@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\GuilhermeSilva\\Anaconda3\\python.exe",
+    "python.pythonPath": "/home/ats4i/anaconda3/bin/python",
     "git.scanRepositories": [
         "/Users/gasilva/Documents"
     ]
