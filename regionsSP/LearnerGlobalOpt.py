@@ -26,7 +26,13 @@ from scipy.integrate import solve_ivp
 from scipy.optimize import minimize
 from scipy.optimize import basinhopping
 
+#parallel computation
+import ray
+ray.shutdown()
+ray.init(num_cpus=20)
 
+#register function for parallel processing
+@ray.remote
 class Learner(object):
     def __init__(self, districtRegion, lossOdeint, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov):
         self.districtRegion = districtRegion
