@@ -15,8 +15,10 @@ from scipy.optimize import curve_fit
 from scipy.integrate import odeint
 from scipy.optimize import basinhopping
 
-from pexecute.process import ProcessLoom
-loom = ProcessLoom(max_runner_cap=20) #ATS machine 32 - maximum number of functions evaluations at same time
+#parallel computation
+import ray
+ray.shutdown()
+ray.init(num_cpus=20)
 
 def logGrowth(growth,finalDay):
     x =[]
@@ -325,7 +327,8 @@ def load_json(json_file_str):
     except Exception:
         sys.exit("Cannot open JSON file: " + json_file_str)
 
-
+#register function for parallel processing
+@ray.remote
 class Learner(object):
     def __init__(self, country, loss, start_date, predict_range,s_0, e_0, a_0,\
                  i_0, r_0, d_0, startNCases, weigthCases, weigthRecov):
@@ -493,6 +496,8 @@ class Learner(object):
 
         plt.show()
         plt.close()
+        
+        print(self.country+" is done!")
 
 #objective function Odeint solver
 def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
@@ -559,13 +564,13 @@ def main(country):
     countries=["Italy","United Kingdom","China","France","US", \
                "Brazil", "Belgium", "Germany", "Spain"]
 
+    results=[]
     for country in countries:
-        learner = Learner(country, lossOdeint, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0, \
+        learner = Learner.remote(country, lossOdeint, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0, \
             startNCases, weigthCases, weigthRecov)
-        #try:
-        loom.add_function(learner.train())
-    loom.execute()
-
+        results.append(learner.train.remote())
+    results = ray.get(results)
+            
 #initial vars
 a = 0.0
 b = 0.0
