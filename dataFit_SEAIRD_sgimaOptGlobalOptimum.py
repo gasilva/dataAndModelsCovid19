@@ -117,7 +117,7 @@ def parse_arguments(country):
         e0=1e-4
         i0=200
         r0=0
-        k0=0
+        k0=50
         #start fitting when the number of cases >= start
         start=0
         #how many days is the prediction
@@ -129,7 +129,7 @@ def parse_arguments(country):
 
     if country1=="France":
         date="2/25/20"
-        s0=500e3
+        s0=1.5e6
         e0=1e-4
         i0=265
         r0=0
