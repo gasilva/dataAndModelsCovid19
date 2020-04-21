@@ -96,8 +96,8 @@ def parse_arguments(country):
         #weightDeaths = 1 - weigthCases - weigthRecov
 
     if country1=="China":
-        date="1/22/20"
-        s0=210e3
+        date="1/1/20"
+        s0=400e3
         e0=1e-4
         i0=800
         r0=0 #-250e3
@@ -107,7 +107,7 @@ def parse_arguments(country):
         #how many days is the prediction
         prediction_days=150
         #weigth for fitting data
-        weigthCases=0.6
+        weigthCases=0.25
         weigthRecov=0.1
         #weightDeaths = 1 - weigthCases - weigthRecov
 
@@ -129,7 +129,7 @@ def parse_arguments(country):
 
     if country1=="France":
         date="2/25/20"
-        s0=190e3
+        s0=500e3
         e0=1e-4
         i0=265
         r0=0
@@ -139,7 +139,7 @@ def parse_arguments(country):
         #how many days is the prediction
         prediction_days=150
         #weigth for fitting data
-        weigthCases=0.6
+        weigthCases=0.25
         weigthRecov=0.1
         #weightDeaths = 1 - weigthCases - weigthRecov
 
