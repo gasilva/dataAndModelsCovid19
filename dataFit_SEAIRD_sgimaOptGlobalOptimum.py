@@ -1,13 +1,7 @@
 # Import the necessary packages and modules
 import sys
-import csv
-import math
-import array
-import operator
 import argparse
-import sys
 import json
-import ssl
 import os
 import urllib.request
 import matplotlib.pyplot as plt
@@ -17,13 +11,11 @@ import pandas as pd
 from csv import reader
 from csv import writer
 from datetime import datetime,timedelta
-from sklearn.metrics import mean_squared_error
 from scipy.optimize import curve_fit
-from scipy.optimize import fsolve
 from scipy.integrate import odeint
-from scipy.integrate import solve_ivp
-from scipy.optimize import minimize
 from scipy.optimize import basinhopping
+from pexecute.process import ProcessLoom
+loom = ProcessLoom(max_runner_cap=20) #ATS machine 32 - maximum number of functions evaluations at same time
 
 def logGrowth(growth,finalDay):
     x =[]
@@ -65,7 +57,6 @@ def getCases(df,country):
     tamCol = np.shape(df)[1]
     jx=0
     for i in range(0,tamCol):
-        tamCountry=0
         j1=0
         if df[i][1]==country and not df[i][0]=="ignore":
             for j in range(4,tamLi):
@@ -105,44 +96,84 @@ def parse_arguments(country):
         #weightDeaths = 1 - weigthCases - weigthRecov
 
     if country1=="China":
-        date="1/22/20"
-        s0=210e3
+        date="1/1/20"
+        s0=400e3
         e0=1e-4
         i0=800
         r0=0 #-250e3
         k0=0
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=150
+        #weigth for fitting data
+        weigthCases=0.25
+        weigthRecov=0.1
+        #weightDeaths = 1 - weigthCases - weigthRecov
 
     if country1=="Italy":
         date="2/14/20"
-        s0=250e3
+        s0=1e6
         e0=1e-4
-        i0=50
+        i0=200
         r0=0
-        k0=0
+        k0=50
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=150
+        #weigth for fitting data
+        weigthCases=0.25
+        weigthRecov=0.1
+        #weightDeaths = 1 - weigthCases - weigthRecov
 
     if country1=="France":
         date="2/25/20"
-        s0=190e3
+        s0=1.5e6
         e0=1e-4
         i0=265
         r0=0
         k0=0
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=150
+        #weigth for fitting data
+        weigthCases=0.25
+        weigthRecov=0.1
+        #weightDeaths = 1 - weigthCases - weigthRecov
 
     if country1=="United Kingdom":
         date="2/25/20"
-        s0=138000
+        s0=500e3
         e0=1e-4
         i0=22
         r0=0 #-50
         k0=150
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=150
+        #weigth for fitting data
+        weigthCases=0.25
+        weigthRecov=0.1
+        #weightDeaths = 1 - weigthCases - weigthRecov
 
     if country1=="US":
         date="2/25/20"
-        s0=2550e3
+        s0=7e3
         e0=1e-4
         i0=70
         r0=0
         k0=300
+        #start fitting when the number of cases >= start
+        start=0
+        #how many days is the prediction
+        prediction_days=150
+        #weigth for fitting data
+        weigthCases=0.25
+        weigthRecov=0.1
+        #weightDeaths = 1 - weigthCases - weigthRecov
     
     a0=0
 
@@ -335,7 +366,6 @@ class Learner(object):
             A = y[2]
             I = y[3]
             R = y[4]
-            D = y[5]
             p=0.2
             # beta2=beta
             y0=-(beta2*A+beta*I)*S+mu*S #S
@@ -362,7 +392,7 @@ class Learner(object):
         self.recovered = self.load_recovered(self.country)
         self.data = self.load_confirmed(self.country) #-self.recovered-self.death
 
-        bounds=[(1e-12, .4), (1e-12, .4), (1e-12,0.2),  (1e-12,0.2), (1e-12,0.2),\
+        bounds=[(1e-12, .4), (1e-12, .4), (1/365,0.2),  (1/365,0.2), (1/365,0.2),\
                 (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
         minimizer_kwargs = dict(method="L-BFGS-B", bounds=bounds, args=(self.data, self.recovered, \
             self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
@@ -462,7 +492,6 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
         A = y[2]
         I = y[3]
         R = y[4]
-        D = y[5]
         p=0.2
         # beta2=beta
         y0=-(beta2*A+beta*I)*S+mu*S #S
@@ -503,12 +532,6 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
 
 def main(country):
     
-    START_DATE = {
-  'Japan': '1/22/20',
-  'Italy': '1/31/20',
-  'Republic of Korea': '1/22/20',
-  'Iran (Islamic Republic of)': '2/19/20'}
-
     countries, download, startdate, predict_range , s_0, e_0, a_0, i_0, r_0, d_0, startNCases, \
         weigthCases, weigthRecov = parse_arguments(country)
 
@@ -520,16 +543,19 @@ def main(country):
     sumCases_province('data/time_series_19-covid-Recovered.csv', 'data/time_series_19-covid-Recovered-country.csv')
     sumCases_province('data/time_series_19-covid-Deaths.csv', 'data/time_series_19-covid-Deaths-country.csv')
 
+    countries=["Italy","United Kingdom","China","France","US","Brazil"]
+
     for country in countries:
         #learner = Learner(country, loss, startdate, predict_range, s_0, i_0, r_0, d_0)
         learner = Learner(country, lossOdeint, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0, \
             startNCases, weigthCases, weigthRecov)
         #try:
-        learner.train()
+        loom.add_function(learner.train())
         #except BaseException:
         #    print('WARNING: Problem processing ' + str(country) +
         #        '. Be sure it exists in the data exactly as you entry it.' +
         #        ' Also check date format if you passed it as parameter.')
+    loom.execute()
 
 #initial vars
 a = 0.0
