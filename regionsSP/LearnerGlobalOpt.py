@@ -130,8 +130,8 @@ class Learner(object):
                  self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
                 self.startNCases, self.ratio, self.weigthCases, self.weigthRecov))
         x0=[0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
-        print("rodando "+self.districtRegion)
-        optimal =  basinhopping(self.loss,x0,minimizer_kwargs=minimizer_kwargs, disp=True, niter_success=1)
+        print("\n running model for "+self.districtRegion)
+        optimal =  basinhopping(self.loss,x0,minimizer_kwargs=minimizer_kwargs, disp=True)
             #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
         print("\n", optimal)
         beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal.x
@@ -149,4 +149,4 @@ class Learner(object):
         
         #save simulation results for comparison and use in another codes/routines
         df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.districtRegion+'.pkl')
-        df.to_csv('./data/SEAIRD_sigmaOpt_'+self.districtRegion+'.csv', sep=",")
+        df.to_csv('./results/data/SEAIRD_sigmaOpt_'+self.districtRegion+'.csv', sep=",")
