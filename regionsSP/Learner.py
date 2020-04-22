@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # Import the necessary packages and modules
 import sys
 import math
@@ -24,7 +27,7 @@ from scipy.optimize import minimize
 #parallel computation
 import ray
 ray.shutdown()
-ray.init(num_cpus=20)
+ray.init(num_cpus=4)
 
 #register function for parallel processing
 @ray.remote
@@ -141,6 +144,7 @@ class Learner(object):
         df.columns  = ['Susceptible','Exposed','Asymptomatic','Infected','Recovered','Deaths']
         df.index = pd.date_range(start=datetime.strptime(new_index[0],'%Y-%m-%d'), 
             end=datetime.strptime(new_index[len(new_index)-1],'%Y-%m-%d'))
+         df.index.name = 'date'
 
         #save simulation results for comparison and use in another codes/routines
         df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.districtRegion+'.pkl')
