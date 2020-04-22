@@ -456,7 +456,7 @@ class Learner(object):
         self.recovered = self.load_recovered(self.country)
         self.data = self.load_confirmed(self.country)-self.recovered-self.death
 
-        bounds=[(1e-12, .4), (1e-12, .4), (1/20,0.2),  (1/20,0.2), (1/20,0.2),\
+        bounds=[(1e-12, .4), (1e-12, .4), (1/300,0.2),  (1/300,0.2), (1/300,0.2),\
                 (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
         minimizer_kwargs = dict(method="L-BFGS-B", bounds=bounds, args=(self.data, self.recovered, \
             self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
