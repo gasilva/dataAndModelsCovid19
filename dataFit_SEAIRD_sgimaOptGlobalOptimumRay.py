@@ -678,14 +678,8 @@ version="1"
 #one of countries above
 country="Brazil"
 
-#choose country for SEAIRD model
-# "Brazil"
-# "China"
-# "Italy"
-# "France"
-# "United Kingdom"
-# "US"
-# Countries above are already adjusted
+#list of countries for SEAIRD model
+#bypass command line
 countriesExt=["Italy","United Kingdom","China","France","US", \
                "Brazil", "Belgium", "Germany", "Spain"]
 
