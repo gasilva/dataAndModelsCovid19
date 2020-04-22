@@ -504,7 +504,7 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.55
+            weigthCases=0.5
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
         
@@ -565,11 +565,11 @@ def main(countriesExt):
             r0=0
             k0=50
             #start fitting when the number of cases >= start
-            startNCases=0
+            startNCases=100
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.4
+            weigthCases=0.6
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
     
