@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/home/ats4i/anaconda3/bin/python",
+    "python.pythonPath": "/usr/local/bin/python3.7",
     "git.scanRepositories": [
         "/Users/gasilva/Documents"
     ]

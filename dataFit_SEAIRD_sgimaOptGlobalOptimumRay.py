@@ -80,10 +80,10 @@ def loadDataFrame(filename):
 def parse_arguments():
     parser = argparse.ArgumentParser()
 
-    a0=0
     date="2/25/20"
     s0=3e6*2
     e0=1e-4
+    a0=1e-4
     i0=265
     r0=0
     k0=0
@@ -96,8 +96,6 @@ def parse_arguments():
     weigthRecov=0.1
     #weightDeaths = 1 - weigthCases - weigthRecov
 
-
-    
     parser.add_argument(
         '--countries',
         dest='countries',
@@ -335,8 +333,8 @@ class Learner(object):
                     'Asymptomatic': y2,
                     'Infected data': extended_actual,
                     'Infected': y3,
-                    'Recovered (Alive)': extended_recovered,
-                    'Predicted Recovered (Alive)': y4,
+                    'Recovered': extended_recovered,
+                    'Predicted Recovered': y4,
                     'Death data': extended_death,
                     'Predicted Deaths': y5},
                     index=new_index)
@@ -364,11 +362,9 @@ class Learner(object):
         ha='left',rotation=90)
 
         df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
-
         country=self.country
         strFile ="./results/modelSEAIRDOptGlobalOptimum"+country+".png"
         savePlot(strFile)
-
         plt.show()
         plt.close()
 
@@ -383,6 +379,7 @@ class Learner(object):
         ax.plot(plotX,y5,'m-',label="Deaths")
         ax.plot(plotXt,extended_actual,'o',label="Infected data")
         ax.plot(plotXt,extended_death,'x',label="Death data")
+        ax.plot(plotXt,extended_recovered,'s',label="Recovered data")
         ax.legend()
        
         plt.annotate('Dr. Guilherme A. L. da Silva, www.ats4i.com', fontsize=10, 
@@ -394,10 +391,8 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
-        country=self.country
         strFile ="./results/ZoomModelSEAIRDOpt"+country+".png"
         savePlot(strFile)
-
         plt.show()
         plt.close()
         
@@ -455,7 +450,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
 def main(countriesExt):
     
     countries, download, startdate, predict_range , s0, e0, a0, i0, r0, d0, startNCases, \
-        weigthCases, weigthRecov = parse_arguments(country)
+        weigthCases, weigthRecov = parse_arguments()
 
     if not countriesExt=="":
         countries=countriesExt
@@ -614,9 +609,7 @@ def main(countriesExt):
             weigthCases=0.25
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
-        
-        a0=1e-4
-        
+               
         learner = Learner.remote(country, lossOdeint, startdate, predict_range,\
             s0, e0, a0, i0, r0, d0, \
             startNCases, weigthCases, weigthRecov)
