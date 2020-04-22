@@ -77,7 +77,7 @@ def loadDataFrame(filename):
     df.columns = [c.lower().replace(')', '') for c in df.columns]
     return df
 
-def parse_arguments(country):
+def parse_arguments():
     parser = argparse.ArgumentParser()
 
     a0=0
@@ -96,151 +96,7 @@ def parse_arguments(country):
     weigthRecov=0.1
     #weightDeaths = 1 - weigthCases - weigthRecov
 
-    country1=country
-    
-    if country=="Germany":
-        date="3/3/20"
-        s0=3e6*2*1.1
-        e0=1e-4
-        i0=265
-        r0=0
-        k0=0
-        #start fitting when the number of cases >= start
-        start=0
-        #how many days is the prediction
-        prediction_days=150
-        #weigth for fitting data
-        weigthCases=0.65
-        weigthRecov=0.1
-        #weightDeaths = 1 - weigthCases - weigthRecov
-    
-    if country=="Spain":
-        date="3/3/20"
-        s0=3e6*2*1.2
-        e0=1e-4
-        i0=265
-        r0=0
-        k0=0
-        #start fitting when the number of cases >= start
-        start=0
-        #how many days is the prediction
-        prediction_days=150
-        #weigth for fitting data
-        weigthCases=0.65
-        weigthRecov=0.1
-        #weightDeaths = 1 - weigthCases - weigthRecov
-    
-    if country=="Belgium":
-        date="3/3/20"
-        s0=3e6/2
-        e0=1e-4
-        i0=265
-        r0=0
-        k0=0
-        #start fitting when the number of cases >= start
-        start=0
-        #how many days is the prediction
-        prediction_days=150
-        #weigth for fitting data
-        weigthCases=0.65
-        weigthRecov=0.1
-    #weightDeaths = 1 - weigthCases - weigthRecov
 
-    if country1=="Brazil":
-        date="3/3/20"
-        s0=500e3*4
-        e0=1e-4
-        i0=100
-        r0=0
-        k0=50
-        #start fitting when the number of cases >= start
-        start=0
-        #how many days is the prediction
-        prediction_days=150
-        #weigth for fitting data
-        weigthCases=0.6
-        weigthRecov=0.1
-        #weightDeaths = 1 - weigthCases - weigthRecov
-
-    if country1=="China":
-        date="1/1/20"
-        s0=400e3*5
-        e0=1e-4
-        i0=800
-        r0=0 #-250e3
-        k0=0
-        #start fitting when the number of cases >= start
-        start=0
-        #how many days is the prediction
-        prediction_days=150
-        #weigth for fitting data
-        weigthCases=0.6
-        weigthRecov=0.1
-        #weightDeaths = 1 - weigthCases - weigthRecov
-
-    if country1=="Italy":
-        date="3/3/20"
-        s0=3e6*4*2
-        e0=1e-4
-        i0=200
-        r0=0
-        k0=50
-        #start fitting when the number of cases >= start
-        start=0
-        #how many days is the prediction
-        prediction_days=150
-        #weigth for fitting data
-        weigthCases=0.5
-        weigthRecov=0.1
-        #weightDeaths = 1 - weigthCases - weigthRecov
-
-    if country1=="France":
-        date="3/3/20"
-        s0=1.5e6*4*2
-        e0=1e-4
-        i0=265
-        r0=0
-        k0=0
-        #start fitting when the number of cases >= start
-        start=0
-        #how many days is the prediction
-        prediction_days=150
-        #weigth for fitting data
-        weigthCases=0.65
-        weigthRecov=0.1
-        #weightDeaths = 1 - weigthCases - weigthRecov
-
-    if country1=="United Kingdom":
-        date="2/25/20"
-        s0=500e3*4*2
-        e0=1e-4
-        i0=22
-        r0=0 #-50
-        k0=150
-        #start fitting when the number of cases >= start
-        start=0
-        #how many days is the prediction
-        prediction_days=150
-        #weigth for fitting data
-        weigthCases=0.5
-        weigthRecov=0.1
-        #weightDeaths = 1 - weigthCases - weigthRecov
-
-    if country1=="US":
-        date="2/25/20"
-        s0=5e6
-        e0=1e-4
-        i0=70
-        r0=0
-        k0=300
-        #start fitting when the number of cases >= start
-        start=0
-        #how many days is the prediction
-        prediction_days=150
-        #weigth for fitting data
-        weigthCases=0.25
-        weigthRecov=0.1
-        #weightDeaths = 1 - weigthCases - weigthRecov
     
     parser.add_argument(
         '--countries',
@@ -461,7 +317,7 @@ class Learner(object):
         minimizer_kwargs = dict(method="L-BFGS-B", bounds=bounds, args=(self.data, self.recovered, \
             self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
                 self.weigthCases, self.weigthRecov))
-        x0=[0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
+        x0=[0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001]
 
         optimal =  basinhopping(lossOdeint,x0,minimizer_kwargs=minimizer_kwargs)
             #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
@@ -570,7 +426,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
 
     y0=[s_0,e_0,a_0,i_0,r_0,d_0]
     tspan=np.arange(0, size, 1)
-    res=odeint(SEAIRD,y0,tspan,hmax=0.1)
+    res=odeint(SEAIRD,y0,tspan,hmax=0.001)
 
     tot=0
     l1=0
@@ -596,10 +452,13 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
 
 #main program SIRD model
 
-def main(country):
+def main(countriesExt):
     
-    countries, download, startdate, predict_range , s_0, e_0, a_0, i_0, r_0, d_0, startNCases, \
+    countries, download, startdate, predict_range , s0, e0, a0, i0, r0, d0, startNCases, \
         weigthCases, weigthRecov = parse_arguments(country)
+
+    if not countriesExt=="":
+        countries=countriesExt
 
     if download:
         data_d = load_json("./data_url.json")
@@ -609,12 +468,157 @@ def main(country):
     sumCases_province('data/time_series_19-covid-Recovered.csv', 'data/time_series_19-covid-Recovered-country.csv')
     sumCases_province('data/time_series_19-covid-Deaths.csv', 'data/time_series_19-covid-Deaths-country.csv')
 
-    countries=["Italy","United Kingdom","China","France","US", \
-               "Brazil", "Belgium", "Germany", "Spain"]
-
     results=[]
     for country in countries:
-        learner = Learner.remote(country, lossOdeint, startdate, predict_range, s_0, e_0, a_0, i_0, r_0, d_0, \
+            
+        if country=="Germany":
+            date="3/3/20"
+            s0=3e6*2*1.1
+            e0=1e-4
+            i0=265
+            r0=0
+            k0=0
+            #start fitting when the number of cases >= start
+            start=0
+            #how many days is the prediction
+            prediction_days=150
+            #weigth for fitting data
+            weigthCases=0.65
+            weigthRecov=0.1
+            #weightDeaths = 1 - weigthCases - weigthRecov
+        
+        if country=="Spain":
+            date="3/3/20"
+            s0=3e6*2*1.2
+            e0=1e-4
+            i0=265
+            r0=0
+            k0=0
+            #start fitting when the number of cases >= start
+            start=0
+            #how many days is the prediction
+            prediction_days=150
+            #weigth for fitting data
+            weigthCases=0.65
+            weigthRecov=0.1
+            #weightDeaths = 1 - weigthCases - weigthRecov
+        
+        if country=="Belgium":
+            date="3/3/20"
+            s0=3e6/2
+            e0=1e-4
+            i0=265
+            r0=0
+            k0=0
+            #start fitting when the number of cases >= start
+            start=0
+            #how many days is the prediction
+            prediction_days=150
+            #weigth for fitting data
+            weigthCases=0.65
+            weigthRecov=0.1
+        #weightDeaths = 1 - weigthCases - weigthRecov
+    
+        if country=="Brazil":
+            date="3/3/20"
+            s0=500e3*4
+            e0=1e-4
+            i0=100
+            r0=0
+            k0=50
+            #start fitting when the number of cases >= start
+            start=0
+            #how many days is the prediction
+            prediction_days=150
+            #weigth for fitting data
+            weigthCases=0.6
+            weigthRecov=0.1
+            #weightDeaths = 1 - weigthCases - weigthRecov
+    
+        if country=="China":
+            date="1/1/20"
+            s0=400e3*5
+            e0=1e-4
+            i0=800
+            r0=0 #-250e3
+            k0=0
+            #start fitting when the number of cases >= start
+            start=0
+            #how many days is the prediction
+            prediction_days=150
+            #weigth for fitting data
+            weigthCases=0.6
+            weigthRecov=0.1
+            #weightDeaths = 1 - weigthCases - weigthRecov
+    
+        if country=="Italy":
+            date="3/3/20"
+            s0=3e6*4*2
+            e0=1e-4
+            i0=200
+            r0=0
+            k0=50
+            #start fitting when the number of cases >= start
+            start=0
+            #how many days is the prediction
+            prediction_days=150
+            #weigth for fitting data
+            weigthCases=0.5
+            weigthRecov=0.1
+            #weightDeaths = 1 - weigthCases - weigthRecov
+    
+        if country=="France":
+            date="3/3/20"
+            s0=1.5e6*4*2
+            e0=1e-4
+            i0=265
+            r0=0
+            k0=0
+            #start fitting when the number of cases >= start
+            start=0
+            #how many days is the prediction
+            prediction_days=150
+            #weigth for fitting data
+            weigthCases=0.65
+            weigthRecov=0.1
+            #weightDeaths = 1 - weigthCases - weigthRecov
+    
+        if country=="United Kingdom":
+            date="2/25/20"
+            s0=500e3*4*2
+            e0=1e-4
+            i0=22
+            r0=0 #-50
+            k0=150
+            #start fitting when the number of cases >= start
+            start=0
+            #how many days is the prediction
+            prediction_days=150
+            #weigth for fitting data
+            weigthCases=0.5
+            weigthRecov=0.1
+            #weightDeaths = 1 - weigthCases - weigthRecov
+    
+        if country=="US":
+            date="2/25/20"
+            s0=5e6
+            e0=1e-4
+            i0=70
+            r0=0
+            k0=300
+            #start fitting when the number of cases >= start
+            start=0
+            #how many days is the prediction
+            prediction_days=150
+            #weigth for fitting data
+            weigthCases=0.25
+            weigthRecov=0.1
+            #weightDeaths = 1 - weigthCases - weigthRecov
+        
+        a0=1e-4
+        
+        learner = Learner.remote(country, lossOdeint, startdate, predict_range,\
+            s0, e0, a0, i0, r0, d0, \
             startNCases, weigthCases, weigthRecov)
         results.append(learner.train.remote())
     results = ray.get(results)
@@ -678,7 +682,8 @@ country="Brazil"
 # "United Kingdom"
 # "US"
 # Countries above are already adjusted
-countrySEAIRD="Brazil"
+countriesExt=["Italy","United Kingdom","China","France","US", \
+               "Brazil", "Belgium", "Germany", "Spain"]
 
 # For other countries you can run at command line
 # but be sure to define S_0, I_0, R_0, d_0
@@ -1020,7 +1025,5 @@ if opt==3 or opt==0 or opt==4:
 
 if opt==5 or opt==0:
 
-    #https://www.lewuathe.com/covid-19-dynamics-with-sir-model.html
-
     if __name__ == '__main__':
-        main(countrySEAIRD)
+        main(countriesExt)
