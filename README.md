@@ -211,8 +211,6 @@ The last equation does not need to solved, because
 
 ![Model SIR-D Covid-19 epidemics for Brazil](./results/modelSIRDBrazil.png)
 
-![Model SIR-D Covid-19 epidemics for US](./results/modelSIRDUS.png)
-
 The SIR-D model code is based on the contribution of Giuliano Belinassi, from IME-USP, Brazil
 
 https://github.com/Lewuathe/COVID19-SIR/issues/13#issue-589616803
@@ -297,8 +295,6 @@ The model takes SEIR Model and split the r(t) and k(t) by making γ=a+b.
 
 ![Model SEIR-D Covid-19 epidemics for Brazil](./results/modelSEIRD_sigamOptBrazil.png)
 
-![Model SEIR-D Covid-19 epidemics for US](./results/modelSEIRD_sigamOptUS.png)
-
 #### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptible, exposed, asymptomatic, infected and deaths with delay in recoveries and deaths
 
 - S(t) are those susceptible but not yet infected with the disease
@@ -348,9 +344,17 @@ A zoom at infected, deaths and recovered
 
 ![Model SEAIR-D Global Optimization Zoom Covid-19 epidemics for Brazil with asymptomatic](./results/ZoomModelSEAIRDOptGlobalOptimumBrazil.png)
 
-Non globa optimization
+### Validation with Real Data from Selected Countries
 
-![Model SEAIR-D Covid-19 epidemics for US with asymptomatic](./results/modelSEAIRDOptUS.png)
+![Comparison between US deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptUS.png)
+
+![Comparison between Germany deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptGermany.png)
+
+![Comparison between UK deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptUnited Kingdom.png)
+
+![Comparison between Spain deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptSpain.png)
+
+![Comparison between Belgium deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptBelgium.png)
 
 ### Models Comparison 
 
@@ -361,16 +365,6 @@ The comparison between model is presented below. All models were best fitted aga
 ![Comparison of Models Results Deaths Brazil](./results/compareModelDeathsBrazil.png)
 
 ![Comparison of Models Results Recovered Brazil](./results/compareModelRecoveredBrazil.png)
-
-### Validation with Real Data from Selected Countries
-
-![Comparison between US deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptGlobalOptimumUS.png)
-
-![Comparison between Germany deaths infected and recovered data and SEAIRD model result](./results/modelSEAIRDOptGlobalOptimumGermany.png)
-
-![Comparison between UK deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptGlobalOptimumUnited Kingdom.png)
-
-![Comparison between Spain deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptGlobalOptimumSpain.png)
 
 ### References:
 
