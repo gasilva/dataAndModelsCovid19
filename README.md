@@ -452,6 +452,18 @@ The comparison between model is presented below. All models were best fitted aga
 
 ![Comparison of Models Results Recovered Brazil](./results/compareModelRecoveredBrazil.png)
 
+### Validation with Real Data from Selected Countries
+
+![Comparison between US deaths, infected and recovered data and SEAIRD model result](./results/modelSEAIRDOptGlobalOptimumUS.png)
+
+![Comparison between Germany deaths, infected and recovered data and SEAIRD model result](./results/modelSEAIRDOptGlobalOptimumGermany.png)
+
+![Comparison between UK deaths, infected and recovered data and SEAIRD model result](./results/modelSEAIRDOptGlobalOptimumUnited Kingdom.png)
+
+![Comparison between Spain deaths, infected and recovered data and SEAIRD model result](./results/modelSEAIRDOptGlobalOptimumSpain.png)
+
+
+
 ### References:
 
 Anderson, R. M., May, R. M. , Infectious Diseases of Humans: Dynamics and Control, Oxford University Press, 1991
