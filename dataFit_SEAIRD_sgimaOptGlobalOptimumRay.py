@@ -475,7 +475,8 @@ def main(countriesExt):
     cleanRecovered=False
     results=[]
     for country in countries:
-            
+        
+        #OK 04/22
         if country=="Germany":
             startdate="3/3/20"
             s0=3e6*2*1.1*1.1
@@ -510,7 +511,7 @@ def main(countriesExt):
         
         if country=="Belgium":
             startdate="3/3/20"
-            s0=3e6/2/4
+            s0=3e6/2/4*1.1
             e0=1e-4
             i0=265
             r0=0
@@ -526,7 +527,7 @@ def main(countriesExt):
     
         if country=="Brazil":
             startdate="3/3/20"
-            s0=500e3*4
+            s0=500e3
             e0=1e-4
             i0=100
             r0=0
@@ -543,7 +544,7 @@ def main(countriesExt):
     
         if country=="China":
             startdate="1/22/20"
-            s0=400e3*5
+            s0=400e3
             e0=1e-4
             i0=800
             r0=0 #-250e3
@@ -589,6 +590,7 @@ def main(countriesExt):
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
     
+        #OK 04/22
         if country=="United Kingdom":
             startdate="2/25/20"
             s0=500e3*4*2
@@ -605,6 +607,7 @@ def main(countriesExt):
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
     
+        #OK 04/22
         if country=="US":
             startdate="2/20/20"
             s0=8e6
@@ -680,9 +683,12 @@ country="Brazil"
 
 #list of countries for SEAIRD model
 #bypass command line
-countriesExt=["Italy","United Kingdom","China","France","US", \
-               "Brazil", "Belgium", "Germany", "Spain"]
+# countriesExt=["Italy","United Kingdom","China","France","US", \
+#                "Brazil", "Belgium", "Germany", "Spain"]
 
+countriesExt=["Italy","China","France", \
+               "Brazil", "Belgium", "Spain"]
+    
 # For other countries you can run at command line
 # but be sure to define S_0, I_0, R_0, d_0
 # the sucess of fitting will depend on these paramenters
@@ -1009,10 +1015,10 @@ if opt==3 or opt==0 or opt==4:
             xy=(1.24, 0.1), xycoords='axes fraction',
             xytext=(0, 0), textcoords='offset points',
             ha='right',rotation=90)
-    # plt.annotate('Source: https://github.com/CSSEGISandData/COVID-19.git', fontsize=10, 
-    #         xy=(1.25,0.1), xycoords='axes fraction',
-    #         xytext=(0, 0), textcoords='offset points',
-    #         ha='left',rotation=90)
+    plt.annotate('Source: https://github.com/CSSEGISandData/COVID-19.git', fontsize=10, 
+            xy=(1.25,0.1), xycoords='axes fraction',
+            xytext=(0, 0), textcoords='offset points',
+            ha='left',rotation=90)
 
     #save figs
     strFile ='./results/coronaPythonGrowthDeltaCasesEN_'+country+'.png'
