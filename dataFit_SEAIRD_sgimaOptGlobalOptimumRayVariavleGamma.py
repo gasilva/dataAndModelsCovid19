@@ -275,7 +275,7 @@ class Learner(object):
         return values
 
     #predict final extended values
-    def predict(self, beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, data, \
+    def predict(self, beta, beta2, sigma, sigma2, sigma3, aa, bb, cc, b, mu, data, \
                 recovered, death, country, s_0, e_0, a_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
@@ -286,7 +286,7 @@ class Learner(object):
             I = y[3]
             R = y[4]
             p=0.2
-            # beta2=beta
+            gamma=aa+bb*t+cc*t*t
             y0=-(beta2*A+beta*I)*S+mu*S #S
             y1=(beta2*A+beta*I)*S-sigma*E-mu*E #E
             y2=sigma*E*(1-p)-gamma*A-mu*A #A
@@ -320,19 +320,21 @@ class Learner(object):
 
         #optmizer solver setup and run
         bounds=[(1e-12, .4), (1e-12, .4), (1/300,0.2),  (1/300,0.2), (1/300,0.2),\
+                (1e-12, 0.4), (1e-12, 0.4), \
                 (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
         minimizer_kwargs = dict(method="L-BFGS-B", bounds=bounds, args=(self.data, self.recovered, \
             self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
                 self.weigthCases, self.weigthRecov))
-        x0=[0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001]
+        x0=[0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001,\
+            0.0001, 0.0001, 0.0001]
         optimal =  basinhopping(lossOdeint,x0,minimizer_kwargs=minimizer_kwargs,disp=True)
         
         #parameter list for optimization
-        #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
+        #beta, beta2, sigma, sigma2, sigma3, aa, bb, cc, b, mu
 
-        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal.x
+        beta, beta2, sigma, sigma2, sigma3, aa, bb, cc, b, mu = optimal.x
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5 \
-                = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, \
+                = self.predict(beta, beta2, sigma, sigma2, sigma3, aa, bb, cc, b, mu, \
                     self.data, self.recovered, self.death, self.country, self.s_0, \
                     self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
 
@@ -370,9 +372,9 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
-        df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
+        df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+'VarGamma.pkl')
         country=self.country
-        strFile ="./results/modelSEAIRDOptGlobalOptimum"+country+".png"
+        strFile ="./results/modelSEAIRDOptGlobalOptimum"+country+"VarGamma.png"
         savePlot(strFile)
         plt.show()
         plt.close()
@@ -400,7 +402,7 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
-        strFile ="./results/ZoomModelSEAIRDOpt"+country+".png"
+        strFile ="./results/ZoomModelSEAIRDOpt"+country+"VarGamma.png"
         savePlot(strFile)
         plt.show()
         plt.close()
@@ -411,7 +413,7 @@ class Learner(object):
 def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
     startNCases, weigthCases, weigthRecov):
     size = len(data)
-    beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = point
+    beta, beta2, sigma, sigma2, sigma3, aa, bb, cc, b, mu = point
     def SEAIRD(y,t):
         S = y[0]
         E = y[1]
@@ -419,7 +421,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
         I = y[3]
         R = y[4]
         p=0.2
-        # beta2=beta
+        gamma=aa+bb*t+cc*t*t
         y0=-(beta2*A+beta*I)*S+mu*S #S
         y1=(beta2*A+beta*I)*S-sigma*E-mu*E #E
         y2=sigma*E*(1-p)-gamma*A-mu*A #A
@@ -442,9 +444,9 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
             l2 = l2+(res[i,5] - death.values[i])**2
             l3 = l3+(res[i,4] - recovered.values[i])**2
             tot+=1
-    l1=np.sqrt(l1/max(1,tot))
-    l2=np.sqrt(l2/max(1,tot))
-    l3=np.sqrt(l3/max(1,tot))
+    l1=(l1/max(1,tot))
+    l2=(l2/max(1,tot))
+    l3=(l3/max(1,tot))
     
     #weight for cases
     u = weigthCases
@@ -512,7 +514,7 @@ def main(countriesExt):
         
         if country=="Belgium":
             startdate="3/3/20"
-            s0=3e6/2/4*1.1*1.5
+            s0=3e6/2/4*1.1
             e0=1e-4
             i0=265
             r0=0
@@ -522,7 +524,7 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.6
+            weigthCases=0.65
             weigthRecov=0.1
         #weightDeaths = 1 - weigthCases - weigthRecov
     
@@ -690,8 +692,10 @@ country="Brazil"
 # countriesExt=["Italy","China","France", \
 #                "Brazil", "Belgium", "Spain"]
 
-countriesExt=["Italy","China","France", \
-               "Brazil", "Belgium"]
+# countriesExt=["Italy","China","France", \
+#                "Brazil", "Belgium"]
+
+countriesExt=["Spain","Brazil"]
     
 # For other countries you can run at command line
 # but be sure to define S_0, I_0, R_0, d_0
@@ -718,14 +722,13 @@ countriesExt=["Italy","China","France", \
 
 if opt==1 or opt==0 or opt==4:
 
-    model='SEAIRD_sigmaOpt' #34K
-    # model='SEIRD_sigmaOpt' #36K
-    # model='SEAIRD'
-    # model='SEIRD' #27 K
-    # model='SIRD'
+    model='SEAIRD Model' 
 
     df = loadDataFrame('./data/'+model+'_'+country+'.pkl')
     time6, cases6 = predictionsPlot(df,80,250)
+    
+    df2 = loadDataFrame('./data/'+model+'_'+country+'VarGamma.pkl')
+    time7, cases7 = predictionsPlot(df2,80,250)
 
     #model
     #33% per day
@@ -744,7 +747,8 @@ if opt==1 or opt==0 or opt==4:
     plt.plot(time4, cases4,'mv-',label=country4) 
     plt.plot(time5, cases5,'cx-',label=country5) 
     plt.plot(time3, cases3,'go-',label=country3) 
-    plt.plot(time6, cases6,'--',c='0.6',label=country3+" "+model) 
+    plt.plot(time6, cases6,'--',c='0.6',label=country+" "+model) 
+    plt.plot(time7, cases7,'--',c='0.6',label=country+" VarGamma_"+model) 
     plt.plot(time1, cases1,'b-',label=country1) 
     plt.plot(x, y,'y--',label='{:.1f}'.format((growth-1)*100)+'% per day',alpha=0.3)
     plt.plot(x1, y1,'y-.',label='{:.1f}'.format((growth1-1)*100)+'% per day',alpha=0.3) 
