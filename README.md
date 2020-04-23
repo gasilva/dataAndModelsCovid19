@@ -12,7 +12,7 @@ Or use GitHub Desktop [https://desktop.github.com/](https://desktop.github.com/)
 
 ## Usage
 
-Make changes directly in the dataAndModelsCovid19.py file.
+Make changes directly in the source .py file.
 
 Select one option 1 to 5 by variable opt
 
@@ -90,7 +90,7 @@ You can analyze several countries by making a CSV list like: Brazil, Italy, US, 
    -h, --help            show this help message and exit
    --countries COUNTRY_CSV
                          Countries on CSV format. It must exact match the data
-                         names or you will get out of bonds error.
+                         names or you will get out of bonds error. No space before or after commas.
    --download-data       Download fresh data and then run
    --start-date START_DATE
                          Start date on MM/DD/YY format ... I know ...It
@@ -100,17 +100,7 @@ You can analyze several countries by making a CSV list like: Brazil, Italy, US, 
    --S_0 S_0             S_0. Defaults to 100000
    --I_0 I_0             I_0. Defaults to 2
    --R_0 R_0             R_0. Defaults to 0
-```
-
-In SEIR and SEIR-D models, you have additionally
-
-```
    --E_0 E_0             E_0. Defaults to 0
-```
-
-In SEAIR-D models, you have additionally
-
-```
    --A_0 A_0             A_0. Defaults to 0
 ```
 
@@ -121,20 +111,6 @@ In SEAIR-D models, you have additionally
 This code has data from Repository by Johns Hopkins CSSE
 
 https://github.com/CSSEGISandData/COVID-19
-
-### Data Analysis
-
-The log-curve of exponential growth in several countries is based on
-
-https://www.ft.com/content/ae83040c-18e6-440e-bd00-e4c5cefdda26
-
-The growth rate is original from Guilherme A. L. da Silva - http://www.at4i.com
-
-### Curve Fitting
-
-The exponential and logistic curves fitting is based on
-
-https://towardsdatascience.com/covid-19-infection-in-italy-mathematical-models-and-predictions-7784b4d7dd8d
 
 ## Theory
 
