@@ -37,24 +37,18 @@ Select countries to be plotted in log to analyze growth rate. All countries avai
 ```python
 #prepare data for plotting
 country1="US"
-[time1,cases1]=getCases(df,country1)
 country2="Italy"
-[time2,cases2]=getCases(df,country2)
 country3="Brazil"
-[time3,cases3]=getCases(df,country3)
 country4="France"
-[time4,cases4]=getCases(df,country4)
 country5="Germany"
-[time5,cases5]=getCases(df,country5)
 
 ```
 Choose version to be place in the .png file name of log plot. This allows to you to analyze different set of countries.
 
 ```python
 #plot version - changes the file name png
-version="2"
+version="1"
 ```
-
 
 Select country to have the exponential and logistic function fitting. Choose one of the countries in the list above.
 
@@ -66,98 +60,14 @@ country="Brazil"
 
 ```
 
-Choose country to analyze data by SEAIRD model. Some countries are already adjusted. Other countries may need extra work to adjust S_0, I_0, R_0 and K_0, i.e., the initial conditions. Plus it may required you to set the start date correctly. If a delay/lag exist in the recovery or dead data, it may be required to set negative values for R_0 and K_0. It may simulate the lag.
+Choose countries to be analyzed by SEAIRD model. Some countries are already adjusted. Other countries may need extra work to adjust S_0, A_0, I_0, R_0 and K_0, i.e., the initial conditions. 
 
 ```python
-#choose country for SIRD model
-# "Brazil"
-# "China"
-# "Italy"
-# "France"
-# "United Kingdom"
-# "US"
-# Countries above are already adjusted
-countrySEAIRD="Brazil"
+#list of countries for SEAIRD model
+#bypass command line
+countriesExt=["Italy","United Kingdom","China","France","US", \
+                "Brazil", "Belgium", "Germany", "Spain"]
 ```
-##### Model for Brazilian States
-
-```python
-#prepare data for plotting
-state1="SP"
-[time1,cases1]=getCases(df,country1)
-state2="RJ"
-[time2,cases2]=getCases(df,country2)
-state3="AM"
-[time3,cases3]=getCases(df,country3)
-state4="CE"
-[time4,cases4]=getCases(df,country4)
-state5="MG"
-[time5,cases5]=getCases(df,country5)
-
-```
-Choose version to be place in the .png file name of log plot. This allows to you to analyze different set of states.
-
-```python
-#plot version - changes the file name png
-version="2"
-```
-
-Select state to have the exponential and logistic function fitting. Choose one of the states in the list above.
-
-```python
-#choose country for curve fitting
-#choose country for growth curve
-#one of countries above
-state="SP"
-
-```
-
-Choose state to analyze data by SEAIRD model.
-
-```python
-stateSEAIRD="SP"
-```
-
-In SEAIR-D_Brazil.py change the initial conditions and select the state:
-
-```python
-#select state of Brazil
-state1="SP"
-#initial date for data fitting
-date="2020-03-15"
-#initial condition for susceptible
-s0=280.0e3
-#initial condition for exposed   
-e0=1e-4
-#initial condition for infectious   
-i0=0
-#initial condition for recovered
-r0=0
-#initial condition for deaths   
-k0=0
-#initial condition for asymptomatic   
-a0=0
-#start fitting when the number of cases >= start
-start=300
-#as recovered data is not available, so recovered is in function of death
-ratioRecoveredDeath=0.1
-#weigth for fitting data
-weigthCases=0.4
-weigthRecov=0.2
-#weightDeaths = 1 - weigthCases - weigthRecov
-```
-
-## Run Code
-
-If you are using Visual Code Studio, select the folder you are running.
-
-To run SEIAR-D model with Optimization of Sigma and Sigma2 with opt=5:
-
-```python
-python dataFit_SEAIR_sigmaOpt.py
-```
-
-Other solvers are located in sources directory. All rules presented here apply to those solvers.
 
 ## Command line use
 
