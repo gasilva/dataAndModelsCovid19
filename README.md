@@ -79,12 +79,12 @@ You can analyze several countries by making a CSV list like: Brazil, Italy, US, 
 
 ```
  For other countries you can run at command line
- but be sure to define S_0, I_0, R_0, K_0
+ but be sure to define S_0, I_0, R_0, K_0, E_0, A_0
  the success of fitting will depend on these parameters
 
  usage: dataAndModelsCovid19.py [-h] [--countries COUNTRY_CSV] [--download-data]
                   [--start-date START_DATE] [--prediction-days PREDICT_RANGE]
-                  [--S_0 S_0] [--I_0 I_0] [--R_0 R_0]
+                  [--S_0 S_0] [--I_0 I_0] [--R_0 R_0] [--D_0 D_0] [--E_0 E_0] [--A_0 A_0]
 
  optional arguments:
    -h, --help            show this help message and exit
@@ -100,6 +100,7 @@ You can analyze several countries by making a CSV list like: Brazil, Italy, US, 
    --S_0 S_0             S_0. Defaults to 100000
    --I_0 I_0             I_0. Defaults to 2
    --R_0 R_0             R_0. Defaults to 0
+   --D_0 D_0             E_0. Defaults to 0
    --E_0 E_0             E_0. Defaults to 0
    --A_0 A_0             A_0. Defaults to 0
 ```
