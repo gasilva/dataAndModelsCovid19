@@ -364,13 +364,13 @@ The comparison between model is presented below. All models were best fitted aga
 
 ### Validation with Real Data from Selected Countries
 
-![Comparison between US deaths infected and recovered data and SEAIRD model result](./results/modelSEAIRDOptGlobalOptimumUS.png)
+![Comparison between US deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptGlobalOptimumUS.png)
 
 ![Comparison between Germany deaths infected and recovered data and SEAIRD model result](./results/modelSEAIRDOptGlobalOptimumGermany.png)
 
-![Comparison between UK deaths infected and recovered data and SEAIRD model result](./results/modelSEAIRDOptGlobalOptimumUnited Kingdom.png)
+![Comparison between UK deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptGlobalOptimumUnited Kingdom.png)
 
-![Comparison between Spain deaths infected and recovered data and SEAIRD model result](./results/modelSEAIRDOptGlobalOptimumSpain.png)
+![Comparison between Spain deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptGlobalOptimumSpain.png)
 
 ### References:
 
