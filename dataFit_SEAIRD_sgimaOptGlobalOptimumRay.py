@@ -493,6 +493,7 @@ def main(countriesExt):
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
         
+        #OK 04/22
         if country=="Spain":
             startdate="3/3/20"
             s0=3e6*2*1.2
@@ -578,15 +579,15 @@ def main(countriesExt):
             startdate="3/3/20"
             s0=1.5e6*4*2*1.5
             e0=1e-4
-            i0=265
+            i0=0
             r0=0
             k0=0
             #start fitting when the number of cases >= start
-            startNCases=0
+            startNCases=100
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.65
+            weigthCases=0.75
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
     
