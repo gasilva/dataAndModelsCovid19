@@ -538,8 +538,8 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.6
-            weigthRecov=0.1
+            weigthCases=0.55
+            weigthRecov=0.15
             #weightDeaths = 1 - weigthCases - weigthRecov
             cleanRecovered=True
     
@@ -571,8 +571,8 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.6
-            weigthRecov=0.1
+            weigthCases=0.3
+            weigthRecov=0.2
             #weightDeaths = 1 - weigthCases - weigthRecov
     
         if country=="France":
@@ -642,7 +642,8 @@ data_d = load_json("./data_url.json")
 download_data(data_d)
 
 #sum provinces under same country
-sumCases_province('data/time_series_19-covid-Confirmed.csv', 'data/time_series_19-covid-Confirmed-country.csv')
+sumCases_province('data/time_series_19-covid-Confirmed.csv', \
+                  'data/time_series_19-covid-Confirmed-country.csv')
 
 #load CSV file
 dateparse = lambda x: pd.datetime.strptime(x, '%m/%d/%Y')
@@ -660,7 +661,7 @@ df=df.transpose()
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
 #opt=5 SEAIR-D Model
-opt=5
+opt=4
 
 #prepare data for plotting log chart
 country1="US"
@@ -686,9 +687,11 @@ country="Brazil"
 #bypass command line
 # countriesExt=["Italy","United Kingdom","China","France","US", \
 #                "Brazil", "Belgium", "Germany", "Spain"]
+# countriesExt=["Italy","China","France", \
+#                "Brazil", "Belgium", "Spain"]
 
 countriesExt=["Italy","China","France", \
-               "Brazil", "Belgium", "Spain"]
+               "Brazil", "Belgium"]
     
 # For other countries you can run at command line
 # but be sure to define S_0, I_0, R_0, d_0
