@@ -350,7 +350,7 @@ A zoom at infected, deaths and recovered
 
 ![Comparison between Germany deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptGermany.png)
 
-![Comparison between UK deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptUnited Kingdom.png)
+![Comparison between UK deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptUnited%20Kingdom.png)
 
 ![Comparison between Spain deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptSpain.png)
 
