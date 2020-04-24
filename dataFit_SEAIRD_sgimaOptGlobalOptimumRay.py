@@ -3,6 +3,7 @@ import sys
 import argparse
 import json
 import os
+import math
 import urllib.request
 import matplotlib.pyplot as plt
 from matplotlib import cm
@@ -18,7 +19,7 @@ from scipy.optimize import basinhopping
 #parallel computation
 import ray
 ray.shutdown()
-ray.init(num_cpus=20)
+ray.init(num_cpus=5)
 
 def logGrowth(growth,finalDay):
     x =[]
@@ -438,9 +439,9 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
     l3=0
     for i in range(0,len(data.values)):
         if data.values[i]>startNCases:
-            l1 = l1+(res[i,3] - data.values[i])**2
-            l2 = l2+(res[i,5] - death.values[i])**2
-            l3 = l3+(res[i,4] - recovered.values[i])**2
+            l1 = l1+(math.log10(max(res[i,3]+1,1e-12)) - math.log10(max(data.values[i]+1,1e-12)))**2
+            l2 = l2+(math.log10(max(res[i,5]+1,1e-12)) - math.log10(max(death.values[i]+1,1e-12)))**2
+            l3 = l3+(math.log10(max(res[i,4]+1,1e-12)) - math.log10(max(recovered.values[i]+1,1e-12)))**2
             tot+=1
     l1=np.sqrt(l1/max(1,tot))
     l2=np.sqrt(l2/max(1,tot))
@@ -522,7 +523,7 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.6
+            weigthCases=0.4
             weigthRecov=0.1
         #weightDeaths = 1 - weigthCases - weigthRecov
     
@@ -538,14 +539,14 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.55
+            weigthCases=0.25
             weigthRecov=0.15
             #weightDeaths = 1 - weigthCases - weigthRecov
             cleanRecovered=True
     
         if country=="China":
             startdate="1/22/20"
-            s0=400e3
+            s0=400e3*1.5
             e0=1e-4
             i0=800
             r0=0 #-250e3
@@ -555,13 +556,13 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.5
+            weigthCases=0.15
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
     
         if country=="Italy":
             startdate="2/24/20"
-            s0=3e6*4*2
+            s0=3e6*4*2*2*0.7*1.2*1.1
             e0=1e-4
             i0=200
             r0=0
@@ -571,13 +572,13 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.3
-            weigthRecov=0.2
+            weigthCases=0.1
+            weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
     
         if country=="France":
             startdate="3/3/20"
-            s0=1.5e6*4*2*1.5
+            s0=1.5e6*1.5*120/80*2
             e0=1e-4
             i0=0
             r0=0
@@ -587,7 +588,7 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.75
+            weigthCases=0.1
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
     
@@ -631,11 +632,24 @@ def main(countriesExt):
         results.append(learner.train.remote())
     results = ray.get(results)
             
-#initial vars
-a = 0.0
-b = 0.0
-c = 0.0 
-date = []
+#Initial parameters
+#Choose here your options
+
+#option
+#opt=0 all plots
+#opt=1 corona log plot
+#opt=2 logistic model prediction
+#opt=3 bar plot with growth rate
+#opt=4 log plot + bar plot
+#opt=5 SEAIR-D Model
+opt=5
+
+#prepare data for plotting log chart
+country1="US"
+country2="Italy"
+country3="Brazil"
+country4="France"
+country5="Germany"
 
 #load new confirmed cases
 data_d = load_json("./data_url.json")
@@ -651,28 +665,11 @@ df=pd.read_csv('data/time_series_19-covid-Confirmed-country.csv', \
     delimiter=',',parse_dates=True, date_parser=dateparse,header=None)
 df=df.transpose()
 
-#Initial parameters
-#Choose here your options
-
-#option
-#opt=0 all plots
-#opt=1 corona log plot
-#opt=2 logistic model prediction
-#opt=3 bar plot with growth rate
-#opt=4 log plot + bar plot
-#opt=5 SEAIR-D Model
-opt=5
-
-#prepare data for plotting log chart
-country1="US"
+#associate data to countries selected
 [time1,cases1]=getCases(df,country1)
-country2="Italy"
 [time2,cases2]=getCases(df,country2)
-country3="Brazil"
 [time3,cases3]=getCases(df,country3)
-country4="France"
 [time4,cases4]=getCases(df,country4)
-country5="Germany"
 [time5,cases5]=getCases(df,country5)
 
 #plot version - changes the file name png
@@ -684,45 +681,21 @@ version="1"
 country="Brazil"
 
 #list of countries for SEAIRD model
-#bypass command line
 # countriesExt=["Italy","United Kingdom","China","France","US", \
 #                "Brazil", "Belgium", "Germany", "Spain"]
 # countriesExt=["Italy","China","France", \
 #                "Brazil", "Belgium", "Spain"]
+countriesExt=["Italy","China","France"]
 
-countriesExt=["Italy","China","France", \
-               "Brazil", "Belgium"]
-    
-# For other countries you can run at command line
-# but be sure to define S_0, I_0, R_0, d_0
-# the sucess of fitting will depend on these paramenters
-#
-# usage: dataAndModelsCovid19.py [-h] [--countries COUNTRY_CSV] [--download-data]
-#                  [--start-date START_DATE] [--prediction-days PREDICT_RANGE]
-#                  [--S_0 S_0] [--I_0 I_0] [--R_0 R_0]
-
-# optional arguments:
-#   -h, --help            show this help message and exit
-#   --countries COUNTRY_CSV
-#                         Countries on CSV format. It must exact match the data
-#                         names or you will get out of bonds error.
-#   --download-data       Download fresh data and then run
-#   --start-date START_DATE
-#                         Start date on MM/DD/YY format ... I know ...It
-#                         defaults to first data available 1/22/20
-#   --prediction-days PREDICT_RANGE
-#                         Days to predict with the model. Defaults to 150
-#   --S_0 S_0             S_0. Defaults to 100000
-#   --I_0 I_0             I_0. Defaults to 2
-#   --R_0 R_0             R_0. Defaults to 0
+#initial vars
+a = 0.0
+b = 0.0
+c = 0.0 
+date = []
 
 if opt==1 or opt==0 or opt==4:
 
-    model='SEAIRD_sigmaOpt' #34K
-    # model='SEIRD_sigmaOpt' #36K
-    # model='SEAIRD'
-    # model='SEIRD' #27 K
-    # model='SIRD'
+    model='SEAIRD' 
 
     df = loadDataFrame('./data/'+model+'_'+country+'.pkl')
     time6, cases6 = predictionsPlot(df,80,250)
@@ -730,11 +703,11 @@ if opt==1 or opt==0 or opt==4:
     #model
     #33% per day
     growth = 1.33
-    x,y = logGrowth(growth,40)
+    x,y = logGrowth(growth,60)
 
     #50% per day
     growth1 = 1.25
-    x1,y1 = logGrowth(growth1,40)
+    x1,y1 = logGrowth(growth1,60)
 
     # Plot the data
     #ax.figure(figsize=(19.20,10.80))
@@ -804,26 +777,18 @@ if opt==2 or opt==0:
     if opt==2:
         #model
         #33% per day
-        x =[]
-        y = []
-        x=np.linspace(0,30,31)
-        for i in range(0,len(x)):
-            if i==0:
-                y.append(100)
-            else:
-                y.append(y[i-1]*1.33)
+        x,y=logGrowth(1.33,60)
 
-        #50% per day
-        x1 =[]
-        y1 = []
-        x1=np.linspace(0,30,31)
-        for i in range(0,len(x1)):
-            if i==0:
-                y1.append(100)
-            else:
-                y1.append(y1[i-1]*1.25)
+        #25% per day
+        x1,y1=logGrowth(1.25,60)
 
     #model fitting
+
+    casesFit=cases3
+    timeFit=time3
+    maxCases=50e3
+    maxTime=50
+    guessExp=0.5
 
     if country==country1:
         casesFit=cases1
@@ -899,6 +864,12 @@ if opt==2 or opt==0:
 if opt==3 or opt==0 or opt==4:
     plt.rcParams['figure.figsize'] = [9, 7]
     plt.rc('font', size=14)
+    
+    casesGrowth=cases3
+    timeGrowth=time3
+    maxCases=30e3
+    maxTime=50
+    guessExp=0.5
     
     growth=[]
 

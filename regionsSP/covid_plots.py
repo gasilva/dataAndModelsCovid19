@@ -462,6 +462,7 @@ def covid_plots(districtRegion, districts4Plot,\
         
         plt.rc('font', size=14)
         fig, ax = plt.subplots(figsize=(15, 10))
+        ax.set_ylim(0,max(df['susceptible'])*1.1)
         ax.set_title("SEAIR-D Model for "+districtRegion)
         ax.xaxis_date()
         ax.plot(df['susceptible'],'g-',label="Susceptible")
@@ -493,10 +494,10 @@ def covid_plots(districtRegion, districts4Plot,\
         savePlot(strFile)
   
         fig, ax = plt.subplots(figsize=(15, 10))
+        ax.set_ylim(0,max(df['infected'])*1.1)
         ax.set_title("Zoom SEAIR-D Model for "+districtRegion)
         ax.xaxis_date()
         #plt.xticks(np.arange(0, predict_range, predict_range/8))
-        ax.set_ylim(0,max(df['infected'])+2e3)
         ax.plot(df['infected'],'y-',label="Infected")
         ax.plot(df['recovered'],'c-',label="Recovered")
         ax.plot(df['deaths'],'m-',label="Deaths")
