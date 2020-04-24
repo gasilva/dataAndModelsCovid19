@@ -298,7 +298,7 @@ class Learner(object):
         
         y0=[s_0,e_0,a_0,i_0,r_0,d_0]
         tspan=np.arange(0, size, 1)
-        res=odeint(SEAIRD,y0,tspan,hmax=0.005)
+        res=odeint(SEAIRD,y0,tspan,hmax=0.01)
 
         extended_actual = np.concatenate((data.values, \
                             [None] * (size - len(data.values))))
@@ -431,13 +431,13 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
 
     y0=[s_0,e_0,a_0,i_0,r_0,d_0]
     tspan=np.arange(0, size, 1)
-    res=odeint(SEAIRD,y0,tspan,hmax=0.005)
+    res=odeint(SEAIRD,y0,tspan,hmax=0.01)
 
     tot=0
     l1=0
     l2=0
     l3=0
-    for i in range(0,len(data.values)):
+    for i in range(0,len(data.values)-1):
         if data.values[i]>startNCases:
             l1 = l1+(math.log10(max(res[i,3]+1,1e-12)) - math.log10(max(data.values[i]+1,1e-12)))**2
             l2 = l2+(math.log10(max(res[i,5]+1,1e-12)) - math.log10(max(death.values[i]+1,1e-12)))**2
@@ -546,7 +546,7 @@ def main(countriesExt):
     
         if country=="China":
             startdate="1/22/20"
-            s0=400e3*1.5
+            s0=400e3*1.5*2*2
             e0=1e-4
             i0=800
             r0=0 #-250e3
@@ -578,7 +578,7 @@ def main(countriesExt):
     
         if country=="France":
             startdate="3/3/20"
-            s0=1.5e6*1.5*120/80*2
+            s0=1.5e6*1.5*120/80*1.05
             e0=1e-4
             i0=0
             r0=0

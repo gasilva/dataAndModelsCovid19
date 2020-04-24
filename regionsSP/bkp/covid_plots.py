@@ -462,6 +462,7 @@ def covid_plots(districtRegion, districts4Plot,\
         
         plt.rc('font', size=14)
         fig, ax = plt.subplots(figsize=(15, 10))
+        ax.set_ylim(0,max(df['susceptible'])*1.1)
         ax.set_title("SEAIR-D Model for "+districtRegion)
         ax.xaxis_date()
         ax.plot(df['susceptible'],'g-',label="Susceptible")
