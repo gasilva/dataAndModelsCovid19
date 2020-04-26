@@ -3,7 +3,7 @@ import sys
 import argparse
 import json
 import os
-import math
+import time
 import urllib.request
 import matplotlib.pyplot as plt
 from matplotlib import cm
@@ -14,7 +14,7 @@ from csv import writer
 from datetime import datetime,timedelta
 from scipy.optimize import curve_fit
 from scipy.integrate import odeint
-from scipy.optimize import basinhopping
+from scipy.optimize import minimize
 
 #parallel computation
 import ray
@@ -158,6 +158,12 @@ def parse_arguments():
         default=k0)
 
     parser.add_argument(
+        '--VER',
+        dest='version',
+        type=int,
+        default=1)
+
+    parser.add_argument(
         '--START',
         dest='startNCases',
         type=int,
@@ -188,7 +194,7 @@ def parse_arguments():
         sys.exit("QUIT: You must pass a country list on CSV format.")
 
     return (country_list, args.download_data, args.start_date, args.predict_range, \
-        args.s_0, args.e_0, args.a_0, args.i_0, args.r_0, args.d_0,\
+        args.s_0, args.e_0, args.a_0, args.i_0, args.r_0, args.d_0, args.version,\
             args.startNCases, args.weigthCases, args.weigthRecov)
 
 
@@ -234,7 +240,7 @@ def load_json(json_file_str):
 @ray.remote
 class Learner(object):
     def __init__(self, country, loss, start_date, predict_range,s_0, e_0, a_0,\
-                 i_0, r_0, d_0, startNCases, weigthCases, weigthRecov, cleanRecovered):
+                 i_0, r_0, d_0, version, startNCases, weigthCases, weigthRecov, cleanRecovered):
         self.country = country
         self.loss = loss
         self.start_date = start_date
@@ -249,12 +255,12 @@ class Learner(object):
         self.weigthCases = weigthCases
         self.weigthRecov = weigthRecov
         self.cleanRecovered=cleanRecovered
+        self.version=version
 
     def load_confirmed(self, country):
         df = pd.read_csv('data/time_series_19-covid-Confirmed-country.csv')
         country_df = df[df['Country/Region'] == country]
         return country_df.iloc[0].loc[self.start_date:]
-
 
     def load_recovered(self, country):
         df = pd.read_csv('data/time_series_19-covid-Recovered-country.csv')
@@ -320,13 +326,22 @@ class Learner(object):
         self.data = self.load_confirmed(self.country)-zeroRecDeaths*(self.recovered+self.death)
 
         #optmizer solver setup and run
-        bounds=[(1e-12, .4), (1e-12, .4), (1/300,0.2),  (1/300,0.2), (1/300,0.2),\
-                (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
-        minimizer_kwargs = dict(method="L-BFGS-B", bounds=bounds, args=(self.data, self.recovered, \
-            self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
-                self.weigthCases, self.weigthRecov))
-        x0=[0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001]
-        optimal =  basinhopping(lossOdeint,x0,minimizer_kwargs=minimizer_kwargs,disp=True)
+        # bounds=[(1e-12, .4), (1e-12, .4), (1/300,0.2),  (1/300,0.2), (1/300,0.2),\
+        #         (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
+        # minimizer_kwargs = dict(method="L-BFGS-B", bounds=bounds, args=(self.data, self.recovered, \
+        #     self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
+        #         self.weigthCases, self.weigthRecov))
+        # x0=[0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001]
+        # optimal =  basinhopping(lossOdeint,x0,minimizer_kwargs=minimizer_kwargs,disp=True)
+        
+        optimal = minimize(lossOdeint,        
+            [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
+            args=(self.data, self.recovered, self.death, self.s_0, self.e_0,\
+                self.a_0, self.i_0, self.r_0, self.d_0, self.version, self.startNCases, \
+                self.weigthCases, self.weigthRecov),
+            method='L-BFGS-B',
+            bounds=[(1e-12, .4), (1e-12, .4), (1./160.,0.2),  (1./160.,0.2), (1./160.,0.2),\
+                (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)],options={'disp': True})        
         
         #parameter list for optimization
         #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
@@ -371,12 +386,12 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
-        df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
+        df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+str(self.version)+'.pkl')
         country=self.country
         strFile ="./results/modelSEAIRDOptGlobalOptimum"+country+".png"
         savePlot(strFile)
-        plt.show()
-        plt.close()
+        # plt.show()
+        # plt.close()
 
         plotX=new_index[range(0,self.predict_range)]
         plotXt=new_index[range(0,len(extended_actual))]
@@ -401,15 +416,15 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
-        strFile ="./results/ZoomModelSEAIRDOpt"+country+".png"
+        strFile ="./results/ZoomModelSEAIRDOpt"+country+str(self.version)+".png"
         savePlot(strFile)
-        plt.show()
-        plt.close()
+        # plt.show()
+        # plt.close()
         
         print(self.country+" is done!")
 
 #objective function Odeint solver
-def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
+def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, version,\
     startNCases, weigthCases, weigthRecov):
     size = len(data)
     beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = point
@@ -439,9 +454,12 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
     l3=0
     for i in range(0,len(data.values)-1):
         if data.values[i]>startNCases:
-            l1 = l1+((np.float64(res[i,3]) - np.float64(data.values[i]))/np.float64(data.values[i]))**2
-            l2 = l2+((np.float64(res[i,5]) - np.float64(death.values[i]))/np.float64(death.values[i]))**2
-            l3 = l3+((np.float64(res[i,4]) - np.float64(recovered.values[i]))/np.float64(recovered.values[i]))**2
+            l1 = l1+((np.float64(res[i,3]) -\
+                      np.float64(data.values[i]))/np.float64(data.values[i]))**2
+            l2 = l2+((np.float64(res[i,5]) - \
+                      np.float64(death.values[i]))/np.float64(death.values[i]))**2
+            l3 = l3+((np.float64(res[i,4]) - \
+                      np.float64(recovered.values[i]))/np.float64(recovered.values[i]))**2
             tot+=1
     l1=np.sqrt(l1/max(1,tot))
     l2=np.sqrt(l2/max(1,tot))
@@ -455,8 +473,12 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
     v = max(0,1. - u - w)
     gtot=u*l1 + v*l2 + w*l3
     
+    strFile='./data/optimum'+str(version)+'.pkl'
+    if os.path.isfile(strFile):
+        os.remove(strFile)
     dfresult=pd.DataFrame([[l1,l2,l3,gtot]], columns=['g1','g2','g3','Total'])
-    dfresult.to_pickle('./data/optimum.pkl')
+    dfresult.to_pickle(strFile)
+    time.sleep(0.1)
     
     return gtot
 
@@ -464,7 +486,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
 
 def main(countriesExt):
     
-    countries, download, startdate, predict_range , s0, e0, a0, i0, r0, k0, startNCases, \
+    countries, download, startdate, predict_range , s0, e0, a0, i0, r0, k0, version, startNCases, \
         weigthCases, weigthRecov = parse_arguments()
 
     if not countriesExt=="":
@@ -473,166 +495,15 @@ def main(countriesExt):
     if download:
         data_d = load_json("./data_url.json")
         download_data(data_d)
-
-    sumCases_province('data/time_series_19-covid-Confirmed.csv', 'data/time_series_19-covid-Confirmed-country.csv')
-    sumCases_province('data/time_series_19-covid-Recovered.csv', 'data/time_series_19-covid-Recovered-country.csv')
-    sumCases_province('data/time_series_19-covid-Deaths.csv', 'data/time_series_19-covid-Deaths-country.csv')
+        sumCases_province('data/time_series_19-covid-Confirmed.csv', 'data/time_series_19-covid-Confirmed-country.csv')
+        sumCases_province('data/time_series_19-covid-Recovered.csv', 'data/time_series_19-covid-Recovered-country.csv')
+        sumCases_province('data/time_series_19-covid-Deaths.csv', 'data/time_series_19-covid-Deaths-country.csv')
 
     cleanRecovered=False
     results=[]
     for country in countries:
-        
-        #OK 04/22
-        if country=="Germany":
-            startdate="3/3/20"
-            s0=3e6*2*1.1*1.1
-            e0=1e-4
-            i0=265
-            r0=0
-            k0=0
-            #start fitting when the number of cases >= start
-            startNCases=0
-            #how many days is the prediction
-            predict_range=150
-            #weigth for fitting data
-            weigthCases=0.65
-            weigthRecov=0.1
-            #weightDeaths = 1 - weigthCases - weigthRecov
-        
-        #OK 04/22
-        if country=="Spain":
-            startdate="3/3/20"
-            s0=3e6*2*1.2
-            e0=1e-4
-            i0=265
-            r0=0
-            k0=0
-            #start fitting when the number of cases >= start
-            startNCases=0
-            #how many days is the prediction
-            predict_range=150
-            #weigth for fitting data
-            weigthCases=0.5
-            weigthRecov=0.1
-            #weightDeaths = 1 - weigthCases - weigthRecov
-        
-        if country=="Belgium":
-            startdate="3/3/20"
-            s0=3e6/2/4*1.1*1.5
-            e0=1e-4
-            i0=265
-            r0=0
-            k0=0
-            #start fitting when the number of cases >= start
-            startNCases=0
-            #how many days is the prediction
-            predict_range=150
-            #weigth for fitting data
-            weigthCases=0.4
-            weigthRecov=0.1
-        #weightDeaths = 1 - weigthCases - weigthRecov
-    
-        if country=="Brazil":
-            startdate="3/3/20"
-            s0=500e3
-            e0=1e-4
-            i0=100
-            r0=0
-            k0=50
-            #start fitting when the number of cases >= start
-            startNCases=0
-            #how many days is the prediction
-            predict_range=150
-            #weigth for fitting data
-            weigthCases=0.25
-            weigthRecov=0.15
-            #weightDeaths = 1 - weigthCases - weigthRecov
-            cleanRecovered=True
-    
-        if country=="China":
-            startdate="1/22/20"
-            s0=400e3*1.5*2*2*2*2
-            e0=1e-4
-            i0=1500
-            r0=0 #-250e3
-            k0=0
-            #start fitting when the number of cases >= start
-            startNCases=500
-            #how many days is the prediction
-            predict_range=150
-            #weigth for fitting data
-            weigthCases=0.6
-            weigthRecov=0.1
-            #weightDeaths = 1 - weigthCases - weigthRecov
-    
-        if country=="Italy":
-            startdate="3/3/20"
-            s0=1.5e6*2*0.8*1.2*1.1
-            e0=1e-4
-            i0=500
-            r0=0
-            k0=0
-            #start fitting when the number of cases >= start
-            startNCases=0
-            #how many days is the prediction
-            predict_range=150
-            #weigth for fitting data
-            weigthCases=0.75
-            weigthRecov=0.1
-            #weightDeaths = 1 - weigthCases - weigthRecov
-    
-        if country=="France":
-            startdate="3/3/20"
-            s0=1.5e6*1.5*120/80*1.3*1.5
-            e0=1e-4
-            i0=400
-            r0=0
-            k0=0
-            #start fitting when the number of cases >= start
-            startNCases=100
-            #how many days is the prediction
-            predict_range=150
-            #weigth for fitting data
-            weigthCases=0.4
-            weigthRecov=0.1
-            #weightDeaths = 1 - weigthCases - weigthRecov
-    
-        #OK 04/22
-        if country=="United Kingdom":
-            startdate="2/25/20"
-            s0=500e3*4*2
-            e0=1e-4
-            i0=22
-            r0=0 #-50
-            k0=150
-            #start fitting when the number of cases >= start
-            startNCases=0
-            #how many days is the prediction
-            predict_range=150
-            #weigth for fitting data
-            weigthCases=0.5
-            weigthRecov=0.1
-            #weightDeaths = 1 - weigthCases - weigthRecov
-    
-        #OK 04/22
-        if country=="US":
-            startdate="2/20/20"
-            s0=8e6
-            e0=1e-4
-            i0=70
-            r0=0
-            k0=300
-            #start fitting when the number of cases >= start
-            startNCases=0
-            #how many days is the prediction
-            predict_range=150
-            #weigth for fitting data
-            weigthCases=0.25
-            weigthRecov=0.1
-            #weightDeaths = 1 - weigthCases - weigthRecov
-               
         learner = Learner.remote(country, lossOdeint, startdate, predict_range,\
-            s0, e0, a0, i0, r0, k0, startNCases, weigthCases, weigthRecov, 
+            s0, e0, a0, i0, r0, k0, version, startNCases, weigthCases, weigthRecov, 
             cleanRecovered)
         results.append(learner.train.remote())
     results = ray.get(results)
@@ -690,7 +561,8 @@ country="Brazil"
 #                "Brazil", "Belgium", "Germany", "Spain"]
 # countriesExt=["Italy","China","France", \
 #                "Brazil", "Belgium", "Spain"]
-countriesExt=["Italy","China","France"]
+# countriesExt=["Italy","China","France"]
+countriesExt=""
 
 #initial vars
 a = 0.0
