@@ -478,7 +478,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, vers
         os.remove(strFile)
     dfresult=pd.DataFrame([[l1,l2,l3,gtot]], columns=['g1','g2','g3','Total'])
     dfresult.to_pickle(strFile)
-    time.sleep(0.1)
+    time.sleep(0)
     
     return gtot
 
