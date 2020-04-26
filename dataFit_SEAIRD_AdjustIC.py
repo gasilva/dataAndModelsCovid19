@@ -388,7 +388,7 @@ class Learner(object):
 
         df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+str(self.version)+'.pkl')
         country=self.country
-        strFile ="./results/modelSEAIRDOptGlobalOptimum"+country+".png"
+        strFile ="./results/modelSEAIRDOptGlobalOptimum"+country+str(self.version)+".png"
         savePlot(strFile)
         # plt.show()
         # plt.close()
@@ -454,7 +454,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, vers
     l3=0
     for i in range(0,len(data.values)-1):
         if data.values[i]>startNCases:
-            l1 = l1+((np.float64(res[i,3]) -\
+            l1 = l1+((np.float64(res[i,3]) - \
                       np.float64(data.values[i]))/np.float64(data.values[i]))**2
             l2 = l2+((np.float64(res[i,5]) - \
                       np.float64(death.values[i]))/np.float64(death.values[i]))**2
@@ -478,7 +478,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, vers
         os.remove(strFile)
     dfresult=pd.DataFrame([[l1,l2,l3,gtot]], columns=['g1','g2','g3','Total'])
     dfresult.to_pickle(strFile)
-    time.sleep(0.1)
+    time.sleep(0)
     
     return gtot
 
@@ -499,9 +499,12 @@ def main(countriesExt):
         sumCases_province('data/time_series_19-covid-Recovered.csv', 'data/time_series_19-covid-Recovered-country.csv')
         sumCases_province('data/time_series_19-covid-Deaths.csv', 'data/time_series_19-covid-Deaths-country.csv')
 
-    cleanRecovered=False
     results=[]
     for country in countries:
+        if not country=="Brazil":     
+            cleanRecovered=False
+        else:
+            cleanRecovered=True
         learner = Learner.remote(country, lossOdeint, startdate, predict_range,\
             s0, e0, a0, i0, r0, k0, version, startNCases, weigthCases, weigthRecov, 
             cleanRecovered)

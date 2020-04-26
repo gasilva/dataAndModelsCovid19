@@ -1,7 +1,7 @@
 import os
 import io
 import pandas as pd
-from scipy.optimize import brute,fmin_l_bfgs_b
+from scipy.optimize import brute
 from datetime import datetime,timedelta
 import ray
 import os.path
@@ -13,7 +13,7 @@ def fun(point, country,e0,a0,r0,d0,date,version,wcases,wrec):
     Date = datetime.strptime(date, "%m/%d/%y")
     end_date = Date + timedelta(days=+int(deltaDate))
     dateStr=end_date.strftime('X%m/X%d/%y').replace('X0','X').replace('X','')
-    command  = "python dataFit_SEAIRD_sgimaOptGlobalOptimumRay2.py"
+    command  = "python dataFit_SEAIRD_AdjustIC.py"
     command  +=' --countries {}'.format(country)
     command  +=' --start-date {}'.format(dateStr)
     command  +=' --S_0 {}'.format(int(s0+0.5))
@@ -30,7 +30,7 @@ def fun(point, country,e0,a0,r0,d0,date,version,wcases,wrec):
     
     file_path='./data/optimum'+str(version)+'.pkl'
     
-    time_to_wait=10
+    time_to_wait=60
     time_counter=0
     while not os.path.exists(file_path):
         time.sleep(1)
@@ -47,7 +47,7 @@ def opt(country,e0,a0,r0,d0,date,version,wcases,wrec):
     rranges = [slice(0.5e6,3e6,1e5),slice(-2,2,1),slice(0,500,100)]
     optimal = brute(fun,        
         ranges=rranges,
-        args=(country,e0,a0,r0,d0,date,version,wcases,wrec), full_output=True, finish=None)
+        args=(country,e0,a0,r0,d0,date,version,wcases,wrec), full_output=True, disp=True)
     return optimal
 
 ray.shutdown()
@@ -126,8 +126,9 @@ for country in countries:
     version+=1
 
 optimal = ray.get(optimal)
-    
-for i in range(0,countries):    
+print(optimal)    
+
+for i in range(0,len(countries)):    
     print(optimal[i])
     with io.open('./results/resultOpt'+countries[i]+str(i)+'.txt', 'w', encoding='utf8') as f:
         f.write("country = {}\n".format(countries[i]))
