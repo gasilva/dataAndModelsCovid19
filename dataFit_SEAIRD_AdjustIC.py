@@ -19,7 +19,7 @@ from scipy.optimize import minimize
 #parallel computation
 import ray
 ray.shutdown()
-ray.init(num_cpus=5)
+ray.init(num_cpus=5,log_to_driver=False)
 
 def logGrowth(growth,finalDay):
     x =[]
