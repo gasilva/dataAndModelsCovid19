@@ -1,21 +1,25 @@
 import os
 import io
+import numpy as np
 import pandas as pd
 from scipy.optimize import brute
 from datetime import datetime,timedelta
 import ray
 import os.path
 import time
+import sys
 
 
 def fun(point, country,e0,a0,r0,d0,date,version,wcases,wrec):
     s0, deltaDate, i0 = point
+    download=False
     Date = datetime.strptime(date, "%m/%d/%y")
     end_date = Date + timedelta(days=+int(deltaDate))
     dateStr=end_date.strftime('X%m/X%d/%y').replace('X0','X').replace('X','')
     command  = "python dataFit_SEAIRD_AdjustIC.py"
     command  +=' --countries {}'.format(country)
     command  +=' --start-date {}'.format(dateStr)
+    command  +=' --download-data {}'.format(download)
     command  +=' --S_0 {}'.format(int(s0+0.5))
     command  +=' --E_0 {}'.format(int(e0+0.5))
     command  +=' --A_0 {}'.format(int(a0+0.5))
@@ -44,10 +48,10 @@ def fun(point, country,e0,a0,r0,d0,date,version,wcases,wrec):
 
 @ray.remote
 def opt(country,e0,a0,r0,d0,date,version,wcases,wrec):
-    rranges = [slice(0.5e6,3e6,1e5),slice(-2,2,1),slice(0,500,100)]
+    rranges = [slice(1e5,2e6,1e5),slice(-2,2,4),slice(0,1000,1000)]
     optimal = brute(fun,        
         ranges=rranges,
-        args=(country,e0,a0,r0,d0,date,version,wcases,wrec), full_output=True, disp=True)
+        args=(country,e0,a0,r0,d0,date,version,wcases,wrec), full_output=True, disp=True, finish=None)
     return optimal
 
 ray.shutdown()
@@ -67,7 +71,7 @@ wrec=0.1
 countries=["Italy","China","France"]
 
 optimal=[]
-version=0
+version=10
 for country in countries:
     
     strFile='./data/optimum'+str(version)+'.pkl'
@@ -126,15 +130,25 @@ for country in countries:
     version+=1
 
 optimal = ray.get(optimal)
-print(optimal)    
 
 for i in range(0,len(countries)):    
-    print(optimal[i])
-    with io.open('./results/resultOpt'+countries[i]+str(i)+'.txt', 'w', encoding='utf8') as f:
+    with io.open('./results/resultOpt'+countries[i]+str(version)+'.txt', 'w', encoding='utf8') as f:
         f.write("country = {}\n".format(countries[i]))
         f.write("S0 = {}\n".format(optimal[i][0][0]))
         f.write("Delta Date Days = {}\n".format(optimal[i][0][1]))   
         f.write("I0 = {}\n".format(optimal[i][0][2]))   
         f.write("Function Minimum = {}\n".format(optimal[i][1]))  
-        # df=pd.dataframe({"S0":optimal[i][2][0],"DeltaDate":optimal[i][2][1],"I0":optimal[i][2][2],"fObj":optimal[i][3]},index=range(0,len(optimal[i][3])))
-        # df.to_csv(r'./results/resultsVectorsOpt'+countries[0]+str(version)+'.csv', index = True)    
+    
+    a=np.array(optimal[i][2])
+    b=np.array(optimal[i][3])
+    c=np.stack([*a, b], -1)
+    print(c)
+    df=pd.DataFrame(data=c[:,:])
+    df.to_csv(r'./results/resultsVectorsOpt'+countries[0]+str(version)+'.csv', index = True) 
+    
+    
+    # stdoutOrigin=sys.stdout 
+    # sys.stdout = open('./results/log'+countries[i]+str(i)+'.txt', "w")    
+    # print(optimal[i])
+    # sys.stdout.close()
+    # sys.stdout=stdoutOrigin
