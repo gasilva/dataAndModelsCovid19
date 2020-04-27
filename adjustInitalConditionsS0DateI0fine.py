@@ -46,8 +46,8 @@ def fun(point, country,e0,a0,r0,d0,date,version,wcases,wrec):
     return df.Total
 
 @ray.remote
-def opt(country,e0,a0,r0,d0,date,version,wcases,wrec):
-    rranges = [slice(1e5,3e6,1e5),slice(-2,2,1),slice(0,1000,200)]
+def opt(s0,i0,country,e0,a0,r0,d0,date,version,wcases,wrec):
+    rranges = [slice(s0*0.8,s0*1.2,s0*0.05),slice(-1,1,1),slice(i0*0.80,i0*1.2,i0*0.05)]
     optimal = brute(fun,        
         ranges=rranges,
         args=(country,e0,a0,r0,d0,date,version,wcases,wrec), full_output=True, disp=True, finish=None)
@@ -70,7 +70,7 @@ wrec=0.1
 countries=["Italy","China","France"]
 
 optimal=[]
-version=40
+version=50
 for country in countries:
     
     strFile='./data/optimum'+str(version)+'.pkl'
@@ -78,10 +78,10 @@ for country in countries:
     dfresult.to_pickle(strFile)    
     
     if country=="China":
-        date="1/25/20"
-        s0=600e3
+        date="1/26/20"
+        s0=100000
         e0=1e-4
-        i0=800
+        i0=400
         r0=0 #-250e3
         d0=0
         #start fitting when the number of cases >= start
@@ -94,10 +94,10 @@ for country in countries:
         #weightDeaths = 1 - weigthCases - weigthRecov
     
     if country=="Italy":
-        date="2/24/20"
-        s0=2.1e6 #3e6*4*2*2*0.7*1.2*1.1
+        date="2/25/20"
+        s0=2300000 #3e6*4*2*2*0.7*1.2*1.1
         e0=1e-4
-        i0=200
+        i0=600
         r0=0
         d0=50
         #start fitting when the number of cases >= start
@@ -110,10 +110,10 @@ for country in countries:
         #weightDeaths = 1 - weigthCases - weigthRecov
 
     if country=="France":
-        date="3/3/20"
-        s0=1e6 #1.5e6*1.5*120/80*1.05
+        date=="3/4/20"
+        s0=800000 #1.5e6*1.5*120/80*1.05
         e0=1e-4
-        i0=0
+        i0=200
         r0=0
         d0=0
         #start fitting when the number of cases >= start
@@ -125,7 +125,7 @@ for country in countries:
         wrec=0.1
         #weightDeaths = 1 - weigthCases - weigthRecov
 
-    optimal.append(opt.remote(country,e0,a0,r0,d0,date,version,wcases,wrec))   
+    optimal.append(opt.remote(s0,i0,country,e0,a0,r0,d0,date,version,wcases,wrec))   
     version+=1
 
 optimal = ray.get(optimal)

@@ -106,7 +106,7 @@ def parse_arguments():
     parser.add_argument(
         '--download-data',
         dest='download_data',
-        default=True
+        default=False
     )
 
     parser.add_argument(
@@ -439,9 +439,9 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
     l3=0
     for i in range(0,len(data.values)-1):
         if data.values[i]>startNCases:
-            l1 = l1+((np.float64(res[i,3]) - np.float64(data.values[i]))/np.float64(data.values[i]))**2
-            l2 = l2+((np.float64(res[i,5]) - np.float64(death.values[i]))/np.float64(death.values[i]))**2
-            l3 = l3+((np.float64(res[i,4]) - np.float64(recovered.values[i]))/np.float64(recovered.values[i]))**2
+            l1 = l1+(math.log10(max(res[i,3]+1,1e-12)) - math.log10(max(data.values[i]+1,1e-12)))**2
+            l2 = l2+(math.log10(max(res[i,5]+1,1e-12)) - math.log10(max(death.values[i]+1,1e-12)))**2
+            l3 = l3+(math.log10(max(res[i,4]+1,1e-12)) - math.log10(max(recovered.values[i]+1,1e-12)))**2
             tot+=1
     l1=np.sqrt(l1/max(1,tot))
     l2=np.sqrt(l2/max(1,tot))
@@ -453,12 +453,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
     w = weigthRecov 
     #weight for deaths
     v = max(0,1. - u - w)
-    gtot=u*l1 + v*l2 + w*l3
-    
-    dfresult=pd.DataFrame([[l1,l2,l3,gtot]], columns=['g1','g2','g3','Total'])
-    dfresult.to_pickle('./data/optimum.pkl')
-    
-    return gtot
+    return u*l1 + v*l2 + w*l3
 
 #main program SIRD model
 
@@ -550,42 +545,42 @@ def main(countriesExt):
             cleanRecovered=True
     
         if country=="China":
-            startdate="1/22/20"
-            s0=400e3*1.5*2*2*2*2
+            startdate="1/26/20"
+            s0=100000 #600e3
             e0=1e-4
-            i0=1500
+            i0=400 #800
             r0=0 #-250e3
-            k0=0
-            #start fitting when the number of cases >= start
-            startNCases=500
-            #how many days is the prediction
-            predict_range=150
-            #weigth for fitting data
-            weigthCases=0.6
-            weigthRecov=0.1
-            #weightDeaths = 1 - weigthCases - weigthRecov
-    
-        if country=="Italy":
-            startdate="3/3/20"
-            s0=1.5e6*2*0.8*1.2*1.1
-            e0=1e-4
-            i0=500
-            r0=0
             k0=0
             #start fitting when the number of cases >= start
             startNCases=0
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.75
+            weigthCases=0.15
+            weigthRecov=0.1
+            #weightDeaths = 1 - weigthCases - weigthRecov
+    
+        if country=="Italy":
+            startdate="2/25/20"
+            s0=2300000 #2.1e6 #3e6*4*2*2*0.7*1.2*1.1
+            e0=1e-4
+            i0=600 #200
+            r0=0
+            k0=50
+            #start fitting when the number of cases >= start
+            startNCases=100
+            #how many days is the prediction
+            predict_range=150
+            #weigth for fitting data
+            weigthCases=0.1
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
     
         if country=="France":
-            startdate="3/3/20"
-            s0=1.5e6*1.5*120/80*1.3*1.5
+            startdate="3/4/20"
+            s0=800000 #1e6 #1.5e6*1.5*120/80*1.05
             e0=1e-4
-            i0=400
+            i0=200
             r0=0
             k0=0
             #start fitting when the number of cases >= start
@@ -593,7 +588,7 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.4
+            weigthCases=0.1
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
     
@@ -678,7 +673,7 @@ df=df.transpose()
 [time5,cases5]=getCases(df,country5)
 
 #plot version - changes the file name png
-version="1"
+version="10"
 
 #choose country for curve fitting
 #choose country for growth curve
