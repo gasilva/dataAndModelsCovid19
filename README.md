@@ -335,7 +335,7 @@ Global optimization to fit real data
 
 A zoom at infected, deaths and recovered
 
-![Model SEAIR-D Global Optimization Zoom Covid-19 epidemics for Brazil with asymptomatic](./results/ZoomModelSEAIRDOptGlobalOptimumBrazil.png)
+![Model SEAIR-D Global Optimization Zoom Covid-19 epidemics for Brazil with asymptomatic](./results/ZoomModelSEAIRDOptBrazil.png)
 
 ### Validation with Real Data from Selected Countries
 
