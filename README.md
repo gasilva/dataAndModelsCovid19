@@ -125,6 +125,10 @@ https://github.com/CSSEGISandData/COVID-19
 
 ![Bar Plot for Covid-19 for Infected Cases Absolute](./results/coronaPythonGrowthDeltaCasesEN_Brazil.png)
 
+### Simple Exponential and Logistic Functions Fitting
+
+![Simple Exponential and Logistic Functions Fitting](./results/coronaPythonModelENBrazil.png)
+
 ## Theory
 
 ### Mathematical Models
