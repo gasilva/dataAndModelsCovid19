@@ -453,14 +453,11 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, vers
     l1=0
     l2=0
     l3=0
-    for i in range(0,len(data.values)-1):
+    for i in range(0,len(data.values)):
         if data.values[i]>startNCases:
-            l1 = l1+((np.float64(res[i,3]) - \
-                      np.float64(data.values[i]))/max(1e-12,np.float64(data.values[i])))**2
-            l2 = l2+((np.float64(res[i,5]) - \
-                      np.float64(death.values[i]))/max(1e-12,np.float64(death.values[i])))**2
-            l3 = l3+((np.float64(res[i,4]) - \
-                      np.float64(recovered.values[i]))/max(1e-12,np.float64(recovered.values[i])))**2
+            l1 = l1+(res[i,3] - data.values[i])**2
+            l2 = l2+(res[i,5] - death.values[i])**2
+            l3 = l3+(res[i,4] - recovered.values[i])**2
             tot+=1
     l1=np.sqrt(l1/max(1,tot))
     l2=np.sqrt(l2/max(1,tot))
