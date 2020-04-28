@@ -113,6 +113,12 @@ This code has data from Repository by Johns Hopkins CSSE
 
 https://github.com/CSSEGISandData/COVID-19
 
+### Log Plot for Covid-19 Infection in 5 countries
+
+![Log Plot for Covid-19 Infection in 5 countries](./results/coronaPythonEN_1.png)
+
+![Log Plot for Covid-19 Infection in 5 countries second set](./results/coronaPythonEN_2.png)
+
 ## Theory
 
 ### Mathematical Models
