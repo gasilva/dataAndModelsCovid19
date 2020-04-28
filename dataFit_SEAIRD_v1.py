@@ -529,9 +529,9 @@ def main(countriesExt):
     
         if country=="Brazil":
             startdate="3/3/20"
-            s0=500e3*1.7
+            s0=1.6e6 #500e3*1.7
             e0=1e-4
-            i0=80
+            i0=200
             r0=0
             k0=0
             #start fitting when the number of cases >= start
@@ -539,7 +539,7 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.5
+            weigthCases=0.1
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
             cleanRecovered=True
@@ -642,7 +642,7 @@ def main(countriesExt):
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
 #opt=5 SEAIR-D Model
-opt=0
+opt=1
 
 #prepare data for plotting log chart
 country1="US"
@@ -673,7 +673,7 @@ df=df.transpose()
 [time5,cases5]=getCases(df,country5)
 
 #plot version - changes the file name png
-version="10"
+version="1"
 
 #choose country for curve fitting
 #choose country for growth curve
@@ -697,7 +697,7 @@ if opt==1 or opt==0 or opt==4:
 
     model='SEAIRD' 
 
-    df = loadDataFrame('./data/'+model+'_'+country+'.pkl')
+    df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+country+'.pkl')
     time6, cases6 = predictionsPlot(df,80,250)
 
     #model
@@ -726,26 +726,26 @@ if opt==1 or opt==0 or opt==4:
     plt.annotate(country3+" {:.1f} K".format(cases3[len(cases3)-1]/1000), # this is the text
         (time3[len(cases3)-1],cases3[len(cases3)-1]), # this is the point to label
         textcoords="offset points", # how to position the text
-        xytext=(0,10), # distance from text to points (x,y)
+        xytext=(0,-20), # distance from text to points (x,y)
         ha='left') # horizontal alignment can be left, right or center
 
     idx=int(np.argmax(cases6))
     plt.annotate("{:.1f} K".format(max(cases6)/1000), # this is the text
         (time6[idx],cases6[idx]), # this is the point to label
         textcoords="offset points", # how to position the text
-        xytext=(5,-15), # distance from text to points (x,y)
+        xytext=(15,-15), # distance from text to points (x,y)
         ha='right') # horizontal alignment can be left, right or center
 
     plt.annotate(country2+" {:.1f} K".format(cases2[len(cases2)-1]/1000), # this is the text
         (time2[len(cases2)-1],cases2[len(cases2)-1]), # this is the point to label
         textcoords="offset points", # how to position the text
-        xytext=(0,-20), # distance from text to points (x,y)
+        xytext=(0,15), # distance from text to points (x,y)
         ha='center') # horizontal alignment can be left, right or center
     
     plt.annotate(country1+" {:.1f} K".format(cases1[len(cases1)-1]/1000), # this is the text
         (time1[len(cases1)-1],cases1[len(cases1)-1]), # this is the point to label
         textcoords="offset points", # how to position the text
-        xytext=(-10,10), # distance from text to points (x,y)
+        xytext=(-8,10), # distance from text to points (x,y)
         ha='center') # horizontal alignment can be left, right or center
 
     style = dict(size=10, color='gray')
@@ -777,10 +777,10 @@ if opt==2 or opt==0:
     if opt==2:
         #model
         #33% per day
-        x,y=logGrowth(1.33,60)
+        x,y=logGrowth(1.33,90)
 
         #25% per day
-        x1,y1=logGrowth(1.25,60)
+        x1,y1=logGrowth(1.25,90)
 
     #model fitting
 
@@ -807,9 +807,9 @@ if opt==2 or opt==0:
     if country==country3:
         casesFit=cases3
         timeFit=time3
-        maxCases=50e3
-        maxTime=50
-        guessExp=0.5
+        maxCases=150e3
+        maxTime=90
+        guessExp=1
 
     if country==country4:
         casesFit=cases4
