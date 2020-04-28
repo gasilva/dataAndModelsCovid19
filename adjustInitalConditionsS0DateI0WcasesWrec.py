@@ -9,8 +9,8 @@ import time
 import sys
 
 
-def fun(point, country,e0,a0,r0,d0,date,version,wcases,wrec):
-    s0, deltaDate, i0 = point
+def fun(point, country,e0,a0,r0,d0,date,version):
+    s0, deltaDate, i0, wcases, wrec = point
     download=False
     Date = datetime.strptime(date, "%m/%d/%y")
     end_date = Date + timedelta(days=+int(deltaDate))
@@ -33,7 +33,7 @@ def fun(point, country,e0,a0,r0,d0,date,version,wcases,wrec):
     
     file_path='./data/optimum'+str(version)+'.pkl'
     
-    time_to_wait=120
+    time_to_wait=60
     time_counter=0
     while not os.path.exists(file_path):
         time.sleep(1)
@@ -46,11 +46,13 @@ def fun(point, country,e0,a0,r0,d0,date,version,wcases,wrec):
     return df.Total
 
 @ray.remote
-def opt(s0,i0,country,e0,a0,r0,d0,date,version,wcases,wrec):
-    rranges = [slice(s0*0.8,s0*1.2,s0*0.05),slice(-1,1,1),slice(i0*0.80,i0*1.2,i0*0.05)]
+def opt(country,e0,a0,r0,d0,date,version):
+    rranges = [slice(1e5,2.5e6,5e5),slice(0,1,1),slice(200,600,200),\
+               slice(0.1,0.6,0.1),slice(0.1,0.2,0.05)]
     optimal = brute(fun,        
         ranges=rranges,
-        args=(country,e0,a0,r0,d0,date,version,wcases,wrec), full_output=True, disp=True, finish=None)
+        args=(country,e0,a0,r0,d0,date,version), full_output=True, \
+            disp=True, finish=None)
     return optimal
 
 ray.shutdown()
@@ -70,7 +72,7 @@ wrec=0.1
 countries=["Italy","China","France"]
 
 optimal=[]
-version=50
+version=240
 for country in countries:
     
     strFile='./data/optimum'+str(version)+'.pkl'
@@ -78,10 +80,10 @@ for country in countries:
     dfresult.to_pickle(strFile)    
     
     if country=="China":
-        date="1/26/20"
-        s0=100000
+        date="1/25/20"
+        s0=600e3
         e0=1e-4
-        i0=400
+        i0=800
         r0=0 #-250e3
         d0=0
         #start fitting when the number of cases >= start
@@ -94,10 +96,10 @@ for country in countries:
         #weightDeaths = 1 - weigthCases - weigthRecov
     
     if country=="Italy":
-        date="2/25/20"
-        s0=2300000 #3e6*4*2*2*0.7*1.2*1.1
+        date="2/24/20"
+        s0=2.1e6 #3e6*4*2*2*0.7*1.2*1.1
         e0=1e-4
-        i0=600
+        i0=200
         r0=0
         d0=50
         #start fitting when the number of cases >= start
@@ -110,10 +112,10 @@ for country in countries:
         #weightDeaths = 1 - weigthCases - weigthRecov
 
     if country=="France":
-        date=="3/4/20"
-        s0=800000 #1.5e6*1.5*120/80*1.05
+        date="3/3/20"
+        s0=1e6 #1.5e6*1.5*120/80*1.05
         e0=1e-4
-        i0=200
+        i0=0
         r0=0
         d0=0
         #start fitting when the number of cases >= start
@@ -125,7 +127,7 @@ for country in countries:
         wrec=0.1
         #weightDeaths = 1 - weigthCases - weigthRecov
 
-    optimal.append(opt.remote(s0,i0,country,e0,a0,r0,d0,date,version,wcases,wrec))   
+    optimal.append(opt.remote(country,e0,a0,r0,d0,date,version))   
     version+=1
 
 optimal = ray.get(optimal)
@@ -136,6 +138,8 @@ for i in range(0,len(countries)):
         f.write("S0 = {}\n".format(optimal[i][0][0]))
         f.write("Delta Date Days = {}\n".format(optimal[i][0][1]))   
         f.write("I0 = {}\n".format(optimal[i][0][2]))   
+        f.write("wCases = {}\n".format(optimal[i][0][3]))   
+        f.write("wRec = {}\n".format(optimal[i][0][4]))   
         f.write("Function Minimum = {}\n".format(optimal[i][1]))  
     
     stdoutOrigin=sys.stdout 
