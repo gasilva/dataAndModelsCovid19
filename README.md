@@ -115,7 +115,7 @@ https://github.com/CSSEGISandData/COVID-19
 
 ## Data Analysis
 
-### Log Plot for Covid-19 Infection in 5 countries
+### Log Plot for Covid-19 Infection in 5 Countries
 
 ![Log Plot for Covid-19 Infection in 5 countries](./results/coronaPythonEN_1.png)
 
@@ -127,7 +127,7 @@ https://github.com/CSSEGISandData/COVID-19
 
 ![Bar Plot for Covid-19 for Infected Cases Absolute](./results/coronaPythonGrowthDeltaCasesEN_Brazil.png)
 
-### Simple Exponential and Logistic Functions Fitting
+### Simple Exponential and Logistic Functions Fitting for Covid-19 Infected Data
 
 ![Simple Exponential and Logistic Functions Fitting](./results/coronaPythonModelENBrazil.png)
 
