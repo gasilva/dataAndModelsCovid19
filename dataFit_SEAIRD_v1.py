@@ -437,11 +437,11 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
     l1=0
     l2=0
     l3=0
-    for i in range(0,len(data.values)-1):
+    for i in range(0,len(data.values)):
         if data.values[i]>startNCases:
-            l1 = l1+(math.log10(max(res[i,3]+1,1e-12)) - math.log10(max(data.values[i]+1,1e-12)))**2
-            l2 = l2+(math.log10(max(res[i,5]+1,1e-12)) - math.log10(max(death.values[i]+1,1e-12)))**2
-            l3 = l3+(math.log10(max(res[i,4]+1,1e-12)) - math.log10(max(recovered.values[i]+1,1e-12)))**2
+            l1 = l1+(res[i,3] - data.values[i])**2
+            l2 = l2+(res[i,5] - death.values[i])**2
+            l3 = l3+(res[i,4] - recovered.values[i])**2
             tot+=1
     l1=np.sqrt(l1/max(1,tot))
     l2=np.sqrt(l2/max(1,tot))
@@ -529,18 +529,18 @@ def main(countriesExt):
     
         if country=="Brazil":
             startdate="3/3/20"
-            s0=500e3
+            s0=500e3*1.7
             e0=1e-4
-            i0=100
+            i0=80
             r0=0
-            k0=50
+            k0=0
             #start fitting when the number of cases >= start
-            startNCases=0
+            startNCases=100
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.25
-            weigthRecov=0.15
+            weigthCases=0.5
+            weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
             cleanRecovered=True
     
@@ -642,7 +642,7 @@ def main(countriesExt):
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
 #opt=5 SEAIR-D Model
-opt=5
+opt=0
 
 #prepare data for plotting log chart
 country1="US"
@@ -685,7 +685,7 @@ country="Brazil"
 #                "Brazil", "Belgium", "Germany", "Spain"]
 # countriesExt=["Italy","China","France", \
 #                "Brazil", "Belgium", "Spain"]
-countriesExt=["Italy","China","France"]
+countriesExt=["Brazil"] #"Italy","China","France"]
 
 #initial vars
 a = 0.0
