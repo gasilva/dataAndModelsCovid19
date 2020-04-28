@@ -119,6 +119,12 @@ https://github.com/CSSEGISandData/COVID-19
 
 ![Log Plot for Covid-19 Infection in 5 countries second set](./results/coronaPythonEN_2.png)
 
+### Bar Plot for Covid-19 for Infected Cases
+
+![Bar Plot for Covid-19 for Infected Cases Relative](./results/coronaPythonGrowthEN_Brazil.png)
+
+![Bar Plot for Covid-19 for Infected Cases Absolute](./results/coronaPythonGrowthDeltaCasesEN_Brazil.png)
+
 ## Theory
 
 ### Mathematical Models
