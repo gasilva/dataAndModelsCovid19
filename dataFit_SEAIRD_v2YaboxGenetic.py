@@ -14,7 +14,8 @@ from csv import writer
 from datetime import datetime,timedelta
 from scipy.optimize import curve_fit
 from scipy.integrate import odeint
-from scipy.optimize import basinhopping
+from yabox import DE
+import pickle
 
 #parallel computation
 import ray
@@ -319,20 +320,34 @@ class Learner(object):
             zeroRecDeaths=1
         self.data = self.load_confirmed(self.country)-zeroRecDeaths*(self.recovered+self.death)
 
+
+
         #optmizer solver setup and run
+        # bounds=[(1e-12, .4), (1e-12, .4), (1/300,0.2),  (1/300,0.2), (1/300,0.2),\
+        #         (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
+        # minimizer_kwargs = dict(method="L-BFGS-B", bounds=bounds, args=(self.data, self.recovered, \
+        #     self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
+        #         self.weigthCases, self.weigthRecov))
+        # x0=[0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001]
+        # optimal =  basinhopping(lossOdeint,x0,minimizer_kwargs=minimizer_kwargs,
+        #                 niter=200,disp=True)
+        
+        out=[self.data, self.recovered, \
+             self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
+                 self.weigthCases, self.weigthRecov]
+
+        with open('/Users/gasilva/data.pkl','wb') as f:
+            pickle.dump(out,f)
+
         bounds=[(1e-12, .4), (1e-12, .4), (1/300,0.2),  (1/300,0.2), (1/300,0.2),\
                 (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
-        minimizer_kwargs = dict(method="L-BFGS-B", bounds=bounds, args=(self.data, self.recovered, \
-            self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
-                self.weigthCases, self.weigthRecov))
-        x0=[0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001]
-        optimal =  basinhopping(lossOdeint,x0,minimizer_kwargs=minimizer_kwargs,
-                        niter=200,disp=True)
+        de = DE(lossOdeint, bounds, mutation=(0.5, 1.0), maxiters=1000)
+        p, f = de.solve(show_progress=True)
         
         #parameter list for optimization
         #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
 
-        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal.x
+        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = p
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5 \
                 = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, \
                     self.data, self.recovered, self.death, self.country, self.s_0, \
@@ -410,8 +425,13 @@ class Learner(object):
         print(self.country+" is done!")
 
 #objective function Odeint solver
-def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, \
-    startNCases, weigthCases, weigthRecov):
+def lossOdeint(point):
+
+    with open('/Users/gasilva/data.pkl', 'rb') as f:
+        data, recovered, \
+            death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, \
+                 weigthCases, weigthRecov=pickle.load(f)
+
     size = len(data)
     beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = point
     def SEAIRD(y,t):
@@ -530,7 +550,7 @@ def main(countriesExt):
     
         if country=="Brazil":
             startdate="3/3/20"
-            s0=1.2e6 #500e3*1.7
+            s0=1000e3 #500e3*1.7
             e0=1e-4
             i0=100
             r0=0
