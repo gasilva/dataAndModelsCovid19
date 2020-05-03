@@ -344,9 +344,15 @@ class Learner(object):
 
         p, f = DE(lossOdeint, bounds, popsize=16, self_adaptive=False).solve(show_progress=True)
         
+        print(p)
+        print(f)
+
         mymin=np.min(f)
         imin=[i for i, x in enumerate(f) if x==mymin]
         p=p[imin]
+
+        print(mymin)
+        print(imin)
 
         #parameter list for optimization
         #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
