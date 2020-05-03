@@ -530,7 +530,7 @@ def main(countriesExt):
     
         if country=="Brazil":
             startdate="3/3/20"
-            s0=1.5e6 #500e3*1.7
+            s0=1.6e6 #500e3*1.7
             e0=1e-4
             i0=100
             r0=0
@@ -540,7 +540,7 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.6
+            weigthCases=0.5
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
             cleanRecovered=True
