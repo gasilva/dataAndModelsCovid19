@@ -348,7 +348,7 @@ class Learner(object):
         print(f)
 
         mymin=np.min(f)
-        p=p[np.where(f == f.min())
+        p=p[np.where(f == f.min())]
         
         print(p)
 
