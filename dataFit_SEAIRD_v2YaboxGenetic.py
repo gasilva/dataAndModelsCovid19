@@ -344,14 +344,14 @@ class Learner(object):
 
         p, f = DE(lossOdeint, bounds, popsize=32, self_adaptive=False).solve(show_progress=True)
         
-        
+
         print(p[-1])
         print(p[7])
 
         #parameter list for optimization
         #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
 
-        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = p[7]
+        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = p[-1]
 
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5 \
                 = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, \
