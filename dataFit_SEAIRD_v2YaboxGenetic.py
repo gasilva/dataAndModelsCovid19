@@ -344,8 +344,8 @@ class Learner(object):
 
 
 
-        popsize=int(64*8/8)        
-        p, f = DE(lossOdeint, bounds, popsize=popsize, maxiters=10000000).solve(show_progress=True)
+        # popsize=int(64*8/8)        
+        p, f = DE(lossOdeint, bounds, popsize=popsize, mutation=0.5, crossover=0.5, maxiters=10000000).solve(show_progress=True)
         
         #parameter list for optimization
         #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
@@ -353,7 +353,7 @@ class Learner(object):
         plt.plot(f)
         plt.show()
 
-        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = p[popsize-1]
+        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = p.best_fitness
 
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5 \
                 = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, \
