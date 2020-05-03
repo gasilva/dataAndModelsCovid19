@@ -342,16 +342,11 @@ class Learner(object):
         bounds=[(1e-12, .2),(1e-12, .2),(1/300 ,0.4),(1/300, .4),
         (1/300, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
-
-
-        # popsize=int(8/8)        
-        p, f = DE(lossOdeint, bounds, mutation=0.5, crossover=0.5, maxiters=10000000).solve(show_progress=True)
+        p, f = DE(lossOdeint, bounds, mutation=0.5, popsize=64, crossover=0.5, 
+                                maxiters=10000000, self_adaptive=False).solve(show_progress=True)
         
         #parameter list for optimization
         #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
-
-        plt.plot(f)
-        plt.show()
 
         beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = p.best_fitness
 
