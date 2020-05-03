@@ -343,8 +343,9 @@ class Learner(object):
         (1/300, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
 
-        popsize=int(64/8)        
-        p, f = DE(lossOdeint, bounds, popsize=popsize).solve(show_progress=True)
+
+        popsize=int(64*8/8)        
+        p, f = DE(lossOdeint, bounds, popsize=popsize, maxiters=10000).solve(show_progress=True)
         
         #parameter list for optimization
         #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
