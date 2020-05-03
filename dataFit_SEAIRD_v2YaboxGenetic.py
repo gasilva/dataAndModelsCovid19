@@ -342,12 +342,12 @@ class Learner(object):
         bounds=[(1e-12, .2),(1e-12, .2),(1/300 ,0.4),(1/300, .4),
         (1/300, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
-        p = DE(lossOdeint, bounds, self_adaptive=False).solve(show_progress=True)
+        p, f = DE(lossOdeint, bounds, popsize=16, self_adaptive=False).solve(show_progress=True)
         
         #parameter list for optimization
         #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
 
-        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = p.best_fitness
+        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = p[15]
 
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5 \
                 = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, \
