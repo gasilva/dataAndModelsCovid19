@@ -353,7 +353,7 @@ class Learner(object):
         plt.plot(f)
         plt.show()
 
-        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = p[-1]
+        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = p[popsize-1]
 
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5 \
                 = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, \
