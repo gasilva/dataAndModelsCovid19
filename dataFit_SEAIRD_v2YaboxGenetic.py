@@ -341,13 +341,18 @@ class Learner(object):
 
         bounds=[(1e-12, .2),(1e-12, .2),(1/300 ,0.4),(1/300, .4),
         (1/300, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
-                
-        p, f = DE(lossOdeint, bounds).solve(show_progress=True)
+
+
+        popsize=int(64/8)        
+        p, f = DE(lossOdeint, bounds, popsize=popsize).solve(show_progress=True)
         
         #parameter list for optimization
         #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
 
-        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = p[7]
+        plt.plot(f)
+        plt.show()
+
+        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = p[-1]
 
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5 \
                 = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, \
