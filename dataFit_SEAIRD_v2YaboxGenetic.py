@@ -349,7 +349,9 @@ class Learner(object):
 
         mymin=np.min(f)
         p=p[np.where(f == f.min())
-        print(np.where(a == a.min()))
+
+        print(np.where(a == a.min())
+        
         print(p)
 
         #parameter list for optimization
