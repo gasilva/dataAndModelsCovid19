@@ -339,17 +339,15 @@ class Learner(object):
         with open('./data/data.pkl','wb') as f:
             pickle.dump(out,f)
 
-        bounds=[(1e-12, .4), (1e-12, .4), (1/300,0.2),  (1/300,0.2), (1/300,0.2),\
-                (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
+        bounds=[(1e-12, .2),(1e-12, .2),(1/300 ,0.4),(1/300, .4),
+        (1/300, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
                 
-        de = DE(lossOdeint, bounds, mutation=(0.5, 1.0), maxiters=20000)
-        p, f = de.solve(show_progress=True)
+        p, f = DE(lossOdeint, bounds).solve(show_progress=True)
         
         #parameter list for optimization
         #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
 
-        print(p)
-        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = p
+        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = p[7]
 
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5 \
                 = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, \
@@ -1031,5 +1029,5 @@ if opt==5 or opt==0:
 
     if __name__ == '__main__':
         main(countriesExt)
-        
+
 
