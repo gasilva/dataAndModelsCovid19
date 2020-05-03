@@ -342,8 +342,7 @@ class Learner(object):
         bounds=[(1e-12, .2),(1e-12, .2),(1/300 ,0.4),(1/300, .4),
         (1/300, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
-        p, f = DE(lossOdeint, bounds, mutation=0.5, popsize=64, crossover=0.5, 
-                                maxiters=10000000, self_adaptive=False).solve(show_progress=True)
+        p, f = DE(lossOdeint, bounds, self_adaptive=False).solve(show_progress=True)
         
         #parameter list for optimization
         #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
