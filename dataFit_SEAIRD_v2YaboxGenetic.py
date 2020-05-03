@@ -348,11 +348,9 @@ class Learner(object):
         print(f)
 
         mymin=np.min(f)
-        imin=[i for i, x in enumerate(f) if x==mymin]
-        p=p[imin]
-
-        print(mymin)
-        print(imin)
+        p=p[np.where(f == f.min())
+        print(np.where(a == a.min()))
+        print(p)
 
         #parameter list for optimization
         #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
