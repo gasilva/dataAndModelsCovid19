@@ -299,7 +299,7 @@ class Learner(object):
         
         y0=[s_0,e_0,a_0,i_0,r_0,d_0]
         tspan=np.arange(0, size, 1)
-        res=odeint(SEAIRD,y0,tspan)
+        res=odeint(SEAIRD,y0,tspan]
         # hmax=0.01)
 
         extended_actual = np.concatenate((data.values, \
@@ -392,7 +392,7 @@ class Learner(object):
 
         df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
         country=self.country
-        strFile ="./results/modelSEAIRDOptGlobalOptimum"+country+"Yabox.png"
+        strFile ="./results/modelSEAIRDOptGlobalOptimum"+country+".png"
         savePlot(strFile)
         plt.show()
         plt.close()
@@ -420,7 +420,7 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
-        strFile ="./results/ZoomModelSEAIRDOpt"+country+"Yabox.png"
+        strFile ="./results/ZoomModelSEAIRDOpt"+country+".png"
         savePlot(strFile)
         plt.show()
         plt.close()
@@ -455,8 +455,7 @@ def lossOdeint(point):
 
     y0=[s_0,e_0,a_0,i_0,r_0,d_0]
     tspan=np.arange(0, size, 1)
-    res=odeint(SEAIRD,y0,tspan) 
-    #,hmax=0.01)
+    res=odeint(SEAIRD,y0,tspan,hmax=0.01)
 
     tot=0
     l1=0
@@ -1031,5 +1030,3 @@ if opt==5 or opt==0:
 
     if __name__ == '__main__':
         main(countriesExt)
-        
-
