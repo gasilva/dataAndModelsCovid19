@@ -342,7 +342,7 @@ class Learner(object):
         bounds=[(1e-12, .2),(1e-12, .2),(1/300 ,0.4),(1/300, .4),
         (1/300, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
-        p, f = DE(lossOdeint, bounds, popsize=256, self_adaptive=False).solve(show_progress=True)
+        p, f = DE(lossOdeint, bounds, popsize=256, self_adaptive=False, maxiters=35000).solve(show_progress=True)
         
 
         print(p[-1])
