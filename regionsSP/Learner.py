@@ -27,12 +27,12 @@ from scipy.optimize import minimize
 #parallel computation
 import ray
 ray.shutdown()
-ray.init(num_cpus=4)
+ray.init(num_cpus=3)
 
 #register function for parallel processing
 @ray.remote
 class Learner(object):
-    def __init__(self, districtRegion, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov):
+    def __init__(self, districtRegion, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov, cleanRecovered, version, savedata=True):
         self.districtRegion = districtRegion
         self.loss = loss
         self.start_date = start_date
@@ -47,6 +47,9 @@ class Learner(object):
         self.ratio = ratio
         self.weigthCases = weigthCases
         self.weigthRecov = weigthRecov
+        self.cleanRecovered=cleanRecovered
+        self.version=version
+        self.savedata = savedata
 
     def load_confirmed(self, districtRegion):
         dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
@@ -121,8 +124,11 @@ class Learner(object):
     def train(self):
         self.data = self.load_confirmed(self.districtRegion)
         self.death = self.load_dead(self.districtRegion)
-
-        print("\n running model for "+self.districtRegion)
+        
+        print_info = False
+        
+        if print_info:
+            print("\n running model for "+self.districtRegion)
         optimal = minimize(self.loss,        
             [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
             args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
@@ -131,8 +137,8 @@ class Learner(object):
             bounds=[(1e-12, 50), (1e-12, 50), (1./160.,0.2),  (1./160.,0.2), (1./160.,0.2),\
                  (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)])
             #beta, beta2, sigma, sigma2, sigma3, gamma, b
-
-        print("\n", optimal)
+        if print_info:
+            print("\n", optimal)
         beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal.x
         new_index, extended_actual, extended_death, y0, y1, y2, y3, y4, y5 \
                 = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, self.data, \
@@ -143,9 +149,12 @@ class Learner(object):
         df = pd.DataFrame(data=dataFr2)
         df.columns  = ['Susceptible','Exposed','Asymptomatic','Infected','Recovered','Deaths']
         df.index = pd.date_range(start=datetime.strptime(new_index[0],'%Y-%m-%d'), 
-            end=datetime.strptime(new_index[len(new_index)-1],'%Y-%m-%d'))
+            end=datetime.strptime(new_index[len(new_index)-2],'%Y-%m-%d'))
         df.index.name = 'date'
-
-        #save simulation results for comparison and use in another codes/routines
-        df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.districtRegion+'.pkl')
-        df.to_csv('./results/data/SEAIRD_sigmaOpt_'+self.districtRegion+'.csv', sep=",")
+        
+        if self.savedata:
+            #save simulation results for comparison and use in another codes/routines
+            df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.districtRegion+'.pkl')
+            df.to_csv('./results/data/SEAIRD_sigmaOpt_'+self.districtRegion+'.csv', sep=",")
+        else:
+            return optimal.fun
