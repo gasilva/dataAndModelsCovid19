@@ -34,7 +34,7 @@ ray.init(num_cpus=20)
 #register function for parallel processing
 @ray.remote
 class Learner(object):
-    def __init__(self, districtRegion, lossOdeint, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov):
+    def __init__(self, districtRegion, lossOdeint, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov,cleanRecovered,version,savedata=True):
         self.districtRegion = districtRegion
         self.loss = lossOdeint
         self.start_date = start_date
@@ -49,6 +49,9 @@ class Learner(object):
         self.ratio = ratio
         self.weigthCases = weigthCases
         self.weigthRecov = weigthRecov
+        self.cleanRecovered=cleanRecovered
+        self.version=version
+        self.savedata = savedata
 
     def load_confirmed(self, districtRegion):
         dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
@@ -148,6 +151,9 @@ class Learner(object):
             end=datetime.strptime(new_index[len(new_index)-1],'%Y-%m-%d'))
         df.index.name = 'date'
         
-        #save simulation results for comparison and use in another codes/routines
-        df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.districtRegion+'.pkl')
-        df.to_csv('./results/data/SEAIRD_sigmaOpt_'+self.districtRegion+'.csv', sep=",")
+        if self.savedata:
+            #save simulation results for comparison and use in another codes/routines
+            df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.districtRegion+'.pkl')
+            df.to_csv('./results/data/SEAIRD_sigmaOpt_'+self.districtRegion+'.csv', sep=",")
+        else:
+            return optimal.fun
