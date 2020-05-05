@@ -126,6 +126,8 @@ class Learner(object):
     def train(self):
         self.data = self.load_confirmed(self.districtRegion)
         self.death = self.load_dead(self.districtRegion)
+        
+        print_info = False
       
         bounds=[(1e-12, .4), (1e-12, .4), (1e-12,0.2),  (1e-12,0.2), (1e-12,0.2),\
                 (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
@@ -133,10 +135,16 @@ class Learner(object):
                  self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
                 self.startNCases, self.ratio, self.weigthCases, self.weigthRecov))
         x0=[0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
-        print("\n running model for "+self.districtRegion)
+        
+        if print_info:
+            print("\n running model for "+self.districtRegion)
+        
         optimal =  basinhopping(self.loss,x0,minimizer_kwargs=minimizer_kwargs, disp=True)
             #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
-        print("\n", optimal)
+            
+        if print_info:
+            print("\n", optimal)
+        
         beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal.x
         new_index, extended_actual, extended_death, y0, y1, y2, y3, y4, y5 \
                 = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, self.data, \
