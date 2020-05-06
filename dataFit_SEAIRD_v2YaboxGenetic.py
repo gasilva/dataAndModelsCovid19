@@ -20,7 +20,7 @@ import pickle
 #parallel computation
 import ray
 ray.shutdown()
-ray.init(num_cpus=5)
+ray.init(num_cpus=20)
 
 def logGrowth(growth,finalDay):
     x =[]
@@ -342,16 +342,15 @@ class Learner(object):
         bounds=[(1e-12, .2),(1e-12, .2),(1/300 ,0.4),(1/300, .4),
         (1/300, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
-        p, f = DE(lossOdeint, bounds, popsize=256, self_adaptive=False, maxiters=35000).solve(show_progress=True)
-        
-
-        print(p[-1])
-        print(p[7])
+        p, f = DE(lossOdeint, bounds, maxiters=2000).solve(show_progress=True)
+        df=pd.DataFrame(p,columns=["best","2nd","3rd","4th",\
+            "5th","6th","7th","8th"])
+        p = df.best
 
         #parameter list for optimization
         #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
 
-        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = p[-1]
+        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = p
 
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5 \
                 = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, \
