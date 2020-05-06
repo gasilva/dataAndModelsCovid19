@@ -342,7 +342,7 @@ class Learner(object):
         bounds=[(1e-12, .2),(1e-12, .2),(1/300 ,0.4),(1/300, .4),
         (1/300, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
-        p, f = PDE(lossOdeint, bounds, maxiters=2000).solve(show_progress=True)
+        p, f = PDE(lossOdeint, bounds, maxiters=15000).solve(show_progress=True)
         df=pd.DataFrame(p,columns=["best","2nd","3rd","4th",\
             "5th","6th","7th","8th"])
         p = df.best
