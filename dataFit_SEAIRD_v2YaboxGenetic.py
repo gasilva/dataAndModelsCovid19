@@ -563,7 +563,7 @@ def main(countriesExt):
     
         if country=="Brazil":
             startdate="3/3/20"
-            s0=1.7e6 #500e3*1.7
+            s0=1.75e6 #500e3*1.7
             e0=1e-4
             i0=100
             r0=0
