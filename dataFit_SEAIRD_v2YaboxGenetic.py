@@ -3,7 +3,6 @@ import sys
 import argparse
 import json
 import os
-import math
 import urllib.request
 import matplotlib.pyplot as plt
 from matplotlib import cm
@@ -21,7 +20,7 @@ from tqdm import tqdm
 #parallel computation
 import ray
 ray.shutdown()
-ray.init(num_cpus=4)
+ray.init(num_cpus=32)
 
 def logGrowth(growth,finalDay):
     x =[]
@@ -322,28 +321,17 @@ class Learner(object):
         else:
             zeroRecDeaths=1
         self.data = self.load_confirmed(self.country)-zeroRecDeaths*(self.recovered+self.death)
-
-        #optmizer solver setup and run
-        # bounds=[(1e-12, .4), (1e-12, .4), (1/300,0.2),  (1/300,0.2), (1/300,0.2),\
-        #         (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
-        # minimizer_kwargs = dict(method="L-BFGS-B", bounds=bounds, args=(self.data, self.recovered, \
-        #     self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
-        #         self.weigthCases, self.weigthRecov))
-        # x0=[0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001]
-        # optimal =  basinhopping(lossOdeint,x0,minimizer_kwargs=minimizer_kwargs,
-        #                 niter=200,disp=True)
         
         out=[self.data, self.recovered, \
              self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
                  self.weigthCases, self.weigthRecov]
-
         with open('./data/data.pkl','wb') as f:
             pickle.dump(out,f)
 
-        bounds=[(1e-12, .2),(1e-12, .2),(1/300 ,0.4),(1/300, .4),
-        (1/300, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
+        bounds=[(1e-12, .2),(1e-12, .2),(1/600 ,0.4),(1/600, .4),
+        (1/600, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
-        maxiterations=2000
+        maxiterations=1500
         de = DE(lossOdeint, bounds, maxiters=maxiterations)
         i=0
         with tqdm(total=maxiterations*1000) as pbar:
@@ -394,7 +382,7 @@ class Learner(object):
         xy=(1.06,0.1), xycoords='axes fraction',
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
-        plt.annotate('Original SEIR-D with delay model, São Paulo, Brazil', fontsize=10, 
+        plt.annotate('Original SEAIR-D with delay model, São Paulo, Brazil', fontsize=10, 
         xy=(1.045,0.1), xycoords='axes fraction',
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
@@ -524,7 +512,7 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.65
+            weigthCases=0.5
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
         
@@ -547,7 +535,7 @@ def main(countriesExt):
         
         if country=="Belgium":
             startdate="3/3/20"
-            s0=3e6/2/4*1.1*1.5
+            s0=3e6/2/4*1.1*1.5*2
             e0=1e-4
             i0=265
             r0=0
@@ -563,7 +551,7 @@ def main(countriesExt):
     
         if country=="Brazil":
             startdate="3/3/20"
-            s0=1.75e6 #500e3*1.7
+            s0=3.0e6 #500e3*1.7
             e0=1e-4
             i0=100
             r0=0
@@ -580,23 +568,23 @@ def main(countriesExt):
     
         if country=="China":
             startdate="1/26/20"
-            s0=100000 #600e3
+            s0=120000*6.2 #600e3
             e0=1e-4
-            i0=400 #800
-            r0=0 #-250e3
+            i0=800
+            r0=-57e3
             k0=0
             #start fitting when the number of cases >= start
             startNCases=0
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.15
+            weigthCases=0.55
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
     
         if country=="Italy":
             startdate="2/25/20"
-            s0=2300000 #2.1e6 #3e6*4*2*2*0.7*1.2*1.1
+            s0=2300000*0.8 #2.1e6 #3e6*4*2*2*0.7*1.2*1.1
             e0=1e-4
             i0=600 #200
             r0=0
@@ -606,13 +594,13 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.1
+            weigthCases=0.5
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
     
         if country=="France":
             startdate="3/4/20"
-            s0=800000 #1e6 #1.5e6*1.5*120/80*1.05
+            s0=800000*2 #1e6 #1.5e6*1.5*120/80*1.05
             e0=1e-4
             i0=200
             r0=0
@@ -629,7 +617,7 @@ def main(countriesExt):
         #OK 04/22
         if country=="United Kingdom":
             startdate="2/25/20"
-            s0=500e3*4*2
+            s0=500e3*4*2*1.1
             e0=1e-4
             i0=22
             r0=0 #-50
@@ -639,14 +627,14 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.5
+            weigthCases=0.6
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
     
         #OK 04/22
         if country=="US":
             startdate="2/20/20"
-            s0=8e6
+            s0=10e6*2
             e0=1e-4
             i0=70
             r0=0
@@ -715,11 +703,13 @@ version="1"
 country="Brazil"
 
 #list of countries for SEAIRD model
-# countriesExt=["Italy","United Kingdom","China","France","US", \
-#                "Brazil", "Belgium", "Germany", "Spain"]
+countriesExt=["Italy","United Kingdom","China","France","US", \
+                "Brazil", "Belgium", "Germany", "Spain"]
 # countriesExt=["Italy","China","France", \
 #                "Brazil", "Belgium", "Spain"]
-countriesExt=["Brazil"] #"Italy","China","France"]
+#countriesExt=["China"]
+
+#countriesExt=["Brazil"] #"Italy","China","France"]
 
 #initial vars
 a = 0.0
@@ -732,16 +722,16 @@ if opt==1 or opt==0 or opt==4:
     model='SEAIRD' 
 
     df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+country+'.pkl')
-    time6, cases6 = predictionsPlot(df,80,250)
+    time6, cases6 = predictionsPlot(df,120,325)
 
     #model
     #33% per day
     growth = 1.33
-    x,y = logGrowth(growth,60)
+    x,y = logGrowth(growth,80)
 
     #50% per day
     growth1 = 1.25
-    x1,y1 = logGrowth(growth1,60)
+    x1,y1 = logGrowth(growth1,80)
 
     # Plot the data
     #ax.figure(figsize=(19.20,10.80))
@@ -841,9 +831,9 @@ if opt==2 or opt==0:
     if country==country3:
         casesFit=cases3
         timeFit=time3
-        maxCases=150e3
+        maxCases=300e3
         maxTime=90
-        guessExp=1
+        guessExp=2
 
     if country==country4:
         casesFit=cases4
@@ -862,7 +852,7 @@ if opt==2 or opt==0:
     print("Errors = ",errors)
  
     #exponential curve
-    exp_fit = curve_fit(exponential_model,timeFit,casesFit,p0=[guessExp,guessExp,guessExp])
+    exp_fit = curve_fit(exponential_model,timeFit,casesFit,p0=[guessExp,guessExp/2,guessExp/4])
 
     #plot
     pred_x = list(range(len(time3)+1,maxTime))
