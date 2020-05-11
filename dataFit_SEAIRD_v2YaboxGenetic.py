@@ -16,11 +16,12 @@ from scipy.optimize import curve_fit
 from scipy.integrate import odeint
 from yabox import DE
 import pickle
+from tqdm import tqdm
 
 #parallel computation
 import ray
 ray.shutdown()
-ray.init(num_cpus=20)
+ray.init(num_cpus=4)
 
 def logGrowth(growth,finalDay):
     x =[]
@@ -107,7 +108,7 @@ def parse_arguments():
     parser.add_argument(
         '--download-data',
         dest='download_data',
-        default=False
+        default=True
     )
 
     parser.add_argument(
@@ -342,10 +343,17 @@ class Learner(object):
         bounds=[(1e-12, .2),(1e-12, .2),(1/300 ,0.4),(1/300, .4),
         (1/300, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
-        p, f = PDE(lossOdeint, bounds, maxiters=15000).solve(show_progress=True)
-        df=pd.DataFrame(p,columns=["best","2nd","3rd","4th",\
-            "5th","6th","7th","8th"])
-        p = df.best
+        maxiterations=2000
+        de = DE(lossOdeint, bounds, maxiters=maxiterations)
+        i=0
+        with tqdm(total=maxiterations*1000) as pbar:
+            for step in de.geniterator():
+                idx = step.best_idx
+                norm_vector = step.population[idx]
+                best_params = de.denormalize([norm_vector])
+                pbar.update(i)
+                i+=1
+        p=best_params[0]
 
         #parameter list for optimization
         #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
@@ -555,7 +563,7 @@ def main(countriesExt):
     
         if country=="Brazil":
             startdate="3/3/20"
-            s0=1.1e6 #500e3*1.7
+            s0=1.7e6 #500e3*1.7
             e0=1e-4
             i0=100
             r0=0
@@ -565,7 +573,7 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.6
+            weigthCases=0.5
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
             cleanRecovered=True
