@@ -1,10 +1,14 @@
 # Import the necessary packages and modules
+import matplotlib
+# matplotlib.use('agg')
+matplotlib.use('TkAgg')
 import sys
 import argparse
 import json
 import os
 import urllib.request
 import matplotlib.pyplot as plt
+plt.ion()
 from matplotlib import cm
 import numpy as np
 import pandas as pd
@@ -323,7 +327,7 @@ class Learner(object):
         bounds=[(1e-12, .2),(1e-12, .2),(1/600 ,0.4),(1/600, .4),
         (1/600, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
-        maxiterations=2000
+        maxiterations=1000
         f=create_lossOdeint(self.data, self.recovered, \
             self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
                  self.weigthCases, self.weigthRecov)
@@ -382,6 +386,9 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
+        fig.canvas.draw_idle()  # required to work on mpl < 1.5
+        fig.canvas.flush_events()
+
         df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
         country=self.country
         strFile ="./results/modelSEAIRDOptGlobalOptimum"+country+"Yabox.png"
@@ -412,10 +419,14 @@ class Learner(object):
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
 
+        fig.canvas.draw_idle()  # required to work on mpl < 1.5
+        fig.canvas.flush_events()
+
         strFile ="./results/ZoomModelSEAIRDOpt"+country+"Yabox.png"
         savePlot(strFile)
         plt.show()
         plt.close()
+        plt.ioff()
         
         print(self.country+" is done!")
 
@@ -496,17 +507,17 @@ def main(countriesExt):
         #OK 04/22
         if country=="Germany":
             startdate="3/3/20"
-            s0=3e6*2*1.1*1.1
+            s0=3e6*2*1.1*2
             e0=1e-4
             i0=265
-            r0=0
+            r0=-5000
             k0=0
             #start fitting when the number of cases >= start
             startNCases=0
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.65
+            weigthCases=0.8
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
         
@@ -539,13 +550,13 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.4
+            weigthCases=0.2
             weigthRecov=0.1
         #weightDeaths = 1 - weigthCases - weigthRecov
     
         if country=="Brazil":
             startdate="3/3/20"
-            s0=3.0e6 #500e3*1.7
+            s0=3.0e6*2.0 #500e3*1.7
             e0=1e-4
             i0=100
             r0=0
@@ -555,8 +566,8 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.4
-            weigthRecov=0.1
+            weigthCases=0.55
+            weigthRecov=0.10
             #weightDeaths = 1 - weigthCases - weigthRecov
             cleanRecovered=True
     
@@ -565,7 +576,7 @@ def main(countriesExt):
             s0=120000*4.7 #600e3
             e0=1e-4
             i0=800
-            r0=-20e3
+            r0=-31.5e3
             k0=0
             #start fitting when the number of cases >= start
             startNCases=0
@@ -578,17 +589,17 @@ def main(countriesExt):
     
         if country=="Italy":
             startdate="2/25/20"
-            s0=2300000 #2.1e6 #3e6*4*2*2*0.7*1.2*1.1
+            s0=2300000*3 #2.1e6 #3e6*4*2*2*0.7*1.2*1.1
             e0=1e-4
             i0=600 #200
-            r0=0
+            r0=-2000
             k0=50
             #start fitting when the number of cases >= start
             startNCases=100
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.1
+            weigthCases=0.8
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
     
@@ -611,7 +622,7 @@ def main(countriesExt):
         #OK 04/22
         if country=="United Kingdom":
             startdate="2/25/20"
-            s0=500e3*4*2
+            s0=500e3*4*2*2
             e0=1e-4
             i0=22
             r0=0 #-50
@@ -621,14 +632,14 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.5
+            weigthCases=0.4
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
     
         #OK 04/22
         if country=="US":
             startdate="2/20/20"
-            s0=10e6
+            s0=10e6*1.2
             e0=1e-4
             i0=70
             r0=0
@@ -638,7 +649,7 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.25
+            weigthCases=0.5
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
                
@@ -701,9 +712,9 @@ countriesExt=["Italy","United Kingdom","China","France","US", \
                 "Brazil", "Belgium", "Germany", "Spain"]
 # countriesExt=["Italy","China","France", \
 #                "Brazil", "Belgium", "Spain"]
-countriesExt=["Brazil"]
+#countriesExt=["Germany","United Kingdom","Italy"]
 
-#countriesExt=["Brazil"] #"Italy","China","France"]
+countriesExt=["Brazil"] #"Italy","China","France"]
 
 #initial vars
 a = 0.0
