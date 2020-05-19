@@ -1,4 +1,7 @@
 # Import the necessary packages and modules
+import matplotlib
+matplotlib.use('agg')
+#matplotlib.use('TkAgg')
 import sys
 import math
 import argparse
@@ -318,15 +321,6 @@ class Learner(object):
         else:
             zeroRecDeaths=1
         self.data = self.load_confirmed(self.country)-zeroRecDeaths*(self.recovered+self.death)
-
-        #optmizer solver setup and run
-        # bounds=[(1e-12, .4), (1e-12, .4), (1/300,0.2),  (1/300,0.2), (1/300,0.2),\
-        #         (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
-        # minimizer_kwargs = dict(method="L-BFGS-B", bounds=bounds, args=(self.data, self.recovered, \
-        #     self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
-        #         self.weigthCases, self.weigthRecov))
-        # x0=[0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001]
-        # optimal =  basinhopping(lossOdeint,x0,minimizer_kwargs=minimizer_kwargs,disp=True)
         
         optimal = minimize(lossOdeint,        
             [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
@@ -345,77 +339,6 @@ class Learner(object):
                 = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, \
                     self.data, self.recovered, self.death, self.country, self.s_0, \
                     self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
-
-        df = pd.DataFrame({
-                    'Susceptible': y0,
-                    'Exposed': y1,
-                    'Asymptomatic': y2,
-                    'Infected data': extended_actual,
-                    'Infected': y3,
-                    'Recovered': extended_recovered,
-                    'Predicted Recovered': y4,
-                    'Death data': extended_death,
-                    'Predicted Deaths': y5},
-                    index=new_index)
-
-        plt.rc('font', size=14)
-        fig, ax = plt.subplots(figsize=(15, 10))
-        ax.set_title("Global Opt - SEAIR-D Model for "+self.country)
-        ax.set_ylim((0, max(y0)*1.1))
-        df.plot(ax=ax) #,style=['-','-','-','o','-','x','-','s','-'])
-        print(f"country={self.country}, beta={beta:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
-            f" 1/sigma2={1/sigma2:.8f},1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f},"+\
-            f" mu={mu:.8f}, r_0:{(beta/gamma):.8f}")
-
-        plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=10, 
-        xy=(1.04, 0.1), xycoords='axes fraction',
-        xytext=(0, 0), textcoords='offset points',
-        ha='right',rotation=90)
-        plt.annotate('Source: https://www.lewuathe.com/covid-19-dynamics-with-sir-model.html', fontsize=10, 
-        xy=(1.06,0.1), xycoords='axes fraction',
-        xytext=(0, 0), textcoords='offset points',
-        ha='left',rotation=90)
-        plt.annotate('Original SEAIR-D with delay model, São Paulo, Brazil', fontsize=10, 
-        xy=(1.045,0.1), xycoords='axes fraction',
-        xytext=(0, 0), textcoords='offset points',
-        ha='left',rotation=90)
-
-        df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+str(self.version)+'.pkl')
-        country=self.country
-        strFile ="./results/modelSEAIRDOptGlobalOptimum"+country+str(self.version)+".png"
-        savePlot(strFile)
-        # plt.show()
-        # plt.close()
-
-        plotX=new_index[range(0,self.predict_range)]
-        plotXt=new_index[range(0,len(extended_actual))]
-        fig, ax = plt.subplots(figsize=(15, 10))
-        ax.set_title("Zoom SEAIR-D Model for "+self.country)
-        plt.xticks(np.arange(0, self.predict_range, self.predict_range/8))
-        ax.set_ylim(0,max(y3)*1.1)
-        ax.plot(plotX,y3,'y-',label="Infected")
-        ax.plot(plotX,y4,'c-',label="Recovered")
-        ax.plot(plotX,y5,'m-',label="Deaths")
-        ax.plot(plotXt,extended_actual,'o',label="Infected data")
-        ax.plot(plotXt,extended_death,'x',label="Death data")
-        ax.plot(plotXt,extended_recovered,'s',label="Recovered data")
-        ax.legend()
-       
-        plt.annotate('Dr. Guilherme A. L. da Silva, www.ats4i.com', fontsize=10, 
-        xy=(1.04, 0.1), xycoords='axes fraction',
-        xytext=(0, 0), textcoords='offset points',
-        ha='right',rotation=90)
-        plt.annotate('Original SEAIR-D with delay model, São Paulo, Brazil', fontsize=10, 
-        xy=(1.045,0.1), xycoords='axes fraction',
-        xytext=(0, 0), textcoords='offset points',
-        ha='left',rotation=90)
-
-        strFile ="./results/ZoomModelSEAIRDOpt"+country+str(self.version)+".png"
-        savePlot(strFile)
-        # plt.show()
-        # plt.close()
-        
-        print(self.country+" is done!")
 
         tot=0
         l1=0
@@ -492,8 +415,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, vers
     v = max(0,1. - u - w)
     gtot=u*l1 + v*l2 + w*l3
     
-    strFile='./data/optimum'+str(version)+'.pkl'
-    if not os.path.exists(strFile) or math.isnan(gtot):
+    if math.isnan(gtot):
         l1=2
         l2=2
         l3=2
@@ -503,10 +425,6 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, vers
         gtot=float(gtot)
     except:
         gtot=1e6
-
-    dfresult=pd.DataFrame([[l1,l2,l3,gtot]], columns=['g1','g2','g3','Total'])
-    dfresult.to_pickle(strFile)
-    time.sleep(0)
 
     return gtot
 

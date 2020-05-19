@@ -24,6 +24,8 @@ def create_fun(country,e0,a0,r0,d0,date,version):
             s0, e0, a0, i0, r0, d0, version, startNCases, wcases, wrec, 
             cleanRecovered)
         gtot=learner.train()
+        print("f(x)={}".format(gtot))
+        print(country+" is done!")
         return gtot
     return fun
 
