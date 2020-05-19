@@ -466,10 +466,10 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, vers
     
     strFile='./data/optimum'+str(version)+'.pkl'
     if not os.path.exists(strFile) or math.isnan(gtot):
-        l1=1e6
-        l2=1e6
-        l3=1e6
-        gtot=1e6
+        l1=2
+        l2=2
+        l3=2
+        gtot=10
 
     try:
         gtot=float(gtot)
