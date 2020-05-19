@@ -76,12 +76,20 @@ class Learner(object):
         return df2
     
     def extend_index(self, index, new_size):
-        values = index.values
-        current = datetime.strptime(index[-1], '%Y-%m-%d')
+        #values = index.values
+        #current = datetime.strptime(index[-1], '%Y-%m-%d')
+        '''
         while len(values) < new_size:
+            print(current)
             current = current + timedelta(days=1)
             values = np.append(values, datetime.strftime(current, '%Y-%m-%d'))
-        return values
+        '''
+        start = datetime.strptime(index[0], '%Y-%m-%d')
+        end = datetime.strftime(start  + timedelta(days=new_size), '%Y-%m-%d')
+        start = datetime.strftime(start, '%Y-%m-%d')
+        values = pd.date_range(start=start, 
+            end=end)
+        return list(values)
 
     #predict final extended values
     def predict(self, beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, data, \
@@ -148,8 +156,9 @@ class Learner(object):
         dataFr2 = np.array(dataFr).T
         df = pd.DataFrame(data=dataFr2)
         df.columns  = ['Susceptible','Exposed','Asymptomatic','Infected','Recovered','Deaths']
-        df.index = pd.date_range(start=datetime.strptime(new_index[0],'%Y-%m-%d'), 
-            end=datetime.strptime(new_index[len(new_index)-2],'%Y-%m-%d'))
+        
+        df.index = pd.date_range(start=new_index[0], 
+            end=new_index[-1])
         df.index.name = 'date'
         
         if self.savedata:
