@@ -27,7 +27,7 @@ from scipy.optimize import minimize
 #parallel computation
 import ray
 ray.shutdown()
-ray.init(num_cpus=3)
+ray.init()
 
 #register function for parallel processing
 @ray.remote

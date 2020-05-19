@@ -8,7 +8,6 @@ import os.path
 import time
 import sys
 
-
 def fun(point, country,e0,a0,r0,d0,date,version):
     s0, deltaDate, i0, wcases, wrec = point
     download=False
@@ -69,7 +68,8 @@ d0=0
 wcases=0.6
 wrec=0.1
 #weightDeaths = 1 - weigthCases - weigthRecov
-countries=["Italy","China","France"]
+#countries=["Italy","China","France"]
+countries=["Brazil"]
 
 optimal=[]
 version=240

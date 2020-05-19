@@ -17,11 +17,6 @@ from scipy.optimize import curve_fit
 from scipy.integrate import odeint
 from scipy.optimize import minimize
 
-#parallel computation
-import ray
-ray.shutdown()
-ray.init(num_cpus=20)
-
 def logGrowth(growth,finalDay):
     x =[]
     y = []
@@ -237,8 +232,6 @@ def load_json(json_file_str):
     except Exception:
         sys.exit("Cannot open JSON file: " + json_file_str)
 
-#register function for parallel processing
-@ray.remote
 class Learner(object):
     def __init__(self, country, loss, start_date, predict_range,s_0, e_0, a_0,\
                  i_0, r_0, d_0, version, startNCases, weigthCases, weigthRecov, cleanRecovered):
@@ -341,7 +334,7 @@ class Learner(object):
                 self.a_0, self.i_0, self.r_0, self.d_0, self.version, self.startNCases, \
                 self.weigthCases, self.weigthRecov),
             method='L-BFGS-B',
-            bounds=[(1e-12, .4), (1e-12, .4), (1./160.,0.2),  (1./160.,0.2), (1./160.,0.2),\
+            bounds=[(1e-12, .4), (1e-12, .4), (1./80.,0.2),  (1./80.,0.2), (1./80.,0.2),\
                 (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)],options={'disp': True})        
         
         #parameter list for optimization
@@ -382,7 +375,7 @@ class Learner(object):
         xy=(1.06,0.1), xycoords='axes fraction',
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
-        plt.annotate('Original SEIR-D with delay model, São Paulo, Brazil', fontsize=10, 
+        plt.annotate('Original SEAIR-D with delay model, São Paulo, Brazil', fontsize=10, 
         xy=(1.045,0.1), xycoords='axes fraction',
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
@@ -453,7 +446,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, vers
     l1=0
     l2=0
     l3=0
-    for i in range(0,len(data.values)):
+    for i in range(0,len(data.values)-1):
         if data.values[i]>startNCases:
             l1 = l1+(res[i,3] - data.values[i])**2
             l2 = l2+(res[i,5] - death.values[i])**2
@@ -477,10 +470,16 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, vers
         l2=2
         l3=2
         gtot=10
+
+    try:
+        gtot=float(gtot)
+    except:
+        gtot=1e6
+
     dfresult=pd.DataFrame([[l1,l2,l3,gtot]], columns=['g1','g2','g3','Total'])
     dfresult.to_pickle(strFile)
     time.sleep(0)
-    
+
     return gtot
 
 #main program SIRD model
@@ -506,11 +505,10 @@ def main(countriesExt):
             cleanRecovered=False
         else:
             cleanRecovered=True
-        learner = Learner.remote(country, lossOdeint, startdate, predict_range,\
+        learner = Learner(country, lossOdeint, startdate, predict_range,\
             s0, e0, a0, i0, r0, k0, version, startNCases, weigthCases, weigthRecov, 
             cleanRecovered)
-        results.append(learner.train.remote())
-    results = ray.get(results)
+        results.append(learner.train())
             
 #Initial parameters
 #Choose here your options

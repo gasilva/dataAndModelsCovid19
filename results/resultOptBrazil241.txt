@@ -1,0 +1,7 @@
+country = Brazil
+S0 = 100000.0
+Delta Date Days = 0.0
+I0 = 200.0
+wCases = 0.1
+wRec = 0.1
+Function Minimum = 1000000.0
