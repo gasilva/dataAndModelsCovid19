@@ -29,7 +29,7 @@ from scipy.optimize import basinhopping
 #parallel computation
 import ray
 ray.shutdown()
-ray.init(num_cpus=20)
+ray.init()
 
 #register function for parallel processing
 @ray.remote

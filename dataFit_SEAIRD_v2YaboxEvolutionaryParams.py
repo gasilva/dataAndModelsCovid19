@@ -1,7 +1,7 @@
 # Import the necessary packages and modules
 import matplotlib
-# matplotlib.use('agg')
-matplotlib.use('TkAgg')
+matplotlib.use('agg')
+#matplotlib.use('TkAgg')
 import sys
 import argparse
 import json
@@ -23,7 +23,7 @@ from tqdm import tqdm
 #parallel computation
 import ray
 ray.shutdown()
-ray.init(num_cpus=4)
+ray.init()
 
 def logGrowth(growth,finalDay):
     x =[]
@@ -324,8 +324,8 @@ class Learner(object):
             zeroRecDeaths=1
         self.data = self.load_confirmed(self.country)-zeroRecDeaths*(self.recovered+self.death)
 
-        bounds=[(1e-12, .2),(1e-12, .2),(1/600 ,0.4),(1/600, .4),
-        (1/600, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
+        bounds=[(1e-12, .2),(1e-12, .2),(1/60 ,0.4),(1/60, .4),
+        (1/60, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
         maxiterations=1000
         f=create_lossOdeint(self.data, self.recovered, \
@@ -333,7 +333,7 @@ class Learner(object):
                  self.weigthCases, self.weigthRecov)
         de = DE(f, bounds, maxiters=maxiterations)
         i=0
-        with tqdm(total=maxiterations*1000) as pbar:
+        with tqdm(total=maxiterations*500) as pbar:
             for step in de.geniterator():
                 idx = step.best_idx
                 norm_vector = step.population[idx]
@@ -393,8 +393,8 @@ class Learner(object):
         country=self.country
         strFile ="./results/modelSEAIRDOptGlobalOptimum"+country+"Yabox.png"
         savePlot(strFile)
-        plt.show()
-        plt.close()
+        # plt.show()
+        # plt.close()
 
         plotX=new_index[range(0,self.predict_range)]
         plotXt=new_index[range(0,len(extended_actual))]
@@ -424,8 +424,8 @@ class Learner(object):
 
         strFile ="./results/ZoomModelSEAIRDOpt"+country+"Yabox.png"
         savePlot(strFile)
-        plt.show()
-        plt.close()
+        # plt.show()
+        # plt.close()
         plt.ioff()
         
         print(self.country+" is done!")
@@ -556,17 +556,17 @@ def main(countriesExt):
     
         if country=="Brazil":
             startdate="3/3/20"
-            s0=3.0e6*2.0 #500e3*1.7
+            s0=3.0e6*2.5 #500e3*1.7
             e0=1e-4
             i0=100
-            r0=0
+            r0=0 #5e3 #5000 #14000
             k0=0
             #start fitting when the number of cases >= start
             startNCases=150
             #how many days is the prediction
-            predict_range=150
+            predict_range=200
             #weigth for fitting data
-            weigthCases=0.55
+            weigthCases=0.4
             weigthRecov=0.10
             #weightDeaths = 1 - weigthCases - weigthRecov
             cleanRecovered=True
@@ -708,13 +708,12 @@ version="1"
 country="Brazil"
 
 #list of countries for SEAIRD model
-countriesExt=["Italy","United Kingdom","China","France","US", \
-                "Brazil", "Belgium", "Germany", "Spain"]
-# countriesExt=["Italy","China","France", \
+#countriesExt=["Italy","United Kingdom","China","France","US", \
+#                "Brazil", "Belgium", "Germany", "Spain"]
+#countriesExt=["Italy","China","France", \
 #                "Brazil", "Belgium", "Spain"]
 #countriesExt=["Germany","United Kingdom","Italy"]
-
-countriesExt=["Brazil"] #"Italy","China","France"]
+countriesExt=["Brazil"]
 
 #initial vars
 a = 0.0
