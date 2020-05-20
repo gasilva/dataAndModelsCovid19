@@ -47,7 +47,7 @@ def create_fun(country,e0,a0,r0,d0,date,version):
 
         strSave='{}, {}, '.format(country, gtot)
         strSave=strSave+', '.join(map(str,optimal))
-        append_new_line('history_'+country+version+'.dat', strSave)  
+        append_new_line('./results/history_'+country+version+'.dat', strSave)  
 
         return gtot
     return fun
@@ -156,7 +156,7 @@ for country in countries:
         #weightDeaths = 1 - weigthCases - weigthRecov
         cleanRecovered=True
 
-    strFile='history_'+country+version+'.dat'
+    strFile='./results/history_'+country+version+'.dat'
     if os.path.isfile(strFile):
         os.remove(strFile)   # Opt.: os.system("del "+strFile)
     optimal.append(opt(country,e0,a0,r0,d0,date,version))  
