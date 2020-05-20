@@ -1,5 +1,5 @@
 DRS,start-date,prediction-range,s0,e0,a0,i0,r0,d0,START,RATIO,WCASES,WREC
-DRS 01 - Grande São Paulo,2020-03-20,200,1.4e6,1e-4,1e-4,500,300,200,0,0.1,0.1,0.1
+DRS 01 - Grande São Paulo,2020-03-20,200,1.4e6,1e-4,1e-4,1000,300,200,0,0.1,0.1,0.1
 DRS 02 - Araçatuba,2020-04-01,150,500,1e-4,1e-4,1e-4,1e-4,1e-4,0,0.1,0.4,0.1
 DRS 03 - Araraquara,2020-04-01,150,2e3,1e-4,1e-4,1e-4,1e-4,1e-4,0,0.1,0.4,0.1
 DRS 04 - Baixada Santista,2020-04-01,150,8.0e3,1e-4,1e-4,1e-4,1e-4,1e-4,0,0.1,0.4,0.1
