@@ -137,7 +137,7 @@ class Learner(object):
         
         print_info = False
       
-        bounds=[(1e-12, .4), (1e-12, .4), (1e-12,0.2),  (1e-12,0.2), (1e-12,0.2),\
+        bounds=[(1e-12, .4), (1e-12, .4), (1/60,0.2),  (1/60,0.2), (1/60,0.2),\
                 (1e-12, 0.4), (1e-12, 0.2), (1e-12, 0.2)]
         minimizer_kwargs = dict(method="L-BFGS-B", bounds=bounds, args=(self.data, self.death, self.s_0,\
                  self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \

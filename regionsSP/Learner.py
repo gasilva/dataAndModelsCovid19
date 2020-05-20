@@ -142,7 +142,7 @@ class Learner(object):
             args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
                 self.startNCases, self.ratio, self.weigthCases, self.weigthRecov),
             method='L-BFGS-B',
-            bounds=[(1e-12, 50), (1e-12, 50), (1./160.,0.2),  (1./160.,0.2), (1./160.,0.2),\
+            bounds=[(1e-12, 50), (1e-12, 50), (1./60.,0.2),  (1./60.,0.2), (1./60.,0.2),\
                  (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)])
             #beta, beta2, sigma, sigma2, sigma3, gamma, b
         if print_info:
