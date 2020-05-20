@@ -131,8 +131,6 @@ https://github.com/CSSEGISandData/COVID-19
 
 ## Theory
 
-### Mathematical Models
-
 The mathematical Models are based in Lotka-Volterra equations, it is like a predator-prey type of model.
 
 ![General explanation about SIR model](https://d25hn4jiqx5f7l.cloudfront.net/file_attachments/files/original/f92193ccb498ebc28d1af83c31de63314c959a58.png?1582329912)
@@ -157,7 +155,7 @@ The SIR model describes the change in the population of each of these compartmen
 
 The differential equations describing this model were first derived by Kermack and McKendrick [Proc. R. Soc. A, 115, 772 (1927)]:
 
-#### SIR - Susceptible, Infected and Recovered Model
+### SIR - Susceptible, Infected and Recovered Model
 
 ![](./equations/SIR.gif)
 
@@ -177,7 +175,7 @@ The γ is split in two by γ = a + b, where a is the rate of recoveries, and b i
 
 So we can add a new variable k, (Kill rate), and add to the system of equations. Therefore:
 
-#### SIR-D - SIR model extended to have deaths and recovered separated
+### SIR-D - SIR model extended to have deaths and recovered separated
 
 - S(t) are those susceptible but not yet infected with the disease
 - I(t) is the number of infectious individuals
@@ -212,7 +210,7 @@ The the Python notebook of
 
 https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
 
-#### SEIR - WHO model type for susceptible, exposed, infected and recovered with delay in recoveries
+### SEIR - WHO model type for susceptible, exposed, infected and recovered with delay in recoveries
 
 ![SEIR model general application](https://d25hn4jiqx5f7l.cloudfront.net/file_attachments/files/original/73be551d5ca0a993eafa0f5b53a66da1b9e8e012.png?1582334250)
 
@@ -252,7 +250,7 @@ Matt J. Keeling & Pejman Rohani, Chaper 2.6, SEIR model
 
 [http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html](http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html)
 
-#### SEIR-D - Original variation, proposed by this author, from SEIR model for susceptible, exposed, infected and deaths with delay in recoveries and deaths
+### SEIR-D - Original variation, proposed by this author, from SEIR model for susceptible, exposed, infected and deaths with delay in recoveries and deaths
 
 - S(t) are those susceptible but not yet infected with the disease
 - E(t) are those exposed to the virus
@@ -288,7 +286,7 @@ The model takes SEIR Model and split the r(t) and k(t) by making γ=a+b.
 
 ![Model SEIR-D Covid-19 epidemics for Brazil](./results/modelSEIRD_sigamOptBrazil.png)
 
-#### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptible, exposed, asymptomatic, infected and deaths with delay in recoveries and deaths
+### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptible, exposed, asymptomatic, infected and deaths with delay in recoveries and deaths
 
 - S(t) are those susceptible but not yet infected with the disease
 - E(t) are those exposed to the virus
@@ -337,7 +335,7 @@ A zoom at infected, deaths and recovered
 
 ![Model SEAIR-D Global Optimization Zoom Covid-19 epidemics for Brazil with asymptomatic](./results/ZoomModelSEAIRDOptBrazil.png)
 
-### Validation with Real Data from Selected Countries
+## Validation with Real Data from Selected Countries
 
 ![Comparison between US deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptUS.png)
 
@@ -349,7 +347,7 @@ A zoom at infected, deaths and recovered
 
 ![Comparison between Belgium deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptBelgium.png)
 
-### Models Comparison 
+## Models Comparison 
 
 The comparison between model is presented below. All models were best fitted against real data. Everything can be updated and adjusted better than done here but it requires time. Brazil was selected to be compared however other countries also can be calculated and compared.
 
@@ -359,7 +357,7 @@ The comparison between model is presented below. All models were best fitted aga
 
 ![Comparison of Models Results Recovered Brazil](./results/compareModelRecoveredBrazil.png)
 
-### References:
+## References:
 
 Anderson, R. M., May, R. M. , Infectious Diseases of Humans: Dynamics and Control, Oxford University Press, 1991
 
