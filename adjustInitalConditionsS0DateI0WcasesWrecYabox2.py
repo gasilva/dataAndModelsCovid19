@@ -9,6 +9,19 @@ from yabox import DE
 from tqdm import tqdm
 import dataFit_SEAIRD_AdjustIC as adjustIC
 
+def append_new_line(file_name, text_to_append):
+    #Append given text as a new line at the end of file
+    # Open the file in append & read mode ('a+')
+    with open(file_name, "a+") as file_object:
+        # Move read cursor to the start of file.
+        file_object.seek(0)
+        # If file is not empty then append '\n'
+        data = file_object.read(9999999)
+        if len(data) > 0:
+            file_object.write("\n")
+        # Append text at the end of file
+        file_object.write(text_to_append)
+
 def create_fun(country,e0,a0,r0,d0,date,version):
     def fun(point):
         s0, deltaDate, i0, wcases, wrec = point
@@ -23,9 +36,19 @@ def create_fun(country,e0,a0,r0,d0,date,version):
         learner=adjustIC.Learner(country, adjustIC.lossOdeint, startdate, predict_range,\
             s0, e0, a0, i0, r0, d0, version, startNCases, wcases, wrec, 
             cleanRecovered)
-        gtot=learner.train()
+        optimal, gtot=learner.train()
+
+        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal
+        print(f"country={country}, beta={beta:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
+            f" 1/sigma2={1/sigma2:.8f},1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f},"+\
+            f" mu={mu:.8f}, r_0:{(beta/gamma):.8f}")
         print("f(x)={}".format(gtot))
         print(country+" is done!")
+
+        strSave='{}, {}, '.format(country, gtot)
+        strSave=strSave+', '.join(map(str,optimal))
+        append_new_line('./results/history_'+country+version+'.dat', strSave)  
+
         return gtot
     return fun
 
@@ -66,11 +89,7 @@ countries=["Brazil"]
 optimal=[]
 version=240
 y=[]
-for country in countries:
-    
-    strFile='./data/optimum'+str(version)+'.pkl'
-    dfresult=pd.DataFrame([[1e6,1e6,1e6,1e6]], columns=['g1','g2','g3','Total'])
-    dfresult.to_pickle(strFile)    
+for country in countries:  
     
     if country=="China":
         date="1/25/20"
@@ -137,6 +156,9 @@ for country in countries:
         #weightDeaths = 1 - weigthCases - weigthRecov
         cleanRecovered=True
 
+    strFile='./results/history_'+country+version+'.dat'
+    if os.path.isfile(strFile):
+        os.remove(strFile)   # Opt.: os.system("del "+strFile)
     optimal.append(opt(country,e0,a0,r0,d0,date,version))  
     version+=1
 
