@@ -366,7 +366,7 @@ class Learner(object):
 
         plt.rc('font', size=14)
         fig, ax = plt.subplots(figsize=(15, 10))
-        ax.set_title("Global Opt - SEAIR-D Model for "+self.country)
+        ax.set_title("Yabox Evolutionary Opt - SEAIR-D Model for "+self.country)
         ax.set_ylim((0, max(y0)*1.1))
         df.plot(ax=ax) #,style=['-','-','-','o','-','x','-','s','-'])
         print(f"country={self.country}, beta={beta:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
@@ -399,7 +399,7 @@ class Learner(object):
         plotX=new_index[range(0,self.predict_range)]
         plotXt=new_index[range(0,len(extended_actual))]
         fig, ax = plt.subplots(figsize=(15, 10))
-        ax.set_title("Zoom SEAIR-D Model for "+self.country)
+        ax.set_title("Yabox Evolutionary Opt -Zoom SEAIR-D Model for "+self.country)
         plt.xticks(np.arange(0, self.predict_range, self.predict_range/8))
         ax.set_ylim(0,max(y3)*1.1)
         ax.plot(plotX,y3,'y-',label="Infected")
@@ -556,20 +556,20 @@ def main(countriesExt):
     
         if country=="Brazil":
             startdate="3/3/20"
-            s0=3.0e6*2.5 #500e3*1.7
+            s0=3.0e6*3.5 #3.0e6*3.5 not clean #3.0e6*2.5 clean #500e3*1.7
             e0=1e-4
-            i0=100
-            r0=0 #5e3 #5000 #14000
+            i0=500 #500 not clean #100 clean
+            r0=14000 #14000 not clean #0 clean #5e3 #5000 #14000
             k0=0
             #start fitting when the number of cases >= start
             startNCases=150
             #how many days is the prediction
             predict_range=200
             #weigth for fitting data
-            weigthCases=0.4
+            weigthCases=0.45 #0.45 not clean #0.4 clean
             weigthRecov=0.10
             #weightDeaths = 1 - weigthCases - weigthRecov
-            cleanRecovered=True
+            cleanRecovered=False
     
         if country=="China":
             startdate="1/26/20"
@@ -639,9 +639,9 @@ def main(countriesExt):
         #OK 04/22
         if country=="US":
             startdate="2/20/20"
-            s0=10e6*1.2
+            s0=10e6*4
             e0=1e-4
-            i0=70
+            i0=500
             r0=0
             k0=300
             #start fitting when the number of cases >= start
@@ -649,7 +649,7 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=150
             #weigth for fitting data
-            weigthCases=0.5
+            weigthCases=0.4
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
                
