@@ -105,7 +105,7 @@ class Learner(object):
                 R = y[4]
                 p=0.2
                 # beta2=beta
-                y0=-(beta2*A+beta*I)*S+mu*S #S
+                y0=-(beta2*A+beta*I)*S-mu*S #S
                 y1=(beta2*A+beta*I)*S-sigma*E-mu*E #E
                 y2=sigma*E*(1-p)-gamma*A-mu*A #A
                 y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-mu*I #I

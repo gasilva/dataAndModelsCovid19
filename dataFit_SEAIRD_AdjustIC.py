@@ -291,7 +291,7 @@ class Learner(object):
             R = y[4]
             p=0.2
             # beta2=beta
-            y0=-(beta2*A+beta*I)*S+mu*S #S
+            y0=-(beta2*A+beta*I)*S-mu*S #S
             y1=(beta2*A+beta*I)*S-sigma*E-mu*E #E
             y2=sigma*E*(1-p)-gamma*A-mu*A #A
             y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-mu*I #I
@@ -301,7 +301,7 @@ class Learner(object):
         
         y0=[s_0,e_0,a_0,i_0,r_0,d_0]
         tspan=np.arange(0, size, 1)
-        res=odeint(SEAIRD,y0,tspan,hmax=0.01)
+        res=odeint(SEAIRD,y0,tspan) #,hmax=0.01)
 
         extended_actual = np.concatenate((data.values, \
                             [None] * (size - len(data.values))))
@@ -329,7 +329,7 @@ class Learner(object):
                 self.weigthCases, self.weigthRecov),
             method='L-BFGS-B',
             bounds=[(1e-12, .4), (1e-12, .4), (1./80.,0.2),  (1./80.,0.2), (1./80.,0.2),\
-                (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)],options={'disp': True})        
+                (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)]) #,options={'disp': True})        
         
         #parameter list for optimization
         #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
@@ -366,7 +366,7 @@ class Learner(object):
         v = max(0,1. - u - w)
         gtot=u*l1 + v*l2 + w*l3
 
-        return gtot
+        return optimal.x,gtot
 
 #objective function Odeint solver
 def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, version,\
@@ -381,7 +381,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, vers
         R = y[4]
         p=0.2
         # beta2=beta
-        y0=-(beta2*A+beta*I)*S+mu*S #S
+        y0=-(beta2*A+beta*I)*S-mu*S #S
         y1=(beta2*A+beta*I)*S-sigma*E-mu*E #E
         y2=sigma*E*(1-p)-gamma*A-mu*A #A
         y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-mu*I #I
@@ -391,7 +391,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, vers
 
     y0=[s_0,e_0,a_0,i_0,r_0,d_0]
     tspan=np.arange(0, size, 1)
-    res=odeint(SEAIRD,y0,tspan,hmax=0.01)
+    res=odeint(SEAIRD,y0,tspan) #,hmax=0.01)
 
     tot=0
     l1=0
