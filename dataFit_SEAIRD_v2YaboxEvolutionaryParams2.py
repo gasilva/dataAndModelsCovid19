@@ -555,7 +555,7 @@ def main(countriesExt):
         #weightDeaths = 1 - weigthCases - weigthRecov
     
         if country=="Brazil":
-            startdate="3/12/20"
+            startdate="3/2/20"
             s0=3.0e6*3.5 #3.0e6*3.5 not clean #3.0e6*2.5 clean
             e0=1e-4
             i0=500 #135 clean #500 not clean
@@ -566,10 +566,10 @@ def main(countriesExt):
             #how many days is the prediction
             predict_range=200
             #weigth for fitting data
-            weigthCases=0.15 #0.1221 opt #0.4 clean #0.15 not clean
-            weigthRecov=0.1486
+            weigthCases=0.25 #0.1221 opt #0.4 clean #0.15 not clean
+            weigthRecov=0.1 #486
             #weightDeaths = 1 - weigthCases - weigthRecov
-            cleanRecovered=True
+            cleanRecovered=False
     
         if country=="China":
             startdate="1/26/20"

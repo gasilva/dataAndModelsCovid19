@@ -79,7 +79,7 @@ def create_fun(country,e0,a0,r0,d0,date,version):
 def opt(country,e0,a0,r0,d0,date,version):
     bounds = [(1e6,9e6),(-5,15),(0,600),\
               (0.1,0.7),(0.1,0.4)]
-    maxiterations=30
+    maxiterations=600
     f=create_fun(country,e0,a0,r0,d0,date,version)
     de = DE(f, bounds, maxiters=maxiterations)
     i=0
