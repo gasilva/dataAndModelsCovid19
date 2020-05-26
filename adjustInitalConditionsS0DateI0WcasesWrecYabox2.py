@@ -43,15 +43,20 @@ def create_fun(country,e0,a0,r0,d0,date,version):
         i0=int(i0)
         deltaDate=int(deltaDate)
 
+        if version==0:
+            versionStr=""
+        else:
+            versionStr=str(version)
+
         Date = datetime.strptime(date, "%m/%d/%y")
         end_date = Date + timedelta(days=+int(deltaDate))
         startdate=end_date.strftime('X%m/X%d/%y').replace('X0','X').replace('X','')
 
-        strFile='./results/history_'+country+'.csv'
+        strFile='./results/history_'+country+versionStr+'.csv'
         if os.path.isfile(strFile):
             totLines=rawincount(strFile)
         else:
-            totLines=1
+            totLines=-1
         
         learner=adjustIC.Learner(country, adjustIC.lossOdeint, startdate, predict_range,\
             s0, e0, a0, i0, r0, d0, version, startNCases, wcases, wrec, 
@@ -69,7 +74,7 @@ def create_fun(country,e0,a0,r0,d0,date,version):
         strSave='{}, {}, {}, '.format(totLines+1,country, gtot)
         strSave=strSave+', '.join(map(str,point))
         strSave=strSave+', '+', '.join(map(str,optimal))
-        append_new_line('./results/history_'+country+'.csv', strSave)  
+        append_new_line('./results/history_'+country+versionStr+'.csv', strSave)  
 
         return gtot
     return fun
@@ -77,7 +82,7 @@ def create_fun(country,e0,a0,r0,d0,date,version):
 #register function for parallel processing
 @ray.remote
 def opt(country,e0,a0,r0,d0,date,version):
-    bounds = [(1e6,9e6),(-5,15),(0,600),\
+    bounds = [(1e6,9e6),(0,15),(0,600),\
               (0.1,0.7),(0.1,0.4)]
     maxiterations=600
     f=create_fun(country,e0,a0,r0,d0,date,version)
@@ -115,8 +120,14 @@ countries=["Italy","France","Brazil"]
 #countries=["Brazil"]
 
 optimal=[]
-version=370
+version=420
 y=[]
+
+if version==0:
+    versionStr=""
+else:
+    versionStr=str(version)
+
 for country in countries:  
     
     if country=="China":
@@ -168,7 +179,7 @@ for country in countries:
         #weightDeaths = 1 - weigthCases - weigthRecov
 
     if country=="Brazil":
-        date="3/12/20"
+        date="3/02/20"
         s0=3.0e6*6.5 #3.0e6*3.5 not clean #3.0e6*2.5 clean
         e0=1e-4
         i0=500 #not clean
@@ -184,7 +195,7 @@ for country in countries:
         #weightDeaths = 1 - weigthCases - weigthRecov
         cleanRecovered=False
 
-    strFile='./results/history_'+country+'.csv'
+    strFile='./results/history_'+country+versionStr+'.csv'
     if os.path.isfile(strFile):
         os.remove(strFile)
     optimal.append(opt.remote(country,e0,a0,r0,d0,date,version))  
@@ -192,7 +203,7 @@ for country in countries:
 optimal = ray.get(optimal)
 
 for i in range(0,len(countries)):    
-    with io.open('./results/resultOpt'+countries[i]+'.txt', 'w', encoding='utf8') as f:
+    with io.open('./results/resultOpt'+countries[i]+versionStr+'.txt', 'w', encoding='utf8') as f:
         f.write("country = {}\n".format(countries[i]))
         f.write("S0 = {}\n".format(optimal[i][0]))
         f.write("Delta Date Days = {}\n".format(optimal[i][1]))   
@@ -201,7 +212,7 @@ for i in range(0,len(countries)):
         f.write("wRec = {}\n".format(optimal[i][4]))    
     
     stdoutOrigin=sys.stdout 
-    sys.stdout = open('./results/log'+countries[i]+'.txt', "w")    
+    sys.stdout = open('./results/log'+countries[i]+versionStr+'.txt', "w")    
     print(optimal[i])
     sys.stdout.close()
     sys.stdout=stdoutOrigin

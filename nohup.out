@@ -1,0 +1,34 @@
+2020-05-26 08:45:25,141	WARNING resource_spec.py:163 -- Warning: Capping object memory store to 20.0GB. To increase this further, specify `object_store_memory` when calling ray.init() or ray start.
+2020-05-26 08:45:25,142	INFO resource_spec.py:205 -- Starting Ray with 40.14 GiB memory available for workers and up to 18.63 GiB for objects. You can adjust these settings with ray.init(memory=<bytes>, object_store_memory=<bytes>).
+E0526 08:45:25.979543 159724 raylet_client.cc:113] Retrying to connect to socket for pathname /tmp/ray/session_2020-05-26_08-45-25_140539_159724/sockets/raylet (num_attempts = 1, num_retries = 5)
+E0526 08:45:26.480057 159724 raylet_client.cc:113] Retrying to connect to socket for pathname /tmp/ray/session_2020-05-26_08-45-25_140539_159724/sockets/raylet (num_attempts = 2, num_retries = 5)
+E0526 08:45:26.980264 159724 raylet_client.cc:113] Retrying to connect to socket for pathname /tmp/ray/session_2020-05-26_08-45-25_140539_159724/sockets/raylet (num_attempts = 3, num_retries = 5)
+E0526 08:45:27.480614 159724 raylet_client.cc:113] Retrying to connect to socket for pathname /tmp/ray/session_2020-05-26_08-45-25_140539_159724/sockets/raylet (num_attempts = 4, num_retries = 5)
+F0526 08:45:27.980896 159724 raylet_client.cc:122] Could not connect to socket /tmp/ray/session_2020-05-26_08-45-25_140539_159724/sockets/raylet
+*** Check failure stack trace: ***
+    @     0x7fcc729dff2d  google::LogMessage::Fail()
+    @     0x7fcc729e1c4c  google::LogMessage::SendToLog()
+    @     0x7fcc729dfa89  google::LogMessage::Flush()
+    @     0x7fcc729dfca1  google::LogMessage::~LogMessage()
+    @     0x7fcc724c8089  ray::RayLog::~RayLog()
+    @     0x7fcc723cc9af  RayletConnection::RayletConnection()
+    @     0x7fcc723ccb85  RayletClient::RayletClient()
+    @     0x7fcc72363e8e  ray::CoreWorker::CoreWorker()
+    @     0x7fcc7233b909  __pyx_tp_new_3ray_7_raylet_CoreWorker()
+    @     0x55940e87cdc9  _PyObject_FastCallKeywords
+    @     0x55940e8cce8f  _PyEval_EvalFrameDefault
+    @     0x55940e822030  _PyEval_EvalCodeWithName
+    @     0x55940e867917  _PyFunction_FastCallKeywords
+    @     0x55940e8c90a6  _PyEval_EvalFrameDefault
+    @     0x55940e8674fb  function_code_fastcall
+    @     0x55940e8cc6c9  _PyEval_EvalFrameDefault
+    @     0x55940e8216f9  _PyEval_EvalCodeWithName
+    @     0x55940e8225f4  PyEval_EvalCodeEx
+    @     0x55940e82261c  PyEval_EvalCode
+    @     0x55940e923974  run_mod
+    @     0x55940e92dcf1  PyRun_FileExFlags
+    @     0x55940e92dee3  PyRun_SimpleFileExFlags
+    @     0x55940e92ef95  pymain_main
+    @     0x55940e92f0bc  _Py_UnixMain
+    @     0x7fcc98771725  __libc_start_main
+    @     0x55940e8d7990  (unknown)
