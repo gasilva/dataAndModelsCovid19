@@ -7,7 +7,8 @@ import numpy as np
 from datetime import datetime,timedelta
 import matplotlib.style as style
 style.use('fivethirtyeight')
-import dataFit_SEAIRD_v3AdjustIC as seaird
+from modules.dataFit_SEAIRD_v3AdjustIC import Learner
+
 import matplotlib.font_manager as fm
 # Font Imports
 heading_font = fm.FontProperties(fname='/home/ats4i/playfair-display/PlayfairDisplay-Regular.ttf', size=24)
@@ -78,7 +79,7 @@ for country in countries:
     end_date = Date + timedelta(days=+int(deltaDate))
     startdate=end_date.strftime('X%m/X%d/%y').replace('X0','X').replace('X','')
 
-    learner = seaird.Learner(country, startdate, predict_range,\
+    learner = Learner(country, startdate, predict_range,\
         histOpt.iloc[0].s0, e0, a0, histOpt.iloc[0].i0, histOpt.iloc[0].r0, histOpt.iloc[0].d0, \
             startNCases, histOpt.iloc[0].wcases, histOpt.iloc[0].wrec, cleanRecovered)
 

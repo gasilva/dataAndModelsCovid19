@@ -7,7 +7,7 @@ import time
 import sys
 from yabox import DE
 from tqdm import tqdm
-import dataFit_SEAIRD_v2AdjustIC as adjustIC
+from modules.dataFit_SEAIRD_v2AdjustIC import Learner,lossOdeint
 import subprocess as sub
 from itertools import (takewhile,repeat)
 import ray
@@ -60,7 +60,7 @@ def create_fun(country,e0,a0,date,version):
         else:
             totLines=-1
         
-        learner=adjustIC.Learner(country, adjustIC.lossOdeint, startdate, predict_range,\
+        learner=Learner(country, lossOdeint, startdate, predict_range,\
             s0, e0, a0, i0, r0, d0, version, startNCases, wcases, wrec, 
             cleanRecovered)
         optimal, gtot=learner.train()
