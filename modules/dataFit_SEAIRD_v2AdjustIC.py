@@ -1,7 +1,4 @@
 # Import the necessary packages and modules
-import matplotlib
-matplotlib.use('agg')
-#matplotlib.use('TkAgg')
 import sys
 import math
 import argparse
@@ -9,8 +6,6 @@ import json
 import os
 import time
 import urllib.request
-import matplotlib.pyplot as plt
-from matplotlib import cm
 import numpy as np
 import pandas as pd
 from csv import reader
@@ -30,22 +25,6 @@ def logGrowth(growth,finalDay):
         else:
             y.append(y[i-1]*growth)
     return x,y
-
-def predictionsPlot(df,nPoints,startCases):
-    cases=[]
-    time=[]
-    j1=0
-    for j in range(0,nPoints):
-        if float(df.infected[j])>=startCases:
-            cases.append(float(df.infected[j]))
-            time.append(float(j1))
-            j1+=1
-    return time,cases
-
-def savePlot(strFile):
-    if os.path.isfile(strFile):
-        os.remove(strFile)   # Opt.: os.system("del "+strFile)
-    plt.savefig(strFile,dpi=600)
 
 def logistic_model(x,a,b,c):
     return c/(1+np.exp(-(x-b)/max(1e-12,a)))
@@ -312,7 +291,7 @@ class Learner(object):
         return new_index, extended_actual, extended_recovered, extended_death, \
              res[:,0], res[:,1],res[:,2],res[:,3],res[:,4], res[:,5]
 
-    #run optimizer and plotting
+    #run optimizer
     def train(self):
         self.death = self.load_dead(self.country)
         self.recovered = self.load_recovered(self.country)
