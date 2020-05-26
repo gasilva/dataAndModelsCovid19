@@ -301,7 +301,7 @@ class Learner(object):
         
         y0=[s_0,e_0,a_0,i_0,r_0,d_0]
         tspan=np.arange(0, size, 1)
-        res=odeint(SEAIRD,y0,tspan) #,hmax=0.01)
+        res=odeint(SEAIRD,y0,tspan) #,hmax=0.2)
 
         extended_actual = np.concatenate((data.values, \
                             [None] * (size - len(data.values))))
@@ -328,7 +328,7 @@ class Learner(object):
                 self.a_0, self.i_0, self.r_0, self.d_0, self.version, self.startNCases, \
                 self.weigthCases, self.weigthRecov),
             method='L-BFGS-B',
-            bounds=[(1e-12, .4), (1e-12, .4), (1./80.,0.2),  (1./80.,0.2), (1./80.,0.2),\
+            bounds=[(1e-12, .4), (1e-12, .4), (1./60.,0.2),  (1./60.,0.2), (1./60.,0.2),\
                 (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)]) #,options={'disp': True})        
         
         #parameter list for optimization
@@ -340,10 +340,10 @@ class Learner(object):
                     self.data, self.recovered, self.death, self.country, self.s_0, \
                     self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
 
-        tot=0
         l1=0
         l2=0
         l3=0
+        tot=0
         for i in range(0,len(extended_actual)-1):
             try:
                 extended_actual[i]=int(extended_actual[i])
@@ -364,7 +364,7 @@ class Learner(object):
         w = self.weigthRecov 
         #weight for deaths
         v = max(0,1. - u - w)
-        gtot=u*l1 + v*l2 + w*l3
+        gtot=u*l1*0.5 + v*l2*0.3 + w*l3*0.2
 
         return optimal.x,gtot
 
@@ -391,7 +391,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, vers
 
     y0=[s_0,e_0,a_0,i_0,r_0,d_0]
     tspan=np.arange(0, size, 1)
-    res=odeint(SEAIRD,y0,tspan) #,hmax=0.01)
+    res=odeint(SEAIRD,y0,tspan) #,hmax=0.2)
 
     tot=0
     l1=0
@@ -413,7 +413,7 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, vers
     w = weigthRecov 
     #weight for deaths
     v = max(0,1. - u - w)
-    gtot=u*l1 + v*l2 + w*l3
+    gtot=u*l1*0.5 + v*l2*0.3 + w*l3*0.2
     
     if math.isnan(gtot):
         l1=2
@@ -427,32 +427,3 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, vers
         gtot=1e6
 
     return gtot
-
-#main program SIRD model
-
-def main(countriesExt):
-    
-    countries, download, startdate, predict_range , s0, e0, a0, i0, r0, k0, version, startNCases, \
-        weigthCases, weigthRecov = parse_arguments()
-
-    if not countriesExt=="":
-        countries=countriesExt
-
-    if download=="True":
-        data_d = load_json("./data_url.json")
-        download_data(data_d)
-        sumCases_province('data/time_series_19-covid-Confirmed.csv', 'data/time_series_19-covid-Confirmed-country.csv')
-        sumCases_province('data/time_series_19-covid-Recovered.csv', 'data/time_series_19-covid-Recovered-country.csv')
-        sumCases_province('data/time_series_19-covid-Deaths.csv', 'data/time_series_19-covid-Deaths-country.csv')
-
-    results=[]
-    for country in countries:
-        if not country=="Brazil":     
-            cleanRecovered=False
-        else:
-            cleanRecovered=True
-        learner = Learner(country, lossOdeint, startdate, predict_range,\
-            s0, e0, a0, i0, r0, k0, version, startNCases, weigthCases, weigthRecov, 
-            cleanRecovered)
-        results.append(learner.train())
-            

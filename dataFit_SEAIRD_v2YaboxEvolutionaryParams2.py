@@ -1,14 +1,9 @@
 # Import the necessary packages and modules
-import matplotlib
-matplotlib.use('agg')
-#matplotlib.use('TkAgg')
 import sys
 import argparse
 import json
 import os
 import urllib.request
-import matplotlib.pyplot as plt
-plt.ion()
 from matplotlib import cm
 import numpy as np
 import pandas as pd
@@ -20,10 +15,26 @@ from scipy.integrate import odeint
 from yabox import DE
 from tqdm import tqdm
 
+import matplotlib as mpl
+# mpl.use('agg')
+# mpl.use('TkAgg')
+mpl.use('Qt4Agg')
+import matplotlib.pyplot as plt
+import matplotlib.style as style
+# style.use('fivethirtyeight')
+
+import matplotlib.font_manager as fm
+# Font Imports
+heading_font = fm.FontProperties(fname='/home/ats4i/playfair-display/PlayfairDisplay-Regular.ttf', size=22)
+subtitle_font = fm.FontProperties(fname='/home/ats4i/Roboto/Roboto-Regular.ttf', size=12)
+
+mpl.rcParams['lines.linewidth'] = 2
+mpl.rcParams['lines.markersize'] = 7
+
 #parallel computation
-import ray
-ray.shutdown()
-ray.init()
+# import ray
+# ray.shutdown()
+# ray.init(num_cpus=3)
 
 def logGrowth(growth,finalDay):
     x =[]
@@ -51,6 +62,11 @@ def savePlot(strFile):
     if os.path.isfile(strFile):
         os.remove(strFile)   # Opt.: os.system("del "+strFile)
     plt.savefig(strFile,dpi=600)
+
+def savePlotBG(strFile):
+    if os.path.isfile(strFile):
+        os.remove(strFile)   # Opt.: os.system("del "+strFile)
+    plt.savefig(strFile,dpi=300,facecolor='#FBEADC', edgecolor='#FEF1E5') #, transparent=True)
 
 def logistic_model(x,a,b,c):
     return c/(1+np.exp(-(x-b)/max(1e-12,a)))
@@ -235,7 +251,7 @@ def load_json(json_file_str):
         sys.exit("Cannot open JSON file: " + json_file_str)
 
 #register function for parallel processing
-@ray.remote
+# @ray.remote
 class Learner(object):
     def __init__(self, country, start_date, predict_range,s_0, e_0, a_0,\
                  i_0, r_0, d_0, startNCases, weigthCases, weigthRecov, cleanRecovered):
@@ -313,7 +329,7 @@ class Learner(object):
         return new_index, extended_actual, extended_recovered, extended_death, \
              res[:,0], res[:,1],res[:,2],res[:,3],res[:,4], res[:,5]
 
-    #run optimizer and plotting
+    #run optimizer
     def train(self):
         
         self.death = self.load_dead(self.country)
@@ -327,13 +343,13 @@ class Learner(object):
         bounds=[(1e-12, .2),(1e-12, .2),(1/60 ,0.4),(1/60, .4),
         (1/60, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
-        maxiterations=1000
+        maxiterations=1500
         f=create_lossOdeint(self.data, self.recovered, \
             self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
                  self.weigthCases, self.weigthRecov)
         de = DE(f, bounds, maxiters=maxiterations)
         i=0
-        with tqdm(total=maxiterations*500) as pbar:
+        with tqdm(total=maxiterations*750) as pbar:
             for step in de.geniterator():
                 idx = step.best_idx
                 norm_vector = step.population[idx]
@@ -364,71 +380,109 @@ class Learner(object):
                     'Predicted Deaths': y5},
                     index=new_index)
 
-        plt.rc('font', size=14)
-        fig, ax = plt.subplots(figsize=(15, 10))
-        ax.set_title("Yabox Evolutionary Opt - SEAIR-D Model for "+self.country)
-        ax.set_ylim((0, max(y0)*1.1))
-        df.plot(ax=ax) #,style=['-','-','-','o','-','x','-','s','-'])
+        df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
+
         print(f"country={self.country}, beta={beta:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
             f" 1/sigma2={1/sigma2:.8f},1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f},"+\
             f" mu={mu:.8f}, r_0:{(beta/gamma):.8f}")
-
-        plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=10, 
-        xy=(1.04, 0.1), xycoords='axes fraction',
-        xytext=(0, 0), textcoords='offset points',
-        ha='right',rotation=90)
-        plt.annotate('Source: https://www.lewuathe.com/covid-19-dynamics-with-sir-model.html', fontsize=10, 
-        xy=(1.06,0.1), xycoords='axes fraction',
-        xytext=(0, 0), textcoords='offset points',
-        ha='left',rotation=90)
-        plt.annotate('Original SEAIR-D with delay model, São Paulo, Brazil', fontsize=10, 
-        xy=(1.045,0.1), xycoords='axes fraction',
-        xytext=(0, 0), textcoords='offset points',
-        ha='left',rotation=90)
-
-        fig.canvas.draw_idle()  # required to work on mpl < 1.5
-        fig.canvas.flush_events()
-
-        df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
-        country=self.country
-        strFile ="./results/modelSEAIRDOptGlobalOptimum"+country+"Yabox2.png"
-        savePlot(strFile)
-        # plt.show()
-        # plt.close()
-
-        plotX=new_index[range(0,self.predict_range)]
-        plotXt=new_index[range(0,len(extended_actual))]
-        fig, ax = plt.subplots(figsize=(15, 10))
-        ax.set_title("Yabox Evolutionary Opt -Zoom SEAIR-D Model for "+self.country)
-        plt.xticks(np.arange(0, self.predict_range, self.predict_range/8))
-        ax.set_ylim(0,max(y3)*1.1)
-        ax.plot(plotX,y3,'y-',label="Infected")
-        ax.plot(plotX,y4,'c-',label="Recovered")
-        ax.plot(plotX,y5,'m-',label="Deaths")
-        ax.plot(plotXt,extended_actual,'o',label="Infected data")
-        ax.plot(plotXt,extended_death,'x',label="Death data")
-        ax.plot(plotXt,extended_recovered,'s',label="Recovered data")
-        ax.legend()
-       
-        plt.annotate('Dr. Guilherme A. L. da Silva, www.ats4i.com', fontsize=10, 
-        xy=(1.04, 0.1), xycoords='axes fraction',
-        xytext=(0, 0), textcoords='offset points',
-        ha='right',rotation=90)
-        plt.annotate('Original SEAIR-D with delay model, São Paulo, Brazil', fontsize=10, 
-        xy=(1.045,0.1), xycoords='axes fraction',
-        xytext=(0, 0), textcoords='offset points',
-        ha='left',rotation=90)
-
-        fig.canvas.draw_idle()  # required to work on mpl < 1.5
-        fig.canvas.flush_events()
-
-        strFile ="./results/ZoomModelSEAIRDOpt"+country+"Yabox2.png"
-        savePlot(strFile)
-        # plt.show()
-        # plt.close()
-        plt.ioff()
         
         print(self.country+" is done!")
+
+    #plotting
+    def trainPlot(self):
+
+        df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
+        color_bg = '#FEF1E5'
+        # lighter_highlight = '#FAE6E1'
+        darker_highlight = '#FBEADC'
+        plt.rc('font', size=14)
+        fig, ax = plt.subplots(figsize=(15, 10),facecolor=color_bg)
+        ax.patch.set_facecolor(darker_highlight)
+        # Hide the right and top spines
+        ax.spines['left'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.spines['top'].set_visible(False)
+
+        # Adding a title and a subtitle
+        plt.text(x = 0.02, y = 1.1, s = "Novel SEAIR-D Model Results for "+self.country,
+                    fontsize = 34, weight = 'bold', alpha = .75,transform=ax.transAxes, 
+                    fontproperties=heading_font)
+        plt.text(x = 0.02, y = 1.05,
+                    s = "evolutionary optimization by Yabox",
+                    fontsize = 26, alpha = .85,transform=ax.transAxes, 
+                    fontproperties=subtitle_font)
+
+        ax.set_ylim((0, max(df.iloc[:]['susceptible'])*1.1))
+        df.plot(ax=ax) #,style=['-','-','-','o','-','x','-','s','-'])
+        ax.legend(frameon=False)
+
+        plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=12, 
+        xy=(1.04, 0.1), xycoords='axes fraction',
+        xytext=(0, 0), textcoords='offset points',
+        ha='right',rotation=90)
+        plt.annotate('Original SEAIR-D with delay model, São Paulo, Brazil', fontsize=12, 
+        xy=(1.045,0.1), xycoords='axes fraction',
+        xytext=(0, 0), textcoords='offset points',
+        ha='left',rotation=90)
+
+        # Hide grid lines
+        ax.grid(False)
+
+        country=self.country
+        strFile ="./results/modelSEAIRDOptGlobalOptimum"+country+"Yabox2.png"
+        #savePlotBG(strFile)
+        fig.tight_layout()
+        fig.savefig(strFile, facecolor=fig.get_facecolor(), edgecolor=fig.get_edgecolor())
+        plt.show()
+        plt.close()
+
+        plotX=df.index[range(0,self.predict_range)]
+        plotXt=df.index[range(0,len(df.infected))]
+
+        plt.rc('font', size=14)
+        fig, ax = plt.subplots(figsize=(15, 10),facecolor=color_bg)
+        ax.patch.set_facecolor(darker_highlight)
+        # Hide the right and top spines
+        ax.spines['left'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.spines['top'].set_visible(False)
+        # Hide grid lines
+        ax.grid(False)
+
+        # Adding a title and a subtitle
+        plt.text(x = 0.02, y = 1.1, s = "Zoom at Novel SEAIR-D Model Results for "+self.country,
+                    fontsize = 34, weight = 'bold', alpha = .75,transform=ax.transAxes,
+                    fontproperties=heading_font)
+        plt.text(x = 0.02, y = 1.05,
+                    s = "evolutionary optimization by Yabox",
+                    fontsize = 26, alpha = .85,transform=ax.transAxes, 
+                    fontproperties=subtitle_font)
+
+        plt.xticks(np.arange(0, self.predict_range, self.predict_range/8))
+        ax.set_ylim(0,max(df.infected)*1.1)
+        ax.plot(plotX,df.infected,'y-',label="Infected")
+        ax.plot(plotX,df.predicted_recovered,'c-',label="Recovered")
+        ax.plot(plotX,df.predicted_deaths,'m-',label="Deaths")
+        ax.plot(plotXt,df.infected_data,'o',label="Infected data")
+        ax.plot(plotXt,df.death_data,'x',label="Death data")
+        ax.plot(plotXt,df.recovered,'s',label="Recovered data")
+        ax.legend(frameon=False)
+
+        plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=12, 
+        xy=(1.04, 0.1), xycoords='axes fraction',
+        xytext=(0, 0), textcoords='offset points',
+        ha='right',rotation=90)
+        plt.annotate('Original SEAIR-D with delay model, São Paulo, Brazil', fontsize=12, 
+        xy=(1.045,0.1), xycoords='axes fraction',
+        xytext=(0, 0), textcoords='offset points',
+        ha='left',rotation=90)
+
+        fig.tight_layout()
+        strFile ="./results/ZoomModelSEAIRDOpt"+country+"Yabox2.png"
+        #savePlotBG(strFile)
+        fig.savefig(strFile, facecolor=fig.get_facecolor(), edgecolor=fig.get_edgecolor())
+        plt.show()
+        plt.close()
 
 #objective function Odeint solver
 
@@ -479,12 +533,12 @@ def create_lossOdeint(data, recovered, \
         w = weigthRecov 
         #weight for deaths
         v = max(0,1. - u - w)
-        return u*l1 + v*l2 + w*l3 
+        return u*l1*0.5 + v*l2*0.3 + w*l3*0.2 
     return lossOdeint
 
 #main program SIRD model
 
-def main(countriesExt):
+def main(countriesExt,opt):
     
     countries, download, startdate, predict_range , s0, e0, a0, i0, r0, k0, startNCases, \
         weigthCases, weigthRecov = parse_arguments()
@@ -555,25 +609,27 @@ def main(countriesExt):
         #weightDeaths = 1 - weigthCases - weigthRecov
     
         if country=="Brazil":
+            # fitting initial conditions
+            # s0=6759434, date=0, i0=583, wrec=0.3212, wcases=0.1245
             startdate="3/2/20"
-            s0=3.0e6*3.5 #3.0e6*3.5 not clean #3.0e6*2.5 clean
+            s0=3.0e6*4 #3.0e6*3.5 not clean #3.0e6*2.5 clean
             e0=1e-4
-            i0=500 #135 clean #500 not clean
-            r0=14e3 #14000 #14000 not clean #0 clean
+            i0=800 #135 clean #500 not clean
+            r0=12e3 #14e3 #14000 #14000 not clean #0 clean
             k0=0
             #start fitting when the number of cases >= start
             startNCases=150
             #how many days is the prediction
             predict_range=200
             #weigth for fitting data
-            weigthCases=0.25 #0.1221 opt #0.4 clean #0.15 not clean
+            weigthCases=0.4 #0.1221 opt #0.4 clean #0.15 not clean
             weigthRecov=0.1 #486
             #weightDeaths = 1 - weigthCases - weigthRecov
             cleanRecovered=False
     
         if country=="China":
             startdate="1/26/20"
-            s0=120000*4.7 #600e3
+            s0=120000*4.5 #600e3
             e0=1e-4
             i0=800
             r0=-31.5e3
@@ -653,11 +709,13 @@ def main(countriesExt):
             weigthRecov=0.1
             #weightDeaths = 1 - weigthCases - weigthRecov
                
-        learner = Learner.remote(country, startdate, predict_range,\
+        learner = Learner(country, startdate, predict_range,\
             s0, e0, a0, i0, r0, k0, startNCases, weigthCases, weigthRecov, 
             cleanRecovered)
-        results.append(learner.train.remote())
-    results = ray.get(results)
+        if opt!=6 and opt!=0:
+            results.append(learner.train())
+        learner.trainPlot()
+    # results = ray.get(results)
             
 #Initial parameters
 #Choose here your options
@@ -668,7 +726,8 @@ def main(countriesExt):
 #opt=2 logistic model prediction
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
-#opt=5 SEAIR-D Model
+#opt=5 SEAIR-D Model and plot
+#opt=6 only plot SEAIR-D Model
 opt=5
 
 #prepare data for plotting log chart
@@ -713,6 +772,7 @@ country="Brazil"
 #countriesExt=["Italy","China","France", \
 #                "Brazil", "Belgium", "Spain"]
 #countriesExt=["Germany","United Kingdom","Italy"]
+# countriesExt=["Brazil"]
 countriesExt=["Brazil"]
 
 #initial vars
@@ -726,25 +786,35 @@ if opt==1 or opt==0 or opt==4:
     model='SEAIRD' 
 
     df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+country+'.pkl')
-    time6, cases6 = predictionsPlot(df,100,140)
+    time6, cases6 = predictionsPlot(df,150,2000)
 
     #model
     #33% per day
-    growth = 1.33
-    x,y = logGrowth(growth,80)
+    growth = 1.1
+    x,y = logGrowth(growth,120)
 
     #50% per day
     growth1 = 1.25
-    x1,y1 = logGrowth(growth1,80)
+    x1,y1 = logGrowth(growth1,60)
 
     # Plot the data
     #ax.figure(figsize=(19.20,10.80))
+    color_bg = '#FEF1E5'
+    # lighter_highlight = '#FAE6E1'
+    darker_highlight = '#FBEADC'
     plt.rcParams['figure.figsize'] = [9, 7]
     plt.rc('font', size=14)
-    plt.plot(time2, cases2,'r+-',label=country2) 
-    plt.plot(time4, cases4,'mv-',label=country4) 
-    plt.plot(time5, cases5,'cx-',label=country5) 
-    plt.plot(time3, cases3,'go-',label=country3) 
+    fig, ax = plt.subplots(facecolor=color_bg)
+    ax.patch.set_facecolor(darker_highlight)
+    # Hide the right and top spines
+    ax.spines['left'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+
+    plt.plot(time2, cases2,'r-',label=country2,markevery=3) 
+    plt.plot(time4, cases4,'m-',label=country4,markevery=3) 
+    plt.plot(time5, cases5,'c-',label=country5,markevery=3) 
+    plt.plot(time3, cases3,'g-',label=country3,markevery=3) 
     plt.plot(time6, cases6,'--',c='0.6',label=country3+" "+model) 
     plt.plot(time1, cases1,'b-',label=country1) 
     plt.plot(x, y,'y--',label='{:.1f}'.format((growth-1)*100)+'% per day',alpha=0.3)
@@ -754,8 +824,8 @@ if opt==1 or opt==0 or opt==4:
     plt.annotate(country3+" {:.1f} K".format(cases3[len(cases3)-1]/1000), # this is the text
         (time3[len(cases3)-1],cases3[len(cases3)-1]), # this is the point to label
         textcoords="offset points", # how to position the text
-        xytext=(0,-15), # distance from text to points (x,y)
-        ha='left') # horizontal alignment can be left, right or center
+        xytext=(-10,2), # distance from text to points (x,y)
+        ha='right') # horizontal alignment can be left, right or center
 
     idx=int(np.argmax(cases6))
     plt.annotate("Peak {:.1f} K".format(max(cases6)/1000), # this is the text
@@ -775,7 +845,6 @@ if opt==1 or opt==0 or opt==4:
         textcoords="offset points", # how to position the text
         xytext=(-8,10), # distance from text to points (x,y)
         ha='center') # horizontal alignment can be left, right or center
-
     style = dict(size=10, color='gray')
 
     plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=10, 
@@ -790,11 +859,23 @@ if opt==1 or opt==0 or opt==4:
     plt.xlabel('Days after 100th case')
     plt.ylabel('Official registered cases')
     plt.yscale('log')
-    plt.title("Corona virus growth")
-    plt.legend()
+    # Hide grid lines
+    ax.grid(False)
+
+    # Adding a title and a subtitle
+    plt.text(x = 0.02, y = 1.1, s = "Corona virus growth",
+                fontsize = 34, weight = 'bold', alpha = .75,transform=ax.transAxes,
+                fontproperties=heading_font)
+    plt.text(x = 0.02, y = 1.05,
+                s = "Comparison selected countries and model for "+country3,
+                fontsize = 26, alpha = .85,transform=ax.transAxes, 
+                    fontproperties=subtitle_font)
+    plt.legend(frameon=False)
+    fig.tight_layout()
 
     #save figs
-    savePlot('./results/coronaPythonEN_'+version+'.png')
+    strFile ='./results/coronaPythonEN_'+version+'.png'
+    fig.savefig(strFile, facecolor=fig.get_facecolor(), edgecolor=fig.get_edgecolor())
 
     # Show the plot
     plt.show() 
@@ -835,8 +916,8 @@ if opt==2 or opt==0:
     if country==country3:
         casesFit=cases3
         timeFit=time3
-        maxCases=300e3
-        maxTime=90
+        maxCases=1.5e6
+        maxTime=160
         guessExp=2
 
     if country==country4:
@@ -856,42 +937,78 @@ if opt==2 or opt==0:
     print("Errors = ",errors)
  
     #exponential curve
-    exp_fit = curve_fit(exponential_model,timeFit,casesFit,p0=[guessExp,guessExp/2,guessExp/4])
+    exp_fit = curve_fit(exponential_model,timeFit,casesFit,p0=[guessExp*2,guessExp/2,guessExp/4],maxfev=10000)
+
+    # Plot the data
+    #ax.figure(figsize=(19.20,10.80))
+    color_bg = '#FEF1E5'
+    # lighter_highlight = '#FAE6E1'
+    darker_highlight = '#FBEADC'
+    plt.rcParams['figure.figsize'] = [9, 7]
+    plt.rc('font', size=14)
+    fig, ax = plt.subplots(facecolor=color_bg)
+    ax.patch.set_facecolor(darker_highlight)
+    # Hide the right and top spines
+    ax.spines['left'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
 
     #plot
     pred_x = list(range(len(time3)+1,maxTime))
-    plt.rcParams['figure.figsize'] = [7, 7]
-    plt.rc('font', size=14)
-    # Real data
-    plt.scatter(timeFit,casesFit,label="Real cases "+country,color="red")
     # Predicted logistic curve
-    plt.plot(time3+pred_x, [logistic_model(i,fit[0][0],fit[0][1],fit[0][2]) for i in time3+pred_x], label="Logistic model" )
+    ax.plot(time3+pred_x, [logistic_model(i,fit[0][0],fit[0][1],fit[0][2]) for i in time3+pred_x], label="Logistic model" )
     # Predicted exponential curve
-    plt.plot(time3+pred_x, [exponential_model(i,exp_fit[0][0],exp_fit[0][1],exp_fit[0][2]) for i in time3+pred_x], label="Exponential model" )
-    plt.legend()
+    ax.plot(time3+pred_x, [exponential_model(i,exp_fit[0][0],exp_fit[0][1],exp_fit[0][2]) for i in time3+pred_x], label="Exponential model" )
+    # Real data
+    ax.scatter(timeFit,casesFit,label="Real cases "+country,color="red")
+
+    #axis, limits and legend
     plt.xlabel("Days since 100th case")
     plt.ylabel("Total number of infected people in "+country)
     plt.ylim((min(y)*0.9,maxCases))
+    plt.legend(frameon=False)
 
-    plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=10, 
-            xy=(1.05, -0.12), xycoords='axes fraction',
+    plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=9, 
+            xy=(1.05, 0.05), xycoords='axes fraction',
             xytext=(0, 0), textcoords='offset points',
             ha='right',rotation=90)
-    plt.annotate('Source: https://towardsdatascience.com/covid-19-infection-in-italy-mathematical-models-and-predictions-7784b4d7dd8d', fontsize=8, 
-            xy=(1.06,-0.12), xycoords='axes fraction',
+    plt.annotate('Source: https://towardsdatascience.com/covid-19-infection-in-italy-mathematical-models-and-predictions', fontsize=7, 
+            xy=(1.06,0.05), xycoords='axes fraction',
             xytext=(0, 0), textcoords='offset points',
             ha='left',rotation=90)
+    
+    plt.annotate('Total infected = {:.2f} M'.format(fit[0][2]/1e6), fontsize=12, 
+            xy=(0.97,0.60), xycoords='axes fraction',
+            xytext=(0, 0), textcoords='offset points',
+            ha='right')
+
+    plt.annotate('Max Infection at {:.0f} day'.format(fit[0][1]), fontsize=12, 
+            xy=(fit[0][1],logistic_model(fit[0][1],fit[0][0],fit[0][1],fit[0][2])),
+            xytext=(-35, 0), textcoords='offset points', arrowprops={'arrowstyle': '-|>'},
+            ha='right')
+
+    # Hide grid lines
+    ax.grid(False)
+
+    # Adding a title and a subtitle
+    plt.text(x = 0.02, y = 1.1, s = "Curve Fitting with Simple Math Functions",
+                fontsize = 34, weight = 'bold', alpha = .75,transform=ax.transAxes,
+                fontproperties=heading_font)
+    plt.text(x = 0.02, y = 1.05,
+                s = "Logistic and Exponential Function fitted with real data from "+country,
+                fontsize = 26, alpha = .85,transform=ax.transAxes, 
+                    fontproperties=subtitle_font)
+    plt.legend(frameon=False)
+    fig.tight_layout()
 
     #save figs
     strFile ='./results/coronaPythonModelEN'+country+'.png'
-    savePlot(strFile)
+    fig.savefig(strFile, facecolor=fig.get_facecolor(), edgecolor=fig.get_edgecolor())
 
     plt.show() 
     plt.close()
 
 if opt==3 or opt==0 or opt==4:
-    plt.rcParams['figure.figsize'] = [9, 7]
-    plt.rc('font', size=14)
     
     casesGrowth=cases3
     timeGrowth=time3
@@ -937,10 +1054,25 @@ if opt==3 or opt==0 or opt==4:
     ind = timeGrowth[1:]
     bars = growth
 
+    plt.rcParams['figure.figsize'] = [9, 7]
+    plt.rc('font', size=14)
+    #ax.figure(figsize=(19.20,10.80))
+    color_bg = '#FEF1E5'
+    # lighter_highlight = '#FAE6E1'
+    darker_highlight = '#FBEADC'
+
     colors = cm.rainbow(np.asfarray(growth,float) / float(max(np.asfarray(growth,float))))
-    plot = plt.scatter(growth, growth, c = growth, cmap = 'rainbow')
-    plt.clf()
-    plt.colorbar(plot)
+    fig, ax = plt.subplots(facecolor=color_bg)
+    plot = ax.scatter(growth, growth, c = growth, cmap = 'rainbow')
+    fig.colorbar(plot)
+    ax.cla()
+
+    # Plot the data
+    ax.patch.set_facecolor(darker_highlight)
+    # Hide the right and top spines
+    ax.spines['left'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
 
     #Plot bars
     plt.bar(ind, bars, color=colors)
@@ -950,17 +1082,17 @@ if opt==3 or opt==0 or opt==4:
     plt.ylabel(country+' growth official cases per day [%]') 
 
     #Plot a line
-    plt.axhline(y=33,color='r',linestyle='--')
+    plt.axhline(y=10,color='r',linestyle='--')
 
-    plt.annotate("doubling each 3 days", # this is the text
-        (13,33), # this is the point to label
+    plt.annotate("doubling each 10 days", # this is the text
+        (75,10), # this is the point to label
         textcoords="offset points", # how to position the text
         xytext=(0,5), # distance from text to points (x,y)
-        ha='center') # horizontal alignment can be left, right or center
+        ha='right', weight='bold',fontsize=14) # horizontal alignment can be left, right or center
 
-    # Text on the top of each barplot
-    for i in range(1,len(ind)):
-        plt.text(x = ind[i]-0.5 , y = growth[i]+0.25, s = " {:.1f}%".format(growth[i]), size = 7)
+    # # Text on the top of each barplot
+    # for i in range(1,len(ind),5):
+    #     plt.text(x = ind[i]-0.5 , y = 1.15*growth[i], s = " {:.1f}%".format(growth[i]), size = 8)
 
     plt.annotate('Dr. Guilherme Araujo Lima da Silva, www.ats4i.com', fontsize=10, 
             xy=(1.24, 0.1), xycoords='axes fraction',
@@ -971,9 +1103,22 @@ if opt==3 or opt==0 or opt==4:
             xytext=(0, 0), textcoords='offset points',
             ha='left',rotation=90)
 
+    # Hide grid lines
+    ax.grid(False)
+
+    # Adding a title and a subtitle
+    plt.text(x = 0.02, y = 1.1, s = "Relative Growth per Day",
+                fontsize = 34, weight = 'bold', alpha = .75,transform=ax.transAxes,
+                fontproperties=heading_font)
+    plt.text(x = 0.02, y = 1.05,
+                s = "Real Data for "+country3,
+                fontsize = 26, alpha = .85,transform=ax.transAxes, 
+                    fontproperties=subtitle_font)
+    fig.tight_layout()
+
     #save figs
     strFile ='./results/coronaPythonGrowthEN_'+country+'.png'
-    savePlot(strFile)
+    fig.savefig(strFile, facecolor=fig.get_facecolor(), edgecolor=fig.get_edgecolor())
 
     plt.show() 
     plt.close()
@@ -983,56 +1128,80 @@ if opt==3 or opt==0 or opt==4:
     for i in range(0,len(casesGrowth)-1):
         growth.append(float(casesGrowth[i+1])-float(casesGrowth[i]))
 
-
     #Setup dummy data
     N = 10
     ind = timeGrowth[1:]
     bars = growth
 
+    plt.rcParams['figure.figsize'] = [9, 7]
+    plt.rc('font', size=14)
+    #ax.figure(figsize=(19.20,10.80))
+    color_bg = '#FEF1E5'
+    # lighter_highlight = '#FAE6E1'
+    darker_highlight = '#FBEADC'
+
     colors = cm.rainbow(np.asfarray(growth,float) / float(max(np.asfarray(growth,float))))
-    plot = plt.scatter(growth, growth, c = growth, cmap = 'rainbow')
-    plt.clf()
-    plt.colorbar(plot)
+    fig, ax = plt.subplots(facecolor=color_bg)
+    plot = ax.scatter(growth, growth, c = growth, cmap = 'rainbow')
+    fig.colorbar(plot)
+    ax.cla()
+
+    ax.patch.set_facecolor(darker_highlight)
+    # Hide the right and top spines
+    ax.spines['left'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
 
     #Plot bars
     plt.bar(ind, bars, color=colors)
     plt.xlabel('Days since 100th case')
 
     # Make the y-axis label and tick labels match the line color.
-    plt.ylabel(country+' growth official cases per day [number]') 
+    plt.ylabel(country+' growth official cases per day [cases]') 
 
     # Plot a line
-    plt.axhline(y=300,color='r',linestyle='--')
+    # plt.axhline(y=300,color='r',linestyle='--')
 
-    plt.annotate("Expected per day", # this is the text
-        (5,310), # this is the point to label
-        textcoords="offset points", # how to position the text
-        xytext=(0,5), # distance from text to points (x,y)
-        ha='center') # horizontal alignment can be left, right or center
+    # plt.annotate("Expected per day", # this is the text
+    #     (5,310), # this is the point to label
+    #     textcoords="offset points", # how to position the text
+    #     xytext=(0,5), # distance from text to points (x,y)
+    #     ha='center') # horizontal alignment can be left, right or center
 
-    # Text on the top of each barplot
-    for i in range(1,len(ind)):
-        plt.text(x = ind[i]-0.5 , y = growth[i]+5, s = " {:.0f}".format(growth[i]), size = 7)
+    # # Text on the top of each barplot
+    # for i in range(1,len(ind),5):
+    #     plt.text(x = ind[i]-0.5 , y = 1.3*growth[i], s = " {:.0f}".format(growth[i]), size = 10)
 
     plt.annotate('Dr. Guilherme A. L. da Silva, www.ats4i.com', fontsize=10, 
-            xy=(1.24, 0.1), xycoords='axes fraction',
+            xy=(1.28, 0.1), xycoords='axes fraction',
             xytext=(0, 0), textcoords='offset points',
             ha='right',rotation=90)
     plt.annotate('Source: https://github.com/CSSEGISandData/COVID-19.git', fontsize=10, 
-            xy=(1.25,0.1), xycoords='axes fraction',
+            xy=(1.29,0.1), xycoords='axes fraction',
             xytext=(0, 0), textcoords='offset points',
             ha='left',rotation=90)
 
+    # Hide grid lines
+    ax.grid(False)
+
+    # Adding a title and a subtitle
+    plt.text(x = 0.02, y = 1.1, s = "Absolute Growth per Day",
+                fontsize = 34, weight = 'bold', alpha = .75,transform=ax.transAxes,
+                fontproperties=heading_font)
+    plt.text(x = 0.02, y = 1.05,
+                s = "Real Data for "+country3,
+                fontsize = 26, alpha = .85,transform=ax.transAxes, 
+                    fontproperties=subtitle_font)
+    fig.tight_layout()
+
     #save figs
     strFile ='./results/coronaPythonGrowthDeltaCasesEN_'+country+'.png'
-    savePlot(strFile)
+    fig.savefig(strFile, facecolor=fig.get_facecolor(), edgecolor=fig.get_edgecolor())
 
     plt.show() 
     plt.close()
 
-if opt==5 or opt==0:
+if opt==0 or opt==5 or opt==6:
 
     if __name__ == '__main__':
-        main(countriesExt)
-
-
+        main(countriesExt,opt)
