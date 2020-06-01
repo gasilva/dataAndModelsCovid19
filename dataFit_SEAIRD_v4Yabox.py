@@ -344,7 +344,7 @@ class Learner(object):
             self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, \
                 self.d_0, self.startNCases, \
                 self.weigthCases, self.weigthRecov)
-        de = DE(f, bounds, maxiters=maxiterations) #,popsize=200)
+        de = DE(f, bounds, maxiters=maxiterations) #,popsize=100)
         i=0
         ndims=len(bounds)
         with tqdm(total=maxiterations*ndims*125) as pbar:
@@ -434,7 +434,7 @@ class Learner(object):
 
         #set country
         country=self.country
-        strFile ="./results/modelSEAIRD"+country+"Yabox.png"
+        strFile ="./results/modelSEAIRDNeg"+country+"Yabox.png"
 
         #remove previous file
         if os.path.isfile(strFile):
@@ -503,7 +503,7 @@ class Learner(object):
         fig.tight_layout()
 
         #file name to be saved
-        strFile ="./results/ZoomModelSEAIRD"+country+"Yabox.png"
+        strFile ="./results/ZoomModelSEAIRD10pointsNeg"+country+"Yabox.png"
 
         #remove previous file
         if os.path.isfile(strFile):
@@ -538,23 +538,8 @@ def create_lossOdeint(data, recovered, \
         #solve ODE system
         y0=[s_0,e_0,a_0,i_0,r_0,d_0]
         size = len(data)+1
-        tspan=np.arange(0, size, 1)
+        tspan=np.arange(0, size+200, 1)
         res=odeint(SEAIRD,y0,tspan)
-
-        #calculate fitting error
-        # tot=0
-        # l1=0
-        # l2=0
-        # l3=0
-        # for i in range(0,len(data.values)-1):
-        #     if data.values[i]>startNCases:
-        #         l1 = l1+(res[i+1,3] - data.values[i])**2
-        #         l2 = l2+(res[i+1,5] - death.values[i])**2
-        #         l3 = l3+(res[i+1,4] - recovered.values[i])**2
-        #         tot+=1
-        # l1=np.sqrt(l1/max(1,tot))
-        # l2=np.sqrt(l2/max(1,tot))
-        # l3=np.sqrt(l3/max(1,tot))
 
         # calculate fitting error by using numpy.where
         ix= np.where(data.values >= startNCases)
@@ -571,7 +556,7 @@ def create_lossOdeint(data, recovered, \
 
         #calculate derivatives
         #and the error of the derivative between prediction and the data
-        dDeath=np.diff(res[1:,5])
+        dDeath=np.diff(res[1:size,5])
         dDeathData=np.diff(death.values)
         dErrorX=(dDeath-dDeathData)**2
         dError=np.mean(dErrorX[-10:]) 
@@ -583,6 +568,11 @@ def create_lossOdeint(data, recovered, \
         #10 6 7 12 9 8 14
         #objective function
         gtot=u*l1 + v*(l2+0.01*dError) + w*l3
+
+        NegDeathData=np.diff(res[:,5])
+        dNeg=np.mean(NegDeathData[-10:]) 
+        correctGtot=max(abs(dNeg),0)**2
+        gtot=correctGtot-min(np.sign(dNeg),0)*correctGtot+gtot
 
         return gtot 
     return lossOdeint
