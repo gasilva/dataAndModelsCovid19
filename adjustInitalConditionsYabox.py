@@ -6,8 +6,9 @@ import os.path
 import time
 import sys
 from yabox import DE
-from tqdm import tqdm
-from modules.dataFit_SEAIRD_v2AdjustIC import Learner,lossOdeint
+from modules.dataFit_SEAIRD_v2bOnlyAdjustIC import Learner,lossOdeint,\
+    download_data,load_json,sumCases_province
+
 import subprocess as sub
 from itertools import (takewhile,repeat)
 import ray
@@ -33,11 +34,10 @@ def append_new_line(file_name, text_to_append):
         # Append text at the end of file
         file_object.write(text_to_append)
 
-def create_fun(country,e0,a0,date,version):
+def create_fun(country,e0,a0,date,version,startNCases):
     def fun(point):
         s0, deltaDate, i0, wcases, wrec, r0, d0 = point
         cleanRecovered=False
-        startNCases=100
         predict_range=200
         s0=int(round(s0))
         i0=int(round(i0))
@@ -63,7 +63,7 @@ def create_fun(country,e0,a0,date,version):
         learner=Learner(country, lossOdeint, startdate, predict_range,\
             s0, e0, a0, i0, r0, d0, version, startNCases, wcases, wrec, 
             cleanRecovered)
-        optimal, gtot=learner.train()
+        optimal, gtot = learner.train()
 
         beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal
         print(f"s0={s0}, date={startdate}, i0={i0}, wrec={wrec}, wcases={wcases}")
@@ -83,135 +83,98 @@ def create_fun(country,e0,a0,date,version):
 
 #register function for parallel processing
 @ray.remote
-def opt(country,e0,a0,date,version):
-    bounds = [(0.5e6,15e6),(0,5),(0,1500),\
-              (0.1,0.5),(0.08,0.12),(0,1500),(0,1500)]
-    maxiterations=300
-    f=create_fun(country,e0,a0,date,version)
+def opt(country,e0,a0,date,version,startNCases):
+    if country=="China":
+        dayInf=0
+    else:
+        dayInf=-10
+    bounds=[(0.5e6,20e6),(dayInf,10),(0,1500),\
+              (0.01,0.7),(0.01,0.12),(-50e3,50e3),(0,1500)]
+    maxiterations=1000
+    f=create_fun(country,e0,a0,date,version,startNCases)
     de = DE(f, bounds, maxiters=maxiterations)
-    i=0
-    with tqdm(total=maxiterations*250) as pbar:
-        for step in de.geniterator():
-            try:
-                idx = step.best_idx
-                norm_vector = step.population[idx]
-                best_params = de.denormalize([norm_vector])
-            except:
-                print("error in function evaluation")
-            pbar.update(i)
-            i+=1
+    for step in de.geniterator():
+        try:
+            idx = step.best_idx
+            norm_vector = step.population[idx]
+            best_params = de.denormalize([norm_vector])
+        except:
+            print("error in function evaluation")
     p=best_params[0]
     return p
 
-ray.shutdown()
-ray.init(num_cpus=3)
+#download new data
+data_d = load_json("./data_url.json")
+download_data(data_d)
+sumCases_province('data/time_series_19-covid-Confirmed.csv', 'data/time_series_19-covid-Confirmed-country.csv')
+sumCases_province('data/time_series_19-covid-Recovered.csv', 'data/time_series_19-covid-Recovered-country.csv')
+sumCases_province('data/time_series_19-covid-Deaths.csv', 'data/time_series_19-covid-Deaths-country.csv')
 
-date="2/25/20"
-s0=12000000
+#common parameters initialization
 e0=0
 a0=0
-i0=265
-r0=0
-d0=0
-#weigth for fitting data
-wcases=0.6
-wrec=0.1
-#weightDeaths = 1 - weigthCases - weigthRecov
-countries=["Italy","France","Brazil"]
+#selected countries to be analyzed
+countries=["Italy","France","Brazil", "China"]
 # countries=["Italy","China","France","US","Germany","Sweden","United Kingdowm", "Spain", "Belgium"]
 #countries=["Brazil"]
 
+#one processor per country
+ray.shutdown()
+ray.init(num_cpus=len(countries))
+
+#initialize vars
 optimal=[]
-version=60
+version=200
 versionx=version
 y=[]
 
+#main loop
 for country in countries:  
 
+    #version of optimization
     if version==0:
         versionStr=""
     else:
         versionStr=str(version)
     
+    #initialize parameters for each country in the list
     if country=="China":
         date="1/25/20"
-        s0=600e3
-        e0=1e-4
-        i0=800
-        r0=0 #-250e3
-        d0=0
         #start fitting when the number of cases >= start
-        # startNCases=0
-        #how many days is the prediction
-        # predict_range=150
-        #weigth for fitting data
-        wcases=0.15
-        wrec=0.1
-        #weightDeaths = 1 - weigthCases - weigthRecov
-    
+        startNCases=0
     if country=="Italy":
         date="2/24/20"
-        s0=2.1e6 #3e6*4*2*2*0.7*1.2*1.1
-        e0=1e-4
-        i0=200
-        r0=0
-        d0=50
         #start fitting when the number of cases >= start
-        # startNCases=100
-        #how many days is the prediction
-        # predict_range=150
-        #weigth for fitting data
-        wcases=0.1
-        wrec=0.1
-        #weightDeaths = 1 - weigthCases - weigthRecov
-
+        startNCases=100
     if country=="France":
         date="3/3/20"
         s0=1e6 #1.5e6*1.5*120/80*1.05
-        e0=1e-4
-        i0=0
-        r0=0
-        d0=0
         #start fitting when the number of cases >= start
-        # startNCases=100
-        #how many days is the prediction
-        # predict_range=150
-        #weigth for fitting data
-        wcases=0.1
-        wrec=0.1
-        #weightDeaths = 1 - weigthCases - weigthRecov
-
+        startNCases=100
     if country=="Brazil":
         date="3/02/20"
-        s0=3.0e6*6.5 #3.0e6*3.5 not clean #3.0e6*2.5 clean
-        e0=1e-4
-        i0=500 #not clean
-        r0=0 #14000 #14000 not clean #0 clean
-        d0=0
         #start fitting when the number of cases >= start
         startNCases=150
-        #how many days is the prediction
-        predict_range=200
-        #weigth for fitting data
-        wcases=0.47 #not clean
-        wrec=0.1 #not clean
-        #weightDeaths = 1 - weigthCases - weigthRecov
-        cleanRecovered=False
 
+    #remove previous history file
     strFile='./results/history_'+country+versionStr+'.csv'
     if os.path.isfile(strFile):
         os.remove(strFile)
-    optimal.append(opt.remote(country,e0,a0,date,version))  
+
+    #optimize    
+    optimal.append(opt.remote(country,e0,a0,date,version,startNCases))  
     version+=1
+
+#finalize ray workers
 optimal = ray.get(optimal)
 
+#save final results of IC
 for i in range(0,len(countries)):    
 
     if versionx==0:
         versionStr=""
     else:
         versionStr=str(versionx)
-    
     with io.open('./results/resultOpt'+countries[i]+versionStr+'.txt', 'w', encoding='utf8') as f:
         f.write("country = {}\n".format(countries[i]))
         f.write("S0 = {}\n".format(optimal[i][0]))
