@@ -1,2 +1,0 @@
-2020-05-26 09:45:22,659	WARNING resource_spec.py:163 -- Warning: Capping object memory store to 20.0GB. To increase this further, specify `object_store_memory` when calling ray.init() or ray start.
-2020-05-26 09:45:22,659	INFO resource_spec.py:205 -- Starting Ray with 121.68 GiB memory available for workers and up to 18.63 GiB for objects. You can adjust these settings with ray.init(memory=<bytes>, object_store_memory=<bytes>).
