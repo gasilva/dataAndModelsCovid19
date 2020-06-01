@@ -786,7 +786,7 @@ def main(countriesExt,opt):
 #opt=4 log plot + bar plot
 #opt=5 SEAIR-D Model and plot
 #opt=6 only plot SEAIR-D Model
-opt=5
+opt=6
 
 #prepare data for plotting log chart
 country1="US"
