@@ -8,6 +8,8 @@ The code was modified to include data analysis and new models like SIR-D, SEIR, 
 
 After some time, and sucess, the Institute of Technologies of Sao Paulo State (http://www.ipt.br) modified the code and used it to predict the demand for respirators and hospitals for Sao Paulo State, Brazil. The modified code, a Jupyter Notebook, can be accessed in subfolders ./regionsSP. It calculate infected, recovered and deaths for all administrative regions of Sao Paulo State. The final result can be seen at http://ec2-13-56-240-173.us-west-1.compute.amazonaws.com:3838/sample-apps/Covid19/
 
+If you have interest, ATS (www.ats4i.com) has some posts about Covid-19 pandemics modeling.
+
 This is a open source contribution for the comunity. Please use and contribute!
 
 ## Installation
