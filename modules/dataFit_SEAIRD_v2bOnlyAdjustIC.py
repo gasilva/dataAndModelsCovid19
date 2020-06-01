@@ -255,12 +255,10 @@ class Learner(object):
         return values
 
     #predict final extended values
-    def predict(self, beta, beta2, sigma, sigma2, sigma3, gamma, b, d, mu, data, \
+    def predict(self, beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, data, \
                 recovered, death, country, s_0, e_0, a_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
-        # b=min(gamma,b)
-        # d=max(min(gamma,d),b)
         def SEAIRD(y,t):
             S = y[0]
             E = y[1]
@@ -273,51 +271,61 @@ class Learner(object):
             y1=(beta2*A+beta*I)*S-sigma*E-mu*E #E
             y2=sigma*E*(1-p)-gamma*A-mu*A #A
             y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-mu*I #I
-            y4=b*I+d*A+sigma2*I-mu*R #R
+            y4=b*I+b*A+sigma2*I-mu*R #R
             y5=(-(y0+y1+y2+y3+y4)) #D
             return [y0,y1,y2,y3,y4,y5]
-        
+
+        #solve ODE system
         y0=[s_0,e_0,a_0,i_0,r_0,d_0]
         tspan=np.arange(0, size, 1)
         res=odeint(SEAIRD,y0,tspan) #,hmax=0.2)
 
+        #extend predictions
         extended_actual = np.concatenate((data.values, \
                             [None] * (size - len(data.values))))
         extended_recovered = np.concatenate((recovered.values, \
                             [None] * (size - len(recovered.values))))
         extended_death = np.concatenate((death.values, \
                             [None] * (size - len(death.values))))
+        
         return new_index, extended_actual, extended_recovered, extended_death, \
              res[:,0], res[:,1],res[:,2],res[:,3],res[:,4], res[:,5]
 
     #run optimizer
     def train(self):
+
+        #load data
         self.death = self.load_dead(self.country)
         self.recovered = self.load_recovered(self.country)
+
+        #subtract recovered and death values from infected
         if self.cleanRecovered:
             zeroRecDeaths=0
         else:
             zeroRecDeaths=1
         self.data = self.load_confirmed(self.country)-zeroRecDeaths*(self.recovered+self.death)
-        
+
+        #fit model to data
         optimal = minimize(lossOdeint,        
-            [1e6, 0, 1/60, 1/60, 1/60, 0.001, 0.000001, 0.000001, 0.000001],
+            [1e6, 0, 1/60, 1/60, 1/60, 0.001, 0.000001, 0.000001],
             args=(self.data, self.recovered, self.death, self.s_0, self.e_0,\
                 self.a_0, self.i_0, self.r_0, self.d_0, self.version, self.startNCases, \
                 self.weigthCases, self.weigthRecov),
             method='L-BFGS-B',
             bounds=[(1e-12, .4), (1e-12, .4), (1./120.,0.2),  (1./120.,0.2), (1./120.,0.2),\
-                (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2), (1e-12, 0.2)]) #,options={'disp': True})        
+                (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)]) #,options={'disp': True})        
         
         #parameter list for optimization
-        #beta, beta2, sigma, sigma2, sigma3, gamma, b, d, mu
+        #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
 
-        beta, beta2, sigma, sigma2, sigma3, gamma, b, d, mu = optimal.x
+        #predict with optimal parameters values
+        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal.x
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5 \
-                = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, d, mu, \
+                = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, \
                     self.data, self.recovered, self.death, self.country, self.s_0, \
                     self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
 
+        #calculate fitting error
         l1=0
         l2=0
         l3=0
@@ -342,14 +350,14 @@ class Learner(object):
         w = self.weigthRecov 
         #weight for deaths
         v = max(0,1. - u - w)
+        #objective function
         gtot=u*l1*0.5 + v*l2*0.3 + w*l3*0.2
 
+        #fix errors in objective function
         if math.isnan(gtot):
             gtot=1e5
-
         if gtot==math.inf:
             gtot=1e5
-
         try:
             gtot=float(gtot)
         except:
@@ -361,9 +369,7 @@ class Learner(object):
 def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, version,\
     startNCases, weigthCases, weigthRecov):
     size = len(data)
-    beta, beta2, sigma, sigma2, sigma3, gamma, b, d, mu = point
-    # b=min(gamma,b)
-    # d=max(min(gamma,d),b)
+    beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = point
     def SEAIRD(y,t):
         S = y[0]
         E = y[1]
@@ -376,14 +382,16 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, vers
         y1=(beta2*A+beta*I)*S-sigma*E-mu*E #E
         y2=sigma*E*(1-p)-gamma*A-mu*A #A
         y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-mu*I #I
-        y4=b*I+d*A+sigma2*I-mu*R #R
+        y4=b*I+b*A+sigma2*I-mu*R #R
         y5=(-(y0+y1+y2+y3+y4)) #D
         return [y0,y1,y2,y3,y4,y5]
 
+    #solve ODE system
     y0=[s_0,e_0,a_0,i_0,r_0,d_0]
     tspan=np.arange(0, size, 1)
     res=odeint(SEAIRD,y0,tspan) #,hmax=0.2)
 
+    #calculate fitting error
     tot=0
     l1=0
     l2=0
@@ -404,14 +412,14 @@ def lossOdeint(point, data, recovered, death, s_0, e_0, a_0, i_0, r_0, d_0, vers
     w = weigthRecov 
     #weight for deaths
     v = max(0,1. - u - w)
+    #objective function
     gtot=u*l1*0.5 + v*l2*0.3 + w*l3*0.2
     
+    #fix errors in objective function
     if math.isnan(gtot):
         gtot=1e5
-
     if gtot==math.inf:
         gtot=1e5
-
     try:
         gtot=float(gtot)
     except:
