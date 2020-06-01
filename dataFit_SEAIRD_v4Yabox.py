@@ -344,7 +344,7 @@ class Learner(object):
             self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, \
                 self.d_0, self.startNCases, \
                 self.weigthCases, self.weigthRecov)
-        de = DE(f, bounds, maxiters=maxiterations) #,popsize=100)
+        de = DE(f, bounds, maxiters=maxiterations)
         i=0
         ndims=len(bounds)
         with tqdm(total=maxiterations*ndims*125) as pbar:
@@ -434,7 +434,7 @@ class Learner(object):
 
         #set country
         country=self.country
-        strFile ="./results/modelSEAIRD12pointsNeg"+country+"Yabox.png"
+        strFile ="./results/modelSEAIRD"+country+"Yabox.png"
 
         #remove previous file
         if os.path.isfile(strFile):
@@ -503,7 +503,7 @@ class Learner(object):
         fig.tight_layout()
 
         #file name to be saved
-        strFile ="./results/ZoomModelSEAIRD12pointsNeg"+country+"Yabox.png"
+        strFile ="./results/ZoomModelSEAIRD"+country+"Yabox.png"
 
         #remove previous file
         if os.path.isfile(strFile):
@@ -559,8 +559,8 @@ def create_lossOdeint(data, recovered, \
         dDeath=np.diff(res[1:size,5])
         dDeathData=np.diff(death.values)
         dErrorX=(dDeath-dDeathData)**2
-        dError=np.mean(dErrorX[-12:]) 
-        
+        dError=np.mean(dErrorX[-15:]) 
+
         #objective function
         gtot=u*l1 + v*(l2+0.01*dError) + w*l3
 
