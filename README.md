@@ -2,7 +2,7 @@
 
 The initial code for model SIR was based on the work published at gitHub https://github.com/gasilva/COVID19-SIR.
 The author has a webpage of the project https://www.lewuathe.com/covid-19-dynamics-with-sir-model.html
-All the copyrights for the parts of the code are due to Kai Sassaki https://github.com/Lewuathe.
+All the copyrights for the parts of the code are due to Kai Sassaki https://github.com/Lewuathe. As needed, we are using Apache 2.0 license also.
 
 ## Installation
 
