@@ -434,7 +434,7 @@ class Learner(object):
 
         #set country
         country=self.country
-        strFile ="./results/modelSEAIRDNeg"+country+"Yabox.png"
+        strFile ="./results/modelSEAIRD12pointsNeg"+country+"Yabox.png"
 
         #remove previous file
         if os.path.isfile(strFile):
@@ -503,7 +503,7 @@ class Learner(object):
         fig.tight_layout()
 
         #file name to be saved
-        strFile ="./results/ZoomModelSEAIRD10pointsNeg"+country+"Yabox.png"
+        strFile ="./results/ZoomModelSEAIRD12pointsNeg"+country+"Yabox.png"
 
         #remove previous file
         if os.path.isfile(strFile):
@@ -559,18 +559,13 @@ def create_lossOdeint(data, recovered, \
         dDeath=np.diff(res[1:size,5])
         dDeathData=np.diff(death.values)
         dErrorX=(dDeath-dDeathData)**2
-        dError=np.mean(dErrorX[-10:]) 
-        #6 too steep #7 less steep but steep correct concavity 
-        #8 concave medium #9 similar to 8 but lower
-        #10 concave but high 
-        #12 good concavity growing
-
-        #10 6 7 12 9 8 14
+        dError=np.mean(dErrorX[-12:]) 
+        
         #objective function
         gtot=u*l1 + v*(l2+0.01*dError) + w*l3
 
         NegDeathData=np.diff(res[:,5])
-        dNeg=np.mean(NegDeathData[-10:]) 
+        dNeg=np.mean(NegDeathData[-5:]) 
         correctGtot=max(abs(dNeg),0)**2
         gtot=correctGtot-min(np.sign(dNeg),0)*correctGtot+gtot
 
