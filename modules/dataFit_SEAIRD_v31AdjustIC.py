@@ -211,7 +211,6 @@ def parse_arguments():
         args.s_0, args.e_0, args.a_0, args.i_0, args.r_0, args.d_0,\
             args.startNCases, args.weigthCases, args.weigthRecov)
 
-
 def sumCases_province(input_file, output_file):
     with open(input_file, "r") as read_obj, open(output_file,'w',newline='') as write_obj:
         csv_reader = reader(read_obj)
@@ -239,7 +238,6 @@ def download_data(url_dictionary):
     #Lets download the files
     for url_title in url_dictionary.keys():
         urllib.request.urlretrieve(url_dictionary[url_title], "./data/" + url_title)
-
 
 def load_json(json_file_str):
     # Loads  JSON into a dictionary or quits the program if it cannot.
@@ -274,12 +272,10 @@ class Learner(object):
         country_df = df[df['Country/Region'] == country]
         return country_df.iloc[0].loc[self.start_date:]
 
-
     def load_recovered(self, country):
         df = pd.read_csv('data/time_series_19-covid-Recovered-country.csv')
         country_df = df[df['Country/Region'] == country]
         return country_df.iloc[0].loc[self.start_date:]
-
 
     def load_dead(self, country):
         df = pd.read_csv('data/time_series_19-covid-Deaths-country.csv')
@@ -295,7 +291,7 @@ class Learner(object):
         return values
 
     #predict final extended values
-    def predict(self, beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, data, \
+    def predict(self, beta, beta2, sigma, sigma2, sigma3, gamma, b, d, mu, data, \
                 recovered, death, country, s_0, e_0, a_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
@@ -311,13 +307,13 @@ class Learner(object):
             y1=(beta2*A+beta*I)*S-sigma*E-mu*E #E
             y2=sigma*E*(1-p)-gamma*A-mu*A #A
             y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-mu*I #I
-            y4=b*I+b*A+sigma2*I-mu*R #R
+            y4=b*I+d*A+sigma2*I-mu*R #R
             y5=(-(y0+y1+y2+y3+y4)) #D
             return [y0,y1,y2,y3,y4,y5]
         
         y0=[s_0,e_0,a_0,i_0,r_0,d_0]
         tspan=np.arange(0, size, 1)
-        res=odeint(SEAIRD,y0,tspan,hmax=0.01)
+        res=odeint(SEAIRD,y0,tspan) #,hmax=0.01)
 
         extended_actual = np.concatenate((data.values, \
                             [None] * (size - len(data.values))))
@@ -354,24 +350,14 @@ class Learner(object):
                 best_params = de.denormalize([norm_vector])
                 pbar.update(i)
                 i+=1
-        p=best_params[0]
-
-        # f=create_lossOdeint(self.data, self.recovered, \
-        #     self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
-        #          self.weigthCases, self.weigthRecov)
-        # optimal = minimize(f,        
-        #     [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
-        #     method='L-BFGS-B',
-        #     bounds=[(1e-12, .4), (1e-12, .4), (1./60.,0.2),  (1./60.,0.2), (1./60.,0.2),\
-        #         (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)]) #,options={'disp': True})    
+        p=best_params[0]   
 
         #parameter list for optimization
-        #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
+        #beta, beta2, sigma, sigma2, sigma3, gamma, b, d, mu
 
-        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = p
-
+        beta, beta2, sigma, sigma2, sigma3, gamma, b, d, mu = p
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5 \
-                = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, \
+                = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, d, mu, \
                     self.data, self.recovered, self.death, self.country, self.s_0, \
                     self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
 
@@ -498,7 +484,7 @@ def create_lossOdeint(data, recovered, \
                  weigthCases, weigthRecov):
     def lossOdeint(point):
         size = len(data)
-        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, = point
+        beta, beta2, sigma, sigma2, sigma3, gamma, b, d, mu = point
         def SEAIRD(y,t):
             S = y[0]
             E = y[1]
@@ -511,13 +497,13 @@ def create_lossOdeint(data, recovered, \
             y1=(beta2*A+beta*I)*S-sigma*E-mu*E #E
             y2=sigma*E*(1-p)-gamma*A-mu*A #A
             y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-mu*I #I
-            y4=b*I+b*A+sigma2*I-mu*R #R
+            y4=b*I+d*A+sigma2*I-mu*R #R
             y5=(-(y0+y1+y2+y3+y4)) #D
             return [y0,y1,y2,y3,y4,y5]
 
         y0=[s_0,e_0,a_0,i_0,r_0,d_0]
         tspan=np.arange(0, size, 1)
-        res=odeint(SEAIRD,y0,tspan, hmax=0.01)
+        res=odeint(SEAIRD,y0,tspan) #, hmax=0.01)
 
         tot=0
         l1=0
@@ -539,5 +525,5 @@ def create_lossOdeint(data, recovered, \
         w = weigthRecov 
         #weight for deaths
         v = max(0,1. - u - w)
-        return u*l1 + v*l2 + w*l3 
+        return u*l1*0.5 + v*l2*0.3 + w*l3*0.2 
     return lossOdeint

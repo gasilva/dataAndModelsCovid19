@@ -82,42 +82,36 @@ def parse_arguments(country):
         s0=80000*17
         i0=600
         r0=2000
-        k0=0
 
     if country1=="China":
         date="1/22/20"
         s0=170000
         i0=1200
         r0=-80000
-        k0=200
 
     if country1=="Italy":
         date="1/31/20"
         s0=220000
         i0=23
         r0=15
-        k0=100
 
     if country1=="France":
         date="2/25/20"
         s0=170e3
         i0=265
         r0=-120
-        k0=250
 
     if country1=="United Kingdom":
         date="2/25/20"
         s0=80000
         i0=22
         r0=-5 #-50
-        k0=-50
 
     if country1=="US":
         date="2/25/20"
         s0=600000
         i0=500
         r0=0
-        k0=90
 
     parser.add_argument(
         '--countries',
@@ -161,13 +155,6 @@ def parse_arguments(country):
         type=int,
         default=r0)
 
-    parser.add_argument(
-        '--K_0',
-        dest='k_0',
-        type=int,
-        default=k0)
-
-
     args = parser.parse_args()
 
     country_list = []
@@ -180,7 +167,7 @@ def parse_arguments(country):
     else:
         sys.exit("QUIT: You must pass a country list on CSV format.")
 
-    return (country_list, args.download_data, args.start_date, args.predict_range, args.s_0, args.i_0, args.r_0, args.k_0)
+    return (country_list, args.download_data, args.start_date, args.predict_range, args.s_0, args.i_0, args.r_0)
 
 def sumCases_province(input_file, output_file):
     with open(input_file, "r") as read_obj, open(output_file,'w',newline='') as write_obj:
@@ -224,34 +211,30 @@ def load_json(json_file_str):
 
 
 class Learner(object):
-    def __init__(self, country, loss, start_date, predict_range,s_0, i_0, r_0, d_0):
+    def __init__(self, country, loss, start_date, predict_range,s_0, i_0, r_0):
         self.country = country
-        self.loss = loss
+        self.loss = lossOdeint
         self.start_date = start_date
         self.predict_range = predict_range
         self.s_0 = s_0
         self.i_0 = i_0
         self.r_0 = r_0
-        self.d_0 = d_0
 
     def load_confirmed(self, country):
         df = pd.read_csv('./data/time_series_19-covid-Confirmed-country.csv')
         country_df = df[df['Country/Region'] == country]
         return country_df.iloc[0].loc[self.start_date:]
 
-
     def load_recovered(self, country):
         df = pd.read_csv('./data/time_series_19-covid-Recovered-country.csv')
         country_df = df[df['Country/Region'] == country]
         return country_df.iloc[0].loc[self.start_date:]
-
 
     def load_dead(self, country):
         df = pd.read_csv('./data/time_series_19-covid-Deaths-country.csv')
         country_df = df[df['Country/Region'] == country]
         return country_df.iloc[0].loc[self.start_date:]
     
-
     def extend_index(self, index, new_size):
         values = index.values
         current = datetime.strptime(index[-1], '%m/%d/%y')
@@ -261,7 +244,7 @@ class Learner(object):
         return values
 
     #predict final extended values
-    def predict(self, beta, a, b, data, recovered, death, country, s_0, i_0, r_0, d_0):
+    def predict(self, beta, gamma, data, recovered, country, s_0, i_0, r_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
         def SIR(y,t):
@@ -269,57 +252,49 @@ class Learner(object):
             S = y[0]
             I = y[1]
             R = y[2]
-            D = y[3]
             y1=-beta*S*I
-            y2=beta*S*I-(a+b)*I
-            y3=a*I
-            y4=-(y1+y2+y3)
-            return [y1,y2,y3,y4]
-        y0=[s_0,i_0,r_0,d_0]
+            y2=beta*S*I-gamma*I
+            y3=-(y1+y2)
+            return [y1,y2,y3]
+        y0=[s_0,i_0,r_0]
         tspan=np.arange(0, size, 1)
         res=odeint(SIR,y0,tspan)
-        # solution = solve_ivp(SIR, [0, size], [s_0,i_0,r_0,d_0], t_eval=np.arange(0, size, 1), vectorized=True)
         extended_actual = np.concatenate((data.values, [None] * (size - len(data.values))))
         extended_recovered = np.concatenate((recovered.values, [None] * (size - len(recovered.values))))
-        extended_death = np.concatenate((death.values, [None] * (size - len(death.values))))
-        return new_index, extended_actual, extended_recovered, extended_death, res[:,0], res[:,1],res[:,2],res[:,3]
-        # return new_index, extended_actual, extended_recovered, extended_death, solution.y[0],solution.y[1],solution.y[2],solution.y[3]
+        return new_index, extended_actual, extended_recovered, res[:,0], res[:,1],res[:,2]
 
     #run optimizer and plotting
     def train(self):
-        recovered = self.load_recovered(self.country)
-        death = self.load_dead(self.country)
-        data = self.load_confirmed(self.country) - recovered - death
+        recovered = self.load_recovered(self.country)+self.load_dead(self.country)
+        data = self.load_confirmed(self.country) - recovered
 
-        bounds=[(1e-12, .4), (1e-12, .4), (1e-12, 0.2)]
+        bounds=[(1e-12, .4), (1e-12, .4)]
         minimizer_kwargs = dict(method="L-BFGS-B", bounds=bounds, args=(data, recovered, \
-            death, self.s_0, self.i_0, self.r_0, self.d_0))
-        x0=[0.0001, 0.0001, 0.0001]
+            self.s_0, self.i_0, self.r_0))
+        x0=[0.0001, 0.0001]
         optimal =  basinhopping(lossOdeint,x0,minimizer_kwargs=minimizer_kwargs, niter=2000, disp=True)
 
         print(optimal)
-        beta, a, b = optimal.x
-        new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3 = self.predict(beta, a, b, data, recovered, death, self.country, self.s_0, self.i_0, self.r_0, self.d_0)
+        beta, gamma = optimal.x
+        new_index, extended_actual, extended_recovered, y0, y1, y2 = self.predict(beta, gamma, data, recovered, self.country, self.s_0, self.i_0, self.r_0)
 
         df = pd.DataFrame({
             'susceptible': y0,
             'infected_data': extended_actual,
             'infected': y1,
             'recovered_data': extended_recovered,
-            'recovered': y2,
-            'death_data': extended_death,
-            'estimated_deaths': y3},
+            'recovered': y2},
             index=new_index)
 
-        print(f"country={self.country}, beta={beta:.8f}, a={a:.8f}, b={b:.8f},  gamma={(a+b):.8f}, r_0:{(beta/(a+b)):.8f}")
-        df.to_pickle('./data/SIRD_'+self.country+'.pkl')
+        print(f"country={self.country}, beta={beta:.8f}, gamma={gamma:.8f}, r_0:{(beta/gamma):.8f}")
+        df.to_pickle('./data/SIR_'+self.country+'.pkl')
 
         print(self.country+" is done!")
 
     #plotting
     def trainPlot(self):
 
-        df = loadDataFrame('./data/SIRD_'+self.country+'.pkl')
+        df = loadDataFrame('./data/SIR_'+self.country+'.pkl')
         color_bg = '#FEF1E5'
         # lighter_highlight = '#FAE6E1'
         darker_highlight = '#FBEADC'
@@ -332,7 +307,7 @@ class Learner(object):
         ax.spines['top'].set_visible(False)
 
         # Adding a title and a subtitle
-        plt.text(x = 0.02, y = 1.1, s = "SIR-D Model Results for "+self.country,
+        plt.text(x = 0.02, y = 1.1, s = "SIR Model Results for "+self.country,
                     fontsize = 34, weight = 'bold', alpha = .75,transform=ax.transAxes, 
                     fontproperties=heading_font)
         plt.text(x = 0.02, y = 1.05,
@@ -354,7 +329,7 @@ class Learner(object):
         xy=(1.04, 0.1), xycoords='axes fraction',
         xytext=(0, 0), textcoords='offset points',
         ha='right',rotation=90)
-        plt.annotate('SIR-D model developed for Covid-19 forecast', fontsize=12, 
+        plt.annotate('SIR model developed for Covid-19 forecast', fontsize=12, 
         xy=(1.045,0.1), xycoords='axes fraction',
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
@@ -364,7 +339,7 @@ class Learner(object):
 
         #set country
         country=self.country
-        strFile ="./results/modelSIRD"+country+".png"
+        strFile ="./results/modelSIR"+country+".png"
 
         #remove previous file
         if os.path.isfile(strFile):
@@ -396,7 +371,7 @@ class Learner(object):
         # ax.grid(False)
 
         # Adding a title and a subtitle
-        plt.text(x = 0.02, y = 1.1, s = "Zoom at SIR-D Model Results for "+self.country,
+        plt.text(x = 0.02, y = 1.1, s = "Zoom at SIR Model Results for "+self.country,
                     fontsize = 34, weight = 'bold', alpha = .75,transform=ax.transAxes,
                     fontproperties=heading_font)
         plt.text(x = 0.02, y = 1.05,
@@ -411,9 +386,7 @@ class Learner(object):
         #plot Zoom figure
         ax.plot(plotX,df.infected,'y-',label="Infected")
         ax.plot(plotX,df.recovered,'c-',label="Recovered")
-        ax.plot(plotX,df.estimated_deaths,'m-',label="Deaths")
         ax.plot(plotXt,df.infected_data,'o',label="Infected data")
-        ax.plot(plotXt,df.death_data,'x',label="Death data")
         ax.plot(plotXt,df.recovered_data,'s',label="Recovered data")
 
         #format legend
@@ -424,7 +397,7 @@ class Learner(object):
         xy=(1.04, 0.1), xycoords='axes fraction',
         xytext=(0, 0), textcoords='offset points',
         ha='right',rotation=90)
-        plt.annotate('SIR-D model developed for Covid-19 forecast', fontsize=12, 
+        plt.annotate('SIR model developed for Covid-19 forecast', fontsize=12, 
         xy=(1.045,0.1), xycoords='axes fraction',
         xytext=(0, 0), textcoords='offset points',
         ha='left',rotation=90)
@@ -433,7 +406,7 @@ class Learner(object):
         fig.tight_layout()
 
         #file name to be saved
-        strFile ="./results/ZoomModelSIRD"+country+".png"
+        strFile ="./results/ZoomModelSIR"+country+".png"
 
         #remove previous file
         if os.path.isfile(strFile):
@@ -445,64 +418,32 @@ class Learner(object):
         plt.close()
 
 #objective function Odeint solver
-def lossOdeint(point, data, recovered, death, s_0, i_0, r_0, d_0):
+def lossOdeint(point, data, recovered, s_0, i_0, r_0):
     size = len(data)
-    beta, a, b = point
+    beta, gamma = point
     def SIR(y,t):
         S = y[0]
         I = y[1]
-        R = y[2]
-        D = y[3]
         y1=-beta*S*I
-        y2=beta*S*I-(a+b)*I
-        y3=a*I
-        y4=-(y1+y2+y3)
-        return [y1,y2,y3,y4]
-    y0=[s_0,i_0,r_0,d_0]
+        y2=beta*S*I-gamma*I
+        y3=-(y1+y2)
+        return [y1,y2,y3]
+    y0=[s_0,i_0,r_0]
     tspan=np.arange(0, size, 1)
     res=odeint(SIR,y0,tspan)
     l1 = np.sqrt(np.mean((res[:,1]- data)**2))
     l2 = np.sqrt(np.mean((res[:,2]- recovered)**2))
-    l3 = np.sqrt(np.mean((res[:,3] - death)**2))
     #weight for cases
     u = 0.25
-    #weight for recovered
-    v = 0.15 ##Brazil France 0.02 China 0.01 (it has a lag in recoveries) Others 0.15
     #weight for deaths
-    w = 1 - u - v
-    return u*l1 + v*l2 + w*l3
+    w = 1 - u
+    return u*l1 + w*l2
 
-#objective function solve_ivp solver
-def loss(point, data, recovered, death, s_0, i_0, r_0, d_0):
-    size = len(data)
-    beta, a, b = point
-    def SIR(t,y):
-        S = y[0]
-        I = y[1]
-        R = y[2]
-        D = y[3]
-        y1=-beta*S*I
-        y2=beta*S*I-(a+b)*I
-        y3=a*I
-        y4=1-(y1+y2+y3)
-        return [y1,y2,y3,y4]
-    solution = solve_ivp(SIR, [0, size], [s_0,i_0,r_0,d_0], t_eval=np.arange(0, size, 1), vectorized=True)
-    l1 = np.sqrt(np.mean((solution.y[1] - data)**2))
-    l2 = np.sqrt(np.mean((solution.y[2] - recovered)**2))
-    l3 = np.sqrt(np.mean((solution.y[3] - death)**2))
-    #weight for cases
-    u = 0.25
-    #weight for recovered
-    v = 0.02 ##US 0.15 Brazil France 0.02 China 0.01 (it has a lag in recoveries) Others 0.15
-    #weight for deaths
-    w = 1 - u - v
-    return u*l1 + v*l2 + w*l3
-
-#main program SIRD model
+#main program SIR model
 
 def main(country,opt):
 
-    countries, download, startdate, predict_range , s_0, i_0, r_0, k_0 = parse_arguments(country)
+    countries, download, startdate, predict_range , s_0, i_0, r_0 = parse_arguments(country)
 
     if download:
         data_d = load_json("./data_url.json")
@@ -512,10 +453,10 @@ def main(country,opt):
     sumCases_province('./data/time_series_19-covid-Recovered.csv', './data/time_series_19-covid-Recovered-country.csv')
     sumCases_province('./data/time_series_19-covid-Deaths.csv', './data/time_series_19-covid-Deaths-country.csv')
 
+    print(country)
     results=[]
     for country in countries:
-        #learner = Learner(country, loss, startdate, predict_range, s_0, i_0, r_0, k_0)
-        learner = Learner(country, lossOdeint, startdate, predict_range, s_0, i_0, r_0, k_0)
+        learner = Learner(country, lossOdeint, startdate, predict_range, s_0, i_0, r_0)
         #try:
         if opt!=6 and opt!=0:
             results.append(learner.train())
@@ -558,8 +499,8 @@ df=df.transpose()
 #opt=2 logistic model prediction
 #opt=3 bar plot with growth rate
 #opt=4 log plot + bar plot
-#opt=5 SIR-D Model and plot
-#opt=6 only plot SIR-D Model
+#opt=5 SIR Model and plot
+#opt=6 only plot SIR Model
 opt=6
 
 #prepare data for plotting
@@ -575,14 +516,14 @@ country5="Germany"
 [time5,cases5]=getCases(df,country5)
 
 #plot version - changes the file name png
-version="SIRD"
+version="SIR"
 
 #choose country for curve fitting
 #choose country for growth curve
 #one of countries above
 country="Brazil"
 
-#choose country for SIRD model
+#choose country for SIR model
 # "Brazil"
 # "China"
 # "Italy"
