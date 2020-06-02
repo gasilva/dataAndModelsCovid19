@@ -11,7 +11,7 @@ from csv import writer
 from datetime import datetime,timedelta
 from scipy.optimize import curve_fit
 from scipy.integrate import odeint
-from scipy.special import comb
+from scipy.special import comb, binom
 from yabox import DE
 from tqdm import tqdm
 import math
@@ -204,9 +204,6 @@ def parse_arguments():
         args.s_0, args.e_0, args.a_0, args.i_0, args.r_0, args.d_0,\
             args.startNCases, args.weigthCases, args.weigthRecov)
 
-def smoothclamp(x, mi, mx): 
-    return mi + (mx-mi)*(lambda t: np.where(t < 0 , 0, np.where( t <= 1 , 3*t**2-2*t**3, 1 ) ) )( (x-mi)/(mx-mi) )
-
 def sumCases_province(input_file, output_file):
     with open(input_file, "r") as read_obj, open(output_file,'w',newline='') as write_obj:
         csv_reader = reader(read_obj)
@@ -244,13 +241,72 @@ def load_json(json_file_str):
     except Exception:
         sys.exit("Cannot open JSON file: " + json_file_str)
 
+from functools import lru_cache
+import numba as nb
+from numba import njit
+
+# @lru_cache(maxsize=None)
+@njit
+def nCr(n, r):
+    if np.int32(r) == 0 or np.int32(r) == np.int32(n):
+        result=1
+    else:
+        result=np.int32(nCr(np.int32(n) - 1, np.int32(r) - 1) \
+        + nCr(np.int32(n) - 1, np.int32(r)))
+    return result
+
+# create a memorization dictionary
+memo = {}
+def factorial(n):
+    """
+    Calculate the factorial of an input using memoization
+    :param n: int
+    :rtype value: int
+    """
+    if n in [1,0]:
+        return 1
+    if n in memo:
+        return memo[n]
+    value = n*factorial(n-1)
+    memo[n] = value
+    return value
+
+def ncr(n, k):
+    """
+    Choose k elements from a set of n elements - n must be larger than or equal to k
+    :param n: int
+    :param k: int
+    :rtype: int
+    """
+    return factorial(n)/(factorial(k)*factorial(n-k))
+
+@njit
 def smoothstep(x, x_min=0, x_max=1, N=1):
-    x = np.clip((x - x_min) / (x_max - x_min), 0, 1)
-    result = 0
-    for n in range(0, N + 1):
-         result += comb(N + n, n) * comb(2 * N + 1, N - n) * (-x) ** n
+    x = np.float64(max(min(((np.float64(x) -  np.float64(x_min)) / ( np.float64(x_max) -  np.float64(x_min))),1),0))
+    n=np.int32(0)
+    result = np.float64(0)
+    for n in range(0, np.int32(N) + 1):
+         result += nCr(np.int32(N) + n, n) * nCr(2 * np.int32(N) + 1, np.int32(N) - n) * (-x) ** n
     result *= x ** (N + 1)
     return result
+
+@njit
+def smoothstep2(x, x_min=0, x_max=1):
+    x = np.float64(max(min(((np.float64(x) -  np.float64(x_min)) / ( np.float64(x_max) -  np.float64(x_min))),1),0))
+    result = np.float64(0)
+    #N=2 n=0 N + n=2 2 * N + 1= 5 N - n=2
+    result += 1 * 10 * (-x) ** 0
+    #N=2 n=1 N + n=3 2 * N + 1= 5 N - n=1
+    result += 3 * 5 * (-x) ** 1
+    #N=2 n=2 N + n=4 2 * N + 1= 5 N - n=0
+    result += 6 * 1 * (-x) ** 2
+    #N=2 n=3 N + n=5 2 * N + 1= 5 N - n=-1
+    result += 0
+    result *= x ** (2 + 1)
+    return result
+
+def smoothclamp(x, mi, mx): 
+    return mi + (mx-mi)*(lambda t: np.where(t < 0 , 0, np.where( t <= 1 , 3*t**2-2*t**3, 1 ) ) )( (x-mi)/(mx-mi) )
 
 #register function for parallel processing
 # @ray.remote
@@ -297,16 +353,18 @@ class Learner(object):
         return values
 
     #predict final extended values
-    def predict(self, beta0, beta1, startT, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d, data, \
+    def predict(self, beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d, data, \
                 recovered, death, country, s_0, e_0, a_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
         def SEAIRD(y,t):
-            delta=int(round(startT-t))    
-            # rx=smoothstep(t, x_min=delta-5, x_max=delta+5, N=1)
-            rx=max(0,np.sign(delta))
-            # rx=smoothclamp(delta, 0, 1)
-            beta=beta0*rx+beta1*(1-rx)
+            # delta=int(round(startT-t))   
+            rx=smoothstep(t, x_min=startT-10, x_max=startT+10, N=3)
+            # rx=smoothclamp(delta, -2, 2)
+            # rx=smoothstep2(t, x_min=startT-10, x_max=startT+10) 
+            # rx = np.clip(((t - (startT-2)) / 4), 0, 1)
+            # rx=max(0,np.sign(delta))
+            beta=beta0*rx+beta01*(1-rx)
             S = y[0]
             E = y[1]
             A = y[2]
@@ -352,7 +410,7 @@ class Learner(object):
         # self.death=self.death[deldata:]
         # self.data=datax
 
-        bounds=[(1e-12, .2),(1e-12, .2),(10,100),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
+        bounds=[(1e-12, .2),(1e-12, .2),(21,179),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
         (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
         maxiterations=2500
@@ -373,12 +431,12 @@ class Learner(object):
         p=best_params[0]
 
         #parameter list for optimization
-        #beta0, beta1, startT, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d
+        #beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d
 
-        beta0, beta1, startT, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d  = p
+        beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d  = p
 
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5 \
-                = self.predict(beta0, beta1, startT, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d,  \
+                = self.predict(beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d,  \
                     self.data, self.recovered, self.death, self.country, self.s_0, \
                     self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
 
@@ -396,14 +454,19 @@ class Learner(object):
 
         df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
 
-        print(f"country={self.country}, beta0={beta0:.8f}, beta1={beta1:.8f}, startT={startT:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
+        print(f"country={self.country}, beta0={beta0:.8f}, beta01={beta01:.8f}, startT={startT:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
             f" 1/sigma2={1/sigma2:.8f},1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f},"+\
-            f" gamma2={gamma2:.8f}, d={d:.8f}, mu={mu:.8f}, r_0:{(beta/gamma):.8f}")
+            f" gamma2={gamma2:.8f}, d={d:.8f}, mu={mu:.8f}, r_0:{((beta0+beta01)/gamma):.8f}")
         
         print(self.country+" is done!")
 
     #plotting
     def trainPlot(self):
+
+        #numba6 - smoothstep2
+        #numba5 - smoothstep nCr parallel final test
+
+        smoothType="smoothstep1Weigths12Days20Numba5" #"clip" #"smoothstep2" #"smoothclamp" #"smoothstep"
 
         df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
         color_bg = '#FEF1E5'
@@ -450,7 +513,7 @@ class Learner(object):
 
         #set country
         country=self.country
-        strFile ="./results/modelSEAIRDBeta"+country+"Yabox.png"
+        strFile ="./results/modelSEAIRDBeta"+smoothType+country+"Yabox.png"
 
         #remove previous file
         if os.path.isfile(strFile):
@@ -519,7 +582,7 @@ class Learner(object):
         fig.tight_layout()
 
         #file name to be saved
-        strFile ="./results/ZoomModelSEAIRDBeta"+country+"Yabox.png"
+        strFile ="./results/ZoomModelSEAIRDBeta"+smoothType+country+"Yabox.png"
 
         #remove previous file
         if os.path.isfile(strFile):
@@ -535,14 +598,16 @@ def create_lossOdeint(data, recovered, \
             death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, \
                  weigthCases, weigthRecov):
     def lossOdeint(point):
-        beta0, beta1, startT, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d = point
+        beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d = point
 
         def SEAIRD(y,t):
-            delta=int(round(startT-t))    
-            # rx=smoothstep(t, x_min=delta-5, x_max=delta+5, N=1)
-            rx=max(0,np.sign(delta))
-            # rx=smoothclamp(delta, 0, 1)
-            beta=beta0*rx+beta1*(1-rx)
+            # delta=int(round(startT-t))   
+            rx=smoothstep(t, x_min=startT-10, x_max=startT+10, N=3)
+            # rx=smoothclamp(delta, -2, 1)
+            # rx=smoothstep2(t, x_min=startT-10, x_max=startT+10) 
+            # rx = np.clip(((t - (startT-2)) / 4), 0, 1)
+            # rx=max(0,np.sign(delta))
+            beta=beta0*rx+beta01*(1-rx)
             S = y[0]
             E = y[1]
             A = y[2]
@@ -589,12 +654,12 @@ def create_lossOdeint(data, recovered, \
         NegDeathData=np.diff(res[:,5])
         dNeg=np.mean(NegDeathData[-5:]) 
         correctGtot=max(abs(dNeg),0)**2
-        gtot=correctGtot-min(np.sign(dNeg),0)*correctGtot*2+gtot
+        gtot=1*correctGtot-2*min(np.sign(dNeg),0)*correctGtot+gtot
 
         return gtot 
     return lossOdeint
 
-#main program SIRD model
+#main program SEAIRD model
 
 def main(countriesExt,opt):
     
@@ -786,7 +851,7 @@ def main(countriesExt,opt):
 #opt=4 log plot + bar plot
 #opt=5 SEAIR-D Model and plot
 #opt=6 only plot SEAIR-D Model
-opt=6
+opt=5
 
 #prepare data for plotting log chart
 country1="US"
