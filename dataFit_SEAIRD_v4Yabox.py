@@ -434,7 +434,7 @@ class Learner(object):
 
         #set country
         country=self.country
-        strFile ="./results/modelSEAIRDweigths48"+country+"Yabox.png"
+        strFile ="./results/modelSEAIRD"+country+"Yabox.png"
 
         #remove previous file
         if os.path.isfile(strFile):
@@ -503,7 +503,7 @@ class Learner(object):
         fig.tight_layout()
 
         #file name to be saved
-        strFile ="./results/ZoomModelSEAIRDweigths48"+country+"Yabox.png"
+        strFile ="./results/ZoomModelSEAIRD"+country+"Yabox.png"
 
         #remove previous file
         if os.path.isfile(strFile):
