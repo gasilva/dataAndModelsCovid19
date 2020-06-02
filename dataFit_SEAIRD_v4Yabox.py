@@ -339,7 +339,7 @@ class Learner(object):
         bounds=[(1e-12, .2),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
         (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
-        maxiterations=2500
+        maxiterations=2000
         f=create_lossOdeint(self.data, self.recovered, \
             self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, \
                 self.d_0, self.startNCases, \
@@ -434,7 +434,7 @@ class Learner(object):
 
         #set country
         country=self.country
-        strFile ="./results/modelSEAIRD"+country+"Yabox.png"
+        strFile ="./results/modelSEAIRDweigths48"+country+"Yabox.png"
 
         #remove previous file
         if os.path.isfile(strFile):
@@ -503,7 +503,7 @@ class Learner(object):
         fig.tight_layout()
 
         #file name to be saved
-        strFile ="./results/ZoomModelSEAIRD"+country+"Yabox.png"
+        strFile ="./results/ZoomModelSEAIRDweigths48"+country+"Yabox.png"
 
         #remove previous file
         if os.path.isfile(strFile):
@@ -567,7 +567,7 @@ def create_lossOdeint(data, recovered, \
         NegDeathData=np.diff(res[:,5])
         dNeg=np.mean(NegDeathData[-5:]) 
         correctGtot=max(abs(dNeg),0)**2
-        gtot=correctGtot-min(np.sign(dNeg),0)*correctGtot+gtot
+        gtot=2*correctGtot-4*min(np.sign(dNeg),0)*correctGtot+gtot
 
         return gtot 
     return lossOdeint
