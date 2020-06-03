@@ -11,6 +11,7 @@ from csv import writer
 from datetime import datetime,timedelta
 from scipy.optimize import curve_fit
 from scipy.integrate import odeint
+from scipy.special import comb, binom
 from yabox import DE
 from tqdm import tqdm
 import math
@@ -203,7 +204,6 @@ def parse_arguments():
         args.s_0, args.e_0, args.a_0, args.i_0, args.r_0, args.d_0,\
             args.startNCases, args.weigthCases, args.weigthRecov)
 
-
 def sumCases_province(input_file, output_file):
     with open(input_file, "r") as read_obj, open(output_file,'w',newline='') as write_obj:
         csv_reader = reader(read_obj)
@@ -240,6 +240,45 @@ def load_json(json_file_str):
             return json_variable
     except Exception:
         sys.exit("Cannot open JSON file: " + json_file_str)
+
+from functools import lru_cache
+import numba as nb
+from numba import njit
+
+# @lru_cache(maxsize=None)
+@njit
+def nCr(n, r):
+    if np.int32(r) == 0 or np.int32(r) == np.int32(n):
+        result=1
+    else:
+        result=np.int32(nCr(np.int32(n) - 1, np.int32(r) - 1) \
+        + nCr(np.int32(n) - 1, np.int32(r)))
+    return result
+
+@njit
+def smoothstep(x, x_min=0, x_max=1, N=1):
+    x = np.float64(max(min(((np.float64(x) -  np.float64(x_min)) / ( np.float64(x_max) -  np.float64(x_min))),1),0))
+    n=np.int32(0)
+    result = np.float64(0)
+    for n in range(0, np.int32(N) + 1):
+         result += nCr(np.int32(N) + n, n) * nCr(2 * np.int32(N) + 1, np.int32(N) - n) * (-x) ** n
+    result *= x ** (N + 1)
+    return result
+
+@njit
+def smoothstep2(x, x_min=0, x_max=1):
+    x = np.float64(max(min(((np.float64(x) -  np.float64(x_min)) / ( np.float64(x_max) -  np.float64(x_min))),1),0))
+    result = np.float64(0)
+    #N=2 n=0 N + n=2 2 * N + 1= 5 N - n=2
+    result += 1 * 10 * (-x) ** 0
+    #N=2 n=1 N + n=3 2 * N + 1= 5 N - n=1
+    result += 3 * 5 * (-x) ** 1
+    #N=2 n=2 N + n=4 2 * N + 1= 5 N - n=0
+    result += 6 * 1 * (-x) ** 2
+    #N=2 n=3 N + n=5 2 * N + 1= 5 N - n=-1
+    result += 0
+    result *= x ** (2 + 1)
+    return result
 
 #register function for parallel processing
 # @ray.remote
@@ -286,11 +325,21 @@ class Learner(object):
         return values
 
     #predict final extended values
-    def predict(self, beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d, data, \
+    def predict(self, beta0, beta01, startT, beta02, startT2, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d, p, data, \
                 recovered, death, country, s_0, e_0, a_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
         def SEAIRD(y,t):
+            # delta=int(round(startT-t))
+            # delta2=int(round(startT2-t))  
+            rx=smoothstep(t, x_min=startT-2, x_max=startT+2, N=4)
+            # rx=smoothstep2(t, x_min=startT-2, x_max=startT+2) 
+            # rx=max(0,np.sign(delta))
+            beta=beta0*rx+beta01*(1-rx)
+            rx=smoothstep(t, x_min=startT2-4, x_max=startT2+4, N=4)
+            # rx=max(0,np.sign(delta2))
+            # rx=smoothstep2(t, x_min=startT2-4, x_max=startT2+4) 
+            beta=beta01*rx+beta02*(1-rx)
             S = y[0]
             E = y[1]
             A = y[2]
@@ -330,10 +379,10 @@ class Learner(object):
             zeroRecDeaths=1
         self.data = self.load_confirmed(self.country)-zeroRecDeaths*(self.recovered+self.death)
 
-        bounds=[(1e-12, .2),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
-        (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
+        bounds=[(1e-12, .2),(1e-12, .2),(10,100),(1e-12, .2),(101,190),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
+        (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4), (0.05, 0.3)]
 
-        maxiterations=2000
+        maxiterations=2500
         f=create_lossOdeint(self.data, self.recovered, \
             self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, \
                 self.d_0, self.startNCases, \
@@ -351,12 +400,10 @@ class Learner(object):
         p=best_params[0]
 
         #parameter list for optimization
-        #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d
-
-        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d  = p
+        beta0, beta01, startT, beta02, startT2, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d, p   = p
 
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5 \
-                = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d,  \
+                = self.predict(beta0, beta01, startT, beta02, startT2, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d, p,  \
                     self.data, self.recovered, self.death, self.country, self.s_0, \
                     self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
 
@@ -372,18 +419,20 @@ class Learner(object):
                     'Predicted Deaths': y5},
                     index=new_index)
 
-        df.to_pickle('./data/SEAIRDv4_Yabox'+self.country+'.pkl')
+        df.to_pickle('./data/SEAIRDv7_Yabox_'+self.country+'.pkl')
 
-        print(f"country={self.country}, beta={beta:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
+        print(f"country={self.country}, beta0={beta0:.8f}, beta01={beta01:.8f}, startT={startT:.8f}, beta02={beta02:.8f}, startT2={startT2:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
             f" 1/sigma2={1/sigma2:.8f},1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f},"+\
-            f" gamma2={gamma2:.8f}, d={d:.8f}, mu={mu:.8f}, r_0:{(beta/gamma):.8f}")
+            f" gamma2={gamma2:.8f}, d={d:.8f}, mu={mu:.8f}, r_0:{((beta0+beta01)/gamma):.8f}")
         
         print(self.country+" is done!")
 
     #plotting
     def trainPlot(self):
 
-        df = loadDataFrame('./data/SEAIRDv4_Yabox'+self.country+'.pkl')
+        smoothType="2AratioSmoothStep" #"SmoothStep2" #"SmoothStep" #"Step"
+
+        df = loadDataFrame('./data/SEAIRDv7_Yabox_'+self.country+'.pkl')
         color_bg = '#FEF1E5'
         # lighter_highlight = '#FAE6E1'
         darker_highlight = '#FBEADC'
@@ -428,7 +477,7 @@ class Learner(object):
 
         #set country
         country=self.country
-        strFile ="./results/modelSEAIRD"+country+"Yabox.png"
+        strFile ="./results/modelSEAIRDBeta"+smoothType+country+"Yabox.png"
 
         #remove previous file
         if os.path.isfile(strFile):
@@ -497,7 +546,7 @@ class Learner(object):
         fig.tight_layout()
 
         #file name to be saved
-        strFile ="./results/ZoomModelSEAIRD"+country+"Yabox.png"
+        strFile ="./results/ZoomModelSEAIRDBeta"+smoothType+country+"Yabox.png"
 
         #remove previous file
         if os.path.isfile(strFile):
@@ -513,8 +562,19 @@ def create_lossOdeint(data, recovered, \
             death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, \
                  weigthCases, weigthRecov):
     def lossOdeint(point):
-        beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d = point
+        beta0, beta01, startT, beta02, startT2, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d, p = point
+
         def SEAIRD(y,t):
+            # delta=int(round(startT-t))
+            # delta2=int(round(startT2-t))  
+            rx=smoothstep(t, x_min=startT-2, x_max=startT+2, N=4)
+            # rx=smoothstep2(t, x_min=startT-2, x_max=startT+2) 
+            # rx=max(0,np.sign(delta))
+            beta=beta0*rx+beta01*(1-rx)
+            rx=smoothstep(t, x_min=startT2-4, x_max=startT2+4, N=4)
+            # rx=max(0,np.sign(delta2))
+            # rx=smoothstep2(t, x_min=startT2-4, x_max=startT2+4) 
+            beta=beta01*rx+beta02*(1-rx)
             S = y[0]
             E = y[1]
             A = y[2]
@@ -556,8 +616,9 @@ def create_lossOdeint(data, recovered, \
         dError=np.mean(dErrorX[-15:]) 
 
         #objective function
-        gtot=u*l1 + v*(l2+0.01*dError) + w*l3
+        gtot=u*l1 + v*(l2+0.02*dError) + w*l3
 
+        #penalty function for the negative final derivative of deaths
         NegDeathData=np.diff(res[:,5])
         dNeg=np.mean(NegDeathData[-5:]) 
         correctGtot=max(abs(dNeg),0)**2
@@ -576,7 +637,7 @@ def main(countriesExt,opt):
     if not countriesExt=="":
         countries=countriesExt
 
-    if download=="True":
+    if download:
         data_d = load_json("./data_url.json")
         download_data(data_d)
 
@@ -816,7 +877,7 @@ if opt==1 or opt==0 or opt==4:
 
     model='SEAIRD' 
 
-    df = loadDataFrame('./data/SEAIRDv4_Yabox'+country+'.pkl')
+    df = loadDataFrame('./data/SEAIRDv7_Yabox_'+country+'.pkl')
     time6, cases6 = predictionsPlot(df,150,2000)
 
     #model

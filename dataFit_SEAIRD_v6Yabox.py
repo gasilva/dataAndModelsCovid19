@@ -332,11 +332,11 @@ class Learner(object):
         def SEAIRD(y,t):
             # delta=int(round(startT-t))
             # delta2=int(round(startT2-t))  
-            rx=smoothstep(t, x_min=startT-2, x_max=startT+2,N=1)
+            rx=smoothstep(t, x_min=startT-2, x_max=startT+2, N=4)
             # rx=smoothstep2(t, x_min=startT-2, x_max=startT+2) 
             # rx=max(0,np.sign(delta))
             beta=beta0*rx+beta01*(1-rx)
-            rx=smoothstep(t, x_min=startT2-4, x_max=startT2+4,N=1)
+            rx=smoothstep(t, x_min=startT2-4, x_max=startT2+4, N=4)
             # rx=max(0,np.sign(delta2))
             # rx=smoothstep2(t, x_min=startT2-4, x_max=startT2+4) 
             beta=beta01*rx+beta02*(1-rx)
@@ -419,7 +419,7 @@ class Learner(object):
                     'Predicted Deaths': y5},
                     index=new_index)
 
-        df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
+        df.to_pickle('./data/SEAIRDv6_Yabox_'+self.country+'.pkl')
 
         print(f"country={self.country}, beta0={beta0:.8f}, beta01={beta01:.8f}, startT={startT:.8f}, beta02={beta02:.8f}, startT2={startT2:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
             f" 1/sigma2={1/sigma2:.8f},1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f},"+\
@@ -430,9 +430,9 @@ class Learner(object):
     #plotting
     def trainPlot(self):
 
-        smoothType="2smoothStepWeigths22N3" #"clip" #"smoothstep2" #"smoothclamp" #"smoothstep"
+        smoothType="2SmoothStep" #"SmoothStep2" #"SmoothStep" #"Step"
 
-        df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
+        df = loadDataFrame('./data/SEAIRDv6_Yabox_'+self.country+'.pkl')
         color_bg = '#FEF1E5'
         # lighter_highlight = '#FAE6E1'
         darker_highlight = '#FBEADC'
@@ -567,11 +567,11 @@ def create_lossOdeint(data, recovered, \
         def SEAIRD(y,t):
             # delta=int(round(startT-t))
             # delta2=int(round(startT2-t))  
-            rx=smoothstep(t, x_min=startT-2, x_max=startT+2,N=1)
+            rx=smoothstep(t, x_min=startT-2, x_max=startT+2, N=4)
             # rx=smoothstep2(t, x_min=startT-2, x_max=startT+2) 
             # rx=max(0,np.sign(delta))
             beta=beta0*rx+beta01*(1-rx)
-            rx=smoothstep(t, x_min=startT2-4, x_max=startT2+4,N=1)
+            rx=smoothstep(t, x_min=startT2-4, x_max=startT2+4, N=4)
             # rx=max(0,np.sign(delta2))
             # rx=smoothstep2(t, x_min=startT2-4, x_max=startT2+4) 
             beta=beta01*rx+beta02*(1-rx)
@@ -876,7 +876,7 @@ if opt==1 or opt==0 or opt==4:
 
     model='SEAIRD' 
 
-    df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+country+'.pkl')
+    df = loadDataFrame('./data/SEAIRDv6_Yabox_'+country+'.pkl')
     time6, cases6 = predictionsPlot(df,150,2000)
 
     #model

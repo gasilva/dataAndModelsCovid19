@@ -417,7 +417,7 @@ class Learner(object):
                     'Predicted Deaths': y5},
                     index=new_index)
 
-        df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
+        df.to_pickle('./data/SEAIRDv5_Yabox_'+self.country+'.pkl')
 
         print(f"country={self.country}, beta0={beta0:.8f}, beta01={beta01:.8f}, startT={startT:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
             f" 1/sigma2={1/sigma2:.8f},1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f},"+\
@@ -428,9 +428,9 @@ class Learner(object):
     #plotting
     def trainPlot(self):
 
-        smoothType="stepWeigths22" #"clip" #"smoothstep2" #"smoothclamp" #"smoothstep"
+        smoothType="Step22" #"SmoothStep2" #"SmoothStep" #"Step"
 
-        df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
+        df = loadDataFrame('./data/SEAIRDv5_Yabox_'+self.country+'.pkl')
         color_bg = '#FEF1E5'
         # lighter_highlight = '#FAE6E1'
         darker_highlight = '#FBEADC'
@@ -611,6 +611,7 @@ def create_lossOdeint(data, recovered, \
         #objective function
         gtot=u*l1 + v*(l2+0.01*dError) + w*l3
 
+        #penalty function for the negative final derivative of deaths
         NegDeathData=np.diff(res[:,5])
         dNeg=np.mean(NegDeathData[-5:]) 
         correctGtot=max(abs(dNeg),0)**2
@@ -869,7 +870,7 @@ if opt==1 or opt==0 or opt==4:
 
     model='SEAIRD' 
 
-    df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+country+'.pkl')
+    df = loadDataFrame('./data/SEAIRDv5_Yabox_'+country+'.pkl')
     time6, cases6 = predictionsPlot(df,160,1200)
 
     #model
