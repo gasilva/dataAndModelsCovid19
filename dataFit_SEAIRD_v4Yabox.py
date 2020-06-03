@@ -330,12 +330,6 @@ class Learner(object):
             zeroRecDeaths=1
         self.data = self.load_confirmed(self.country)-zeroRecDeaths*(self.recovered+self.death)
 
-        # datax=self.data[self.data!=0]
-        # deldata=len(self.data)-len(datax)
-        # self.recovered=self.recovered[deldata:]
-        # self.death=self.death[deldata:]
-        # self.data=datax
-
         bounds=[(1e-12, .2),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
         (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
