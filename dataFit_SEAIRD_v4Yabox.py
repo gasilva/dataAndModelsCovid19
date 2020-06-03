@@ -567,12 +567,12 @@ def create_lossOdeint(data, recovered, \
         NegDeathData=np.diff(res[:,5])
         dNeg=np.mean(NegDeathData[-5:]) 
         correctGtot=max(abs(dNeg),0)**2
-        gtot=2*correctGtot-4*min(np.sign(dNeg),0)*correctGtot+gtot
+        gtot=2*correctGtot-2*min(np.sign(dNeg),0)*correctGtot+gtot
 
         return gtot 
     return lossOdeint
 
-#main program SIRD model
+#main program SEAIRD model
 
 def main(countriesExt,opt):
     
@@ -582,7 +582,7 @@ def main(countriesExt,opt):
     if not countriesExt=="":
         countries=countriesExt
 
-    if download:
+    if download=="True":
         data_d = load_json("./data_url.json")
         download_data(data_d)
 

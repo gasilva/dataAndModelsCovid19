@@ -358,7 +358,7 @@ class Learner(object):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
         def SEAIRD(y,t):
-            delta=int(round(startT-t))   
+            delta=int(round(t-startT))   
             # rx=smoothstep(t, x_min=startT-5, x_max=startT+5, N=1)
             # rx=smoothclamp(delta, -2, 2)
             # rx=smoothstep2(t, x_min=startT-10, x_max=startT+10) 
@@ -410,7 +410,7 @@ class Learner(object):
         # self.death=self.death[deldata:]
         # self.data=datax
 
-        bounds=[(1e-12, .2),(1e-12, .2),(21,179),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
+        bounds=[(1e-12, .2),(1e-12, .2),(5,295),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
         (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
         maxiterations=2500
@@ -469,7 +469,7 @@ class Learner(object):
         #numba6 - smoothstep2
         #numba5 - smoothstep nCr final test
 
-        smoothType="smoothstep1Weigths12Days10N1Numba9" #"clip" #"smoothstep2" #"smoothclamp" #"smoothstep"
+        smoothType="stepWeigths22deriv2e-2" #"clip" #"smoothstep2" #"smoothclamp" #"smoothstep"
 
         df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
         color_bg = '#FEF1E5'
@@ -604,7 +604,7 @@ def create_lossOdeint(data, recovered, \
         beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d = point
 
         def SEAIRD(y,t):
-            delta=int(round(startT-t))   
+            delta=int(round(t-startT))   
             # rx=smoothstep(t, x_min=startT-5, x_max=startT+5, N=1)
             # rx=smoothclamp(delta, -2, 1)
             # rx=smoothstep2(t, x_min=startT-10, x_max=startT+10) 
@@ -657,7 +657,7 @@ def create_lossOdeint(data, recovered, \
         NegDeathData=np.diff(res[:,5])
         dNeg=np.mean(NegDeathData[-5:]) 
         correctGtot=max(abs(dNeg),0)**2
-        gtot=1*correctGtot-2*min(np.sign(dNeg),0)*correctGtot+gtot
+        gtot=2*correctGtot-2*min(np.sign(dNeg),0)*correctGtot+gtot
 
         return gtot 
     return lossOdeint
@@ -913,7 +913,7 @@ if opt==1 or opt==0 or opt==4:
     model='SEAIRD' 
 
     df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+country+'.pkl')
-    time6, cases6 = predictionsPlot(df,150,2000)
+    time6, cases6 = predictionsPlot(df,160,1200)
 
     #model
     #33% per day
