@@ -358,12 +358,12 @@ class Learner(object):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
         def SEAIRD(y,t):
-            # delta=int(round(startT-t))   
-            rx=smoothstep(t, x_min=startT-10, x_max=startT+10, N=3)
+            delta=int(round(startT-t))   
+            # rx=smoothstep(t, x_min=startT-5, x_max=startT+5, N=1)
             # rx=smoothclamp(delta, -2, 2)
             # rx=smoothstep2(t, x_min=startT-10, x_max=startT+10) 
             # rx = np.clip(((t - (startT-2)) / 4), 0, 1)
-            # rx=max(0,np.sign(delta))
+            rx=max(0,np.sign(delta))
             beta=beta0*rx+beta01*(1-rx)
             S = y[0]
             E = y[1]
@@ -463,10 +463,13 @@ class Learner(object):
     #plotting
     def trainPlot(self):
 
+        #numba9 - smoothstep nCr final test
+        #numba8 - smoothstep nCr final test
+        #numba7 - smoothstep nCr final test
         #numba6 - smoothstep2
-        #numba5 - smoothstep nCr parallel final test
+        #numba5 - smoothstep nCr final test
 
-        smoothType="smoothstep1Weigths12Days20Numba5" #"clip" #"smoothstep2" #"smoothclamp" #"smoothstep"
+        smoothType="smoothstep1Weigths12Days10N1Numba9" #"clip" #"smoothstep2" #"smoothclamp" #"smoothstep"
 
         df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
         color_bg = '#FEF1E5'
@@ -601,12 +604,12 @@ def create_lossOdeint(data, recovered, \
         beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d = point
 
         def SEAIRD(y,t):
-            # delta=int(round(startT-t))   
-            rx=smoothstep(t, x_min=startT-10, x_max=startT+10, N=3)
+            delta=int(round(startT-t))   
+            # rx=smoothstep(t, x_min=startT-5, x_max=startT+5, N=1)
             # rx=smoothclamp(delta, -2, 1)
             # rx=smoothstep2(t, x_min=startT-10, x_max=startT+10) 
             # rx = np.clip(((t - (startT-2)) / 4), 0, 1)
-            # rx=max(0,np.sign(delta))
+            rx=max(0,np.sign(delta))
             beta=beta0*rx+beta01*(1-rx)
             S = y[0]
             E = y[1]
