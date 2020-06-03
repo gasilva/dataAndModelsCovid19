@@ -353,18 +353,23 @@ class Learner(object):
         return values
 
     #predict final extended values
-    def predict(self, beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d, data, \
+    def predict(self, beta0, beta01, startT, beta02, startT2, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d, data, \
                 recovered, death, country, s_0, e_0, a_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
         def SEAIRD(y,t):
-            delta=int(round(t-startT))   
-            # rx=smoothstep(t, x_min=startT-2, x_max=startT+2, N=1)
-            # rx=smoothclamp(delta, -2, 1)
+            # delta=int(round(startT-t))
+            # delta2=int(round(startT2-t))  
+            rx=smoothstep(t, x_min=startT-2, x_max=startT+2, N=3)
+            # rx=smoothclamp(delta, 0, 1)
             # rx=smoothstep2(t, x_min=startT-2, x_max=startT+2) 
             # rx = np.clip(((t - (startT-2)) / 4), 0, 1)
-            rx=max(0,np.sign(delta))
+            # rx=max(0,np.sign(delta))
             beta=beta0*rx+beta01*(1-rx)
+            rx=smoothstep(t, x_min=startT2-4, x_max=startT2+4, N=3)
+            # rx=max(0,np.sign(delta2))
+            # rx=smoothstep2(t, x_min=startT2-4, x_max=startT2+4) 
+            beta=beta01*rx+beta02*(1-rx)
             S = y[0]
             E = y[1]
             A = y[2]
@@ -410,7 +415,7 @@ class Learner(object):
         # self.death=self.death[deldata:]
         # self.data=datax
 
-        bounds=[(1e-12, .2),(1e-12, .2),(5,295),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
+        bounds=[(1e-12, .2),(1e-12, .2),(10,100),(1e-12, .2),(101,190),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
         (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
         maxiterations=2500
@@ -431,12 +436,10 @@ class Learner(object):
         p=best_params[0]
 
         #parameter list for optimization
-        #beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d
-
-        beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d  = p
+        beta0, beta01, startT, beta02, startT2, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d  = p
 
         new_index, extended_actual, extended_recovered, extended_death, y0, y1, y2, y3, y4, y5 \
-                = self.predict(beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d,  \
+                = self.predict(beta0, beta01, startT, beta02, startT2, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d,  \
                     self.data, self.recovered, self.death, self.country, self.s_0, \
                     self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
 
@@ -454,7 +457,7 @@ class Learner(object):
 
         df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
 
-        print(f"country={self.country}, beta0={beta0:.8f}, beta01={beta01:.8f}, startT={startT:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
+        print(f"country={self.country}, beta0={beta0:.8f}, beta01={beta01:.8f}, startT={startT:.8f}, beta02={beta02:.8f}, startT2={startT2:.8f}, beta2={beta2:.8f}, 1/sigma={1/sigma:.8f},"+\
             f" 1/sigma2={1/sigma2:.8f},1/sigma3={1/sigma3:.8f}, gamma={gamma:.8f}, b={b:.8f},"+\
             f" gamma2={gamma2:.8f}, d={d:.8f}, mu={mu:.8f}, r_0:{((beta0+beta01)/gamma):.8f}")
         
@@ -463,7 +466,7 @@ class Learner(object):
     #plotting
     def trainPlot(self):
 
-        smoothType="stepWeigths22" #"clip" #"smoothstep2" #"smoothclamp" #"smoothstep"
+        smoothType="2smoothStepWeigths22N3" #"clip" #"smoothstep2" #"smoothclamp" #"smoothstep"
 
         df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+self.country+'.pkl')
         color_bg = '#FEF1E5'
@@ -595,16 +598,21 @@ def create_lossOdeint(data, recovered, \
             death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, \
                  weigthCases, weigthRecov):
     def lossOdeint(point):
-        beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d = point
+        beta0, beta01, startT, beta02, startT2, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d = point
 
         def SEAIRD(y,t):
-            delta=int(round(t-startT))   
-            # rx=smoothstep(t, x_min=startT-2, x_max=startT+2, N=1)
-            # rx=smoothclamp(delta, -2, 1)
+            # delta=int(round(startT-t))
+            # delta2=int(round(startT2-t))  
+            rx=smoothstep(t, x_min=startT-2, x_max=startT+2, N=3)
+            # rx=smoothclamp(delta, 0, 1)
             # rx=smoothstep2(t, x_min=startT-2, x_max=startT+2) 
             # rx = np.clip(((t - (startT-2)) / 4), 0, 1)
-            rx=max(0,np.sign(delta))
+            # rx=max(0,np.sign(delta))
             beta=beta0*rx+beta01*(1-rx)
+            rx=smoothstep(t, x_min=startT2-4, x_max=startT2+4, N=3)
+            # rx=max(0,np.sign(delta2))
+            # rx=smoothstep2(t, x_min=startT2-4, x_max=startT2+4) 
+            beta=beta01*rx+beta02*(1-rx)
             S = y[0]
             E = y[1]
             A = y[2]
@@ -646,7 +654,7 @@ def create_lossOdeint(data, recovered, \
         dError=np.mean(dErrorX[-15:]) 
 
         #objective function
-        gtot=u*l1 + v*(l2+0.01*dError) + w*l3
+        gtot=u*l1 + v*(l2+0.02*dError) + w*l3
 
         NegDeathData=np.diff(res[:,5])
         dNeg=np.mean(NegDeathData[-5:]) 
@@ -907,7 +915,7 @@ if opt==1 or opt==0 or opt==4:
     model='SEAIRD' 
 
     df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+country+'.pkl')
-    time6, cases6 = predictionsPlot(df,160,1200)
+    time6, cases6 = predictionsPlot(df,150,2000)
 
     #model
     #33% per day
