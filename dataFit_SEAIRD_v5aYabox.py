@@ -255,31 +255,6 @@ def nCr(n, r):
         + nCr(np.int32(n) - 1, np.int32(r)))
     return result
 
-# create a memorization dictionary
-memo = {}
-def factorial(n):
-    """
-    Calculate the factorial of an input using memoization
-    :param n: int
-    :rtype value: int
-    """
-    if n in [1,0]:
-        return 1
-    if n in memo:
-        return memo[n]
-    value = n*factorial(n-1)
-    memo[n] = value
-    return value
-
-def ncr(n, k):
-    """
-    Choose k elements from a set of n elements - n must be larger than or equal to k
-    :param n: int
-    :param k: int
-    :rtype: int
-    """
-    return factorial(n)/(factorial(k)*factorial(n-k))
-
 @njit
 def smoothstep(x, x_min=0, x_max=1, N=1):
     x = np.float64(max(min(((np.float64(x) -  np.float64(x_min)) / ( np.float64(x_max) -  np.float64(x_min))),1),0))
@@ -304,9 +279,6 @@ def smoothstep2(x, x_min=0, x_max=1):
     result += 0
     result *= x ** (2 + 1)
     return result
-
-def smoothclamp(x, mi, mx): 
-    return mi + (mx-mi)*(lambda t: np.where(t < 0 , 0, np.where( t <= 1 , 3*t**2-2*t**3, 1 ) ) )( (x-mi)/(mx-mi) )
 
 #register function for parallel processing
 # @ray.remote
@@ -361,9 +333,7 @@ class Learner(object):
             # delta=int(round(startT-t))
             # delta2=int(round(startT2-t))  
             rx=smoothstep(t, x_min=startT-2, x_max=startT+2, N=3)
-            # rx=smoothclamp(delta, 0, 1)
             # rx=smoothstep2(t, x_min=startT-2, x_max=startT+2) 
-            # rx = np.clip(((t - (startT-2)) / 4), 0, 1)
             # rx=max(0,np.sign(delta))
             beta=beta0*rx+beta01*(1-rx)
             rx=smoothstep(t, x_min=startT2-4, x_max=startT2+4, N=3)
@@ -408,12 +378,6 @@ class Learner(object):
         else:
             zeroRecDeaths=1
         self.data = self.load_confirmed(self.country)-zeroRecDeaths*(self.recovered+self.death)
-
-        # datax=self.data[self.data!=0]
-        # deldata=len(self.data)-len(datax)
-        # self.recovered=self.recovered[deldata:]
-        # self.death=self.death[deldata:]
-        # self.data=datax
 
         bounds=[(1e-12, .2),(1e-12, .2),(10,100),(1e-12, .2),(101,190),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
         (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
@@ -604,9 +568,7 @@ def create_lossOdeint(data, recovered, \
             # delta=int(round(startT-t))
             # delta2=int(round(startT2-t))  
             rx=smoothstep(t, x_min=startT-2, x_max=startT+2, N=3)
-            # rx=smoothclamp(delta, 0, 1)
             # rx=smoothstep2(t, x_min=startT-2, x_max=startT+2) 
-            # rx = np.clip(((t - (startT-2)) / 4), 0, 1)
             # rx=max(0,np.sign(delta))
             beta=beta0*rx+beta01*(1-rx)
             rx=smoothstep(t, x_min=startT2-4, x_max=startT2+4, N=3)
