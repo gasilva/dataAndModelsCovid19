@@ -7,6 +7,15 @@ def datadownload():
     url = 'https://data.brasil.io/dataset/covid19/caso.csv.gz'
     urllib.request.urlretrieve(url, 'data/BR.csv.gz')
 
+def group():
+    dataBR = pd.read_csv("data/dados_total_estados.csv", index_col=[0])
+    state = dataBR["state"].unique()
+    df_confirmed = dataBR.groupby(['date','state'],as_index = False).sum().pivot('date','state').fillna(0)['confirmed']
+    df_deaths = dataBR.groupby(['date','state'],as_index = False).sum().pivot('date','state').fillna(0)['deaths']
+    
+    df_confirmed.to_csv("data/confirmados.csv", sep=",")
+    df_deaths.to_csv("data/mortes.csv", sep=",")
+
 def get_data():
     datadownload()
     dataBR = pd.read_csv('data/BR.csv.gz', compression='gzip')
@@ -18,3 +27,5 @@ def get_data():
 
     df = dataBR.query('city == "TOTAL"').reset_index()
     df.to_csv("data/dados_total_estados.csv", sep=",", index=False)
+
+    group()

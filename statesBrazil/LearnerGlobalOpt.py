@@ -55,7 +55,7 @@ class Learner(object):
 
     def load_confirmed(self, districtRegion):
         dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
-        df = pd.read_csv('./data/DRS_confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
+        df = pd.read_csv('./data/confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
         y=[]
         x=[]
         for i in range(0,len(df.date)):
@@ -67,7 +67,7 @@ class Learner(object):
 
     def load_dead(self, districtRegion):
         dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
-        df = pd.read_csv('./data/DRS_mortes.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
+        df = pd.read_csv('./data/mortes.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
         y=[]
         x=[]
         for i in range(0,len(df.date)):
