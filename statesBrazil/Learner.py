@@ -32,8 +32,8 @@ ray.init()
 #register function for parallel processing
 @ray.remote
 class Learner(object):
-    def __init__(self, districtRegion, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov, cleanRecovered, version, savedata=True):
-        self.districtRegion = districtRegion
+    def __init__(self, state, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov, cleanRecovered, version, savedata=True):
+        self.state = state
         self.loss = loss
         self.start_date = start_date
         self.predict_range = predict_range
@@ -51,25 +51,25 @@ class Learner(object):
         self.version=version
         self.savedata = savedata
 
-    def load_confirmed(self, districtRegion):
+    def load_confirmed(self, state):
         dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
         df = pd.read_csv('./data/confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
         y=[]
         x=[]
         for i in range(0,len(df.date)):
-            y.append(df[districtRegion].values[i])
+            y.append(df[state].values[i])
             x.append(df.date.values[i])
         df2=pd.DataFrame(data=y,index=x,columns=[""])
         df2=df2[self.start_date:]
         return df2
 
-    def load_dead(self, districtRegion):
+    def load_dead(self, state):
         dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
         df = pd.read_csv('./data/mortes.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
         y=[]
         x=[]
         for i in range(0,len(df.date)):
-            y.append(df[districtRegion].values[i])
+            y.append(df[state].values[i])
             x.append(df.date.values[i])
         df2=pd.DataFrame(data=y,index=x,columns=[""])
         df2=df2[self.start_date:]
@@ -93,7 +93,7 @@ class Learner(object):
 
     #predict final extended values
     def predict(self, beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, data, \
-                    death, districtRegion, s_0, e_0, a_0, i_0, r_0, d_0):
+                    death, state, s_0, e_0, a_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
         def SEAIRD(y,t):
@@ -130,27 +130,27 @@ class Learner(object):
 
     #run optimizer and plotting
     def train(self):
-        self.data = self.load_confirmed(self.districtRegion)
-        self.death = self.load_dead(self.districtRegion)
+        self.data = self.load_confirmed(self.state)
+        self.death = self.load_dead(self.state)
         
         print_info = False
         
         if print_info:
-            print("\n running model for "+self.districtRegion)
+            print("\n running model for "+self.state)
         optimal = minimize(self.loss,        
             [0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001],
             args=(self.data, self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, \
                 self.startNCases, self.ratio, self.weigthCases, self.weigthRecov),
             method='L-BFGS-B',
             bounds=[(1e-12, 50), (1e-12, 50), (1./60.,0.2),  (1./60.,0.2), (1./60.,0.2),\
-                 (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)])
+                 (1e-16, 0.4), (1e-12, 0.2), (1e-12, 0.2)], options={'gtol': 1e-6, 'disp': True})
             #beta, beta2, sigma, sigma2, sigma3, gamma, b
         if print_info:
             print("\n", optimal)
         beta, beta2, sigma, sigma2, sigma3, gamma, b, mu = optimal.x
         new_index, extended_actual, extended_death, y0, y1, y2, y3, y4, y5 \
                 = self.predict(beta, beta2, sigma, sigma2, sigma3, gamma, b, mu, self.data, \
-                self.death, self.districtRegion, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
+                self.death, self.state, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
 
         dataFr = [y0, y1, y2, y3, y4, y5]
         dataFr2 = np.array(dataFr).T
@@ -163,7 +163,7 @@ class Learner(object):
         
         if self.savedata:
             #save simulation results for comparison and use in another codes/routines
-            df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.districtRegion+'.pkl')
-            df.to_csv('./results/data/SEAIRD_sigmaOpt_'+self.districtRegion+'.csv', sep=",")
+            df.to_pickle('./data/SEAIRD_'+self.state+self.version+'.pkl')
+            df.to_csv('./results/data/SEAIRD_'+self.state+self.version+'.csv', sep=",")
         else:
             return optimal.fun
