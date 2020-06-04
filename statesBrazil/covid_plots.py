@@ -89,7 +89,8 @@ def extend_index(index, new_size):
     return values
 
 def covid_plots(state, state4Plot,\
-                startdate="2020-03-15",predict_range = 60, startCase = 180, opt = 5, version = "1", show = False):
+                startdate="2020-03-15",predict_range = 60, \
+                    startCase = 180, opt = 5, version = "1", show = False):
     
     #Initial parameters
     #Choose here your options
@@ -459,9 +460,9 @@ def covid_plots(state, state4Plot,\
     if opt==5 or opt==0:
         df = loadDataFrame('./data/SEAIRD_'+state+version+'.pkl')
         
-        actual = load_confirmed(state, startdate)
         death = load_dead(state,startdate)
-        extended_actual = actual.values
+        actual = load_confirmed(state, startdate)
+        extended_actual = np.int32(actual.values*0.9)-np.int32(death.values)
         extended_death = death.values
         
         new_index = extend_index(df.index, predict_range)
@@ -478,7 +479,7 @@ def covid_plots(state, state4Plot,\
         ax.spines['top'].set_visible(False)
 
         # Adding a title and a subtitle
-        plt.text(x = 0.02, y = 1.1, s = "SEAIR-D Model for "+state,
+        plt.text(x = 0.02, y = 1.1, s = "SEAIR-D Model for "+state+" Brazil State",
                     fontsize = 34, weight = 'bold', alpha = .75,transform=ax.transAxes, 
                     fontproperties=heading_font)
         plt.text(x = 0.02, y = 1.05,
@@ -489,7 +490,6 @@ def covid_plots(state, state4Plot,\
         #limits for plotting
         ax.set_ylim((0, max(df.iloc[:]['susceptible'])*1.1))
 
-        ax.set_title("SEAIR-D Model for "+state)
         ax.xaxis_date()
         ax.plot(df['susceptible'],'g-',label="Susceptible")
         ax.plot(df['exposed'],'r-',label="Exposed")
@@ -540,10 +540,10 @@ def covid_plots(state, state4Plot,\
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
   
-        ax.set_ylim(0,max(max(df['infected']),max(extended_actual))*1.1)
+        ax.set_ylim(0,max(max(df['infected']),max(np.int32(extended_actual)))*1.1)
 
         # Adding a title and a subtitle
-        plt.text(x = 0.02, y = 1.1, s = "Zoom SEAIR-D Model for "+state,
+        plt.text(x = 0.02, y = 1.1, s = "Zoom SEAIR-D Model for "+state+" Brazil State",
                     fontsize = 34, weight = 'bold', alpha = .75,transform=ax.transAxes,
                     fontproperties=heading_font)
         plt.text(x = 0.02, y = 1.05,
