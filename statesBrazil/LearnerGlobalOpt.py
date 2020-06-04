@@ -132,8 +132,9 @@ class Learner(object):
 
     #run optimizer and plotting
     def train(self):
-        self.data = self.load_confirmed(self.state)
-        self.death = self.load_dead(self.state)
+        dead=self.load_dead(self.state)
+        self.data = self.load_confirmed(self.state)*(1-self.ratio)-dead
+        self.death = dead
         
         print_info = False
       
@@ -147,7 +148,7 @@ class Learner(object):
         if print_info:
             print("\n running model for "+self.state)
         
-        optimal =  basinhopping(self.loss,x0,minimizer_kwargs=minimizer_kwargs, disp=True)
+        optimal =  basinhopping(self.loss,x0,minimizer_kwargs=minimizer_kwargs, disp=True, niter=500)
             #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
             
         if print_info:

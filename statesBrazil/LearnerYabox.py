@@ -182,13 +182,14 @@ class Learner(object):
 
     #run optimizer and plotting
     def train(self):
-        self.data = self.load_confirmed(self.state)
-        self.death = self.load_dead(self.state)
+        dead=self.load_dead(self.state)
+        self.data = self.load_confirmed(self.state)*(1-self.ratio)-dead
+        self.death = dead
 
         bounds=[(1e-12, .2),(1e-12, .2),(1/60 ,0.4),(1/60, .4),
         (1/60, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
-        maxiterations=1500
+        maxiterations=2000
         f=self.create_lossOdeint(self.data, \
             self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
                  self.ratio, self.weigthCases, self.weigthRecov)
