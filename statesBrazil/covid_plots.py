@@ -463,7 +463,7 @@ def covid_plots(state, state4Plot,\
         death = load_dead(state,startdate)
         actual = load_confirmed(state, startdate)
         extended_actual = np.int32(actual.values*0.85)-np.int32(death.values)
-        extended_death = death.values
+        extended_death = np.int32(death.values)
         
         new_index = extend_index(df.index, predict_range)
 
