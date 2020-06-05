@@ -186,8 +186,8 @@ class Learner(object):
         self.data = self.load_confirmed(self.state)*(1-self.ratio)-dead
         self.death = dead
 
-        bounds=[(1e-12, .2),(1e-12, .2),(1/60 ,0.4),(1/60, .4),
-        (1/60, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
+        bounds=[(1e-12, .2),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
+        (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
         maxiterations=2000
         f=self.create_lossOdeint(self.data, \
