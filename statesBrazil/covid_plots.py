@@ -462,7 +462,7 @@ def covid_plots(state, state4Plot,\
         
         death = load_dead(state,startdate)
         actual = load_confirmed(state, startdate)
-        extended_actual = np.int32(actual.values*0.9)-np.int32(death.values)
+        extended_actual = np.int32(actual.values*0.85)-np.int32(death.values)
         extended_death = death.values
         
         new_index = extend_index(df.index, predict_range)
@@ -483,7 +483,7 @@ def covid_plots(state, state4Plot,\
                     fontsize = 34, weight = 'bold', alpha = .75,transform=ax.transAxes, 
                     fontproperties=heading_font)
         plt.text(x = 0.02, y = 1.05,
-                    s = "Optimization fitted real data",
+                    s = "Optimization fitted with real data",
                     fontsize = 26, alpha = .85,transform=ax.transAxes, 
                     fontproperties=subtitle_font)
 
@@ -547,7 +547,7 @@ def covid_plots(state, state4Plot,\
                     fontsize = 34, weight = 'bold', alpha = .75,transform=ax.transAxes,
                     fontproperties=heading_font)
         plt.text(x = 0.02, y = 1.05,
-                    s = "Optimization fitted real data",
+                    s = "Optimization fitted with real data",
                     fontsize = 26, alpha = .85,transform=ax.transAxes, 
                     fontproperties=subtitle_font)
 
