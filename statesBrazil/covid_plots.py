@@ -90,7 +90,7 @@ def extend_index(index, new_size):
 
 def covid_plots(state, state4Plot,\
                 startdate="2020-03-15",predict_range = 60, \
-                    startCase = 180, opt = 5, version = "1", show = False):
+                    startCase = 180, opt = 5, version = "1", show = False, ratio=0.15):
     
     #Initial parameters
     #Choose here your options
@@ -139,7 +139,10 @@ def covid_plots(state, state4Plot,\
 
     #load CSV file
     dateparse = lambda x: pd.datetime.strptime(x, '%Y-%m-%d')
-    df = pd.read_csv('./data/confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
+    df1 = pd.read_csv('./data/confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse,index_col=0)
+    df2 = pd.read_csv('./data/mortes.csv',delimiter=',',parse_dates=True, date_parser=dateparse,index_col=0)
+    df1=df1.select_dtypes(exclude=['object', 'datetime']) * (1-ratio)
+    df=df1.subtract(df2)
 
     #prepare data for plotting
     state1=state4Plot[0]
@@ -462,7 +465,7 @@ def covid_plots(state, state4Plot,\
         
         death = load_dead(state,startdate)
         actual = load_confirmed(state, startdate)
-        extended_actual = np.int32(actual.values*0.85)-np.int32(death.values)
+        extended_actual = np.int32(actual.values*(1-ratio))-np.int32(death.values)
         extended_death = np.int32(death.values)
         
         new_index = extend_index(df.index, predict_range)
