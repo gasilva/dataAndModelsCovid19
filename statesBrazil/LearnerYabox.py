@@ -32,9 +32,8 @@ ray.init(num_cpus=20)
 #register function for parallel processing
 @ray.remote
 class Learner(object):
-    def __init__(self, state, loss, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov, cleanRecovered, version, savedata=True):
+    def __init__(self, state, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov, cleanRecovered, version, savedata=True):
         self.state = state
-        self.loss = loss
         self.start_date = start_date
         self.predict_range = predict_range
         self.s_0 = s_0
@@ -114,24 +113,15 @@ class Learner(object):
                 return [y0,y1,y2,y3,y4,y5]
 
             y0=[s_0,e_0,a_0,i_0,r_0,d_0]
-            tspan=np.arange(0, size, 1)
-            res=odeint(SEAIRD,y0,tspan) 
-            #,hmax=0.01)
+            size = len(data)+1
+            tspan=np.arange(0, size+100, 1)
+            res=odeint(SEAIRD,y0,tspan) #,hmax=0.01)
 
-            tot=0
-            l1=0
-            l2=0
-            l3=0
-            for i in range(0,len(data.values)):
-                if data.values[i]>startNCases:
-                    l1 = l1+(res[i,3] - data.values[i])**2
-                    l2 = l2+(res[i,5] - death.values[i])**2
-                    newRecovered=min(1e6,data.values[i]*ratioRecovered)
-                    l3 = l3+(res[i,4] - newRecovered)**2
-                    tot+=1
-            l1=np.sqrt(l1/max(1,tot))
-            l2=np.sqrt(l2/max(1,tot))
-            l3=np.sqrt(l3/max(1,tot))
+            # calculate fitting error by using numpy.where
+            ix= np.where(data.values >= startNCases)
+            l1 = np.mean((res[ix[0],3] - data.values[ix])**2)
+            l2 = np.mean((res[ix[0],5] - death.values[ix])**2)
+            l3 = np.mean((res[ix[0],4] - data.values[ix]*ratioRecovered)**2)
 
             #weight for cases
             u = weigthCases
@@ -139,7 +129,34 @@ class Learner(object):
             w = weigthRecov 
             #weight for deaths
             v = max(0,1. - u - w)
-            return u*l1 + v*l2 + w*l3 
+
+            #calculate derivatives
+            #and the error of the derivative between prediction and the data
+
+            #for deaths
+            dDeath=np.diff(res[1:size,5])
+            dDeathData=np.diff(death.values.T[0][:])
+            dErrorX=(dDeath-dDeathData)**2
+            dErrorD=np.mean(dErrorX[-8:]) 
+
+            #for infected
+            dInf=np.diff(res[1:size,3])
+            dInfData=np.diff(data.values.T[0][:])
+            dErrorY=(dInf-dInfData)**2
+            dErrorI=np.mean(dErrorY[-8:])
+
+            #objective function
+            gtot=u*(l1+0.05*dErrorI) + v*(l2+0.1*dErrorD) + w*l3
+
+            #penalty function for negative derivative at end of deaths
+            NegDeathData=np.diff(res[:,5])
+            dNeg=np.mean(NegDeathData[-5:]) 
+            correctGtot=max(abs(dNeg),0)**2
+
+            #final objective function
+            gtot=2*correctGtot-2*min(np.sign(dNeg),0)*correctGtot+gtot
+
+            return gtot
         return lossOdeint
     
 
@@ -186,14 +203,14 @@ class Learner(object):
         self.data = self.load_confirmed(self.state)*(1-self.ratio)-dead
         self.death = dead
 
-        bounds=[(1e-12, .2),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
-        (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
+        bounds=[(1e-12, .2),(1e-12, .2),(1/100 ,0.4),(1/100, .4),
+        (1/100, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
         maxiterations=2000
         f=self.create_lossOdeint(self.data, \
             self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
                  self.ratio, self.weigthCases, self.weigthRecov)
-        de = DE(f, bounds, maxiters=maxiterations)
+        de = DE(f, bounds, maxiters=maxiterations) #,popsize=100)
         i=0
         with tqdm(total=maxiterations*1000) as pbar:
             for step in de.geniterator():
