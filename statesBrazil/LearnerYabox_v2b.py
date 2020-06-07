@@ -76,14 +76,6 @@ class Learner(object):
         return df2
     
     def extend_index(self, index, new_size):
-        #values = index.values
-        #current = datetime.strptime(index[-1], '%Y-%m-%d')
-        '''
-        while len(values) < new_size:
-            print(current)
-            current = current + timedelta(days=1)
-            values = np.append(values, datetime.strftime(current, '%Y-%m-%d'))
-        '''
         start = datetime.strptime(index[0], '%Y-%m-%d')
         end = datetime.strftime(start  + timedelta(days=new_size), '%Y-%m-%d')
         start = datetime.strftime(start, '%Y-%m-%d')
@@ -157,7 +149,7 @@ class Learner(object):
             correctGtot=max(abs(dNeg),0)**2
 
             #final objective function
-            gtot=correctGtot-10*min(np.sign(dNeg),0)*correctGtot+gtot
+            gtot=correctGtot-20*min(np.sign(dNeg),0)*correctGtot+gtot
 
             return gtot
         return lossOdeint
@@ -192,11 +184,6 @@ class Learner(object):
         #data not extended
         extended_actual = data.values
         extended_death = death.values
-
-        #extending data does not work
-        # x=[None]*(size - len(data.values))
-        # extended_actual = np.concatenate((data.values, x))
-        # extended_death = np.concatenate((death.values, x))
 
         return new_index, extended_actual, extended_death, res[:,0], res[:,1],res[:,2],res[:,3],res[:,4], res[:,5]
 
