@@ -23,6 +23,7 @@ from scipy.optimize import curve_fit
 from scipy.integrate import odeint
 from yabox import DE
 from tqdm import tqdm
+import sigmoid as sg
 
 #parallel computation
 import ray
@@ -93,21 +94,18 @@ class Learner(object):
     def create_lossOdeint(self,data, \
                 death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, \
                      ratioRecovered,weigthCases, weigthRecov):
+
         def lossOdeint(point):
             size = len(data)
-            beta0, beta01, startT, beta02, startT2, beta2, sigma, sigma2, sigma3,  gamma, b, gamma2, d, mu = point
+            beta0, beta01, startT, beta2, sigma, sigma2, sigma3,  gamma, b, gamma2, d, mu = point
             def SEAIRD(y,t):
-                delta=int(round(t-startT))
-                rx=min(1.,max(0,np.sign(delta)))
-                beta03=beta0*rx+beta01*(1-rx)
-                delta2=int(round(t-startT2))
-                rx1=min(1.,max(0,np.sign(delta2)))
-                beta04=beta01*rx1+beta02*(1-rx1)
-                half=int(round((startT-startT2)/2))
-                #if t<half then beta03
-                #if t>half then beta04
-                #if t==half then beta04
-                beta=-1*beta03*min(np.sign(t-half),0)+beta04*max(np.sign(t-half),0)-beta04*(np.sign(abs(t-half))-1)
+                # half=size/2
+                # if t<=half:
+                rx=sg.sigmoid(0.5*(t-startT))
+                beta=beta0*rx+beta01*(1-rx)
+                # else:
+                #     rx=sg.sigmoid(t-startT2)
+                #     beta=beta01*rx+beta02*(1-rx)
                 S = y[0]
                 E = y[1]
                 A = y[2]
@@ -164,29 +162,25 @@ class Learner(object):
             correctGtot=max(abs(dNeg),0)**2
 
             #final objective function
-            gtot=2*correctGtot-2*min(np.sign(dNeg),0)*correctGtot+gtot
+            gtot=2*correctGtot-8*min(np.sign(dNeg),0)*correctGtot+gtot
 
             return gtot
         return lossOdeint
-    
 
     #predict final extended values
-    def predict(self, beta0, beta01, startT, beta02, startT2, beta2, sigma, sigma2, sigma3,  gamma, b, gamma2, d, mu, data, \
+    def predict(self, beta0, beta01, startT, beta2, sigma, sigma2, sigma3,  gamma, b, gamma2, d, mu, data, \
                     death, state, s_0, e_0, a_0, i_0, r_0, d_0):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
+
         def SEAIRD(y,t):
-            delta=int(round(t-startT))
-            rx=min(1.,max(0,np.sign(delta)))
-            beta03=beta0*rx+beta01*(1-rx)
-            delta2=int(round(t-startT2))
-            rx1=min(1.,max(0,np.sign(delta2)))
-            beta04=beta01*rx1+beta02*(1-rx1)
-            half=int(round((startT-startT2)/2))
-            #if t<half then beta03
-            #if t>half then beta04
-            #if t==half then beta04
-            beta=-1*beta03*min(np.sign(t-half),0)+beta04*max(np.sign(t-half),0)-beta04*(np.sign(abs(t-half))-1)
+            # half=size/2
+            # if t<=half:
+            rx=sg.sigmoid(0.5*(t-startT))
+            beta=beta0*rx+beta01*(1-rx)
+            # else:
+            #     rx=sg.sigmoid(t-startT2)
+            #     beta=beta01*rx+beta02*(1-rx)
             S = y[0]
             E = y[1]
             A = y[2]
@@ -223,9 +217,8 @@ class Learner(object):
         self.death = dead
 
         size=len(self.data)
-        halfSize=int(round(size/2))
 
-        bounds=[(1e-12, .2),(1e-12, .2),(5,halfSize),(1e-12, .2),(halfSize+1,size-5),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
+        bounds=[(1e-12, .2),(1e-12, .2),(5,size-5),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
         (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
         maxiterations=2000
@@ -246,10 +239,10 @@ class Learner(object):
         #parameter list for optimization
         #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
 
-        beta0, beta01, startT, beta02, startT2, beta2, sigma, sigma2, sigma3, gamma, b, gamma2, d, mu  = p
+        beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, gamma2, d, mu  = p
 
         new_index, extended_actual, extended_death, y0, y1, y2, y3, y4, y5 \
-                = self.predict(beta0, beta01, startT, beta02, startT2, beta2, sigma, sigma2, sigma3, gamma, b, gamma2, d, mu, \
+                = self.predict(beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, gamma2, d, mu, \
                     self.data, self.death, self.state, self.s_0, \
                     self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
 
