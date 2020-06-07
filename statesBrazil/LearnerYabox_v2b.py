@@ -99,13 +99,8 @@ class Learner(object):
             size = len(data)
             beta0, beta01, startT, beta2, sigma, sigma2, sigma3,  gamma, b, gamma2, d, mu = point
             def SEAIRD(y,t):
-                # half=size/2
-                # if t<=half:
-                rx=sg.sigmoid(0.5*(t-startT))
+                rx=sg.sigmoid(t-startT)
                 beta=beta0*rx+beta01*(1-rx)
-                # else:
-                #     rx=sg.sigmoid(t-startT2)
-                #     beta=beta01*rx+beta02*(1-rx)
                 S = y[0]
                 E = y[1]
                 A = y[2]
@@ -154,7 +149,7 @@ class Learner(object):
             dErrorI=np.mean(dErrorY[-8:])
 
             #objective function
-            gtot=u*(l1+0.05*dErrorI) + v*(l2+0.1*dErrorD) + w*l3
+            gtot=u*(l1+0.01*dErrorI) + v*(l2+0.02*dErrorD) + w*l3
 
             #penalty function for negative derivative at end of deaths
             NegDeathData=np.diff(res[:,5])
@@ -162,7 +157,7 @@ class Learner(object):
             correctGtot=max(abs(dNeg),0)**2
 
             #final objective function
-            gtot=2*correctGtot-8*min(np.sign(dNeg),0)*correctGtot+gtot
+            gtot=correctGtot-10*min(np.sign(dNeg),0)*correctGtot+gtot
 
             return gtot
         return lossOdeint
@@ -174,13 +169,8 @@ class Learner(object):
         size = len(new_index)
 
         def SEAIRD(y,t):
-            # half=size/2
-            # if t<=half:
-            rx=sg.sigmoid(0.5*(t-startT))
+            rx=sg.sigmoid(t-startT)
             beta=beta0*rx+beta01*(1-rx)
-            # else:
-            #     rx=sg.sigmoid(t-startT2)
-            #     beta=beta01*rx+beta02*(1-rx)
             S = y[0]
             E = y[1]
             A = y[2]
