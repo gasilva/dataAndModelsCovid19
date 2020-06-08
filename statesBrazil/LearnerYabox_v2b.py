@@ -149,7 +149,7 @@ class Learner(object):
             correctGtot=max(abs(dNeg),0)**2
 
             #final objective function
-            gtot=correctGtot-10*min(np.sign(dNeg),0)*correctGtot+gtot
+            gtot=0*correctGtot-10*min(np.sign(dNeg),0)*correctGtot+gtot
 
             return gtot
         return lossOdeint

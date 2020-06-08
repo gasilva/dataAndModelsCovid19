@@ -247,4 +247,4 @@ class Learner(object):
             df.to_pickle('./data/SEAIRD_'+self.state+self.version+'.pkl')
             df.to_csv('./results/data/SEAIRD_'+self.state+self.version+'.csv', sep=",")
         else:
-            return optimal.fun
+            return f(p)
