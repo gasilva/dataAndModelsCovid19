@@ -90,7 +90,8 @@ def extend_index(index, new_size):
 
 def covid_plots(state, state4Plot,\
                 startdate="2020-03-15",predict_range = 60, \
-                    startCase = 180, opt = 5, version = "1", show = False, ratio=0.15):
+                    startCase = 180, opt = 5, version = "1", \
+                        show = False, ratio=0.15, maxDate="2020-08-31"):
     
     #Initial parameters
     #Choose here your options
@@ -469,6 +470,7 @@ def covid_plots(state, state4Plot,\
         extended_death = np.int32(death.values)
         
         new_index = extend_index(df.index, predict_range)
+        df = df[df.index<=datetime.strptime(maxDate, '%Y-%m-%d')]
 
         color_bg = '#FEF1E5'
         # lighter_highlight = '#FAE6E1'
