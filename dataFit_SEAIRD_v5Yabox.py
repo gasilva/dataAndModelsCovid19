@@ -15,6 +15,7 @@ from scipy.special import comb, binom
 from yabox import DE
 from tqdm import tqdm
 import math
+import sigmoid as sg
 
 import matplotlib as mpl
 # mpl.use('agg')
@@ -54,6 +55,7 @@ def predictionsPlot(df,nPoints,startCases):
     cases=[]
     time=[]
     j1=0
+    df.infected=df.infected+df.predicted_deaths+df.predicted_recovered
     for j in range(0,nPoints):
         if float(df.infected[j])>=startCases:
             cases.append(float(df.infected[j]))
@@ -241,46 +243,6 @@ def load_json(json_file_str):
     except Exception:
         sys.exit("Cannot open JSON file: " + json_file_str)
 
-from functools import lru_cache
-import numba as nb
-from numba import njit
-
-# @lru_cache(maxsize=None)
-@njit
-def nCr(n, r):
-    if np.int32(r) == 0 or np.int32(r) == np.int32(n):
-        result=1
-    else:
-        result=np.int32(nCr(np.int32(n) - 1, np.int32(r) - 1) \
-        + nCr(np.int32(n) - 1, np.int32(r)))
-    return result
-
-
-@njit
-def smoothstep(x, x_min=0, x_max=1, N=1):
-    x = np.float64(max(min(((np.float64(x) -  np.float64(x_min)) / ( np.float64(x_max) -  np.float64(x_min))),1),0))
-    n=np.int32(0)
-    result = np.float64(0)
-    for n in range(0, np.int32(N) + 1):
-         result += nCr(np.int32(N) + n, n) * nCr(2 * np.int32(N) + 1, np.int32(N) - n) * (-x) ** n
-    result *= x ** (N + 1)
-    return result
-
-@njit
-def smoothstep2(x, x_min=0, x_max=1):
-    x = np.float64(max(min(((np.float64(x) -  np.float64(x_min)) / ( np.float64(x_max) -  np.float64(x_min))),1),0))
-    result = np.float64(0)
-    #N=2 n=0 N + n=2 2 * N + 1= 5 N - n=2
-    result += 1 * 10 * (-x) ** 0
-    #N=2 n=1 N + n=3 2 * N + 1= 5 N - n=1
-    result += 3 * 5 * (-x) ** 1
-    #N=2 n=2 N + n=4 2 * N + 1= 5 N - n=0
-    result += 6 * 1 * (-x) ** 2
-    #N=2 n=3 N + n=5 2 * N + 1= 5 N - n=-1
-    result += 0
-    result *= x ** (2 + 1)
-    return result
-
 #register function for parallel processing
 # @ray.remote
 class Learner(object):
@@ -331,10 +293,7 @@ class Learner(object):
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
         def SEAIRD(y,t):
-            delta=int(round(t-startT))   
-            # rx=smoothstep(t, x_min=startT-2, x_max=startT+2, N=1)
-            # rx=smoothstep2(t, x_min=startT-2, x_max=startT+2) 
-            rx=max(0,np.sign(delta))
+            rx=sg.sigmoid(t-startT)
             beta=beta0*rx+beta01*(1-rx)
             S = y[0]
             E = y[1]
@@ -431,6 +390,15 @@ class Learner(object):
         smoothType="Step22" #"SmoothStep2" #"SmoothStep" #"Step"
 
         df = loadDataFrame('./data/SEAIRDv5_Yabox_'+self.country+'.pkl')
+
+        #calcula data máxima dos gráficos
+        #100 dias é usado como máximo dos cálculos da derivada das mortes
+        lastDate=df.date.max()
+        maxDate= datetime.strptime(lastDate, '%Y-%m-%d') + timedelta(days = 100) #"2020-08-31"
+        # maxDateStr = maxDate.strftime("%Y-%m-%d")
+        df = df[df.index<=datetime.strptime(maxDate, '%Y-%m-%d')]
+        self.predict_range=100
+
         color_bg = '#FEF1E5'
         # lighter_highlight = '#FAE6E1'
         darker_highlight = '#FBEADC'
@@ -564,9 +532,7 @@ def create_lossOdeint(data, recovered, \
 
         def SEAIRD(y,t):
             delta=int(round(t-startT))   
-            # rx=smoothstep(t, x_min=startT-2, x_max=startT+2, N=1)
-            # rx=smoothstep2(t, x_min=startT-2, x_max=startT+2) 
-            rx=max(0,np.sign(delta))
+            rx=sg.sigmoid(t-startT)
             beta=beta0*rx+beta01*(1-rx)
             S = y[0]
             E = y[1]
@@ -585,7 +551,7 @@ def create_lossOdeint(data, recovered, \
         #solve ODE system
         y0=[s_0,e_0,a_0,i_0,r_0,d_0]
         size = len(data)+1
-        tspan=np.arange(0, size+200, 1)
+        tspan=np.arange(0, size+100, 1)
         res=odeint(SEAIRD,y0,tspan)
 
         # calculate fitting error by using numpy.where
@@ -601,21 +567,28 @@ def create_lossOdeint(data, recovered, \
         #weight for deaths
         v = max(0,1. - u - w)
 
-        #calculate derivatives
-        #and the error of the derivative between prediction and the data
+        #for deaths
         dDeath=np.diff(res[1:size,5])
         dDeathData=np.diff(death.values)
         dErrorX=(dDeath-dDeathData)**2
-        dError=np.mean(dErrorX[-15:]) 
+        dErrorD=np.mean(dErrorX[-8:]) 
+
+        #for infected
+        dInf=np.diff(res[1:size,3])
+        dInfData=np.diff(data.values)
+        dErrorY=(dInf-dInfData)**2
+        dErrorI=np.mean(dErrorY[-8:])
 
         #objective function
-        gtot=u*l1 + v*(l2+0.01*dError) + w*l3
+        gtot=u*(l1+0.05*dErrorI) + v*(l2+0.2*dErrorD) + w*l3
 
-        #penalty function for the negative final derivative of deaths
+        #penalty function for negative derivative at end of deaths
         NegDeathData=np.diff(res[:,5])
         dNeg=np.mean(NegDeathData[-5:]) 
         correctGtot=max(abs(dNeg),0)**2
-        gtot=2*correctGtot-2*min(np.sign(dNeg),0)*correctGtot+gtot
+
+        #final objective function
+        gtot=0*correctGtot-10*min(np.sign(dNeg),0)*correctGtot+gtot
 
         return gtot 
     return lossOdeint
