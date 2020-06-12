@@ -3,6 +3,6 @@ from numba import njit
 import math
 
 @lru_cache(maxsize=None)
-@njit(parallel=True)
+@njit #(parallel=True)
 def sigmoid(x):
     return 1 / (1 + math.exp(-x))
