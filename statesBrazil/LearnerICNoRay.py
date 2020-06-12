@@ -70,14 +70,6 @@ class Learner(object):
         return df2
     
     def extend_index(self, index, new_size):
-        #values = index.values
-        #current = datetime.strptime(index[-1], '%Y-%m-%d')
-        '''
-        while len(values) < new_size:
-            print(current)
-            current = current + timedelta(days=1)
-            values = np.append(values, datetime.strftime(current, '%Y-%m-%d'))
-        '''
         start = datetime.strptime(index[0], '%Y-%m-%d')
         end = datetime.strftime(start  + timedelta(days=new_size), '%Y-%m-%d')
         start = datetime.strftime(start, '%Y-%m-%d')
@@ -230,8 +222,8 @@ class Learner(object):
             end=new_index[-1])
         df.index.name = 'date'
         
-        #save simulation results for comparison and use in another codes/routines
-        df.to_pickle('./data/SEAIRD_'+self.state+self.version+'.pkl')
-        df.to_csv('./results/data/SEAIRD_'+self.state+self.version+'.csv', sep=",")
+        # #save simulation results for comparison and use in another codes/routines
+        # df.to_pickle('./data/SEAIRD_'+self.state+self.version+'.pkl')
+        # df.to_csv('./results/data/SEAIRD_'+self.state+self.version+'.csv', sep=",")
 
         return optimal.x, optimal.fun

@@ -379,8 +379,11 @@ class Learner(object):
             zeroRecDeaths=1
         self.data = self.load_confirmed(self.country)-zeroRecDeaths*(self.recovered+self.death)
 
-        bounds=[(1e-12, .2),(1e-12, .2),(10,100),(1e-12, .2),(101,190),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
-        (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4), (0.05, 0.3)]
+        size=len(self.data)
+        halfSize=int(round(size/2))
+
+        bounds=[(1e-12, .2),(1e-12, .2),(5,halfSize),(1e-12, .2),(halfSize+1,size-5),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
+        (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(0.05,0.35)]
 
         maxiterations=2500
         f=create_lossOdeint(self.data, self.recovered, \

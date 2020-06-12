@@ -334,7 +334,9 @@ class Learner(object):
             zeroRecDeaths=1
         self.data = self.load_confirmed(self.country)-zeroRecDeaths*(self.recovered+self.death)
 
-        bounds=[(1e-12, .2),(1e-12, .2),(5,295),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
+        size=len(self.data)
+
+        bounds=[(1e-12, .2),(1e-12, .2),(5,size-5),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
         (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
         maxiterations=2500
@@ -393,10 +395,10 @@ class Learner(object):
 
         #calcula data máxima dos gráficos
         #100 dias é usado como máximo dos cálculos da derivada das mortes
-        lastDate=df.date.max()
-        maxDate= datetime.strptime(lastDate, '%Y-%m-%d') + timedelta(days = 100) #"2020-08-31"
+        lastDate=df.index.max()
+        maxDate= datetime.strptime(lastDate, '%m/%d/%y') + timedelta(days = 100) #"2020-08-31"
         # maxDateStr = maxDate.strftime("%Y-%m-%d")
-        df = df[df.index<=datetime.strptime(maxDate, '%Y-%m-%d')]
+        df = df[df.index<=datetime.strftime(maxDate, '%m/%d/%y')]
         self.predict_range=100
 
         color_bg = '#FEF1E5'
@@ -530,8 +532,7 @@ def create_lossOdeint(data, recovered, \
     def lossOdeint(point):
         beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, mu, gamma2, d = point
 
-        def SEAIRD(y,t):
-            delta=int(round(t-startT))   
+        def SEAIRD(y,t): 
             rx=sg.sigmoid(t-startT)
             beta=beta0*rx+beta01*(1-rx)
             S = y[0]
