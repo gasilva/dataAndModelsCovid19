@@ -198,6 +198,7 @@ class Learner(object):
         return new_index, extended_actual, extended_death, res[:,0], res[:,1],res[:,2],res[:,3],res[:,4], res[:,5]
 
     #run optimizer and plotting
+    @ray.method(num_return_vals=1)
     def train(self):
         dead=self.load_dead(self.state)
         self.data = self.load_confirmed(self.state)*(1-self.ratio)-dead
