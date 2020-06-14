@@ -188,6 +188,7 @@ class Learner(object):
         return new_index, extended_actual, extended_death, res[:,0], res[:,1],res[:,2],res[:,3],res[:,4], res[:,5]
 
     #run optimizer and plotting
+    @ray.method(num_return_vals=1)
     def train(self):
         dead=self.load_dead(self.state)
         self.data = self.load_confirmed(self.state)*(1-self.ratio)-dead
@@ -203,14 +204,10 @@ class Learner(object):
             self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
                  self.ratio, self.weigthCases, self.weigthRecov)
         de = DE(f, bounds, maxiters=maxiterations) #,popsize=100)
-        i=0
-        with tqdm(total=maxiterations*1000) as pbar:
-            for step in de.geniterator():
-                idx = step.best_idx
-                norm_vector = step.population[idx]
-                best_params = de.denormalize([norm_vector])
-                pbar.update(i)
-                i+=1
+        for step in de.geniterator():
+            idx = step.best_idx
+            norm_vector = step.population[idx]
+            best_params = de.denormalize([norm_vector])
         p=best_params[0]
 
         #parameter list for optimization
