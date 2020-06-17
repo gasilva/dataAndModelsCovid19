@@ -1,11 +1,13 @@
-import urllib.request
 import pandas as pd
+
+from urllib.request import Request, urlopen
 
 def datadownload():
     print('Baixando arquivos brasil.io...')
     # fonte: https://data.brasil.io/dataset/covid19/_meta/list.html
     url = 'https://data.brasil.io/dataset/covid19/caso.csv.gz'
-    urllib.request.urlretrieve(url, 'data/BR.csv.gz')
+    req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    webpage = urlopen(req).read()
     
 def group_by_DRS():
     dataBR = pd.read_csv('data/dados_municipios_Brasil.csv', index_col=[0])
