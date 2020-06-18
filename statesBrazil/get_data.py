@@ -1,13 +1,16 @@
 import pandas as pd
-
-from urllib.request import Request, urlopen
+import urllib.request
 
 def datadownload():
     print('Baixando arquivos brasil.io...')
     # fonte: https://data.brasil.io/dataset/covid19/_meta/list.html
     url = 'https://data.brasil.io/dataset/covid19/caso.csv.gz'
-    req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    webpage = urlopen(req).read()
+        
+    class AppURLopener(urllib.request.FancyURLopener):
+        version = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.69 Safari/537.36"
+    
+    urllib._urlopener = AppURLopener()
+    urllib._urlopener.retrieve(url, "data/BR.csv.gz")
 
 def group():
     dataBR = pd.read_csv("data/dados_total_estados.csv", index_col=[0])
