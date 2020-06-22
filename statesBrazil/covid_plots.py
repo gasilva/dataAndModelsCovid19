@@ -691,7 +691,7 @@ def covid_plots(state, state4Plot,\
         fig.tight_layout()
 
         #file name to be saved
-        strFile ="./results/ZoomModelSEAIRDOpt"+state+version+model".png"
+        strFile ="./results/ZoomModelSEAIRDOpt"+state+version+model+".png"
 
         #remove previous file
         if os.path.isfile(strFile):
