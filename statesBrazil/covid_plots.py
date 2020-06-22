@@ -56,7 +56,7 @@ def loadDataFrame(filename):
     return df
 
 def load_confirmed(state, startdate):
-        dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
+        dateparse = lambda x: pd.datetime.strptime(x, '%Y-%m-%d')
         df = pd.read_csv('./data/confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
         y=[]
         x=[]
@@ -68,7 +68,7 @@ def load_confirmed(state, startdate):
         return df2
 
 def load_dead(state, startdate):
-    dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
+    dateparse = lambda x: pd.datetime.strptime(x, '%Y-%m-%d')
     df = pd.read_csv('./data/mortes.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
     y=[]
     x=[]
@@ -91,7 +91,7 @@ def extend_index(index, new_size):
 def covid_plots(state, state4Plot,\
                 startdate="2020-03-15",predict_range = 60, \
                     startCase = 180, opt = 5, version = "1", \
-                        show = False, ratio=0.15, maxDate="2020-08-31"):
+                        show = False, ratio=0.15, maxDate="2020-08-31",model=""):
     
     #Initial parameters
     #Choose here your options
@@ -634,7 +634,7 @@ def covid_plots(state, state4Plot,\
         fig.tight_layout()
 
         #file name to be saved
-        strFile ="./results/modelSEAIRDOpt"+state+version+".png"
+        strFile ="./results/modelSEAIRDOpt"+state+version+model+".png"
 
         #remove previous file
         if os.path.isfile(strFile):
@@ -691,7 +691,7 @@ def covid_plots(state, state4Plot,\
         fig.tight_layout()
 
         #file name to be saved
-        strFile ="./results/ZoomModelSEAIRDOpt"+state+version+".png"
+        strFile ="./results/ZoomModelSEAIRDOpt"+state+version+model".png"
 
         #remove previous file
         if os.path.isfile(strFile):
