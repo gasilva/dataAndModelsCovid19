@@ -7,7 +7,7 @@ from scipy.integrate import odeint
 from yabox import DE
 from datetime import datetime,timedelta
 import pandas as pd
-import sigmoid as sg
+import sigmoidOnly as sg
 import gc
 import ray
 from tqdm import tqdm

@@ -1,0 +1,11 @@
+scipy==1.4.1
+numpy==1.18.5
+pandas==1.0.5
+matplotlib==3.2.2
+environs==8.0.0
+numba==0.50.0
+ray==0.8.6
+python_dateutil==2.8.1
+scikit_learn==0.23.1
+tqdm==4.46.1
+yabox==1.1.0

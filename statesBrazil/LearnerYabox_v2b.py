@@ -23,12 +23,20 @@ from scipy.optimize import curve_fit
 from scipy.integrate import odeint
 from yabox import DE
 from tqdm import tqdm
-import sigmoid as sg
+import sigmoidOnly as sg
+# import gc
+# gc.enable()
 
 #parallel computation
 import ray
 ray.shutdown()
-ray.init(num_cpus=20)
+# ray.init(num_cpus=20)
+
+MB=1024*1024
+GB=MB*1024
+ray.init(object_store_memory=1*GB,memory=1*GB,lru_evict=True,\
+         driver_object_store_memory=500*MB,num_gpus=500,num_cpus=10, ignore_reinit_error=True) # , include_webui=False, ignore_reinit_error=True)
+
 
 #register function for parallel processing
 @ray.remote
@@ -61,6 +69,7 @@ class Learner(object):
             x.append(df.date.values[i])
         df2=pd.DataFrame(data=y,index=x,columns=[""])
         df2=df2[self.start_date:]
+        del x,y,df
         return df2
 
     def load_dead(self, state):
@@ -73,6 +82,7 @@ class Learner(object):
             x.append(df.date.values[i])
         df2=pd.DataFrame(data=y,index=x,columns=[""])
         df2=df2[self.start_date:]
+        del x,y,df
         return df2
     
     def extend_index(self, index, new_size):
@@ -101,8 +111,8 @@ class Learner(object):
                 p=0.2
                 y0=-(beta2*A+beta*I)*S-mu*S #S
                 y1=(beta2*A+beta*I)*S-sigma*E-mu*E #E
-                y2=sigma*E*(1-p)-mu*A-gamma2*A #A
-                y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-mu*I #I
+                y2=sigma*E*(1-p)-(1-p)*mu*A-gamma2*A #A
+                y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-p*mu*I #I
                 y4=b*I+d*A+sigma2*I-mu*R #R
                 y5=(-(y0+y1+y2+y3+y4)) #D
                 return [y0,y1,y2,y3,y4,y5]
@@ -149,7 +159,7 @@ class Learner(object):
             correctGtot=max(abs(dNeg),0)**2
 
             #final objective function
-            gtot=0*correctGtot-10*min(np.sign(dNeg),0)*correctGtot+gtot
+            gtot=-10*min(np.sign(dNeg),0)*correctGtot+gtot
 
             return gtot
         return lossOdeint
@@ -171,8 +181,8 @@ class Learner(object):
             p=0.2
             y0=-(beta2*A+beta*I)*S-mu*S #S
             y1=(beta2*A+beta*I)*S-sigma*E-mu*E #E
-            y2=sigma*E*(1-p)-mu*A-gamma2*A #A
-            y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-mu*I #I
+            y2=sigma*E*(1-p)-(1-p)*mu*A-gamma2*A #A
+            y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-p*mu*I #I
             y4=b*I+d*A+sigma2*I-mu*R #R
             y5=(-(y0+y1+y2+y3+y4)) #D
             return [y0,y1,y2,y3,y4,y5]
@@ -187,6 +197,7 @@ class Learner(object):
 
         return new_index, extended_actual, extended_death, res[:,0], res[:,1],res[:,2],res[:,3],res[:,4], res[:,5]
 
+
     #run optimizer and plotting
     @ray.method(num_return_vals=1)
     def train(self):
@@ -199,15 +210,19 @@ class Learner(object):
         bounds=[(1e-12, .2),(1e-12, .2),(5,size-5),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
         (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
-        maxiterations=2000
+        maxiterations=3500
         f=self.create_lossOdeint(self.data, \
             self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
                  self.ratio, self.weigthCases, self.weigthRecov)
         de = DE(f, bounds, maxiters=maxiterations) #,popsize=100)
-        for step in de.geniterator():
-            idx = step.best_idx
-            norm_vector = step.population[idx]
-            best_params = de.denormalize([norm_vector])
+        i=0
+        with tqdm(total=maxiterations*1750) as pbar:
+            for step in de.geniterator():
+                idx = step.best_idx
+                norm_vector = step.population[idx]
+                best_params = de.denormalize([norm_vector])
+                pbar.update(i)
+                i+=1
         p=best_params[0]
 
         #parameter list for optimization
@@ -229,9 +244,11 @@ class Learner(object):
             end=new_index[-1])
         df.index.name = 'date'
         
+        del dataFr, dataFr2, idx, norm_vector, best_params, dead,\
+            new_index, extended_actual, extended_death, y0, y1, y2, y3, y4, y5
+        
         if self.savedata:
             #save simulation results for comparison and use in another codes/routines
             df.to_pickle('./data/SEAIRD_'+self.state+self.version+'.pkl')
             df.to_csv('./results/data/SEAIRD_'+self.state+self.version+'.csv', sep=",")
-        else:
-            return optimal.fun
+        return p
