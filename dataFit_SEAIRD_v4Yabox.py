@@ -24,10 +24,32 @@ import matplotlib.style as style
 style.use('fivethirtyeight')
 
 from matplotlib import cm
+from tempfile import NamedTemporaryFile
+import urllib.request
 import matplotlib.font_manager as fm
 # Font Imports
-heading_font = fm.FontProperties(fname='/home/ats4i/playfair-display/PlayfairDisplay-Regular.ttf', size=22)
-subtitle_font = fm.FontProperties(fname='/home/ats4i/Roboto/Roboto-Regular.ttf', size=12)
+# heading_font = fm.FontProperties(fname='/home/ats4i/playfair-display/PlayfairDisplay-Regular.ttf', size=24)
+# subtitle_font = fm.FontProperties(fname='/home/ats4i/Roboto/Roboto-Regular.ttf', size=16)
+
+github_url = 'https://github.com/google/fonts/blob/master/ofl/playfairdisplay/static/PlayfairDisplay-Regular.ttf'
+url = github_url + '?raw=true'  # You want the actual file, not some html
+
+request = urllib.request.Request(url)
+response = urllib.request.urlopen(request)
+f = NamedTemporaryFile(delete=False, suffix='.ttf')
+f.write(response.read())
+f.close()
+heading_font = fm.FontProperties(fname=f.name, size=24)
+
+github_url = 'https://github.com/google/fonts/blob/master/ofl/roboto/static/Roboto-Regular.ttf'
+url = github_url + '?raw=true'  # You want the actual file, not some html
+
+request = urllib.request.Request(url)
+response = urllib.request.urlopen(request)
+f = NamedTemporaryFile(delete=False, suffix='.ttf')
+f.write(response.read())
+f.close()
+subtitle_font = fm.FontProperties(fname=f.name, size=16)
 
 #marker and line sizes
 mpl.rcParams['lines.linewidth'] = 2

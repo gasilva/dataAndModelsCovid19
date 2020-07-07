@@ -11,9 +11,31 @@ from datetime import datetime,timedelta
 from modules.dataFit_SEAIRD_v31bOnlyAdjustIC import Learner, sumCases_province,\
     load_json, download_data
 
+from tempfile import NamedTemporaryFile
+import urllib.request
 # Font Imports
-heading_font = fm.FontProperties(fname='/home/ats4i/playfair-display/PlayfairDisplay-Regular.ttf', size=24)
-subtitle_font = fm.FontProperties(fname='/home/ats4i/Roboto/Roboto-Regular.ttf', size=16)
+# heading_font = fm.FontProperties(fname='/home/ats4i/playfair-display/PlayfairDisplay-Regular.ttf', size=24)
+# subtitle_font = fm.FontProperties(fname='/home/ats4i/Roboto/Roboto-Regular.ttf', size=16)
+
+github_url = 'https://github.com/google/fonts/blob/master/ofl/playfairdisplay/static/PlayfairDisplay-Regular.ttf'
+url = github_url + '?raw=true'  # You want the actual file, not some html
+
+request = urllib.request.Request(url)
+response = urllib.request.urlopen(request)
+f = NamedTemporaryFile(delete=False, suffix='.ttf')
+f.write(response.read())
+f.close()
+heading_font = fm.FontProperties(fname=f.name, size=24)
+
+github_url = 'https://github.com/google/fonts/blob/master/ofl/roboto/static/Roboto-Regular.ttf'
+url = github_url + '?raw=true'  # You want the actual file, not some html
+
+request = urllib.request.Request(url)
+response = urllib.request.urlopen(request)
+f = NamedTemporaryFile(delete=False, suffix='.ttf')
+f.write(response.read())
+f.close()
+subtitle_font = fm.FontProperties(fname=f.name, size=16)
 
 #list of countries to monitor
 countries=["Italy","France","Brazil","China"]

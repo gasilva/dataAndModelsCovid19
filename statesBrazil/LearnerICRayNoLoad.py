@@ -5,7 +5,7 @@
 import numpy as np
 from scipy.integrate import odeint
 from scipy.optimize import minimize
-import sigmoid as sg
+import sigmoidOnly as sg
 import gc
 import ray
 

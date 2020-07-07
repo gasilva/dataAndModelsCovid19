@@ -6,16 +6,13 @@ from datetime import datetime,timedelta
 from scipy.optimize import curve_fit
 from matplotlib import cm
 
+# Font Imports
 from tempfile import NamedTemporaryFile
 import urllib.request
 import matplotlib.font_manager as fm
-# Font Imports
-# heading_font = fm.FontProperties(fname='/home/ats4i/playfair-display/PlayfairDisplay-Regular.ttf', size=24)
-# subtitle_font = fm.FontProperties(fname='/home/ats4i/Roboto/Roboto-Regular.ttf', size=16)
 
 github_url = 'https://github.com/google/fonts/blob/master/ofl/playfairdisplay/static/PlayfairDisplay-Regular.ttf'
 url = github_url + '?raw=true'  # You want the actual file, not some html
-
 request = urllib.request.Request(url)
 response = urllib.request.urlopen(request)
 f = NamedTemporaryFile(delete=False, suffix='.ttf')
@@ -25,14 +22,12 @@ heading_font = fm.FontProperties(fname=f.name, size=24)
 
 github_url = 'https://github.com/google/fonts/blob/master/ofl/roboto/static/Roboto-Regular.ttf'
 url = github_url + '?raw=true'  # You want the actual file, not some html
-
 request = urllib.request.Request(url)
 response = urllib.request.urlopen(request)
 f = NamedTemporaryFile(delete=False, suffix='.ttf')
 f.write(response.read())
 f.close()
 subtitle_font = fm.FontProperties(fname=f.name, size=16)
-
 
 def logGrowth(growth,finalDay):
     x =[]
@@ -78,7 +73,7 @@ def loadDataFrame(filename):
     return df
 
 def load_confirmed(state, startdate):
-        dateparse = lambda x: pd.datetime.strptime(x, '%Y-%m-%d')
+        dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
         df = pd.read_csv('./data/confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
         y=[]
         x=[]
@@ -90,7 +85,7 @@ def load_confirmed(state, startdate):
         return df2
 
 def load_dead(state, startdate):
-    dateparse = lambda x: pd.datetime.strptime(x, '%Y-%m-%d')
+    dateparse = lambda x: datetime.strptime(x,  '%Y-%m-%d')
     df = pd.read_csv('./data/mortes.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
     y=[]
     x=[]
@@ -161,7 +156,7 @@ def covid_plots(state, state4Plot,\
     date = []
 
     #load CSV file
-    dateparse = lambda x: pd.datetime.strptime(x, '%Y-%m-%d')
+    dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
     df1 = pd.read_csv('./data/confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse,index_col=0)
     df2 = pd.read_csv('./data/mortes.csv',delimiter=',',parse_dates=True, date_parser=dateparse,index_col=0)
     df1=df1.select_dtypes(exclude=['object', 'datetime']) * (1-ratio)

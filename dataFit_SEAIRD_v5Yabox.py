@@ -26,10 +26,32 @@ import matplotlib.style as style
 style.use('fivethirtyeight')
 
 from matplotlib import cm
+from tempfile import NamedTemporaryFile
+import urllib.request
 import matplotlib.font_manager as fm
 # Font Imports
-heading_font = fm.FontProperties(fname='/home/ats4i/playfair-display/PlayfairDisplay-Regular.ttf', size=22)
-subtitle_font = fm.FontProperties(fname='/home/ats4i/Roboto/Roboto-Regular.ttf', size=12)
+# heading_font = fm.FontProperties(fname='/home/ats4i/playfair-display/PlayfairDisplay-Regular.ttf', size=24)
+# subtitle_font = fm.FontProperties(fname='/home/ats4i/Roboto/Roboto-Regular.ttf', size=16)
+
+github_url = 'https://github.com/google/fonts/blob/master/ofl/playfairdisplay/static/PlayfairDisplay-Regular.ttf'
+url = github_url + '?raw=true'  # You want the actual file, not some html
+
+request = urllib.request.Request(url)
+response = urllib.request.urlopen(request)
+f = NamedTemporaryFile(delete=False, suffix='.ttf')
+f.write(response.read())
+f.close()
+heading_font = fm.FontProperties(fname=f.name, size=24)
+
+github_url = 'https://github.com/google/fonts/blob/master/ofl/roboto/static/Roboto-Regular.ttf'
+url = github_url + '?raw=true'  # You want the actual file, not some html
+
+request = urllib.request.Request(url)
+response = urllib.request.urlopen(request)
+f = NamedTemporaryFile(delete=False, suffix='.ttf')
+f.write(response.read())
+f.close()
+subtitle_font = fm.FontProperties(fname=f.name, size=16)
 
 #marker and line sizes
 mpl.rcParams['lines.linewidth'] = 2
@@ -51,13 +73,15 @@ def logGrowth(growth,finalDay):
             y.append(y[i-1]*growth)
     return x,y
 
-def predictionsPlot(df,nPoints,startCases):
+def predictionsPlot(df,nPoints,startCases,cutDate):
     cases=[]
     time=[]
     j1=0
     df.infected=df.infected+df.predicted_deaths+df.predicted_recovered
+    
     for j in range(0,nPoints):
-        if float(df.infected[j])>=startCases:
+        if float(df.infected[j])>=startCases and \
+            datetime.strptime(df.index[j],'%m/%d/%y')>datetime.strptime(cutDate,'%m/%d/%y'): 
             cases.append(float(df.infected[j]))
             time.append(float(j1))
             j1+=1
@@ -389,17 +413,17 @@ class Learner(object):
     #plotting
     def trainPlot(self):
 
-        smoothType="Step22" #"SmoothStep2" #"SmoothStep" #"Step"
+        smoothType="SigmoidFinal"
 
         df = loadDataFrame('./data/SEAIRDv5_Yabox_'+self.country+'.pkl')
 
         #calcula data máxima dos gráficos
         #100 dias é usado como máximo dos cálculos da derivada das mortes
-        lastDate=df.index.max()
-        maxDate= datetime.strptime(lastDate, '%m/%d/%y') + timedelta(days = 100) #"2020-08-31"
-        # maxDateStr = maxDate.strftime("%Y-%m-%d")
-        df = df[df.index<=datetime.strftime(maxDate, '%m/%d/%y')]
-        self.predict_range=100
+        # lastDate=df.index.max()
+        # maxDate= datetime.strptime(lastDate, '%m/%d/%y') + timedelta(days = 100) #"2020-08-31"
+        # # maxDateStr = maxDate.strftime("%Y-%m-%d")
+        # df = df[df.index<=datetime.strftime(maxDate, '%m/%d/%y')]
+        # self.predict_range=200
 
         color_bg = '#FEF1E5'
         # lighter_highlight = '#FAE6E1'
@@ -670,7 +694,7 @@ def main(countriesExt,opt):
             # fitting initial conditions
             # s0=6759434, date=0, i0=583, wrec=0.3212, wcases=0.1245
             startdate="3/2/20"
-            s0=3.0e6*5.0 #3.0e6*3.5 not clean #3.0e6*2.5 clean
+            s0=3.0e6*8.0 #3.0e6*3.5 not clean #3.0e6*2.5 clean
             e0=1e-4
             i0=500 #clean #500 not clean
             r0=10e3 #14000 #12e3 #14e3 #14000 #14000 not clean #0 clean
@@ -786,7 +810,7 @@ def main(countriesExt,opt):
 #opt=4 log plot + bar plot
 #opt=5 SEAIR-D Model and plot
 #opt=6 only plot SEAIR-D Model
-opt=5
+opt=0
 
 #prepare data for plotting log chart
 country1="US"
@@ -845,7 +869,8 @@ if opt==1 or opt==0 or opt==4:
     model='SEAIRD' 
 
     df = loadDataFrame('./data/SEAIRDv5_Yabox_'+country+'.pkl')
-    time6, cases6 = predictionsPlot(df,160,1200)
+    cutDate="3/12/20"
+    time6, cases6 = predictionsPlot(df,200,150,cutDate)
 
     #model
     #33% per day

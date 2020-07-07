@@ -1,0 +1,377 @@
+
+{
+  "header": {
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "trigger": "FatalError",
+    "filename": "report.20200707.121728.21789.0.001.json",
+    "dumpEventTime": "2020-07-07T12:17:28Z",
+    "dumpEventTimeStamp": "1594135048413",
+    "processId": 21789,
+    "cwd": "/home/ats4i/Desktop/corona/dataAndModelsCovid19/statesBrazil",
+    "commandLine": [
+      "/home/ats4i/.vscode-server/bin/cd9ea6488829f560dc949a8b2fb789f3cdc05f5d/node",
+      "/home/ats4i/.vscode-server/bin/cd9ea6488829f560dc949a8b2fb789f3cdc05f5d/extensions/html-language-features/server/dist/htmlServerMain",
+      "--node-ipc",
+      "--clientProcessId=21442"
+    ],
+    "nodejsVersion": "v12.4.0",
+    "glibcVersionRuntime": "2.26",
+    "glibcVersionCompiler": "2.17",
+    "wordSize": 64,
+    "arch": "x64",
+    "platform": "linux",
+    "componentVersions": {
+      "node": "12.4.0",
+      "v8": "7.4.288.27-node.18",
+      "uv": "1.29.1",
+      "zlib": "1.2.11",
+      "brotli": "1.0.7",
+      "ares": "1.15.0",
+      "modules": "72",
+      "nghttp2": "1.38.0",
+      "napi": "4",
+      "llhttp": "1.1.3",
+      "http_parser": "2.8.0",
+      "openssl": "1.1.1b",
+      "cldr": "35.1",
+      "icu": "64.2",
+      "tz": "2019a",
+      "unicode": "12.1"
+    },
+    "release": {
+      "name": "node",
+      "headersUrl": "https://nodejs.org/download/release/v12.4.0/node-v12.4.0-headers.tar.gz",
+      "sourceUrl": "https://nodejs.org/download/release/v12.4.0/node-v12.4.0.tar.gz"
+    },
+    "osName": "Linux",
+    "osRelease": "4.4.180-94.100-default",
+    "osVersion": "#1 SMP Tue Jul 9 19:57:20 UTC 2019 (1569ffb)",
+    "osMachine": "x86_64",
+    "host": "jedha"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": [
+      "Unavailable."
+    ]
+  },
+  "nativeStack": [
+    {
+      "pc": "0x0000000000aadaf5",
+      "symbol": "report::TriggerNodeReport(v8::Isolate*, node::Environment*, char const*, char const*, std::string const&, v8::Local<v8::String>) [/home/ats4i/.vscode-server/bin/cd9ea6488829f560dc949a8b2fb789f3cdc05f5d/node]"
+    },
+    {
+      "pc": "0x000000000098fec3",
+      "symbol": "node::OnFatalError(char const*, char const*) [/home/ats4i/.vscode-server/bin/cd9ea6488829f560dc949a8b2fb789f3cdc05f5d/node]"
+    },
+    {
+      "pc": "0x0000000000b1552e",
+      "symbol": "v8::Utils::ReportOOMFailure(v8::internal::Isolate*, char const*, bool) [/home/ats4i/.vscode-server/bin/cd9ea6488829f560dc949a8b2fb789f3cdc05f5d/node]"
+    },
+    {
+      "pc": "0x0000000000b158a9",
+      "symbol": "v8::internal::V8::FatalProcessOutOfMemory(v8::internal::Isolate*, char const*, bool) [/home/ats4i/.vscode-server/bin/cd9ea6488829f560dc949a8b2fb789f3cdc05f5d/node]"
+    },
+    {
+      "pc": "0x0000000000f20105",
+      "symbol": " [/home/ats4i/.vscode-server/bin/cd9ea6488829f560dc949a8b2fb789f3cdc05f5d/node]"
+    },
+    {
+      "pc": "0x0000000000f2aa6b",
+      "symbol": "v8::internal::Heap::PerformGarbageCollection(v8::internal::GarbageCollector, v8::GCCallbackFlags) [/home/ats4i/.vscode-server/bin/cd9ea6488829f560dc949a8b2fb789f3cdc05f5d/node]"
+    },
+    {
+      "pc": "0x0000000000f2b787",
+      "symbol": "v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags) [/home/ats4i/.vscode-server/bin/cd9ea6488829f560dc949a8b2fb789f3cdc05f5d/node]"
+    },
+    {
+      "pc": "0x0000000000f2e225",
+      "symbol": "v8::internal::Heap::AllocateRawWithRetryOrFail(int, v8::internal::AllocationType, v8::internal::AllocationAlignment) [/home/ats4i/.vscode-server/bin/cd9ea6488829f560dc949a8b2fb789f3cdc05f5d/node]"
+    },
+    {
+      "pc": "0x0000000000ef9250",
+      "symbol": "v8::internal::Factory::NewFillerObject(int, bool, v8::internal::AllocationSpace) [/home/ats4i/.vscode-server/bin/cd9ea6488829f560dc949a8b2fb789f3cdc05f5d/node]"
+    },
+    {
+      "pc": "0x00000000011cb0ce",
+      "symbol": "v8::internal::Runtime_AllocateInNewSpace(int, unsigned long*, v8::internal::Isolate*) [/home/ats4i/.vscode-server/bin/cd9ea6488829f560dc949a8b2fb789f3cdc05f5d/node]"
+    },
+    {
+      "pc": "0x0000000001a93942",
+      "symbol": " [/home/ats4i/.vscode-server/bin/cd9ea6488829f560dc949a8b2fb789f3cdc05f5d/node]"
+    }
+  ],
+  "javascriptHeap": {
+    "totalMemory": 2156331008,
+    "totalCommittedMemory": 2150553008,
+    "usedMemory": 2140076728,
+    "availableMemory": 53767208,
+    "memoryLimit": 2197815296,
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": 524288,
+        "committedMemory": 32024,
+        "capacity": 523976,
+        "used": 31712,
+        "available": 492264
+      },
+      "new_space": {
+        "memorySize": 6291456,
+        "committedMemory": 2134136,
+        "capacity": 3143856,
+        "used": 623448,
+        "available": 2520408
+      },
+      "old_space": {
+        "memorySize": 1997135872,
+        "committedMemory": 1996323704,
+        "capacity": 1994100680,
+        "used": 1987974288,
+        "available": 6126392
+      },
+      "code_space": {
+        "memorySize": 3309568,
+        "committedMemory": 3134976,
+        "capacity": 2871200,
+        "used": 2871200,
+        "available": 0
+      },
+      "map_space": {
+        "memorySize": 1052672,
+        "committedMemory": 911016,
+        "capacity": 725440,
+        "used": 725440,
+        "available": 0
+      },
+      "large_object_space": {
+        "memorySize": 147968000,
+        "committedMemory": 147968000,
+        "capacity": 147847184,
+        "used": 147847184,
+        "available": 0
+      },
+      "code_large_object_space": {
+        "memorySize": 49152,
+        "committedMemory": 49152,
+        "capacity": 3456,
+        "used": 3456,
+        "available": 0
+      },
+      "new_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 3143856,
+        "used": 0,
+        "available": 3143856
+      }
+    }
+  },
+  "resourceUsage": {
+    "userCpuSeconds": 92.3342,
+    "kernelCpuSeconds": 5.33072,
+    "cpuConsumptionPercent": 177.573,
+    "maxRss": 2285146112,
+    "pageFaults": {
+      "IORequired": 2,
+      "IONotRequired": 3461236
+    },
+    "fsActivity": {
+      "reads": 1672,
+      "writes": 0
+    }
+  },
+  "uvthreadResourceUsage": {
+    "userCpuSeconds": 36.3222,
+    "kernelCpuSeconds": 1.80809,
+    "cpuConsumptionPercent": 69.3278,
+    "fsActivity": {
+      "reads": 1672,
+      "writes": 0
+    }
+  },
+  "libuv": [
+  ],
+  "environmentVariables": {
+    "MKLROOT": "/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl",
+    "MCFD_HOME": "/home/METACOMP/mlib/mcfd.19.5",
+    "LESSKEY": "/etc/lesskey.bin",
+    "PROJ_LIB": "/home/ats4i/anaconda3/share/proj",
+    "MCFD_TCLTK": "/home/METACOMP/mlib/mcfd.19.5/exec/gui_src",
+    "NNTPSERVER": "news",
+    "MANPATH": "/home/ats4i/anaconda3/share/man:/home/ats4i/intel/man/common:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/man:/home/ats4i/intel/man/common:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/man:/home/ats4i/intel/man/common:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/man:/home/ats4i/intel/man/common:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/man:/home/ats4i/intel/documentation_2020/en/debugger/gdb-ia/man/",
+    "XDG_SESSION_ID": "370",
+    "HOSTNAME": "jedha",
+    "XKEYSYMDB": "/usr/X11R6/lib/X11/XKeysymDB",
+    "INTEL_LICENSE_FILE": "/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/licenses:/opt/intel/licenses:/home/ats4i/intel/licenses:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/licenses:/opt/intel/licenses:/home/ats4i/intel/licenses:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/licenses:/opt/intel/licenses:/home/ats4i/intel/licenses:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/licenses:/opt/intel/licenses:/home/ats4i/intel/licenses",
+    "HOST": "jedha",
+    "SHELL": "/bin/bash",
+    "PROFILEREAD": "true",
+    "HISTSIZE": "1000",
+    "MCFD_MAXMEM": "512G",
+    "SSH_CLIENT": "201.68.25.231 65081 22",
+    "CONDA_SHLVL": "1",
+    "LIBRARY_PATH": "/home/ats4i/anaconda3/lib/libfabric:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/libfabric/lib:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64_lin/gcc4.7:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/libfabric/lib:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64_lin/gcc4.7:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/libfabric/lib:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64_lin/gcc4.7:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/libfabric/lib:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64_lin/gcc4.7:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin",
+    "CONDA_PROMPT_MODIFIER": "(base) ",
+    "TK_LIBRARY": "/home/METACOMP/mlib/tcltk8/lib/tk8.0",
+    "LMOD_PKG": "/usr/share/lmod/lmod",
+    "MORE": "-sl",
+    "LMOD_VERSION": "7.6.1",
+    "JRE_HOME": "/usr/lib64/jvm/jre",
+    "USER": "ats4i",
+    "LD_LIBRARY_PATH": "/usr/local/cuda-11.0/lib64:/home/ats4i/anaconda3/lib/libfabric:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/libfabric/lib:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/lib/release:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/lib:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64_lin/gcc4.7:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/libfabric/lib:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/lib/release:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/lib:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64_lin/gcc4.7:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/usr/local/cuda-11.0/lib64:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/libfabric/lib:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/lib/release:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/lib:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64_lin/gcc4.7:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/libfabric/lib:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/lib/release:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/lib:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64_lin/gcc4.7:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/home/ats4i/intel/debugger_2020/python/intel64/lib:/home/ats4i/intel/debugger_2020/libipt/intel64/lib:/home/METACOMP/glib:/home/METACOMP/OPENMPI-1.8.7/lib:/home/METACOMP/mlib/mcfd.19.1/UDP:/home/METACOMP/glib:/home/METACOMP/OPENMPI-1.8.7/lib:/home/METACOMP/mlib/mcfd.19.1/UDP",
+    "MCFD_SPROCMEM": "512G",
+    "CONDA_EXE": "/home/ats4i/anaconda3/bin/conda",
+    "XNLSPATH": "/usr/share/X11/nls",
+    "FI_PROVIDER_PATH": "/home/ats4i/anaconda3/lib/libfabric/prov",
+    "ICMP_HOME95": "/home/METACOMP/mlib/micmp.9.5",
+    "TCL_LIBRARY": "/home/METACOMP/mlib/tcltk8/lib/tcl8.0",
+    "CPATH": "/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/include:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/include:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/include:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/include",
+    "QEMU_AUDIO_DRV": "pa",
+    "HOSTTYPE": "x86_64",
+    "FROM_HEADER": "",
+    "PAGER": "less",
+    "CSHEDIT": "emacs",
+    "_CE_CONDA": "",
+    "XDG_CONFIG_DIRS": "/etc/xdg",
+    "LMOD_PREPEND_BLOCK": "normal",
+    "VSCODE_AGENT_FOLDER": "/home/ats4i/.vscode-server",
+    "NLSPATH": "/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64/locale/%l_%t/%N:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin/locale/%l_%t/%N:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64/locale/%l_%t/%N:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin/locale/%l_%t/%N:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64/locale/%l_%t/%N:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin/locale/%l_%t/%N:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64/locale/%l_%t/%N:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin/locale/%l_%t/%N:/home/ats4i/intel/debugger_2020/gdb/intel64/share/locale/%l_%t/%N",
+    "LIBGL_DEBUG": "quiet",
+    "MINICOM": "-c on",
+    "CPL_ZIP_ENCODING": "UTF-8",
+    "_ModuleTable001_": "X01vZHVsZVRhYmxlXz17WyJNVHZlcnNpb24iXT0zLFsiY19yZWJ1aWxkVGltZSJdPWZhbHNlLFsiY19zaG9ydFRpbWUiXT1mYWxzZSxkZXB0aFQ9e30sZmFtaWx5PXt9LG1UPXt9LG1wYXRoQT17Ii9vcHQvb2hwYy9wdWIvbW9kdWxlZmlsZXMiLCIvdXNyL3NoYXJlL2xtb2QvbW9kdWxlZmlsZXMiLH0sWyJzeXN0ZW1CYXNlTVBBVEgiXT0iL29wdC9vaHBjL3B1Yi9tb2R1bGVmaWxlczovdXNyL3NoYXJlL2xtb2QvbW9kdWxlZmlsZXMiLH0=",
+    "MAIL": "/var/mail/ats4i",
+    "PATH": "/home/ats4i/.vscode-server/bin/cd9ea6488829f560dc949a8b2fb789f3cdc05f5d/bin:/home/ats4i/.npm-global/bin:/home/ats4i/.npm-global/bin/:/usr/local/cuda-11.0/bin:/home/ats4i/anaconda3/bin/libfabric:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/bin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/libfabric/bin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/bin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/bin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/libfabric/bin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/bin:/home/METACOMP/OPENMPI-1.8.7/bin:/home/METACOMP/mbin:/home/METACOMP/mlib/micfd.19.5/exec:/home/METACOMP/mbin:/home/METACOMP/mlib/micmp.9.5/exec:/home/METACOMP/mbin:/home/METACOMP/mlib/mcfd.19.5/exec:/home/ats4i/.vscode-server/bin/cd9ea6488829f560dc949a8b2fb789f3cdc05f5d/bin:/home/ats4i/.npm-global/bin:/home/ats4i/.npm-global/bin:/usr/local/cuda-11.0/bin:/home/ats4i/anaconda3/bin/libfabric:/home/ats4i/anaconda3/bin:/home/ats4i/anaconda3/condabin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/bin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/libfabric/bin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/bin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/bin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/libfabric/bin:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/bin:/home/ats4i/intel/debugger_2020/gdb/intel64/bin:/home/METACOMP/OPENMPI-1.8.7/bin:/home/METACOMP/mbin:/home/METACOMP/mlib/micfd.19.5/exec:/home/METACOMP/mbin:/home/METACOMP/mlib/micmp.9.5/exec:/home/METACOMP/mbin:/home/METACOMP/mlib/mcfd.19.5/exec:/usr/local/bin:/usr/bin:/bin:/usr/bin/X11:/usr/games:/snap/bin:/opt/FileZilla3/bin:/home/METACOMP/mlib/mcfd.19.1/UDP/exec:/home/METACOMP/mlib/mcfd.19.1/UDP:/home/ats4i/orca/deployment:/snap/bin:/opt/tecplot/360ex_2018r2/bin:/opt/tecplot/chorus_2018r2/bin:/opt/FileZilla3/bin:/home/METACOMP/mlib/mcfd.19.1/UDP/exec:/home/METACOMP/mlib/mcfd.19.1/UDP:/home/ats4i/orca/deployment:/snap/bin:/opt/tecplot/360ex_2018r2/bin:/opt/tecplot/chorus_2018r2/bin",
+    "CPU": "x86_64",
+    "MCFD_VERSION": "19.5",
+    "JAVA_BINDIR": "/usr/lib64/jvm/jre-1.8.0-openjdk/bin",
+    "CONDA_PREFIX": "/home/ats4i/anaconda3",
+    "MPATH": "/home/METACOMP/mbin:/home/METACOMP/mlib/micfd.19.5/exec",
+    "LMOD_SETTARG_CMD": ":",
+    "INPUTRC": "/home/ats4i/.inputrc",
+    "PWD": "/home/ats4i",
+    "ICFD_HOME95": "/home/METACOMP/mlib/micfd.19.5",
+    "JAVA_HOME": "/usr/lib64/jvm/jre-1.8.0-openjdk",
+    "ICMP_HTML95": "/home/METACOMP/mlib/micfd.19.5/micfd_html",
+    "LANG": "en_US.UTF-8",
+    "PYTHONSTARTUP": "/etc/pythonstart",
+    "MODULEPATH": "/opt/ohpc/pub/modulefiles:/usr/share/lmod/modulefiles",
+    "_ModuleTable_Sz_": "1",
+    "METACOMP_LICENSE_FILE": "/home/METACOMP/mbin/Metacomp.lic",
+    "MCFD_PROCMEM": "512G",
+    "GDAL_DATA": "/home/ats4i/anaconda3/share/gdal",
+    "LMOD_CMD": "/usr/share/lmod/lmod/libexec/lmod",
+    "MCFD_HTML": "/home/METACOMP/mlib/mcfd.19.5/html",
+    "_CE_M": "",
+    "INTEL_PYTHONHOME": "/home/ats4i/intel/debugger_2020/python/intel64/",
+    "METACOMP_HOME": "/home/METACOMP",
+    "GPG_TTY": "not a tty",
+    "AUDIODRIVER": "pulseaudio",
+    "QT_SYSTEM_DIR": "/usr/share/desktop-data",
+    "SHLVL": "4",
+    "HOME": "/home/ats4i",
+    "ALSA_CONFIG_PATH": "/etc/alsa-pulse.conf",
+    "SDL_AUDIODRIVER": "pulse",
+    "LESS_ADVANCED_PREPROCESSOR": "no",
+    "OSTYPE": "linux",
+    "MCFD_PAR_LIC_MODE": "2",
+    "XCURSOR_THEME": "DMZ",
+    "WINDOWMANAGER": "env GNOME_SHELL_SESSION_MODE=classic SLE_CLASSIC_MODE=1 gnome-session --session gnome-classic",
+    "MCFD_PPROCMEM": "512G",
+    "BASH_ENV": "/usr/share/lmod/7.6.1/init/bash",
+    "CONDA_PYTHON_EXE": "/home/ats4i/anaconda3/bin/python",
+    "G_FILENAME_ENCODING": "@locale,UTF-8,ISO-8859-15,CP1252",
+    "LESS": "-M -I -R",
+    "MACHTYPE": "x86_64-suse-linux",
+    "LOGNAME": "ats4i",
+    "CVS_RSH": "ssh",
+    "CLASSPATH": "/home/ats4i/anaconda3/lib/mpi.jar:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/lib/mpi.jar:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/lib/mpi.jar:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/lib/mpi.jar:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mpi/intel64/lib/mpi.jar",
+    "XDG_DATA_DIRS": "/usr/local/share:/usr/share:/var/lib/snapd/desktop:/opt/FileZilla3/share",
+    "SSH_CONNECTION": "201.68.25.231 65081 192.168.0.104 22",
+    "MODULESHOME": "/usr/share/lmod/lmod",
+    "CONDA_DEFAULT_ENV": "base",
+    "PKG_CONFIG_PATH": "/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/bin/pkgconfig:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/bin/pkgconfig:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/bin/pkgconfig:/home/ats4i/intel/compilers_and_libraries_2020.0.166/linux/mkl/bin/pkgconfig",
+    "MCFD_TOGL": "yes",
+    "LESSOPEN": "lessopen.sh %s",
+    "INFOPATH": "/home/ats4i/intel/documentation_2020/en/debugger/gdb-ia/info/",
+    "LMOD_FULL_SETTARG_SUPPORT": "no",
+    "XDG_RUNTIME_DIR": "/run/user/1000",
+    "LMOD_DIR": "/usr/share/lmod/lmod/libexec",
+    "LESSCLOSE": "lessclose.sh %s %s",
+    "G_BROKEN_FILENAMES": "1",
+    "LMOD_COLORIZE": "no",
+    "I_MPI_ROOT": "/home/ats4i/anaconda3",
+    "XAUTHORITY": "/home/ats4i/.Xauthority",
+    "JAVA_ROOT": "/usr/lib64/jvm/jre-1.8.0-openjdk",
+    "COLORTERM": "1",
+    "BASH_FUNC_module%%": "() {  eval $($LMOD_CMD bash \"$@\") && eval $(${LMOD_SETTARG_CMD:-:} -s sh)\n}",
+    "BASH_FUNC_ml%%": "() {  eval $($LMOD_DIR/ml_cmd \"$@\")\n}",
+    "_": "/home/ats4i/.vscode-server/bin/cd9ea6488829f560dc949a8b2fb789f3cdc05f5d/node",
+    "VSCODE_INJECT_NODE_MODULE_LOOKUP_PATH": "/home/ats4i/.vscode-server/bin/cd9ea6488829f560dc949a8b2fb789f3cdc05f5d/remote/node_modules",
+    "VSCODE_LOGS": "/home/ats4i/.vscode-server/data/logs/20200707T093712",
+    "AMD_ENTRYPOINT": "vs/server/remoteExtensionHostProcess",
+    "PIPE_LOGGING": "true",
+    "VERBOSE_LOGGING": "true",
+    "VSCODE_EXTHOST_WILL_SEND_SOCKET": "true",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS": "true",
+    "VSCODE_LOG_STACK": "false",
+    "VSCODE_NLS_CONFIG": "{\"locale\":\"en\",\"availableLanguages\":{}}",
+    "VSCODE_IPC_HOOK_CLI": "/tmp/vscode-ipc-ad66b863-7fc3-40e5-89e2-27d144391862.sock",
+    "APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL": "true",
+    "ELECTRON_RUN_AS_NODE": "1",
+    "ELECTRON_NO_ASAR": "1"
+  },
+  "userLimits": {
+    "core_file_size_blocks": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "data_seg_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "file_size_blocks": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_locked_memory_bytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_memory_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "open_files": {
+      "soft": 4096,
+      "hard": 4096
+    },
+    "stack_size_bytes": {
+      "soft": 8388608,
+      "hard": "unlimited"
+    },
+    "cpu_time_seconds": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_user_processes": {
+      "soft": 1029651,
+      "hard": 1029651
+    },
+    "virtual_memory_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    }
+  },
+  "sharedObjects": [
+    "linux-vdso.so.1",
+    "/lib64/libdl.so.2",
+    "/lib64/librt.so.1",
+    "/usr/lib64/libstdc++.so.6",
+    "/lib64/libm.so.6",
+    "/lib64/libgcc_s.so.1",
+    "/lib64/libpthread.so.0",
+    "/lib64/libc.so.6",
+    "/lib64/ld-linux-x86-64.so.2"
+  ]
+}
