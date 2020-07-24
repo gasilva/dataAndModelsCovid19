@@ -53,7 +53,7 @@ class Learner(object):
             size = len(self.data)
             beta0, beta01, startT, beta2, sigma, sigma2, sigma3,  gamma, b, gamma2, d, mu = point
             def SEAIRD(y,t):
-                rx=sg.sigmoid(t-startT)
+                rx=sg.sigmoid(t-startT,beta0,beta01)
                 beta=beta0*rx+beta01*(1-rx)
                 S = y[0]
                 E = y[1]
@@ -123,11 +123,10 @@ class Learner(object):
         minimizer_kwargs = { "method": "L-BFGS-B","bounds":bnds }
         optimal = basinhopping(f, x0, minimizer_kwargs=minimizer_kwargs,niter=10,disp=True)        
         
-        point = self.s_0, self.start_date, self.i_0, self.weigthCases, self.weigthRecov
+        point = self.s_0, self.start_date, self.i_0, self.d_0, self.startNCases, self.weigthCases, self.weigthRecov
         
         strSave='{}, {}, '.format(self.state, abs(optimal.fun))
         strSave=strSave+', '.join(map(str,point))
-        strSave=strSave+', '+', '.join(map(str,optimal.x))
         self.append_new_line('./results/history_'+self.state+str(self.version)+'.csv', strSave) 
         
         del self, f, strSave, point
