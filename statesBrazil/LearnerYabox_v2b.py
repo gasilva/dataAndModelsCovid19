@@ -29,14 +29,6 @@ import sigmoidOnly as sg
 
 #parallel computation
 import ray
-ray.shutdown()
-# ray.init(num_cpus=20)
-
-MB=1024*1024
-GB=MB*1024
-ray.init(object_store_memory=1*GB,memory=1*GB,lru_evict=True,\
-         driver_object_store_memory=500*MB,num_gpus=500,num_cpus=10, ignore_reinit_error=True) # , include_webui=False, ignore_reinit_error=True)
-
 
 #register function for parallel processing
 @ray.remote
@@ -101,7 +93,7 @@ class Learner(object):
             size = len(data)
             beta0, beta01, startT, beta2, sigma, sigma2, sigma3,  gamma, b, gamma2, d, mu = point
             def SEAIRD(y,t):
-                rx=sg.sigmoid(t-startT)
+                rx=sg.sigmoid(t-startT,beta0,beta01)
                 beta=beta0*rx+beta01*(1-rx)
                 S = y[0]
                 E = y[1]
@@ -160,6 +152,11 @@ class Learner(object):
 
             #final objective function
             gtot=-10*min(np.sign(dNeg),0)*correctGtot+gtot
+            
+#             gc.collect()
+            
+            del dNeg,correctGtot,NegDeathData, dErrorI, dErrorD, dErrorY, dInfData, dInf,\
+                    dErrorX, dDeathData, dDeath, u, v, w, l1, l2, l3, res, size, tspan, ix, y0
 
             return gtot
         return lossOdeint
@@ -171,7 +168,7 @@ class Learner(object):
         size = len(new_index)
 
         def SEAIRD(y,t):
-            rx=sg.sigmoid(t-startT)
+            rx=sg.sigmoid(t-startT,beta0,beta01)
             beta=beta0*rx+beta01*(1-rx)
             S = y[0]
             E = y[1]
@@ -224,9 +221,6 @@ class Learner(object):
                 pbar.update(i)
                 i+=1
         p=best_params[0]
-
-        #parameter list for optimization
-        #beta, beta2, sigma, sigma2, sigma3, gamma, b, mu
 
         beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, gamma2, d, mu  = p
 
