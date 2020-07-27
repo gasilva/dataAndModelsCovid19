@@ -83,19 +83,19 @@ def loadDataFrame(filename):
     return df
 
 def load_confirmed(districtRegion, startdate):
-        dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
-        df = pd.read_csv('./data/DRS_confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
-        y=[]
-        x=[]
-        for i in range(0,len(df.date)):
-            y.append(df[districtRegion].values[i])
-            x.append(df.date.values[i])
-        df2=pd.DataFrame(data=y,index=x,columns=[""])
-        df2=df2[startdate:]
-        return df2
+    dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
+    df = pd.read_csv('./data/DRS_confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
+    y=[]
+    x=[]
+    for i in range(0,len(df.date)):
+        y.append(df[districtRegion].values[i])
+        x.append(df.date.values[i])
+    df2=pd.DataFrame(data=y,index=x,columns=[""])
+    df2=df2[startdate:]
+    return df2
 
 def load_dead(districtRegion, startdate):
-    dateparse = lambda x: datetime.strptime(x,  '%Y-%m-%d')
+    dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
     df = pd.read_csv('./data/DRS_mortes.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
     y=[]
     x=[]
@@ -588,20 +588,16 @@ def covid_plots(districtRegion, districts4Plot,\
         
     if opt==5 or opt==0:
         df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+districtRegion+'.pkl')
+        df.index = pd.to_datetime(df.index,format='%Y-%m-%d')
         
-        death = load_dead(districtRegion,startdate)
         actual = load_confirmed(districtRegion, startdate)
-
-        actual=actual.select_dtypes(exclude=['object', 'datetime']) * (1-ratio)
-        extended_actual=actual.subtract(df2).values[0]
-        extended_death = death.values
+        death = load_dead(districtRegion,startdate)
+        death.index = pd.to_datetime(death.index,format='%Y-%m-%d')        
+        actual.index = pd.to_datetime(actual.index,format='%Y-%m-%d')  
+        extended_death = death.iloc[:,0].to_numpy()
+        extended_actual = actual.iloc[:,0].to_numpy()*(1-ratio)-extended_death
         
-        print("Deaths")
-        print(extended_death)
-        print("Cases")
-        print(extended_actual)
-        
-        new_index = extend_index(df.index, predict_range)
+        new_index = extend_index(df.index, predict_range)        
         df = df[df.index<=datetime.strptime(maxDate, '%Y-%m-%d')]
 
         color_bg = '#FEF1E5'
@@ -642,8 +638,8 @@ def covid_plots(districtRegion, districts4Plot,\
             ax.plot(df['infected'],'y-',label="Infected")
             ax.plot(df['recovered'],'c-',label="Recovered")
             ax.plot(df['deaths'],'m-',label="Deaths")
-            ax.plot(new_index[range(0,len(extended_actual))],extended_actual,'o',label="Infected data")
-            ax.plot(new_index[range(0,len(extended_death))],extended_death,'x',label="Death data")
+            ax.plot(actual.index,extended_actual,'o',label="Infected data")
+            ax.plot(death.index,extended_death,'x',label="Death data")
 
             #format legend
             ax.legend(frameon=False,prop=comic_font,fontsize=20)
@@ -711,8 +707,8 @@ def covid_plots(districtRegion, districts4Plot,\
             ax.plot(df['infected'],'y-',label="Infected")
             ax.plot(df['recovered'],'c-',label="Recovered")
             ax.plot(df['deaths'],'m-',label="Deaths")
-#             ax.plot(new_index[range(0,len(extended_actual))],extended_actual,'o',label="Infected data")
-#             ax.plot(new_index[range(0,len(extended_death))],extended_death,'x',label="Death data")
+            ax.plot(actual.index,extended_actual,'o',label="Infected data")
+            ax.plot(death.index,extended_death,'x',label="Death data")
             #format legend
             ax.legend(frameon=False,prop=comic_font,fontsize=20)
             ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
