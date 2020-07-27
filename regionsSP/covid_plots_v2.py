@@ -66,12 +66,12 @@ def logistic_model(x,a,b,c):
 def exponential_model(x,a,b,c):
     return a*np.exp(b*(x-c))
 
-def getCases(df,districtRegion):
+def getCases(df,state):
     cases=[]
     time=[]
-    for i in range(len(df[districtRegion].values)):
-        if df[districtRegion].values[i]>=100:
-                cases.append(df[districtRegion].values[i])
+    for i in range(len(df[state].values)):
+        if df[state].values[i]>=100:
+                cases.append(df[state].values[i])
     time=np.linspace(0,len(cases)-1,len(cases))  
     return time,cases
 
@@ -95,7 +95,7 @@ def load_confirmed(districtRegion, startdate):
         return df2
 
 def load_dead(districtRegion, startdate):
-    dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
+    dateparse = lambda x: datetime.strptime(x,  '%Y-%m-%d')
     df = pd.read_csv('./data/DRS_mortes.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
     y=[]
     x=[]
@@ -155,7 +155,7 @@ def covid_plots(districtRegion, districts4Plot,\
 
     #load CSV file
     dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
-    df = pd.read_csv('./data/confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse,index_col=0)
+    df = pd.read_csv('./data/DRS_confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse,index_col=0)
     districtRegion10=districtRegion
     [time10,cases10]=getCases(df,districtRegion10)
 
@@ -163,10 +163,8 @@ def covid_plots(districtRegion, districts4Plot,\
 
         model='SEAIRD_Yabox'
 
-        df = loadDataFrame('./data/SEAIRD_'+districtRegion+version+'.pkl')
+        df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+districtRegion+'.pkl')
         time6, cases6 = predictionsPlot(df,startCase)
-#         time6 = time6[0:60]
-#         cases6 = cases6[0:60]
 
         #model
         #33% per day
@@ -589,12 +587,19 @@ def covid_plots(districtRegion, districts4Plot,\
                 plt.close()
         
     if opt==5 or opt==0:
-        df = loadDataFrame('./data/SEAIRD_'+districtRegion+version+'.pkl')
+        df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+districtRegion+'.pkl')
         
         death = load_dead(districtRegion,startdate)
         actual = load_confirmed(districtRegion, startdate)
-        extended_actual = np.int32(actual.values*(1-ratio))-np.int32(death.values)
-        extended_death = np.int32(death.values)
+
+        actual=actual.select_dtypes(exclude=['object', 'datetime']) * (1-ratio)
+        extended_actual=actual.subtract(df2).values[0]
+        extended_death = death.values
+        
+        print("Deaths")
+        print(extended_death)
+        print("Cases")
+        print(extended_actual)
         
         new_index = extend_index(df.index, predict_range)
         df = df[df.index<=datetime.strptime(maxDate, '%Y-%m-%d')]
@@ -618,7 +623,7 @@ def covid_plots(districtRegion, districts4Plot,\
                 label.set_fontsize(16) # Size here overrides font_prop
 
             # Adding a title and a subtitle
-            plt.text(x = 0.02, y = 1.1, s = "SEAIR-D Model for "+districtRegion+" Brazil State",
+            plt.text(x = 0.02, y = 1.1, s = "SEAIR-D Model for "+districtRegion+" District Region",
                         fontsize = 30, weight = 'bold', alpha = .75,transform=ax.transAxes, 
                         fontproperties=heading_font)
             plt.text(x = 0.02, y = 1.05,
@@ -693,7 +698,7 @@ def covid_plots(districtRegion, districts4Plot,\
             ax.set_ylim(0,max(max(df['infected']),max(np.int32(extended_actual)))*1.1)
 
             # Adding a title and a subtitle
-            plt.text(x = 0.02, y = 1.1, s = "Zoom SEAIR-D Model for "+districtRegion+" Brazil State",
+            plt.text(x = 0.02, y = 1.1, s = "Zoom SEAIR-D Model for "+districtRegion+" District Region",
                         fontsize = 30, weight = 'bold', alpha = .75,transform=ax.transAxes,
                         fontproperties=heading_font)
             plt.text(x = 0.02, y = 1.05,
@@ -706,8 +711,8 @@ def covid_plots(districtRegion, districts4Plot,\
             ax.plot(df['infected'],'y-',label="Infected")
             ax.plot(df['recovered'],'c-',label="Recovered")
             ax.plot(df['deaths'],'m-',label="Deaths")
-            ax.plot(new_index[range(0,len(extended_actual))],extended_actual,'o',label="Infected data")
-            ax.plot(new_index[range(0,len(extended_death))],extended_death,'x',label="Death data")
+#             ax.plot(new_index[range(0,len(extended_actual))],extended_actual,'o',label="Infected data")
+#             ax.plot(new_index[range(0,len(extended_death))],extended_death,'x',label="Death data")
             #format legend
             ax.legend(frameon=False,prop=comic_font,fontsize=20)
             ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)

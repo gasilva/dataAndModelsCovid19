@@ -172,7 +172,7 @@ class Learner(object):
 
     #predict final extended values
     def predict(self, beta0, beta01, startT, beta2, sigma, sigma2, sigma3,  gamma, b, gamma2, d, mu, data, \
-                    death, state, s_0, e_0, a_0, i_0, r_0, d_0):
+                    death, districtRegion, s_0, e_0, a_0, i_0, r_0, d_0):
 
         new_index = self.extend_index(data.index, self.predict_range)
         size = len(new_index)
@@ -239,7 +239,7 @@ class Learner(object):
 
         new_index, extended_actual, extended_death, y0, y1, y2, y3, y4, y5 \
                 = self.predict(beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, gamma2, d, mu, \
-                    self.data, self.death, self.state, self.s_0, \
+                    self.data, self.death, self.districtRegion, self.s_0, \
                     self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
 
         #prepare dataframe to export
