@@ -28,10 +28,7 @@ def group_by_DRS():
     df_confirmed = dfSP.groupby(['date','DRS'],as_index = False).sum().pivot('date','DRS').fillna(0)['confirmed']
     df_deaths = dfSP.groupby(['date','DRS'],as_index = False).sum().pivot('date','DRS').fillna(0)['deaths']
     df_popEst = dfSP.groupby(['date','DRS'],as_index = False).sum().pivot('date','DRS').fillna(0)['popEst']
-    df_popEst = df_popEst.tail(1)
-    df_popEst =  df_popEst.reset_index()
-    df_popEst = df_popEst.drop('date', 1)
-    df_popEst = df_popEst.T
+    df_popEst = df_popEst.iloc[-4]
     df_popEst =  df_popEst.reset_index()
     df_popEst.columns = ['DRS', 'popEst']
     df_popEst = df_popEst.replace(['Indefinido'],'SP')

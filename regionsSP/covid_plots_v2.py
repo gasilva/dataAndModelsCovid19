@@ -5,6 +5,7 @@ import os
 from datetime import datetime,timedelta
 from scipy.optimize import curve_fit
 from matplotlib import cm
+import unicodedata
 
 # Font Imports
 from tempfile import NamedTemporaryFile
@@ -115,6 +116,19 @@ def extend_index(index, new_size):
         values = np.append(values, current)
     return values
 
+def strip_accents(text):
+
+    try:
+        text = unicode(text, 'utf-8')
+    except NameError: # unicode is a default on python 3 
+        pass
+
+    text = unicodedata.normalize('NFD', text)\
+           .encode('ascii', 'ignore')\
+           .decode("utf-8")
+
+    return str(text)
+
 def covid_plots(districtRegion, districts4Plot,\
                 startdate="2020-03-15",predict_range = 60, \
                     startCase = 180, opt = 5, version = "1", \
@@ -195,17 +209,17 @@ def covid_plots(districtRegion, districts4Plot,\
                 label.set_fontproperties(comic_font)
                 label.set_fontsize(16) # Size here overrides font_prop
 
-            plt.plot(time2, cases2,'r-',label=districtRegion2,markevery=3) 
-            plt.plot(time4, cases4,'m-',label=districtRegion4,markevery=3) 
-            plt.plot(time5, cases5,'c-',label=districtRegion5,markevery=3) 
-            plt.plot(time3, cases3,'g-',label=districtRegion3,markevery=3) 
-            plt.plot(time6, cases6,'--',c='0.6',label=districtRegion+" "+model) 
-            plt.plot(time1, cases1,'b-',label=districtRegion1) 
+            plt.plot(time2, cases2,'r-',label=strip_accents(districtRegion2),markevery=3) 
+            plt.plot(time4, cases4,'m-',label=strip_accents(districtRegion4),markevery=3) 
+            plt.plot(time5, cases5,'c-',label=strip_accents(districtRegion5),markevery=3) 
+            plt.plot(time3, cases3,'g-',label=strip_accents(districtRegion3),markevery=3) 
+            plt.plot(time6, cases6,'--',c='0.6',label=strip_accents(districtRegion)+" "+model) 
+            plt.plot(time1, cases1,'b-',label=strip_accents(districtRegion1)) 
             plt.plot(x, y,'y--',label='{:.1f}'.format((growth-1)*100)+'% per day',alpha=1)
             plt.plot(x1, y1,'y-.',label='{:.1f}'.format((growth1-1)*100)+'% per day',alpha=1) 
             plt.rc('font', size=11)
 
-            plt.annotate(districtRegion3+" {:.1f} K".format(cases3[len(cases3)-1]/1000), # this is the text
+            plt.annotate(strip_accents(districtRegion3)+" {:.1f} K".format(cases3[len(cases3)-1]/1000), # this is the text
                 (time3[len(cases3)-1],cases3[len(cases3)-1]), # this is the point to label
                 textcoords="offset points", # how to position the text
                 xytext=(-10,2), # distance from text to points (x,y)
@@ -218,7 +232,7 @@ def covid_plots(districtRegion, districts4Plot,\
                 xytext=(20,5), # distance from text to points (x,y)
                 ha='right',fontproperties=comic_font,fontsize=16) # horizontal alignment can be left, right or center
 
-            plt.annotate(districtRegion1+" {:.1f} K".format(cases1[len(cases1)-1]/1000), # this is the text
+            plt.annotate(strip_accents(districtRegion1)+" {:.1f} K".format(cases1[len(cases1)-1]/1000), # this is the text
                 (time1[len(cases1)-1],cases1[len(cases1)-1]), # this is the point to label
                 textcoords="offset points", # how to position the text
                 xytext=(12,-20), # distance from text to points (x,y)
@@ -338,11 +352,11 @@ def covid_plots(districtRegion, districts4Plot,\
             ax.plot(extendT, [exponential_model(i,exp_fit[0][0],
                                    exp_fit[0][1],exp_fit[0][2]) for i in extendT], label="Exponential model" )
             # Real data
-            ax.scatter(timeFit,casesFit,label="Real cases "+districtRegion,color="red")
+            ax.scatter(timeFit,casesFit,label="Real cases "+strip_accents(districtRegion),color="red")
 
             #axis, limits and legend
             plt.xlabel("Days since 100th case", fontproperties=comic_font)
-            plt.ylabel("Total number of infected people in "+districtRegion, fontproperties=comic_font)
+            plt.ylabel("Total number of infected people", fontproperties=comic_font)
             plt.ylim((min(y)*0.9,int(1.05*fit[0][2])))
             plt.legend(frameon=False)
 
@@ -386,7 +400,7 @@ def covid_plots(districtRegion, districts4Plot,\
 
             #save figs
             strFile ='./results/coronaPythonModelEN'+districtRegion+'.png'
-            savePlot(strFile)
+            fig.savefig(strFile, facecolor=fig.get_facecolor(), edgecolor=fig.get_edgecolor())
 
             if show:
                 plt.show() 
@@ -474,7 +488,7 @@ def covid_plots(districtRegion, districts4Plot,\
             plt.xlabel('Days since 100th case', fontproperties=comic_font)
 
             # Make the y-axis label and tick labels match the line color.
-            plt.ylabel(districtRegion+' growth official cases per day [%]', fontproperties=comic_font)
+            plt.ylabel('Growth official cases per day [%]', fontproperties=comic_font)
 
             #Plot a line
             plt.axhline(y=10,color='r',linestyle='--')
@@ -554,7 +568,7 @@ def covid_plots(districtRegion, districts4Plot,\
             plt.xlabel('Days since 100th case', fontproperties=comic_font)
 
             # Make the y-axis label and tick labels match the line color.
-            plt.ylabel(districtRegion+' growth official cases per day [*1000]', fontproperties=comic_font)
+            plt.ylabel('Growth official cases per day [*1000]', fontproperties=comic_font)
 
             plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS',fontproperties=subtitle_font,fontsize = 16,
                     xy=(1.24, 0.1), xycoords='axes fraction',
