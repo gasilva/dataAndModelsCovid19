@@ -30,7 +30,10 @@ f.write(response.read())
 f.close()
 subtitle_font = fm.FontProperties(fname=f.name, size=18)
 
-github_url = 'http://antiyawn.com/uploads/Humor-Sans-1.0.ttf'
+# github_url = 'http://antiyawn.com/uploads/Humor-Sans-1.0.ttf'
+# github_url = 'https://github.com/ipython/xkcd-font/blob/master/xkcd-script/font/xkcd-script.ttf'
+github_url = 'https://github.com/ipython/xkcd-font/blob/master/xkcd/build/xkcd-Regular.otf'
+# github_url = 'https://github.com/shreyankg/xkcd-desktop/blob/master/Humor-Sans.ttf'
 url = github_url + '?raw=true'  # You want the actual file, not some html
 
 request = urllib.request.Request(url)
@@ -175,19 +178,19 @@ def covid_plots(districtRegion, districts4Plot,\
 
     if opt==1 or opt==0 or opt==4:
 
-        model='SEAIRD_Yabox'
+        model='SEAIRD'
 
         df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+districtRegion+'.pkl')
         time6, cases6 = predictionsPlot(df,startCase)
 
         #model
         #33% per day
-        growth = 1.1
-        x,y = logGrowth(growth,120)
+        growth = 1.025
+        x,y = logGrowth(growth,200)
 
         #50% per day
-        growth1 = 1.25
-        x1,y1 = logGrowth(growth1,60)
+        growth1 = 1.05
+        x1,y1 = logGrowth(growth1,200)
 
         # Plot the data
         #ax.figure(figsize=(19.20,10.80))
@@ -222,7 +225,7 @@ def covid_plots(districtRegion, districts4Plot,\
             plt.annotate(strip_accents(districtRegion3)+" {:.1f} K".format(cases3[len(cases3)-1]/1000), # this is the text
                 (time3[len(cases3)-1],cases3[len(cases3)-1]), # this is the point to label
                 textcoords="offset points", # how to position the text
-                xytext=(-10,2), # distance from text to points (x,y)
+                xytext=(100,5), # distance from text to points (x,y)
                 ha='right',fontproperties=comic_font,fontsize=16) # horizontal alignment can be left, right or center
 
             idx=int(np.argmax(cases6))
@@ -235,7 +238,7 @@ def covid_plots(districtRegion, districts4Plot,\
             plt.annotate(strip_accents(districtRegion1)+" {:.1f} K".format(cases1[len(cases1)-1]/1000), # this is the text
                 (time1[len(cases1)-1],cases1[len(cases1)-1]), # this is the point to label
                 textcoords="offset points", # how to position the text
-                xytext=(12,-20), # distance from text to points (x,y)
+                xytext=(80,-20), # distance from text to points (x,y)
                 ha='center',fontproperties=comic_font,fontsize=16) # horizontal alignment can be left, right or center
 
             plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS',fontproperties=subtitle_font,fontsize = 16,
@@ -261,7 +264,9 @@ def covid_plots(districtRegion, districts4Plot,\
                         s = "Comparison selected districtRegions and model for "+districtRegion,
                         fontsize = 26, alpha = .85,transform=ax.transAxes, 
                             fontproperties=subtitle_font)
-            ax.legend(frameon=False,prop=comic_font,fontsize=16,loc='lower right')
+            leg=ax.legend(frameon=False,prop=comic_font,fontsize=12,loc='upper left')
+            for lh in leg.legendHandles: 
+                lh.set_alpha(0.75)
             ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
 
             fig.tight_layout()
@@ -307,12 +312,12 @@ def covid_plots(districtRegion, districts4Plot,\
 
         casesFit=cases10
         timeFit=time10
-        maxCases=700e3
+        maxCases=2e6
         maxTime=200
         guessExp=2
 
         #logistic curve
-        fit = curve_fit(logistic_model,timeFit,casesFit,p0=[5,60,500e3])
+        fit = curve_fit(logistic_model,timeFit,casesFit,p0=[20,100,maxCases])
         print ("Infection speed=",fit[0][0])
         print ("Day with the maximum infections occurred=",int(fit[0][1]))
         print ("Total number of recorded infected people at the infection’s end=",int(fit[0][2]))
@@ -358,7 +363,9 @@ def covid_plots(districtRegion, districts4Plot,\
             plt.xlabel("Days since 100th case", fontproperties=comic_font)
             plt.ylabel("Total number of infected people", fontproperties=comic_font)
             plt.ylim((min(y)*0.9,int(1.05*fit[0][2])))
-            plt.legend(frameon=False)
+            leg=plt.legend(frameon=False)
+            for lh in leg.legendHandles: 
+                lh.set_alpha(0.75)
 
             plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS',fontproperties=subtitle_font,fontsize = 16,
                     xy=(1.06, 0.1), xycoords='axes fraction',
@@ -393,7 +400,9 @@ def covid_plots(districtRegion, districts4Plot,\
                         s = "Logistic and Exponential Function fitted with real data from "+districtRegion,
                         fontsize = 22, alpha = .85,transform=ax.transAxes, 
                             fontproperties=subtitle_font)
-            ax.legend(frameon=False,prop=comic_font,fontsize=26)
+            leg=ax.legend(frameon=False,prop=comic_font,fontsize=26)
+            for lh in leg.legendHandles: 
+                lh.set_alpha(0.75)
             ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
             
             fig.tight_layout()
@@ -656,7 +665,9 @@ def covid_plots(districtRegion, districts4Plot,\
             ax.plot(death.index,extended_death,'x',label="Death data")
 
             #format legend
-            ax.legend(frameon=False,prop=comic_font,fontsize=20)
+            leg=ax.legend(frameon=False,prop=comic_font,fontsize=20)
+            for lh in leg.legendHandles: 
+                lh.set_alpha(0.75)
             ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.4)
 
             #plot margin annotation
@@ -724,7 +735,9 @@ def covid_plots(districtRegion, districts4Plot,\
             ax.plot(actual.index,extended_actual,'o',label="Infected data")
             ax.plot(death.index,extended_death,'x',label="Death data")
             #format legend
-            ax.legend(frameon=False,prop=comic_font,fontsize=20)
+            leg=ax.legend(frameon=False,prop=comic_font,fontsize=20)
+            for lh in leg.legendHandles: 
+                lh.set_alpha(0.75)
             ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
 
             plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS', 
