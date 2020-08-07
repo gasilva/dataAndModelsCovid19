@@ -151,7 +151,7 @@ class Learner(object):
             dErrorI=np.mean(dErrorY[-8:])
 
             #objective function
-            gtot=u*(l1+0.05*dErrorI) + v*(l2+0.2*dErrorD) + w*l3
+            gtot=u*(1*l1+0.05*dErrorI) + v*(l2+0.2*dErrorD) + w*l3
 
             #penalty function for negative derivative at end of deaths
             NegDeathData=np.diff(res[:,5])
