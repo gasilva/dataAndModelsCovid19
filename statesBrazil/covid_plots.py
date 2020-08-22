@@ -20,7 +20,7 @@ f.write(response.read())
 f.close()
 heading_font = fm.FontProperties(fname=f.name, size=26)
 
-github_url = 'https://github.com/google/fonts/blob/master/ofl/roboto/static/Roboto-Regular.ttf'
+github_url = 'https://github.com/google/fonts/blob/master/apache/roboto/static/Roboto-Regular.ttf'
 url = github_url + '?raw=true'  # You want the actual file, not some html
 request = urllib.request.Request(url)
 response = urllib.request.urlopen(request)
