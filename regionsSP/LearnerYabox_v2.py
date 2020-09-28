@@ -28,10 +28,10 @@ import sigmoidOnly as sg
 #parallel computation
 import ray
 ray.shutdown()
-ray.init(num_cpus=20)
+ray.init(num_cpus=1,num_gpus=5,memory=230*1024*1024*1024)
 
 #register function for parallel processing
-@ray.remote
+@ray.remote(memory=10*1024*1024*1024)
 class Learner(object):
     def __init__(self, districtRegion, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, \
     startNCases, ratio, weigthCases, weigthRecov, cleanRecovered, version, savedata=True):
@@ -61,6 +61,13 @@ class Learner(object):
             y.append(df[districtRegion].values[i])
             x.append(df.date.values[i])
         df2=pd.DataFrame(data=y,index=x,columns=[""])
+        df2 =df2.apply (pd.to_numeric, errors='coerce')
+        df2 = df2.dropna()
+        df2.index = pd.DatetimeIndex(df2.index)
+        df2 = df2.reindex(pd.date_range(df2.index.min(), df2.index.max()), fill_value=np.nan)
+        df2 = df2.interpolate(method='akima', axis=0).ffill().bfill()
+        df2 = df2.astype(int)
+        df2.index = df2.index.astype(str)
         df2=df2[self.start_date:]
         return df2
 
@@ -73,6 +80,13 @@ class Learner(object):
             y.append(df[districtRegion].values[i])
             x.append(df.date.values[i])
         df2=pd.DataFrame(data=y,index=x,columns=[""])
+        df2 =df2.apply (pd.to_numeric, errors='coerce')
+        df2 = df2.dropna()
+        df2.index = pd.DatetimeIndex(df2.index)
+        df2 = df2.reindex(pd.date_range(df2.index.min(), df2.index.max()), fill_value=np.nan)
+        df2 = df2.interpolate(method='akima', axis=0).ffill().bfill()
+        df2 = df2.astype(int)
+        df2.index = df2.index.astype(str)
         df2=df2[self.start_date:]
         return df2
     
@@ -151,7 +165,7 @@ class Learner(object):
             dErrorI=np.mean(dErrorY[-8:])
 
             #objective function
-            gtot=u*(1*l1+0.05*dErrorI) + v*(l2+0.2*dErrorD) + w*l3
+            gtot=u*(1*l1+0.05*dErrorI) + v*(l2*3.2+0.05*dErrorD) + w*l3
 
             #penalty function for negative derivative at end of deaths
             NegDeathData=np.diff(res[:,5])
@@ -164,7 +178,7 @@ class Learner(object):
 #             gc.collect()
             
             del dNeg,correctGtot,NegDeathData, dErrorI, dErrorD, dErrorY, dInfData, dInf,\
-                    dErrorX, dDeathData, dDeath, u, v, w, l1, l2, l3, res, size, tspan, ix, y0
+                    dErrorX, dDeathData, dDeath, u, v, w, l1, l2, l3, res, size, tspan, ix, y0, SEAIRD
 
             return gtot
         return lossOdeint
@@ -205,19 +219,20 @@ class Learner(object):
         return new_index, extended_actual, extended_death, res[:,0], res[:,1],res[:,2],res[:,3],res[:,4], res[:,5]
 
     #run optimizer and plotting
-    @ray.method(num_return_vals=1)
     def train(self):
 
-        dead=self.load_dead(self.districtRegion)
-        self.data = self.load_confirmed(self.districtRegion)*(1-self.ratio)-dead
-        self.death = dead
+        self.death= self.load_dead(self.districtRegion)
+        self.data = self.load_confirmed(self.districtRegion)*(1-self.ratio)-self.death
+        
+#         self.death=self.death[:len(self.data)-7]
+#         self.data=self.data[:len(self.data)-7]
 
         size=len(self.data)
 
         bounds=[(1e-12, .2),(1e-12, .2),(5,size-5),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
             (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
-        maxiterations=3500
+        maxiterations=5500
         f=self.create_lossOdeint(self.data, \
             self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
                  self.ratio, self.weigthCases, self.weigthRecov)
@@ -250,13 +265,13 @@ class Learner(object):
         df.index = pd.date_range(start=new_index[0], 
             end=new_index[-1])
         df.index.name = 'date'
-           
-        del dataFr, dataFr2, idx, norm_vector, best_params, dead,\
-            new_index, extended_actual, extended_death, y0, y1, y2, y3, y4, y5
 
         if self.savedata:
             #save simulation results for comparison and use in another codes/routines
             df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.districtRegion+'.pkl')
             df.to_csv('./results/data/SEAIRD_sigmaOpt_'+self.districtRegion+'.csv', sep=",")
-        
+
+        del dataFr, dataFr2, idx, norm_vector, best_params, df,\
+            new_index, extended_actual, extended_death, y0, y1, y2, y3, y4, y5            
+            
         return p

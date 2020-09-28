@@ -10,7 +10,7 @@ import gc
 import ray
 
 #register function for parallel processing
-@ray.remote
+@ray.remote(memory=5*1024*1024*1024)
 class Learner(object):
     def __init__(self, districtRegion, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov, cleanRecovered, version, data, death, savedata=True):
         self.districtRegion = districtRegion
@@ -109,7 +109,6 @@ class Learner(object):
         return lossOdeint
 
     #run optimizer and plotting
-    @ray.method(num_return_vals=1)
     def train(self):
         
         f=self.create_lossOdeint(self.data, \
