@@ -768,3 +768,163 @@ def covid_plots(districtRegion, districts4Plot,\
             if show:
                 plt.show()
                 plt.close()
+                
+        with plt.xkcd():        
+            fig, ax = plt.subplots(figsize=(15, 10),facecolor=color_bg)
+            ax.patch.set_facecolor(darker_highlight)
+
+            # Hide the right and top spines
+            ax.spines['left'].set_visible(False)
+            ax.spines['right'].set_visible(False)
+            ax.spines['top'].set_visible(False)
+            
+            #fonts for the thicks
+            for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+                label.set_fontproperties(comic_font)
+                label.set_fontsize(16) # Size here overrides font_prop
+
+#             ax.set_ylim(0,max(max(df['infected']),max(np.int32(extended_actual)))*1.1)
+
+            # Adding a title and a subtitle
+            plt.text(x = 0.02, y = 1.1, s = "Cases per day for "+districtRegion+" District Region",
+                        fontsize = 30, weight = 'bold', alpha = .75,transform=ax.transAxes,
+                        fontproperties=heading_font)
+            plt.text(x = 0.02, y = 1.05,
+                        s = "Optimization fitted with real data",
+                        fontsize = 26, alpha = .85,transform=ax.transAxes, 
+                        fontproperties=subtitle_font)
+
+            ax.xaxis_date()
+            #plt.xticks(np.arange(0, predict_range, predict_range/8))
+            
+            lst=(np.diff(df['infected']))
+            lst2=(np.diff(extended_actual))
+                        
+            df2 = pd.DataFrame(data=lst, index = df.index[:len(df.index)-1], 
+                                              columns =['infectedDay'])
+            df3 = pd.DataFrame(data=lst2, index = actual.index[:len(actual.index)-1], 
+                                              columns =['infectedDay'])
+            
+            df2=df2[df2.infectedDay<(df2.infectedDay.mean()+2*df2.infectedDay.std())]
+            df3=df3[df3.infectedDay<(df3.infectedDay.mean()+2*df3.infectedDay.std())]
+            df2=df2[df2.infectedDay>(df2.infectedDay.mean()-2*df2.infectedDay.std())]
+            df3=df3[df3.infectedDay>(df3.infectedDay.mean()-2*df3.infectedDay.std())]
+
+            df3.rolling(7).mean()['infectedDay'].plot(label="7-day real",style='o')
+            df2.rolling(7).mean()['infectedDay'].plot(label="7-day model")
+            
+            #format legend
+            leg=ax.legend(frameon=False,prop=comic_font,fontsize=20)
+            for lh in leg.legendHandles: 
+                lh.set_alpha(0.75)
+            ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
+
+            plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS', 
+            xy=(1.04, 0.1), xycoords='axes fraction',
+            xytext=(0, 0), textcoords='offset points',
+            ha='right',rotation=90,fontproperties=subtitle_font,fontsize = 16)
+            plt.annotate('Original SEAIR-D with delay model, São Paulo, Brazil', 
+            xy=(1.045,0.1), xycoords='axes fraction',
+            xytext=(0, 0), textcoords='offset points',
+            ha='left',rotation=90,fontproperties=subtitle_font,fontsize = 16)
+ 
+            #labels for x and y axis
+            plt.xlabel("Date", fontproperties=comic_font)
+            plt.ylabel("Cases per day", fontproperties=comic_font)
+
+            #plot layout
+            fig.tight_layout()
+
+            #file name to be saved
+            strFile ="./results/dailyCasesSEAIRDOpt"+districtRegion+version+model+".png"
+
+            #remove previous file
+            if os.path.isfile(strFile):
+                os.remove(strFile)   # Opt.: os.system("del "+strFile)
+
+            #figure save and close
+            fig.savefig(strFile, facecolor=fig.get_facecolor(), edgecolor=fig.get_edgecolor())
+            if show:
+                plt.show()
+                plt.close()
+                
+                
+        with plt.xkcd():        
+            fig, ax = plt.subplots(figsize=(15, 10),facecolor=color_bg)
+            ax.patch.set_facecolor(darker_highlight)
+
+            # Hide the right and top spines
+            ax.spines['left'].set_visible(False)
+            ax.spines['right'].set_visible(False)
+            ax.spines['top'].set_visible(False)
+            
+            #fonts for the thicks
+            for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+                label.set_fontproperties(comic_font)
+                label.set_fontsize(16) # Size here overrides font_prop
+
+#             ax.set_ylim(0,max(max(df['infected']),max(np.int32(extended_actual)))*1.1)
+
+            # Adding a title and a subtitle
+            plt.text(x = 0.02, y = 1.1, s = "Deaths per day for "+districtRegion+" District Region",
+                        fontsize = 30, weight = 'bold', alpha = .75,transform=ax.transAxes,
+                        fontproperties=heading_font)
+            plt.text(x = 0.02, y = 1.05,
+                        s = "Optimization fitted with real data",
+                        fontsize = 26, alpha = .85,transform=ax.transAxes, 
+                        fontproperties=subtitle_font)
+
+            ax.xaxis_date()
+            #plt.xticks(np.arange(0, predict_range, predict_range/8))
+            
+            lst=(np.diff(df['deaths']))
+            lst2=(np.diff(extended_death))
+                        
+            df2 = pd.DataFrame(data=lst, index = df.index[1:], 
+                                              columns =['deathDay'])
+            df3 = pd.DataFrame(data=lst2, index = death.index[1:], 
+                                              columns =['deathDay'])
+            
+            df2=df2[df2.deathDay<(df2.deathDay.mean()+2*df2.deathDay.std())]
+            df3=df3[df3.deathDay<(df3.deathDay.mean()+2*df3.deathDay.std())]
+            df2=df2[df2.deathDay>(df2.deathDay.mean()-2*df2.deathDay.std())]
+            df3=df3[df3.deathDay>(df3.deathDay.mean()-2*df3.deathDay.std())]
+
+            df3.rolling(7).mean()['deathDay'].plot(label="7-day real",style='o')
+            df2.rolling(7).mean()['deathDay'].plot(label="7-day model")
+
+            
+            #format legend
+            leg=ax.legend(frameon=False,prop=comic_font,fontsize=20)
+            for lh in leg.legendHandles: 
+                lh.set_alpha(0.75)
+            ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
+
+            plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS', 
+            xy=(1.04, 0.1), xycoords='axes fraction',
+            xytext=(0, 0), textcoords='offset points',
+            ha='right',rotation=90,fontproperties=subtitle_font,fontsize = 16)
+            plt.annotate('Original SEAIR-D with delay model, São Paulo, Brazil', 
+            xy=(1.045,0.1), xycoords='axes fraction',
+            xytext=(0, 0), textcoords='offset points',
+            ha='left',rotation=90,fontproperties=subtitle_font,fontsize = 16)
+ 
+            #labels for x and y axis
+            plt.xlabel("Date", fontproperties=comic_font)
+            plt.ylabel("Deaths per day", fontproperties=comic_font)
+
+            #plot layout
+            fig.tight_layout()
+
+            #file name to be saved
+            strFile ="./results/dailyCasesSEAIRDOpt"+districtRegion+version+model+".png"
+
+            #remove previous file
+            if os.path.isfile(strFile):
+                os.remove(strFile)   # Opt.: os.system("del "+strFile)
+
+            #figure save and close
+            fig.savefig(strFile, facecolor=fig.get_facecolor(), edgecolor=fig.get_edgecolor())
+            if show:
+                plt.show()
+                plt.close()
