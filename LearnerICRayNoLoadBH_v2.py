@@ -51,7 +51,9 @@ class Learner(object):
 
         def lossOdeint(point):
             size = len(self.data)
-            beta0, beta01, startT, beta2, sigma, sigma2, sigma3,  gamma, b, gamma2, d, mu = point
+            beta0, beta01, startT, beta2, sigma, sigma2, sigma3,  a, b, c, d, mu = point
+            gamma = a + b
+            gamma2 = c + d
             def SEAIRD(y,t):
                 rx=sg.sigmoid(t-startT,beta0,beta01)
                 beta=beta0*rx+beta01*(1-rx)
