@@ -89,26 +89,26 @@ class Learner(object):
                 A = y[2]
                 I = y[3]
                 R = y[4]
-                p=0.2
-                y0=-(beta2*A+beta*I)*S-mu*S #S
+                p=0.4
+                y0=(-(beta2*A+beta*I)*S-mu*S) #S
                 y1=(beta2*A+beta*I)*S-sigma*E-mu*E #E
                 y2=sigma*E*(1-p)-mu*A-gamma2*A #A
                 y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-mu*I #I
-                y4=b*I+d*A+sigma2*I-mu*R #R
+                y4=(b*I+d*A+sigma2*I-mu*R)#R
                 y5=(-(y0+y1+y2+y3+y4)) #D
                 return [y0,y1,y2,y3,y4,y5]
 
             y0=[s_0,e_0,a_0,i_0,r_0,d_0]
             size = len(data)+1
-            tspan=np.arange(0, size+100, 1)
+            tspan=np.arange(0, size+200, 1)
             res=odeint(SEAIRD,y0,tspan,mxstep=5000000) #,hmax=0.01)
             res = np.where(res >= 1e10, 1e10, res)
 
             # calculate fitting error by using numpy.where
             ix= np.where(data.values >= startNCases)
-            l1 = np.mean((res[ix[0],3] - data.values[ix])**2)
+            l1 = np.mean((res[ix[0],3] - (data.values[ix]))**2)
             l2 = np.mean((res[ix[0],5] - death.values[ix])**2)
-            l3 = np.mean((res[ix[0],4] - recovered.values[ix])**2)
+            l3 = np.mean((res[ix[0],4] - (recovered.values[ix]))**2)
 
             #calculate derivatives
             #and the error of the derivative between prediction and the data
@@ -132,7 +132,7 @@ class Learner(object):
             correctGtot=max(abs(dNeg),0)**2
 
             #final objective function
-            gtot=10*min(np.sign(dNeg),0)*correctGtot+gtot
+            gtot=abs(10*min(np.sign(dNeg),0)*correctGtot)+abs(gtot)
 
             del NegDeathData, dInf, dInfData, dDeath, dDeathData, l1, l2, l3, correctGtot, dNeg, dErrorI, dErrorD
             return gtot
@@ -155,11 +155,11 @@ class Learner(object):
             I = y[3]
             R = y[4]
             p=0.4
-            y0=-(beta2*A+beta*I)*S-mu*S #S
+            y0=(-(beta2*A+beta*I)*S-mu*S) #S
             y1=(beta2*A+beta*I)*S-sigma*E-mu*E #E
             y2=sigma*E*(1-p)-mu*A-gamma2*A #A
             y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-mu*I #I
-            y4=b*I+d*A+sigma2*I-mu*R #R
+            y4=(b*I+d*A+sigma2*I-mu*R)#R
             y5=(-(y0+y1+y2+y3+y4)) #D
             return [y0,y1,y2,y3,y4,y5]
 
@@ -167,8 +167,7 @@ class Learner(object):
         tspan=np.arange(0, size, 1)
         res=odeint(SEAIRD,y0,tspan,mxstep=5000000) #,hmax=0.01)
         res = np.where(res >= 1e10, 1e10, res)
-
-
+            
         #data not extended
         extended_actual = np.concatenate((data.values, \
                             [None] * (size - len(data.values))))
@@ -189,10 +188,10 @@ class Learner(object):
 
         size=len(self.data)
 
-        bounds=[(1e-12, .2),(1e-12, .2),(5,size-5),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
-            (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
+        bounds=[(1e-12, .2),(1e-12, .2),(5,size-5),(1e-12, .2),(1/160 ,0.4),(1/160, .4),
+            (1/160, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
-        maxiterations=6500
+        maxiterations=5500
         f=self.create_lossOdeint(self.data, \
             self.death, self.recovered, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
                  self.weigthCases, self.weigthRecov)
@@ -211,13 +210,11 @@ class Learner(object):
         beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, gamma2, d, mu  = p
 
         new_index, extended_actual, extended_death, extended_recovered, y0, y1, y2, y3, y4, y5 \
-                = self.predict(beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, gamma2, d, mu, \
+                = self.predict(beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, gamma2, d, mu,\
                     self.data, self.death, self.recovered, self.country, self.s_0, \
                     self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.predict_range)
 
         #prepare dataframe to export
-        dataFr = [y0, y1, y2, y3, y4, y5]
-        dataFr2 = np.array(dataFr).T
         df = pd.DataFrame({
                     'Susceptible': y0,
                     'Exposed': y1,
@@ -235,7 +232,7 @@ class Learner(object):
             df.to_pickle('./data/SEAIRDv5_Yabox_'+self.country+'.pkl')
             df.to_csv('./results/data/SEAIRDv5_Yabox_'+self.country+'.csv', sep=",")
 
-        del dataFr, dataFr2, idx, norm_vector, best_params, df,\
+        del idx, norm_vector, best_params, df,\
             new_index, extended_actual, extended_death, extended_recovered, y0, y1, y2, y3, y4, y5            
             
         return p
