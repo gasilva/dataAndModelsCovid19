@@ -613,11 +613,11 @@ def covid_plots(country, countries4Plot,\
                 label.set_fontsize(16) # Size here overrides font_prop
 
             # Adding a title and a subtitle
-            plt.text(x = 0.02, y = 1.1, s = "SEAIR-D Model for "+country+" Country",
+            plt.text(x = 0.02, y = 1.1, s = "SEAIR-D Model for "+country,
                         fontsize = 30, weight = 'bold', alpha = .75,transform=ax.transAxes, 
                         fontproperties=heading_font)
             plt.text(x = 0.02, y = 1.05,
-                        s = "Optimization fitted with real data",
+                        s = "Optimization fitted with coronavirus.jhu.edu data",
                         fontsize = 26, alpha = .85,transform=ax.transAxes, 
                         fontproperties=subtitle_font)
 
@@ -691,11 +691,11 @@ def covid_plots(country, countries4Plot,\
             ax.set_ylim(0,max(df['infected_data']*1.1))
 
             # Adding a title and a subtitle
-            plt.text(x = 0.02, y = 1.1, s = "Zoom SEAIR-D Model for "+country+" Country",
+            plt.text(x = 0.02, y = 1.1, s = "Zoom SEAIR-D Model for "+country,
                         fontsize = 30, weight = 'bold', alpha = .75,transform=ax.transAxes,
                         fontproperties=heading_font)
             plt.text(x = 0.02, y = 1.05,
-                        s = "Optimization fitted with real data",
+                        s = "Optimization fitted with coronavirus.jhu.edu data",
                         fontsize = 26, alpha = .85,transform=ax.transAxes, 
                         fontproperties=subtitle_font)
 
@@ -757,11 +757,11 @@ def covid_plots(country, countries4Plot,\
                 label.set_fontsize(16) # Size here overrides font_prop
 
             # Adding a title and a subtitle
-            plt.text(x = 0.02, y = 1.1, s = "Cases per day for "+country+" Country",
+            plt.text(x = 0.02, y = 1.1, s = "Cases per day for "+country,
                         fontsize = 30, weight = 'bold', alpha = .75,transform=ax.transAxes,
                         fontproperties=heading_font)
             plt.text(x = 0.02, y = 1.05,
-                        s = "Optimization fitted with real data",
+                        s = "Optimization fitted with coronavirus.jhu.edu data",
                         fontsize = 26, alpha = .85,transform=ax.transAxes, 
                         fontproperties=subtitle_font)
 
@@ -834,11 +834,11 @@ def covid_plots(country, countries4Plot,\
                 label.set_fontsize(16) # Size here overrides font_prop
 
             # Adding a title and a subtitle
-            plt.text(x = 0.02, y = 1.1, s = "Deaths per day for "+country+" Country",
+            plt.text(x = 0.02, y = 1.1, s = "Deaths per day for "+country,
                         fontsize = 30, weight = 'bold', alpha = .75,transform=ax.transAxes,
                         fontproperties=heading_font)
             plt.text(x = 0.02, y = 1.05,
-                        s = "Optimization fitted with real data",
+                        s = "Optimization fitted with coronavirus.jhu.edu data",
                         fontsize = 26, alpha = .85,transform=ax.transAxes, 
                         fontproperties=subtitle_font)
 

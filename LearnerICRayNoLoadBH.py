@@ -71,7 +71,7 @@ class Learner(object):
 
             y0=[s_0,e_0,a_0,i_0,r_0,d_0]
             size = len(data)+1
-            tspan=np.arange(0, size+100, 1)
+            tspan=np.arange(0, size+200, 1)
             res=odeint(SEAIRD,y0,tspan,mxstep=5000000) #,hmax=0.01)
             res = np.where(res >= 1e10, 1e10, res)
             
@@ -103,7 +103,7 @@ class Learner(object):
             correctGtot=max(abs(dNeg),0)**2
 
             #final objective function
-            gtot=10*min(np.sign(dNeg),0)*correctGtot+gtot
+            gtot=abs(10*min(np.sign(dNeg),0)*correctGtot)+abs(gtot)
 
             del NegDeathData, dInf, dInfData, dDeath, dDeathData, l1, l2, l3, correctGtot, dNeg, dErrorI, dErrorD
             return gtot
@@ -116,14 +116,14 @@ class Learner(object):
             self.death, self.recovered, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
                   self.weigthCases, self.weigthRecov)
 
-        bnds = ((1e-12, .2),(1e-12, .2),(5,len(self.data)-5),(1e-12, .2),(1/160 ,0.4),(1/160, .4),
-        (1/160, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4))# your bounds
+        bnds = ((1e-12, .2),(1e-12, .2),(5,len(self.data)-5),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
+        (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4))# your bounds
 
         x0 = [1e-3, 1e-3, 0, 1e-3, 1/120, 1/120, 1/120, 1e-3, 1e-3, 1e-3, 1e-3, 1e-3]
         minimizer_kwargs = { "method": "L-BFGS-B","bounds":bnds }
-        optimal = basinhopping(f, x0, minimizer_kwargs=minimizer_kwargs,niter=50,disp=True)        
+        optimal = basinhopping(f, x0, minimizer_kwargs=minimizer_kwargs,niter=10,disp=True)        
         
-        point = self.s_0, self.start_date, self.i_0, self.d_0, self.startNCases, self.weigthCases, self.weigthRecov
+        point = self.s_0, self.start_date, self.i_0, self.d_0, self.r_0, self.startNCases, self.weigthCases, self.weigthRecov
         
         strSave='{}, {}, '.format(self.country, abs(optimal.fun))
         strSave=strSave+', '.join(map(str,point))
