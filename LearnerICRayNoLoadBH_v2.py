@@ -12,7 +12,7 @@ import ray
 #register function for parallel processing
 @ray.remote(memory=5*1024*1024*1024)
 class Learner(object):
-    def __init__(self, country, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, weigthCases, weigthRecov, cleanRecovered, version, data, death, recovered, savedata=True):
+    def __init__(self, country, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, weigthCases, weigthRecov, weigthDeath, cleanRecovered, version, data, death, recovered, savedata=True):
         self.country = country
         self.start_date = start_date
         self.predict_range = predict_range
@@ -25,6 +25,7 @@ class Learner(object):
         self.startNCases = startNCases
         self.weigthCases = weigthCases
         self.weigthRecov = weigthRecov
+        self.weigthDeath = weigthDeath
         self.cleanRecovered= cleanRecovered
         self.version=version
         self.savedata = savedata
@@ -47,7 +48,7 @@ class Learner(object):
             file_object.write(text_to_append)
 
     def create_lossOdeint(self, data, death, recovered, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, \
-                     weigthCases, weigthRecov):
+                     weigthCases, weigthRecov,weigthDeath):
 
         def lossOdeint(point):
             size = len(self.data)
@@ -95,9 +96,14 @@ class Learner(object):
             dInf=np.diff(res[1:size,3])
             dInfData=np.diff(data.values.T[:])          
             dErrorI=np.mean(((dInf-dInfData)**2)[-8:])
-
+            
+            wt=weigthCases+weigthRecov+weigthDeath
+            wc=weigthCases/wt
+            wr=weigthRecov/wt
+            wd=weigthDeath/wt
+            
             #objective function
-            gtot=weigthCases*(l1+0.05*dErrorI) + max(0,1. - weigthCases - weigthRecov)*(l2+0.2*dErrorD) + weigthRecov*l3
+            gtot=wc*(l1+0.05*dErrorI) + wd*(l2+0.2*dErrorD) + wr*l3
 
             #penalty function for negative derivative at end of deaths
             NegDeathData=np.diff(res[:,5])
@@ -116,7 +122,7 @@ class Learner(object):
         
         f=self.create_lossOdeint(self.data, \
             self.death, self.recovered, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
-                  self.weigthCases, self.weigthRecov)
+                  self.weigthCases, self.weigthRecov,self.weigthDeath)
 
         bnds = ((1e-12, .2),(1e-12, .2),(5,len(self.data)-5),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
         (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4))# your bounds
@@ -125,7 +131,8 @@ class Learner(object):
         minimizer_kwargs = { "method": "L-BFGS-B","bounds":bnds }
         optimal = basinhopping(f, x0, minimizer_kwargs=minimizer_kwargs,niter=10,disp=True)        
         
-        point = self.s_0, self.start_date, self.i_0, self.d_0, self.r_0, self.startNCases, self.weigthCases, self.weigthRecov
+        point = self.s_0, self.start_date, self.i_0, self.d_0, self.r_0, self.startNCases, self.weigthCases, \
+                    self.weigthRecov, self.weigthDeath
         
         strSave='{}, {}, '.format(self.country, abs(optimal.fun))
         strSave=strSave+', '.join(map(str,point))
