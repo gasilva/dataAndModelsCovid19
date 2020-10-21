@@ -12,8 +12,8 @@ from tempfile import NamedTemporaryFile
 import urllib.request
 import matplotlib.font_manager as fm
 
-github_url = 'https://github.com/google/fonts/blob/master/ofl/playfairdisplay/static/PlayfairDisplay-Regular.ttf'
-url = github_url + '?raw=true'  # You want the actual file, not some html
+github_url = 'https://github.com/google/fonts/raw/master/ofl/playfairdisplay/static/PlayfairDisplay-Regular.ttf'
+url = github_url  # You want the actual file, not some html
 request = urllib.request.Request(url)
 response = urllib.request.urlopen(request)
 f = NamedTemporaryFile(delete=False, suffix='.ttf')
@@ -21,8 +21,8 @@ f.write(response.read())
 f.close()
 heading_font = fm.FontProperties(fname=f.name, size=26)
 
-github_url = 'https://github.com/google/fonts/blob/master/apache/roboto/static/Roboto-Regular.ttf'
-url = github_url + '?raw=true'  # You want the actual file, not some html
+github_url = 'https://github.com/google/fonts/raw/master/apache/roboto/static/Roboto-Regular.ttf'
+url = github_url  # You want the actual file, not some html
 request = urllib.request.Request(url)
 response = urllib.request.urlopen(request)
 f = NamedTemporaryFile(delete=False, suffix='.ttf')
@@ -32,9 +32,9 @@ subtitle_font = fm.FontProperties(fname=f.name, size=18)
 
 # github_url = 'http://antiyawn.com/uploads/Humor-Sans-1.0.ttf'
 # github_url = 'https://github.com/ipython/xkcd-font/blob/master/xkcd-script/font/xkcd-script.ttf'
-github_url = 'https://github.com/ipython/xkcd-font/blob/master/xkcd/build/xkcd-Regular.otf'
+github_url = 'https://github.com/ipython/xkcd-font/raw/master/xkcd/build/xkcd-Regular.otf'
 # github_url = 'https://github.com/shreyankg/xkcd-desktop/blob/master/Humor-Sans.ttf'
-url = github_url + '?raw=true'  # You want the actual file, not some html
+url = github_url   # You want the actual file, not some html
 request = urllib.request.Request(url)
 response = urllib.request.urlopen(request)
 f = NamedTemporaryFile(delete=False, suffix='.ttf')

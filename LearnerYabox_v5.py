@@ -37,7 +37,7 @@ ray.init(num_cpus=1,num_gpus=5,memory=230*1024*1024*1024)
 @ray.remote(memory=10*1024*1024*1024)
 class Learner(object):
     def __init__(self, country, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, \
-    startNCases, weigthCases, weigthRecov, end_date, cleanRecovered, version, underNotif=True, savedata=True):
+    startNCases, weigthCases, weigthRecov, weigthDeath, end_date, cleanRecovered, version, underNotif=True, savedata=True):
         self.country = country
         self.start_date = start_date
         self.predict_range = predict_range
@@ -50,6 +50,7 @@ class Learner(object):
         self.startNCases = startNCases
         self.weigthCases = weigthCases
         self.weigthRecov = weigthRecov
+        self.weigthDeath = weigthDeath
         self.cleanRecovered=cleanRecovered
         self.version=version
         self.savedata = savedata
@@ -81,7 +82,7 @@ class Learner(object):
     
     def create_lossOdeint(self,data,\
                     death, recovered, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, \
-                    weigthCases, weigthRecov):
+                    weigthCases, weigthRecov, weigthDeath):
 
         def lossOdeint(point):
             size = len(self.data)
@@ -134,18 +135,23 @@ class Learner(object):
             dInfData=np.diff(data.values.T[:])          
             dErrorI=np.mean(((dInf-dInfData)**2)[-8:])
 
+            wt=weigthCases+weigthRecov+weigthDeath
+            wc=weigthCases/wt
+            wr=weigthRecov/wt
+            wd=weigthDeath/wt
+            
             #objective function
-            gtot=weigthCases*(l1+0.05*dErrorI) + max(0,1. - weigthCases - weigthRecov)*(l2+0.2*dErrorD) + weigthRecov*l3
+            gtot=wc*(l1+0.05*dErrorI) + wd*(l2+0.2*dErrorD) + wr*l3
 
-            #penalty function for negative derivative at end of deaths
-            NegDeathData=np.diff(res[:,5])
-            dNeg=np.mean(NegDeathData[-5:]) 
-            correctGtot=max(abs(dNeg),0)**2
+#             #penalty function for negative derivative at end of deaths
+#             NegDeathData=np.diff(res[:,5])
+#             dNeg=np.mean(NegDeathData[-5:]) 
+#             correctGtot=max(abs(dNeg),0)**2
 
-            #final objective function
-            gtot=abs(10*min(np.sign(dNeg),0)*correctGtot)+abs(gtot)
+#             #final objective function
+#             gtot=abs(10*min(np.sign(dNeg),0)*correctGtot)+abs(gtot)
 
-            del NegDeathData, dInf, dInfData, dDeath, dDeathData, l1, l2, l3, correctGtot, dNeg, dErrorI, dErrorD
+            del dInf, dInfData, dDeath, dDeathData, l1, l2, l3, dErrorI, dErrorD
             return gtot
         return lossOdeint
     
@@ -209,7 +215,7 @@ class Learner(object):
         maxiterations=6500
         f=self.create_lossOdeint(self.data, \
             self.death, self.recovered, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
-                 self.weigthCases, self.weigthRecov)
+                 self.weigthCases, self.weigthRecov, self.weigthDeath)
         de = DE(f, bounds, maxiters=maxiterations) #,popsize=100)
         i=0
         with tqdm(total=maxiterations*1750*maxiterations/3500) as pbar:
@@ -225,12 +231,12 @@ class Learner(object):
         
             f=self.create_lossOdeint(self.data, \
                 self.death, self.recovered, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
-                     self.weigthCases, self.weigthRecov)
+                     self.weigthCases, self.weigthRecov, self.weigthDeath)
 
             bnds = ((p[0], p[0]),(p[1], p[1]),(p[2],p[2]),(p[3], p[3]),(p[4] ,p[4]),(p[5], p[5]),
-            (p[6], p[6]),(p[7], p[7]),(p[8], p[8]),(p[9], p[9]),(p[10], p[10]),(p[11], p[11]),(.2,1.5),(.2,1.5),(.2,1.5))
+            (p[6], p[6]),(p[7], p[7]),(p[8], p[8]),(p[9], p[9]),(p[10], p[10]),(p[11], p[11]),(.2,3),(.2,3),(.2,3))
 
-            x0 = [p[0], p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8],p[9],p[10],p[11],0.9, 0.9, 0.9]
+            x0 = [p[0], p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8],p[9],p[10],p[11],1.5, 0.9, 0.9]
             minimizer_kwargs = { "method": "L-BFGS-B","bounds":bnds }
             optimal = basinhopping(f, x0, minimizer_kwargs=minimizer_kwargs,disp=True) 
 
