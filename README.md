@@ -1,12 +1,14 @@
 # dataAndModelsCovid19
 
-The initial code for model SIR was based on the work published at gitHub https://github.com/gasilva/COVID19-SIR.
+The initial code for model SIR was based on the work published at gitHub https://github.com/Lewuathe/COVID19-SIR.
 The author has a webpage of the project https://www.lewuathe.com/covid-19-dynamics-with-sir-model.html
 All the copyrights for the parts of the code are due to Kai Sassaki https://github.com/Lewuathe. As needed, we are using Apache 2.0 license also.
 
 The code was modified to include data analysis and new models like SIR-D, SEIR, SEIR-D, SEAIR and SEAIR-D. The last one is very new and original with time delays, deaths and other constants.
 
-After some time, and sucess, the Institute of Technologies of Sao Paulo State (http://www.ipt.br) modified the code and used it to predict the demand for respirators and hospitals for Sao Paulo State, Brazil. The modified code, a Jupyter Notebook, can be accessed in subfolder ```./regionsSP```. It calculate infected, recovered and deaths for all administrative regions of Sao Paulo State. The final result can be seen at http://ec2-13-56-240-173.us-west-1.compute.amazonaws.com:3838/sample-apps/Covid19/
+After some time, and sucess, the Institute of Technologies of Sao Paulo State (http://www.ipt.br) modified the code and used it to predict the demand for respirators and hospitals for Sao Paulo State, Brazil. The modified code, a Jupyter Notebook, can be accessed in subfolder ```./regionsSP```. It calculate infected, recovered and deaths for all administrative regions of Sao Paulo State. The final result can be seen at http://covid19.ats4i.com
+
+It was also developed to predict Covid-19 infection for Brazilian States. You can see that at Jupyter Notebook at ```./statesBrazil```
 
 If you have interest, ATS (www.ats4i.com) has some posts about Covid-19 pandemics modeling.
 
@@ -46,84 +48,37 @@ opt=0
 
 Select countries to be plotted in log to analyze growth rate. All countries available.
 
-```python
-#prepare data for plotting
-country1="US"
-country2="Italy"
-country3="Brazil"
-country4="France"
-country5="Germany"
+The countries and initial parameters file is `data/param.csv`
 
-```
-Choose version to be place in the .png file name of log plot. This allows to you to analyze different set of countries.
+|country|start-date|prange|s0  |e0  |a0  |i0 |r0 |d0 |START|WCASES|WREC|WDTH|
+|-------|----------|----------------|----|----|----|---|---|---|-----|------|----|----
+|Brazil |3/2/20    |200             |10e6|1e-4|1e-4|200|100|50 |50   |.15   |0.05|0.8 
+|China  |1/28/20   |200             |50e3|1e-4|1e-4|200|100|50 |50   |.15   |0.05|0.8 
+|Italy  |2/28/20   |200             |2e6 |1e-4|1e-4|200|100|50 |50   |.15   |0.05|0.8 
+|US     |2/20/20   |200             |20e6|1e-4|1e-4|200|100|50 |50   |.15   |0.05|0.8 
+|India  |3/10/20   |200             |10e6|1e-4|1e-4|200|100|50 |50   |.15   |0.05|0.8 
 
-```python
-#plot version - changes the file name png
-version="1"
-```
+The optimized initial conditions are taken from the file `param_optimized_Yabox_HistMin.csv`
 
-Select country to have the exponential and logistic function fitting. Choose one of the countries in the list above.
-
-```python
-#choose country for curve fitting
-#choose country for growth curve
-#one of countries above
-country="Brazil"
-
-```
-
-Choose countries to be analyzed by SEAIRD model. Some countries are already adjusted. Other countries may need extra work to adjust S_0, A_0, I_0, R_0 and K_0, i.e., the initial conditions. 
-
-```python
-#list of countries for SEAIRD model
-#bypass command line
-countriesExt=["Italy","United Kingdom","China","France","US", \
-                "Brazil", "Belgium", "Germany", "Spain"]
-```
-
-## Command line use
-
-This implementation comes from SIR model of [https://github.com/Lewuathe/COVID19-SIR](https://github.com/Lewuathe/COVID19-SIR)
-
-It was added the K_0 value because SIRD model has initial deaths value in addition to S_0, I_0 and R_0.
-
-You can analyze several countries by making a CSV list like: Brazil, Italy, US, France. Do not put spaces before or after commas.
-
-```
- For other countries you can run at command line
- but be sure to define S_0, I_0, R_0, K_0, E_0, A_0
- the success of fitting will depend on these parameters
-
- usage: dataAndModelsCovid19.py [-h] [--countries COUNTRY_CSV] [--download-data]
-                  [--start-date START_DATE] [--prediction-days PREDICT_RANGE]
-                  [--S_0 S_0] [--I_0 I_0] [--R_0 R_0] [--D_0 D_0] [--E_0 E_0] [--A_0 A_0]
-
- optional arguments:
-   -h, --help            show this help message and exit
-   --countries COUNTRY_CSV
-                         Countries on CSV format. It must exact match the data
-                         names or you will get out of bonds error. No space before or after commas.
-   --download-data       Download fresh data and then run
-   --start-date START_DATE
-                         Start date on MM/DD/YY format ... I know ...It
-                         defaults to first data available 1/22/20
-   --prediction-days PREDICT_RANGE
-                         Days to predict with the model. Defaults to 150
-   --S_0 S_0             S_0. Defaults to 100000
-   --I_0 I_0             I_0. Defaults to 2
-   --R_0 R_0             R_0. Defaults to 0
-   --D_0 D_0             E_0. Defaults to 0
-   --E_0 E_0             E_0. Defaults to 0
-   --A_0 A_0             A_0. Defaults to 0
-```
+|country|start-date|range|s0  |e0  |a0  |i0 |r0 |d0 |START|WCASES|WREC|WDTH|
+|-------|----------|----------------|----|----|----|---|---|---|-----|------|----|----|
+|Brazil |03/03/20  |200             |32509903|0   |0   |71 |477|329|286  |0.4003|0.3898|0.1397|
+|China  |01/29/20  |200             |674008260|0   |0   |200|100|50 |50   |0.3926|0.4784|0.4224|
+|Italy  |02/29/20  |200             |525450|0   |0   |129|71 |157|302  |0.2731|0.2884|0.2461|
+|US     |02/19/20  |200             |23452805|0   |0   |135|167|472|194  |0.7096|0.1996|0.3107|
+|India  |03/10/20  |200             |37519697|0   |0   |265|362|81 |128  |0.9216|0.3379|0.4319|
 
 ## Databases Used in This Study
  
 ### Data
 
-This code has data from Repository by Johns Hopkins CSSE
+This code for countries has data from Repository by Johns Hopkins CSSE
 
 https://github.com/CSSEGISandData/COVID-19
+
+For Brazilian States and Sao Paulo State Regions the data is from Brazil.io
+
+https://data.brasil.io/dataset/covid19/_meta/list.html
 
 ## Data Analysis
 
