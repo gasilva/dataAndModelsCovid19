@@ -6,7 +6,7 @@ All the copyrights for the parts of the code are due to Kai Sassaki https://gith
 
 The code was modified to include data analysis and new models like SIR-D, SEIR, SEIR-D, SEAIR and SEAIR-D. The last one is very new and original with time delays, deaths and other constants.
 
-After some time, and sucess, the Institute of Technologies of Sao Paulo State (http://www.ipt.br) modified the code and used it to predict the demand for respirators and hospitals for Sao Paulo State, Brazil. The modified code, a Jupyter Notebook, can be accessed in subfolder ```./regionsSP```. It calculate infected, recovered and deaths for all administrative regions of Sao Paulo State. The final result can be seen at http://covi19.ats4i.com
+After some time, and sucess, the Institute of Technologies of Sao Paulo State (http://www.ipt.br) modified the code and used it to predict the demand for respirators and hospitals for Sao Paulo State, Brazil. The modified code, a Jupyter Notebook, can be accessed in subfolder ```./regionsSP```. It calculate infected, recovered and deaths for all administrative regions of Sao Paulo State. The final result can be seen at http://covid19.ats4i.com
 
 If you have interest, ATS (www.ats4i.com) has some posts about Covid-19 pandemics modeling.
 
