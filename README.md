@@ -4,7 +4,12 @@ The initial code for model SIR was based on the work published at gitHub https:/
 The author has a webpage of the project https://www.lewuathe.com/covid-19-dynamics-with-sir-model.html
 All the copyrights for the parts of the code are due to Kai Sassaki https://github.com/Lewuathe. As needed, we are using Apache 2.0 license also.
 
-The code was modified to include data analysis and new models like SIR-D, SEIR, SEIR-D, SEAIR and SEAIR-D. The last one is very new and original with time delays, deaths and other constants.
+The code was modified to include data analysis a new models SEAIR-D was developed, which is very new and original with time delays, deaths and other constants. A conversion to a Jupyter Notebook was made and three other codes were included: one for initial conditions optimization by evolutionary algorithm, other for ploting results in a map and last one to see the evolution of evolutionary calculation.
+
+The project has three codes for Covid-19 infection in:
+* countries at root
+* Brazilian states at ```./statesBrazil```
+* district regions of Sao Paulo State, Brazil at ```./regionsSP```
 
 After some time, and sucess, the Institute of Technologies of Sao Paulo State (http://www.ipt.br) modified the code and used it to predict the demand for respirators and hospitals for Sao Paulo State, Brazil. The modified code, a Jupyter Notebook, can be accessed in subfolder ```./regionsSP```. It calculate infected, recovered and deaths for all administrative regions of Sao Paulo State. The final result can be seen at http://covid19.ats4i.com
 
@@ -24,39 +29,28 @@ git clone https://github.com/gasilva/dataAndModelsCovid19.git
 
 Or use GitHub Desktop [https://desktop.github.com/](https://desktop.github.com/) and File, Clone repository
 
-## Usage
+## Codes
 
-Make changes directly in the source .py file.
+The project has some codes for Covid-19 infection in countries:
+* ```countries_Covid19_v7.ipynb```: main code
+* ```initialConditions_YaboxNew_v6.ipynb```: code to find initial conditions for the main code
+* ```historyIC.ipynb```: plot optimization history while code of initial conditions is run
+* ```plotMaps.ipynb```: plot results in a map (under development)
 
-Select one option 1 to 5 by variable opt
+The Brazlian States and Sao Paulo region follows the same logic.
 
-```python
-#Initial parameters
-#Choose here your options
-
-#option
-#opt=0 all plots
-#opt=1 corona log plot
-#opt=2 logistic model prediction
-#opt=3 bar plot with growth rate
-#opt=4 log plot + bar plot
-#opt=5 SEAIR-D Model
-opt=0
-```
-
-##### Model for Countries
-
-Select countries to be plotted in log to analyze growth rate. All countries available.
+## Countries and Initial Conditions
 
 The countries and initial parameters file is `data/param.csv`
 
-|country|start-date|prange|s0  |e0  |a0  |i0 |r0 |d0 |START|WCASES|WREC|WDTH|
+|country|start-date|range|s0  |e0  |a0  |i0 |r0 |d0 |START|WCASES|WREC|WDTH|
 |-------|----------|----------------|----|----|----|---|---|---|-----|------|----|----
 |Brazil |3/2/20    |200             |10e6|1e-4|1e-4|200|100|50 |50   |.15   |0.05|0.8 
 |China  |1/28/20   |200             |50e3|1e-4|1e-4|200|100|50 |50   |.15   |0.05|0.8 
 |Italy  |2/28/20   |200             |2e6 |1e-4|1e-4|200|100|50 |50   |.15   |0.05|0.8 
 |US     |2/20/20   |200             |20e6|1e-4|1e-4|200|100|50 |50   |.15   |0.05|0.8 
 |India  |3/10/20   |200             |10e6|1e-4|1e-4|200|100|50 |50   |.15   |0.05|0.8 
+
 
 The optimized initial conditions are taken from the file `param_optimized_Yabox_HistMin.csv`
 
@@ -67,6 +61,8 @@ The optimized initial conditions are taken from the file `param_optimized_Yabox_
 |Italy  |02/29/20  |200             |525450|0   |0   |129|71 |157|302  |0.2731|0.2884|0.2461|
 |US     |02/19/20  |200             |23452805|0   |0   |135|167|472|194  |0.7096|0.1996|0.3107|
 |India  |03/10/20  |200             |37519697|0   |0   |265|362|81 |128  |0.9216|0.3379|0.4319|
+
+The Brazlian States and Sao Paulo region follows the same logic.
 
 ## Databases Used in This Study
  
