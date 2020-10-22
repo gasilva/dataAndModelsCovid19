@@ -125,15 +125,15 @@ class Learner(object):
             #calculate derivatives
             #and the error of the derivative between prediction and the data
 
-            #for deaths
-            dDeath=np.diff(res[1:size,5])           
-            dDeathData=np.diff(self.death.values.T[:])
-            dErrorD=np.mean(((dDeath-dDeathData)**2)[-8:]) 
+#             #for deaths
+#             dDeath=np.diff(res[1:size,5])           
+#             dDeathData=np.diff(self.death.values.T[:])
+#             dErrorD=np.mean(((dDeath-dDeathData)**2)[-8:]) 
 
-            #for infected
-            dInf=np.diff(res[1:size,3])
-            dInfData=np.diff(data.values.T[:])          
-            dErrorI=np.mean(((dInf-dInfData)**2)[-8:])
+#             #for infected
+#             dInf=np.diff(res[1:size,3])
+#             dInfData=np.diff(data.values.T[:])          
+#             dErrorI=np.mean(((dInf-dInfData)**2)[-8:])
 
             wt=weigthCases+weigthRecov+weigthDeath
             wc=weigthCases/wt
@@ -141,7 +141,7 @@ class Learner(object):
             wd=weigthDeath/wt
             
             #objective function
-            gtot=wc*(l1+0.05*dErrorI) + wd*(l2+0.2*dErrorD) + wr*l3
+            gtot=wc*l1 + wd*l2+ wr*l3
 
 #             #penalty function for negative derivative at end of deaths
 #             NegDeathData=np.diff(res[:,5])
@@ -151,7 +151,7 @@ class Learner(object):
 #             #final objective function
 #             gtot=abs(10*min(np.sign(dNeg),0)*correctGtot)+abs(gtot)
 
-            del dInf, dInfData, dDeath, dDeathData, l1, l2, l3, dErrorI, dErrorD
+            del l1, l2, l3
             return gtot
         return lossOdeint
     

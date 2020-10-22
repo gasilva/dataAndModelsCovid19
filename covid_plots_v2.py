@@ -14,7 +14,9 @@ import matplotlib.font_manager as fm
 
 github_url = 'https://github.com/google/fonts/raw/master/ofl/playfairdisplay/static/PlayfairDisplay-Regular.ttf'
 url = github_url  # You want the actual file, not some html
-request = urllib.request.Request(url)
+headers = {}
+headers['User-Agent'] = "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.27 Safari/537.17"
+request = urllib.request.Request(url,headers=headers)
 response = urllib.request.urlopen(request)
 f = NamedTemporaryFile(delete=False, suffix='.ttf')
 f.write(response.read())
@@ -23,7 +25,7 @@ heading_font = fm.FontProperties(fname=f.name, size=26)
 
 github_url = 'https://github.com/google/fonts/raw/master/apache/roboto/static/Roboto-Regular.ttf'
 url = github_url  # You want the actual file, not some html
-request = urllib.request.Request(url)
+request = urllib.request.Request(url,headers=headers)
 response = urllib.request.urlopen(request)
 f = NamedTemporaryFile(delete=False, suffix='.ttf')
 f.write(response.read())
@@ -35,7 +37,7 @@ subtitle_font = fm.FontProperties(fname=f.name, size=18)
 github_url = 'https://github.com/ipython/xkcd-font/raw/master/xkcd/build/xkcd-Regular.otf'
 # github_url = 'https://github.com/shreyankg/xkcd-desktop/blob/master/Humor-Sans.ttf'
 url = github_url   # You want the actual file, not some html
-request = urllib.request.Request(url)
+request = urllib.request.Request(url,headers=headers)
 response = urllib.request.urlopen(request)
 f = NamedTemporaryFile(delete=False, suffix='.ttf')
 f.write(response.read())
