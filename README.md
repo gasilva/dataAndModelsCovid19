@@ -8,6 +8,8 @@ The code was modified to include data analysis and new models like SIR-D, SEIR, 
 
 After some time, and sucess, the Institute of Technologies of Sao Paulo State (http://www.ipt.br) modified the code and used it to predict the demand for respirators and hospitals for Sao Paulo State, Brazil. The modified code, a Jupyter Notebook, can be accessed in subfolder ```./regionsSP```. It calculate infected, recovered and deaths for all administrative regions of Sao Paulo State. The final result can be seen at http://covid19.ats4i.com
 
+It was also developed to predict Covid-19 infection for Brazilian States. You can see that at Jupyter Notebook at ```./statesBrazil```
+
 If you have interest, ATS (www.ats4i.com) has some posts about Covid-19 pandemics modeling.
 
 This is a open source contribution for the comunity. Please use and contribute!
@@ -73,6 +75,10 @@ The optimized initial conditions are taken from the file `param_optimized_Yabox_
 This code for countries has data from Repository by Johns Hopkins CSSE
 
 https://github.com/CSSEGISandData/COVID-19
+
+For Brazilian States and Sao Paulo State Regions the data is from Brazil.io
+
+https://data.brasil.io/dataset/covid19/_meta/list.html
 
 ## Data Analysis
 
