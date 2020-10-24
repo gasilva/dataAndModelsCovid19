@@ -52,7 +52,7 @@ class Learner(object):
 
         def lossOdeint(point):
             size = len(self.data)
-            beta0, beta01, startT, beta2, sigma, sigma2, sigma3,  a, b, c, d, mu, sub, subRec, subDth = point
+            beta0, beta01, startT, beta2, sigma, sigma2, sigma3,  a, b, c, d, mu = point
             gamma = a + b
             gamma2 = c + d
             def SEAIRD(y,t):
@@ -77,9 +77,6 @@ class Learner(object):
             tspan=np.arange(0, size+200, 1)
             res=odeint(SEAIRD,y0,tspan,mxstep=5000000) #,hmax=0.01)
             res = np.where(res >= 1e10, 1e10, res)
-            res[:,3]=sub*res[:,3]
-            res[:,4]=subRec*res[:,4]
-            res[:,5]=subDth*res[:,5]
             
             # calculate fitting error by using numpy.where
             ix= np.where(data.values >= startNCases)
@@ -90,33 +87,28 @@ class Learner(object):
             #calculate derivatives
             #and the error of the derivative between prediction and the data
 
-#             #for deaths
-#             dDeath=np.diff(res[1:size,5])           
-#             dDeathData=np.diff(self.death.values.T[:])
-#             dErrorD=np.mean(((dDeath-dDeathData)**2)[-8:]) 
+            #for deaths
+            dDeath=np.diff(res[1:size,5])           
+            dDeathData=np.diff(self.death.values.T[:])
+            dErrorD=np.mean(((dDeath-dDeathData)**2)[-8:]) 
 
-#             #for infected
-#             dInf=np.diff(res[1:size,3])
-#             dInfData=np.diff(data.values.T[:])          
-#             dErrorI=np.mean(((dInf-dInfData)**2)[-8:])
-            
-            wt=weigthCases+weigthRecov+weigthDeath
-            wc=weigthCases/wt
-            wr=weigthRecov/wt
-            wd=weigthDeath/wt
+            #for infected
+            dInf=np.diff(res[1:size,3])
+            dInfData=np.diff(data.values.T[:])          
+            dErrorI=np.mean(((dInf-dInfData)**2)[-8:])
             
             #objective function
-            gtot=wc + wd*l2 + wr*l3
+            gtot=weigthCases*(l1+0.05*dErrorI) + weigthDeath*(l2+0.2*dErrorD) + weigthRecov*l3
+            
+            #penalty function for negative derivative at end of deaths
+            NegDeathData=np.diff(res[:,5])
+            dNeg=np.mean(NegDeathData[-5:]) 
+            correctGtot=max(abs(dNeg),0)**2
 
-#             #penalty function for negative derivative at end of deaths
-#             NegDeathData=np.diff(res[:,5])
-#             dNeg=np.mean(NegDeathData[-5:]) 
-#             correctGtot=max(abs(dNeg),0)**2
+            #final objective function
+            gtot=abs(10*min(np.sign(dNeg),0)*correctGtot)+abs(gtot)
 
-#             #final objective function
-#             gtot=abs(10*min(np.sign(dNeg),0)*correctGtot)+abs(gtot)
-
-            del l1, l2, l3
+            del l1, l2, l3, NegDeathData, dNeg, correctGtot, dErrorI, dInfData, dInf, dErrorD, dDeathData, dDeath
             return gtot
         return lossOdeint
 
@@ -128,17 +120,10 @@ class Learner(object):
                   self.weigthCases, self.weigthRecov,self.weigthDeath)
 
         bnds = ((1e-12, .2),(1e-12, .2),(5,len(self.data)-5),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
-        (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1.,1.),(1.,1.),(1.,1.))# your bounds
-        x0 = [1e-3, 1e-3, 0, 1e-3, 1/120, 1/120, 1/120, 1e-3, 1e-3, 1e-3, 1e-3, 1e-3,1e-3, 1e-3, 1e-3]
+        (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4))# your bounds
+        x0 = [1e-3, 1e-3, 0, 1e-3, 1/120, 1/120, 1/120, 1e-3, 1e-3, 1e-3, 1e-3, 1e-3]
         minimizer_kwargs = { "method": "L-BFGS-B","bounds":bnds }
-        optimal = basinhopping(f, x0, minimizer_kwargs=minimizer_kwargs,niter=10,disp=True)  
-        p = optimal.x
-
-        bnds = ((p[0], p[0]),(p[1], p[1]),(p[2],p[2]),(p[3], p[3]),(p[4] ,p[4]),(p[5], p[5]),
-        (p[6], p[6]),(p[7], p[7]),(p[8], p[8]),(p[9], p[9]),(p[10], p[10]),(p[11], p[11]),(.5,2),(.5,2),(.5,2))
-        x0 = [p[0], p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8],p[9],p[10],p[11],0.9, 0.9, 0.9]
-        minimizer_kwargs = { "method": "L-BFGS-B","bounds":bnds }
-        optimal = basinhopping(f, x0, minimizer_kwargs=minimizer_kwargs,niter=2,disp=True) 
+        optimal = basinhopping(f, x0, minimizer_kwargs=minimizer_kwargs,niter=15,disp=True)  
         
         point = self.s_0, self.start_date, self.i_0, self.d_0, self.r_0, self.startNCases, self.weigthCases, \
                     self.weigthRecov, self.weigthDeath
