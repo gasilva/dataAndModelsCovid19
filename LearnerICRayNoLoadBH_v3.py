@@ -79,10 +79,10 @@ class Learner(object):
             res = np.where(res >= 1e10, 1e10, res)
             
             # calculate fitting error by using numpy.where
-            ix= np.where(data.values >= startNCases)
-            l1 = np.mean((res[ix[0],3] - data.values[ix])**2)
-            l2 = np.mean((res[ix[0],5] - death.values[ix])**2)
-            l3 = np.mean((res[ix[0],4] - recovered.values[ix])**2)
+            ix= np.where(self.data.values >= startNCases)
+            l1 = np.mean((res[ix[0],3] - self.data.values[ix])**2)
+            l2 = np.mean((res[ix[0],5] - self.death.values[ix])**2)
+            l3 = np.mean((res[ix[0],4] - self.recovered.values[ix])**2)
 
             #calculate derivatives
             #and the error of the derivative between prediction and the data
@@ -94,7 +94,7 @@ class Learner(object):
 
             #for infected
             dInf=np.diff(res[1:size,3])
-            dInfData=np.diff(data.values.T[:])          
+            dInfData=np.diff(self.data.values.T[:])          
             dErrorI=np.mean(((dInf-dInfData)**2)[-8:])
             
             #objective function
