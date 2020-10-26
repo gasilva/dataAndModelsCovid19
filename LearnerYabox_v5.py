@@ -25,8 +25,11 @@ from scipy.optimize import basinhopping
 import yabox as yb
 from yabox.algorithms import DE
 print('Yabox version: ', yb.__version__)
-from tqdm import tqdm
 import sigmoidOnly as sg
+from ipywidgets import FloatProgress
+from IPython.display import display
+from tqdm import tqdm
+from ipywidgets import FloatProgress, HBox, VBox, HTML
 
 #parallel computation
 import ray
@@ -37,7 +40,8 @@ ray.init(num_cpus=1,num_gpus=5,memory=230*1024*1024*1024)
 @ray.remote(memory=10*1024*1024*1024)
 class Learner(object):
     def __init__(self, country, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, \
-    startNCases, weigthCases, weigthRecov, weigthDeath, end_date, cleanRecovered, version, underNotif=True, savedata=True):
+    startNCases, weigthCases, weigthRecov, weigthDeath, end_date, cleanRecovered, version, underNotif=True, \
+                 Deaths=False, propWeigth=True, savedata=True):
         self.country = country
         self.start_date = start_date
         self.predict_range = predict_range
@@ -56,6 +60,8 @@ class Learner(object):
         self.savedata = savedata
         self.under = underNotif
         self.end_date = end_date
+        self.Deaths = Deaths
+        self.propWeigth = propWeigth
 
     def load_confirmed(self, country):
         df = pd.read_csv('data/time_series_19-covid-Confirmed-country.csv')
@@ -80,9 +86,7 @@ class Learner(object):
             values = np.append(values, datetime.strftime(current, '%m/%d/%y'))
         return values
     
-    def create_lossOdeint(self,data,\
-                    death, recovered, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, \
-                    weigthCases, weigthRecov, weigthDeath):
+    def create_lossOdeint(self):
 
         def lossOdeint(point):
             size = len(self.data)
@@ -107,53 +111,65 @@ class Learner(object):
                 y5=(-(y0+y1+y2+y3+y4)) #D
                 return [y0,y1,y2,y3,y4,y5]
 
-            y0=[s_0,e_0,a_0,i_0,r_0,d_0]
-            size = len(data)+1
+            y0=[self.s_0,self.e_0,self.a_0,self.i_0,self.r_0,self.d_0]
+            size = len(self.data)+1
             tspan=np.arange(0, size+200, 1)
             res=odeint(SEAIRD,y0,tspan,mxstep=5000000) #,hmax=0.01)
             res = np.where(res >= 1e10, 1e10, res)
 
             # calculate fitting error by using numpy.where
-            ix= np.where(data.values >= startNCases)
-            l1 = np.mean((res[ix[0],3] - (data.values[ix]))**2)
-            l2 = np.mean((res[ix[0],5] - death.values[ix])**2)
-            l3 = np.mean((res[ix[0],4] - (recovered.values[ix]))**2)
+            ix= np.where(self.data.values >= self.startNCases)
+            l1 = np.mean((res[ix[0],3] - (self.data.values[ix]))**2)
+            l2 = np.mean((res[ix[0],5] - self.death.values[ix])**2)
+            l3 = np.mean((res[ix[0],4] - (self.recovered.values[ix]))**2)
 
-            #calculate derivatives
-            #and the error of the derivative between prediction and the data
+            if self.Deaths:
+                #calculate derivatives
+                #and the error of the derivative between prediction and the data
 
-            #for deaths
-            dDeath=np.diff(res[1:size,5])           
-            dDeathData=np.diff(self.death.values.T[:])
-            dErrorD=np.mean(((dDeath-dDeathData)**2)[-8:]) 
+                #for deaths
+                dDeath=np.diff(res[1:size,5])           
+                dDeathData=np.diff(self.death.values.T[:])
+                dErrorD=np.mean(((dDeath-dDeathData)**2)[-8:]) 
 
-            #for infected
-            dInf=np.diff(res[1:size,3])
-            dInfData=np.diff(data.values.T[:])          
-            dErrorI=np.mean(((dInf-dInfData)**2)[-8:])
+                #for infected
+                dInf=np.diff(res[1:size,3])
+                dInfData=np.diff(self.data.values.T[:])          
+                dErrorI=np.mean(((dInf-dInfData)**2)[-8:])
+
+                #penalty function for negative derivative at end of deaths
+                NegDeathData=np.diff(res[:,5])
+                dNeg=np.mean(NegDeathData[-5:]) 
+                correctGtot=max(abs(dNeg),0)**2
+                del NegDeathData, dInfData, dInf, dDeathData, dDeath
+            else:
+                correctGtot=0
+                dNeg=0
+                dErrorI=0
+                dErrorD=0
             
+            if self.propWeigth:
+                wt=self.weigthCases+self.weigthDeath+self.weigthRecov
+                self.weigthCases=self.weigthCases/wt
+                self.weigthDeath=self.weigthDeath/wt
+                self.weigthRecov=self.weigthRecov/wt
+                
             #objective function
-            gtot=weigthCases*(l1+0.05*dErrorI) + weigthDeath*(l2+0.2*dErrorD) + weigthRecov*l3
-            
-            #penalty function for negative derivative at end of deaths
-            NegDeathData=np.diff(res[:,5])
-            dNeg=np.mean(NegDeathData[-5:]) 
-            correctGtot=max(abs(dNeg),0)**2
+            gtot=self.weigthCases*(l1+0.05*dErrorI) + self.weigthDeath*(l2+0.2*dErrorD) + self.weigthRecov*l3
 
             #final objective function
             gtot=abs(10*min(np.sign(dNeg),0)*correctGtot)+abs(gtot)
-
-            del l1, l2, l3, NegDeathData, dNeg, correctGtot, dErrorI, dInfData, dInf, dErrorD, dDeathData, dDeath
+            
+            del l1, l2, l3, correctGtot, dNeg, dErrorI, dErrorD
+            
             return gtot
         return lossOdeint
 
-    def create_lossSub(self,data,\
-                    death, recovered, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, \
-                    weigthCases, weigthRecov, weigthDeath,beta0, beta01, startT, \
-                       beta2, sigma, sigma2, sigma3,  a, b, c, d, mu ):
+    def create_lossSub(self, p):
+        
+        beta0, beta01, startT, beta2, sigma, sigma2, sigma3, a, b, c, d, mu  = p
 
         def lossSub(point):
-            size = len(self.data)
             sub, subRec, subDth = point
             gamma=a+b
             gamma2=c+d
@@ -175,59 +191,69 @@ class Learner(object):
                 y5=(-(y0+y1+y2+y3+y4)) #D
                 return [y0,y1,y2,y3,y4,y5]
 
-            y0=[s_0,e_0,a_0,i_0,r_0,d_0]
-            size = len(data)+1
+            y0=[self.s_0,self.e_0,self.a_0,self.i_0,self.r_0,self.d_0]
+            size = len(self.data)+1
             tspan=np.arange(0, size+200, 1)
             res=odeint(SEAIRD,y0,tspan,mxstep=5000000) #,hmax=0.01)
             res = np.where(res >= 1e10, 1e10, res)
-#             res[:,3]=sub*res[:,3]
-#             res[:,4]=subRec*res[:,4]
-#             res[:,5]=subDth*res[:,5]
-            data.values=data.values/sub
-            death.values=death.values/subDth
-            recovered.values=recovered.values/subRec
+            res[:,3]=sub*res[:,3]
+            res[:,4]=subRec*res[:,4]
+            res[:,5]=subDth*res[:,5]
 
             # calculate fitting error by using numpy.where
-            ix= np.where(data.values >= startNCases)
-            l1 = np.mean((res[ix[0],3] - (data.values[ix]))**2)
-            l2 = np.mean((res[ix[0],5] - death.values[ix])**2)
-            l3 = np.mean((res[ix[0],4] - (recovered.values[ix]))**2)
+            ix= np.where(self.data.values >= self.startNCases)
+            l1 = np.mean((res[ix[0],3] - (self.data.values[ix]))**2)
+            l2 = np.mean((res[ix[0],5] - self.death.values[ix])**2)
+            l3 = np.mean((res[ix[0],4] - (self.recovered.values[ix]))**2)
 
-            #calculate derivatives
-            #and the error of the derivative between prediction and the data
+            if self.Deaths:
+                #calculate derivatives
+                #and the error of the derivative between prediction and the data
 
-            #for deaths
-            dDeath=np.diff(res[1:size,5])           
-            dDeathData=np.diff(self.death.values.T[:])
-            dErrorD=np.mean(((dDeath-dDeathData)**2)[-8:]) 
+                #for deaths
+                dDeath=np.diff(res[1:size,5])           
+                dDeathData=np.diff(self.death.values.T[:])
+                dErrorD=np.mean(((dDeath-dDeathData)**2)[-8:]) 
 
-            #for infected
-            dInf=np.diff(res[1:size,3])
-            dInfData=np.diff(data.values.T[:])          
-            dErrorI=np.mean(((dInf-dInfData)**2)[-8:])
-            
+                #for infected
+                dInf=np.diff(res[1:size,3])
+                dInfData=np.diff(self.data.values.T[:])          
+                dErrorI=np.mean(((dInf-dInfData)**2)[-8:])
+
+                #penalty function for negative derivative at end of deaths
+                NegDeathData=np.diff(res[:,5])
+                dNeg=np.mean(NegDeathData[-5:]) 
+                correctGtot=max(abs(dNeg),0)**2
+                del NegDeathData, dInfData, dInf, dDeathData, dDeath
+            else:
+                correctGtot=0
+                dNeg=0
+                dErrorI=0
+                dErrorD=0
+
+            if self.propWeigth:
+                wt=self.weigthCases+self.weigthDeath+self.weigthRecov
+                weigthCases=self.weigthCases/wt
+                weigthDeath=self.weigthDeath/wt
+                weigthRecov=self.weigthRecov/wt
+                
             #objective function
-            gtot=weigthCases*(l1+0.05*dErrorI) + weigthDeath*(l2+0.2*dErrorD) + weigthRecov*l3
-            
-            #penalty function for negative derivative at end of deaths
-            NegDeathData=np.diff(res[:,5])
-            dNeg=np.mean(NegDeathData[-5:]) 
-            correctGtot=max(abs(dNeg),0)**2
+            gtot=self.weigthCases*(l1+0.05*dErrorI) + self.weigthDeath*(l2+0.2*dErrorD) + self.weigthRecov*l3
 
             #final objective function
             gtot=abs(10*min(np.sign(dNeg),0)*correctGtot)+abs(gtot)
-
-            del l1, l2, l3, NegDeathData, dNeg, correctGtot, dErrorI, dInfData, dInf, dErrorD, dDeathData, dDeath
+            
+            del l1, l2, l3, correctGtot, dNeg, dErrorI, dErrorD
             return gtot 
         return lossSub    
     
     
 
     #predict final extended values
-    def predict(self, beta0, beta01, startT, beta2, sigma, sigma2, sigma3,  a, b, c, d, mu, sub, subRec, subDth, data, \
-                    death, recovered, country, s_0, e_0, a_0, i_0, r_0, d_0, predict_range):
-
-        new_index = self.extend_index(data.index, 300)
+    def predict(self, p):
+        
+        beta0, beta01, startT, beta2, sigma, sigma2, sigma3, a, b, c, d, mu, sub, subRec, subDth  = p
+        new_index = self.extend_index(self.data.index, 300)
         size = len(new_index)
         gamma=a+b
         gamma2=c+d
@@ -249,21 +275,23 @@ class Learner(object):
             y5=(-(y0+y1+y2+y3+y4)) #D
             return [y0,y1,y2,y3,y4,y5]
 
-        y0=[s_0,e_0,a_0,i_0,r_0,d_0]
+        y0=[self.s_0,self.e_0,self.a_0,self.i_0,self.r_0,self.d_0]
         tspan=np.arange(0, size, 1)
         res=odeint(SEAIRD,y0,tspan,mxstep=5000000) #,hmax=0.01)
         res = np.where(res >= 1e10, 1e10, res)
         res[:,3]=sub*res[:,3]
         res[:,4]=subRec*res[:,4]
         res[:,5]=subDth*res[:,5]
-            
+
         #data not extended
-        extended_actual = np.concatenate((data.values, \
-                            [None] * (size - len(data.values))))
-        extended_recovered = np.concatenate((recovered.values, \
-                            [None] * (size - len(recovered.values))))
-        extended_death = np.concatenate((death.values, \
-                            [None] * (size - len(death.values))))
+        extended_actual = np.concatenate((self.data.values, \
+                            [None] * (size - len(self.data.values))))
+        extended_recovered = np.concatenate((self.recovered.values, \
+                            [None] * (size - len(self.recovered.values))))
+        extended_death = np.concatenate((self.death.values, \
+                            [None] * (size - len(self.death.values))))
+        
+        del y1,y2,y3,y4,y5,p,tspan,gamma,gamma2,size
 
         return new_index, extended_actual, extended_death, extended_recovered,\
                res[:,0], res[:,1],res[:,2],res[:,3],res[:,4], res[:,5]
@@ -280,9 +308,7 @@ class Learner(object):
             (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
         maxiterations=6500
-        f=self.create_lossOdeint(self.data, \
-            self.death, self.recovered, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
-                 self.weigthCases, self.weigthRecov, self.weigthDeath)
+        f=self.create_lossOdeint()
         de = DE(f, bounds, maxiters=maxiterations) #,popsize=100)
         i=0
         with tqdm(total=maxiterations*1750*maxiterations/3500) as pbar:
@@ -295,33 +321,24 @@ class Learner(object):
         p=best_params[0]
         
         if self.under:
-            f=self.create_lossSub(self.data, \
-                self.death, self.recovered, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
-                     self.weigthCases, self.weigthRecov, self.weigthDeath,\
-                    p[0], p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8],p[9],p[10],p[11])
-
-            bnds = ((.5,1),(.5,1),(.5,1))
+            f=self.create_lossSub(p)
+            bnds = ((.1,4),(.1,4),(.1,4))
             x0 = [0.9, 0.9, 0.9]
             minimizer_kwargs = { "method": "L-BFGS-B","bounds":bnds }
-            optimal = basinhopping(f, x0, minimizer_kwargs=minimizer_kwargs,disp=True) 
+            optimal = basinhopping(f, x0, minimizer_kwargs=minimizer_kwargs,disp=True,niter=100) 
             p2=optimal.x
-            self.data=self.data/p[0]
-            self.recovered=self.recovered/p[1]
-            self.death=self.death/p[2]
         else:
             p2=[1,1,1]
         
         p = np.concatenate((p, p2))
         beta0, beta01, startT, beta2, sigma, sigma2, sigma3, a, b, c, d, mu, sub, subRec, subDth  = p
         print("country {}".format(self.country))
-        print("under notifications cases {:.2f}".format(p[0]))
-        print("under notifications recovered {:.2f}".format(p[1]))
-        print("under notifications deaths {:.2f}".format(p[2]))
+        print("under notifications cases {:.2f}".format(p2[0]))
+        print("under notifications recovered {:.2f}".format(p2[1]))
+        print("under notifications deaths {:.2f}".format(p2[2]))
 
         new_index, extended_actual, extended_death, extended_recovered, y0, y1, y2, y3, y4, y5 \
-                = self.predict(beta0, beta01, startT, beta2, sigma, sigma2, sigma3, a, b, c, d, mu, sub, subRec, subDth, \
-                    self.data, self.death, self.recovered, self.country, self.s_0, \
-                    self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.predict_range)
+                = self.predict(p)
 
         #prepare dataframe to export
         df = pd.DataFrame({
