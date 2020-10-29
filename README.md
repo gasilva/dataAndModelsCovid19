@@ -52,7 +52,7 @@ The countries and initial parameters file is `data/param.csv`
 |India  |3/10/20   |200             |10e6|1e-4|1e-4|200|100|50 |50   |.15   |0.05|0.8 
 
 
-The optimized initial conditions are taken from the file `param_optimized_Yabox_HistMin.csv`
+The optimized initial conditions are taken from the file `data/param_optimized_Yabox_HistMin.csv`
 
 |country|start-date|range|s0  |e0  |a0  |i0 |r0 |d0 |START|WCASES|WREC|WDTH|
 |-------|----------|----------------|----|----|----|---|---|---|-----|------|----|----|
