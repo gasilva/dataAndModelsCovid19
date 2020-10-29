@@ -163,8 +163,6 @@ The last equation does not need to solved, because
 
 ![](https://latex.codecogs.com/png.latex?%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
 
-![Model SIR-D Covid-19 epidemics for Brazil](./results/modelSIRDBrazil.png)
-
 The SIR-D model code is based on the contribution of Giuliano Belinassi, from IME-USP, Brazil
 
 https://github.com/Lewuathe/COVID19-SIR/issues/13#issue-589616803
@@ -192,8 +190,6 @@ Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://tripl
 
 σ: is the rate at which individuals move from the exposed to the infectious classes. Its reciprocal (1/σ) is the average latent (exposed) period.
 
-σ2: is the rate at which individuals move from the infectious to the dead and healed classes. Its reciprocal (1/σ2) is the average latent (exposed) period.
-
 ---
 
 ![](./equations/SEIR_Model.png)
@@ -201,8 +197,6 @@ Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://tripl
 The last equation does not need to solved, because
 
 ![](https://latex.codecogs.com/png.latex?%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D%20%3D%200)
-
-![Model SEIR Covid-19 epidemics for Brazil](./results/modelSEIRBrazil.png)
 
 About SEIR models:
 
@@ -241,8 +235,6 @@ p: is the fraction of the exposed which become symptomatic infectious sub-popula
 ---
 
 The inclusion of asymptomatic cases in SEIRD model generates SEAIRD equation system:
-
-![](./equations/SEAIRD_Model.png)
 
 The last equation does not need to solved, because
 
