@@ -213,42 +213,6 @@ Matt J. Keeling & Pejman Rohani, Chaper 2.6, SEIR model
 
 [http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html](http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html)
 
-### SEIR-D - Original variation, proposed by this author, from SEIR model for susceptible, exposed, infected and deaths with delay in recoveries and deaths
-
-- S(t) are those susceptible but not yet infected with the disease
-- E(t) are those exposed to the virus
-- I(t) is the number of infectious individuals
-- R(t) are those individuals who have healed
-- K(t) are those individuals who have died
-
----
-
-β : Effective contact rate [1/min]
-
-γ: Recovery(+Mortality) rate γ=(a+b) [1/min]
-
-a: recovery of healed  [1/min]
-
-b: mortality rate  [1/min]
-
-σ: is the rate at which individuals move from the exposed to the infectious classes. Its reciprocal (1/σ) is the average latent (exposed) period.
-
-σ2: is the rate at which individuals move from the infectious to the dead and healed classes. Its reciprocal (1/σ2) is the average latent period.
-
----
-
-The splitting of deaths and healed from recoveries of the SEIR model is necessary because death data is more accurate than healed data of several countries.
-
-![](./equations/SEIRD_Model.png)
-
-The last equation does not need to solved, because
-
-![](https://latex.codecogs.com/png.latex?%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
-
-The model takes SEIR Model and split the r(t) and k(t) by making γ=a+b.
-
-![Model SEIR-D Covid-19 epidemics for Brazil](./results/modelSEIRD_sigamOptBrazil.png)
-
 ### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptible, exposed, asymptomatic, infected and deaths with delay in recoveries and deaths
 
 - S(t) are those susceptible but not yet infected with the disease
@@ -269,8 +233,6 @@ a: recovery of healed  [1/min]
 b: mortality rate  [1/min]
 
 σ: is the rate at which individuals move from the exposed to the infectious classes. Its reciprocal (1/σ) is the average latent (exposed) period.
-
-σ2: is the rate at which individuals move from the infectious to the deadas and healed classes. Its reciprocal (1/σ2) is the average latent (exposed) period
 
 p: is the fraction of the exposed which become symptomatic infectious sub-population.
 
@@ -309,16 +271,6 @@ A zoom at infected, deaths and recovered
 ![Comparison between Spain deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptSpain.png)
 
 ![Comparison between Belgium deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptBelgium.png)
-
-## Models Comparison 
-
-The comparison between model is presented below. All models were best fitted against real data. Everything can be updated and adjusted better than done here but it requires time. Brazil was selected to be compared however other countries also can be calculated and compared.
-
-![Comparison of Models Results Infected Brazil](./results/compareModelInfectedBrazil.png)
-
-![Comparison of Models Results Deaths Brazil](./results/compareModelDeathsBrazil.png)
-
-![Comparison of Models Results Recovered Brazil](./results/compareModelRecoveredBrazil.png)
 
 ## References:
 
