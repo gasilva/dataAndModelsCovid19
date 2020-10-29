@@ -64,19 +64,6 @@ The optimized initial conditions are taken from the file `param_optimized_Yabox_
 
 The Brazlian States and Sao Paulo region follows the same logic.
 
-## Databases Used in This Study
- 
-### Data
-
-This code for countries has data from Repository by Johns Hopkins CSSE
-
-https://github.com/CSSEGISandData/COVID-19
-
-For Brazilian States and Sao Paulo State Regions the data is from Brazil.io
-
-https://data.brasil.io/dataset/covid19/_meta/list.html
-
-
 ## Theory
 
 The mathematical Models are based in Lotka-Volterra equations, it is like a predator-prey type of model.
@@ -156,7 +143,7 @@ The the Python notebook of
 
 https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
 
-### SEIR - WHO model type for susceptible, exposed, infected and recovered with delay in recoveries
+### SEIR - WHO model type for susceptible, exposed, infected and recovered
 
 ![SEIR model general application](https://d25hn4jiqx5f7l.cloudfront.net/file_attachments/files/original/73be551d5ca0a993eafa0f5b53a66da1b9e8e012.png?1582334250)
 
@@ -192,7 +179,7 @@ Matt J. Keeling & Pejman Rohani, Chaper 2.6, SEIR model
 
 [http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html](http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html)
 
-### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptible, exposed, asymptomatic, infected and deaths with delay in recoveries and deaths
+### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptible, exposed, asymptomatic, infected and deaths
 
 - S(t) are those susceptible but not yet infected with the disease
 - E(t) are those exposed to the virus
@@ -246,6 +233,18 @@ A zoom at infected, deaths and recovered
 ![Comparison between Spain deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptSpain.png)
 
 ![Comparison between Belgium deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptBelgium.png)
+
+## Databases Used in This Study
+ 
+### Data
+
+This code for countries has data from Repository by Johns Hopkins CSSE
+
+https://github.com/CSSEGISandData/COVID-19
+
+For Brazilian States and Sao Paulo State Regions the data is from Brazil.io
+
+https://data.brasil.io/dataset/covid19/_meta/list.html
 
 ## Data Analysis
 
