@@ -76,21 +76,6 @@ For Brazilian States and Sao Paulo State Regions the data is from Brazil.io
 
 https://data.brasil.io/dataset/covid19/_meta/list.html
 
-## Data Analysis
-
-### Log Plot for Covid-19 Infection in 5 Countries
-
-![Log Plot for Covid-19 Infection in 5 countries](./results/coronaPythonEN_1.png)
-![Log Plot for Covid-19 Infection in 5 countries second set](./results/coronaPythonEN_2.png)
-
-### Bar Plot for Covid-19 for Infected Cases
-
-![Bar Plot for Covid-19 for Infected Cases Relative](./results/coronaPythonGrowthEN_Brazil.png)
-![Bar Plot for Covid-19 for Infected Cases Absolute](./results/coronaPythonGrowthDeltaCasesEN_Brazil.png)
-
-### Simple Exponential and Logistic Functions Fitting for Covid-19 Infected Data
-
-![Simple Exponential and Logistic Functions Fitting](./results/coronaPythonModelENBrazil.png)
 
 ## Theory
 
@@ -236,6 +221,8 @@ p: is the fraction of the exposed which become symptomatic infectious sub-popula
 
 The inclusion of asymptomatic cases in SEIRD model generates SEAIRD equation system:
 
+![](./equations/SEAIRD_Model.png)
+
 The last equation does not need to solved, because
 
 ![](https://latex.codecogs.com/png.latex?%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bda%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
@@ -259,6 +246,22 @@ A zoom at infected, deaths and recovered
 ![Comparison between Spain deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptSpain.png)
 
 ![Comparison between Belgium deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptBelgium.png)
+
+## Data Analysis
+
+### Log Plot for Covid-19 Infection in 5 Countries
+
+![Log Plot for Covid-19 Infection in 5 countries](./results/coronaPythonEN_1.png)
+![Log Plot for Covid-19 Infection in 5 countries second set](./results/coronaPythonEN_2.png)
+
+### Bar Plot for Covid-19 for Infected Cases
+
+![Bar Plot for Covid-19 for Infected Cases Relative](./results/coronaPythonGrowthEN_Brazil.png)
+![Bar Plot for Covid-19 for Infected Cases Absolute](./results/coronaPythonGrowthDeltaCasesEN_Brazil.png)
+
+### Simple Exponential and Logistic Functions Fitting for Covid-19 Infected Data
+
+![Simple Exponential and Logistic Functions Fitting](./results/coronaPythonModelENBrazil.png)
 
 ## References:
 
