@@ -244,10 +244,6 @@ It is a new completely development model inspired on the paper below, because it
 
 [https://www.hindawi.com/journals/ddns/2017/4232971/#references](https://www.hindawi.com/journals/ddns/2017/4232971/#references)
 
-Global optimization to fit real data
-
-![Model SEAIR-D Global Optimization Covid-19 epidemics for Brazil with asymptomatic](./results/modelSEAIRDOptGlobalOptimumBrazil.png)
-
 A zoom at infected, deaths and recovered
 
 ![Model SEAIR-D Global Optimization Zoom Covid-19 epidemics for Brazil with asymptomatic](./results/ZoomModelSEAIRDOptBrazil.png)
