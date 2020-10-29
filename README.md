@@ -92,7 +92,7 @@ The differential equations describing this model were first derived by Kermack a
 
 ### SIR - Susceptible, Infected and Recovered Model
 
-![](./equations/SIR.gif)
+![](./equations/SIR.png)
 
 Here, the number of 'recovery' englobes both recovered and deaths. This parameter is represented by γ.
 
@@ -129,7 +129,7 @@ b: mortality rate  [1/min]
 
 ---
 
-![](./equations/SIRD.gif)
+![](./equations/SIRD.png)
 
 The last equation does not need to solved, because
 
