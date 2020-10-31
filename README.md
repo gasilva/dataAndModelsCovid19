@@ -52,7 +52,7 @@ The countries and initial parameters file is `data/param.csv`
 |India  |3/10/20   |200             |10e6|1e-4|1e-4|200|100|50 |50   |.15   |0.05|0.8 
 
 
-The optimized initial conditions are taken from the file `param_optimized_Yabox_HistMin.csv`
+The optimized initial conditions are taken from the file `data/param_optimized_Yabox_HistMin.csv`
 
 |country|start-date|range|s0  |e0  |a0  |i0 |r0 |d0 |START|WCASES|WREC|WDTH|
 |-------|----------|----------------|----|----|----|---|---|---|-----|------|----|----|
@@ -63,34 +63,6 @@ The optimized initial conditions are taken from the file `param_optimized_Yabox_
 |India  |03/10/20  |200             |37519697|0   |0   |265|362|81 |128  |0.9216|0.3379|0.4319|
 
 The Brazlian States and Sao Paulo region follows the same logic.
-
-## Databases Used in This Study
- 
-### Data
-
-This code for countries has data from Repository by Johns Hopkins CSSE
-
-https://github.com/CSSEGISandData/COVID-19
-
-For Brazilian States and Sao Paulo State Regions the data is from Brazil.io
-
-https://data.brasil.io/dataset/covid19/_meta/list.html
-
-## Data Analysis
-
-### Log Plot for Covid-19 Infection in 5 Countries
-
-![Log Plot for Covid-19 Infection in 5 countries](./results/coronaPythonEN_1.png)
-![Log Plot for Covid-19 Infection in 5 countries second set](./results/coronaPythonEN_2.png)
-
-### Bar Plot for Covid-19 for Infected Cases
-
-![Bar Plot for Covid-19 for Infected Cases Relative](./results/coronaPythonGrowthEN_Brazil.png)
-![Bar Plot for Covid-19 for Infected Cases Absolute](./results/coronaPythonGrowthDeltaCasesEN_Brazil.png)
-
-### Simple Exponential and Logistic Functions Fitting for Covid-19 Infected Data
-
-![Simple Exponential and Logistic Functions Fitting](./results/coronaPythonModelENBrazil.png)
 
 ## Theory
 
@@ -120,7 +92,7 @@ The differential equations describing this model were first derived by Kermack a
 
 ### SIR - Susceptible, Infected and Recovered Model
 
-![](./equations/SIR.gif)
+![](./equations/SIR.png)
 
 Here, the number of 'recovery' englobes both recovered and deaths. This parameter is represented by γ.
 
@@ -157,7 +129,7 @@ b: mortality rate  [1/min]
 
 ---
 
-![](./equations/SIRD.gif)
+![](./equations/SIRD.png)
 
 The last equation does not need to solved, because
 
@@ -171,7 +143,7 @@ The the Python notebook of
 
 https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
 
-### SEIR - WHO model type for susceptible, exposed, infected and recovered with delay in recoveries
+### SEIR - WHO model type for susceptible, exposed, infected and recovered
 
 ![SEIR model general application](https://d25hn4jiqx5f7l.cloudfront.net/file_attachments/files/original/73be551d5ca0a993eafa0f5b53a66da1b9e8e012.png?1582334250)
 
@@ -207,7 +179,7 @@ Matt J. Keeling & Pejman Rohani, Chaper 2.6, SEIR model
 
 [http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html](http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html)
 
-### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptible, exposed, asymptomatic, infected and deaths with delay in recoveries and deaths
+### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptible, exposed, asymptomatic, infected and deaths
 
 - S(t) are those susceptible but not yet infected with the disease
 - E(t) are those exposed to the virus
@@ -236,6 +208,8 @@ p: is the fraction of the exposed which become symptomatic infectious sub-popula
 
 The inclusion of asymptomatic cases in SEIRD model generates SEAIRD equation system:
 
+![](./equations/SEAIRD_Model.png)
+
 The last equation does not need to solved, because
 
 ![](https://latex.codecogs.com/png.latex?%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bda%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
@@ -259,6 +233,34 @@ A zoom at infected, deaths and recovered
 ![Comparison between Spain deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptSpain.png)
 
 ![Comparison between Belgium deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptBelgium.png)
+
+## Databases Used in This Study
+ 
+### Data
+
+This code for countries has data from Repository by Johns Hopkins CSSE
+
+https://github.com/CSSEGISandData/COVID-19
+
+For Brazilian States and Sao Paulo State Regions the data is from Brazil.io
+
+https://data.brasil.io/dataset/covid19/_meta/list.html
+
+## Data Analysis
+
+### Log Plot for Covid-19 Infection in 5 Countries
+
+![Log Plot for Covid-19 Infection in 5 countries](./results/coronaPythonEN_1.png)
+![Log Plot for Covid-19 Infection in 5 countries second set](./results/coronaPythonEN_2.png)
+
+### Bar Plot for Covid-19 for Infected Cases
+
+![Bar Plot for Covid-19 for Infected Cases Relative](./results/coronaPythonGrowthEN_Brazil.png)
+![Bar Plot for Covid-19 for Infected Cases Absolute](./results/coronaPythonGrowthDeltaCasesEN_Brazil.png)
+
+### Simple Exponential and Logistic Functions Fitting for Covid-19 Infected Data
+
+![Simple Exponential and Logistic Functions Fitting](./results/coronaPythonModelENBrazil.png)
 
 ## References:
 
