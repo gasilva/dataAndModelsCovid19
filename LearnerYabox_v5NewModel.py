@@ -304,10 +304,10 @@ class Learner(object):
         self.data = self.load_confirmed()-self.recovered-self.death
         
         size=len(self.data)
-        bounds=[(1e-12, .2),(1e-12, .2),(5,size-5),(1e-12, .2),
-            (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
+        bounds=[(1e-20, .2),(1e-20, .2),(5,size-5),(1e-20, .2),
+            (1/120, 1.),(1e-20, .4),(1e-20, .4),(1e-20, .4),(1e-20, .4),(1e-20, .4)]
 
-        maxiterations=3500
+        maxiterations=5500
         f=self.create_lossOdeint()
         de = DE(f, bounds, maxiters=maxiterations) #,popsize=100)
         i=0

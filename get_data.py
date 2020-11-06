@@ -14,7 +14,7 @@ def sumCases_province(input_file, output_file):
             lines.append(line)    
         i=0
         ix=0
-        for i in range(0,len(lines[:])-1):
+        for i in range(0,len(lines[:])-2):
             if lines[i][1]==lines[i+1][1]:
                 if ix==0:
                     ix=i
@@ -26,7 +26,9 @@ def sumCases_province(input_file, output_file):
                     ix=0
                 else:
                     csv_writer.writerow(lines[i])
-            i+=1 
+        for i in range(len(lines[:])-2,len(lines[:])):
+                    csv_writer.writerow(lines[i])            
+            #i+=1 
 
 def download_data(url_dictionary):
     #Lets download the files
