@@ -40,7 +40,7 @@ ray.init(num_cpus=1,num_gpus=5,memory=230*1024*1024*1024)
 @ray.remote(memory=10*1024*1024*1024)
 class Learner(object):
     def __init__(self, country, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, \
-    startNCases, weigthCases, weigthRecov, weigthDeath, end_date, cleanRecovered, version, underNotif=True, \
+    startNCases, weigthCases, weigthRecov, weigthDeath, end_date, deltaDay, cleanRecovered, version, underNotif=True, \
                  Deaths=False, propWeigth=True, savedata=True):
         self.country = country
         self.start_date = start_date
@@ -62,6 +62,7 @@ class Learner(object):
         self.end_date = end_date
         self.Deaths = Deaths
         self.propWeigth = propWeigth
+        self.deltaDay = deltaDay
 
     def load_confirmed(self):
         df = pd.read_csv('data/time_series_19-covid-Confirmed-country.csv')
@@ -338,7 +339,7 @@ class Learner(object):
         print("under notifications deaths {:.2f}".format(p2[2]))
         
         today = datetime.today()
-        endDate = today + timedelta(days=-1)
+        endDate = today + timedelta(days=self.deltaDay)
         self.end_date= datetime.strftime(endDate, '%-m/%-d/%y') 
         self.death= self.load_dead()
         self.recovered = self.load_recovered()
