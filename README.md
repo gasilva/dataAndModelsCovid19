@@ -223,7 +223,7 @@ It is a new completely development model inspired on the paper below, because it
 
 ![Comparison between US deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptUS20YaboxIC.png)
 
-![Comparison between Italy deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptItaly20YaboxICpng)
+![Comparison between Italy deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptItaly20YaboxIC.png)
 
 ![Comparison between China infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptChina20YaboxIC.png)
 
