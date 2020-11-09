@@ -58,7 +58,9 @@ def logGrowth(growth,finalDay):
     return x,y
 
 def predictionsPlot(df,startCases):
-    cases=df.infected[df.infected > startCases]    
+    cases=df.infected[df.infected > startCases]+\
+            df.predicted_recovered[df.infected > startCases]+\
+            df.predicted_deaths[df.infected > startCases] 
     time=np.linspace(0,len(cases)-1,len(cases))   
     return time,cases
 
@@ -168,13 +170,13 @@ def covid_plots(country, countries4Plot,\
 
         model='SEAIRD'
         df = loadDataFrame('./data/SEAIRDv5_Yabox_'+country+'.pkl')
-        time6, cases6 = predictionsPlot(df,startCase)
+        time6, cases6 = predictionsPlot(df,startCase+200)
 
-        #model
-        growth = 1.025
-        x,y = logGrowth(growth,200)
-        growth1 = 1.05
-        x1,y1 = logGrowth(growth1,200)
+#         #model
+#         growth = 1.0125/2
+#         x,y = logGrowth(growth,200)
+#         growth1 = 1.025/2
+#         x1,y1 = logGrowth(growth1,200)
 
         # Plot the data
         #ax.figure(figsize=(19.20,10.80))
@@ -202,27 +204,27 @@ def covid_plots(country, countries4Plot,\
             plt.plot(time3, cases3,'g-',label=strip_accents(country3),markevery=3) 
             plt.plot(time6, cases6,'--',c='0.6',label=strip_accents(country)+" "+model) 
             plt.plot(time1, cases1,'b-',label=strip_accents(country1)) 
-            plt.plot(x, y,'y--',label='{:.1f}'.format((growth-1)*100)+'% per day',alpha=1)
-            plt.plot(x1, y1,'y-.',label='{:.1f}'.format((growth1-1)*100)+'% per day',alpha=1) 
+#             plt.plot(x, y,'y--',label='{:.1f}'.format((growth-1)*100)+'% per day',alpha=1)
+#             plt.plot(x1, y1,'y-.',label='{:.1f}'.format((growth1-1)*100)+'% per day',alpha=1) 
             plt.rc('font', size=11)
 
             plt.annotate(strip_accents(country3)+" {:.1f} K".format(cases3[len(cases3)-1]/1000), # this is the text
                 (time3[len(cases3)-1],cases3[len(cases3)-1]), # this is the point to label
                 textcoords="offset points", # how to position the text
-                xytext=(100,5), # distance from text to points (x,y)
+                xytext=(100,-20), # distance from text to points (x,y)
                 ha='right',fontproperties=comic_font,fontsize=16) # horizontal alignment can be left, right or center
 
-            idx=int(np.argmax(cases6))
-            plt.annotate("Peak {:.1f} K".format(max(cases6)/1000), # this is the text
-                (time6[idx],cases6[idx]), # this is the point to label
-                textcoords="offset points", # how to position the text
-                xytext=(20,5), # distance from text to points (x,y)
-                ha='right',fontproperties=comic_font,fontsize=16) # horizontal alignment can be left, right or center
+#             idx=int(np.argmax(cases6))
+#             plt.annotate("Peak {:.1f} K".format(max(cases6)/1000), # this is the text
+#                 (time6[idx],cases6[idx]), # this is the point to label
+#                 textcoords="offset points", # how to position the text
+#                 xytext=(20,5), # distance from text to points (x,y)
+#                 ha='right',fontproperties=comic_font,fontsize=16) # horizontal alignment can be left, right or center
 
             plt.annotate(strip_accents(country1)+" {:.1f} K".format(cases1[len(cases1)-1]/1000), # this is the text
                 (time1[len(cases1)-1],cases1[len(cases1)-1]), # this is the point to label
                 textcoords="offset points", # how to position the text
-                xytext=(80,-20), # distance from text to points (x,y)
+                xytext=(70,-20), # distance from text to points (x,y)
                 ha='center',fontproperties=comic_font,fontsize=16) # horizontal alignment can be left, right or center
 
             plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS',fontproperties=subtitle_font,fontsize = 16,
@@ -296,18 +298,18 @@ def covid_plots(country, countries4Plot,\
 
         casesFit=cases10
         timeFit=time10
-        maxCases=5e6
-        maxTime=200
-        guessExp=2
+        maxCases=12e6
+        maxTime=300
+        guessExp=0.01
 
         #logistic curve
         fit = curve_fit(logistic_model,timeFit,casesFit,p0=[20,100,maxCases])
         print ("Infection speed=",fit[0][0])
-        print ("Day with the maximum infections occurred=",int(fit[0][1]))
+        print ("Day with the maximum infections occurred=",int(fit[0][1]+0.5))
         print ("Total number of recorded infected people at the infection’s end=",int(fit[0][2]))
     
-        #exponential curve
-        exp_fit = curve_fit(exponential_model,timeFit,casesFit,p0=[guessExp*2,guessExp/2,guessExp/4],maxfev=10000)
+#         #exponential curve
+#         exp_fit = curve_fit(exponential_model,timeFit,casesFit,p0=[guessExp*2,guessExp/2,guessExp/4],maxfev=100000)
         
         # Plot the data
         #ax.figure(figsize=(19.20,10.80))
@@ -337,16 +339,16 @@ def covid_plots(country, countries4Plot,\
             # Predicted logistic curve
             ax.plot(extendT, [logistic_model(i,fit[0][0],fit[0][1],fit[0][2]) 
                                    for i in extendT], label="Logistic model" )
-            # Predicted exponential curve
-            ax.plot(extendT, [exponential_model(i,exp_fit[0][0],
-                                   exp_fit[0][1],exp_fit[0][2]) for i in extendT], label="Exponential model" )
+#             # Predicted exponential curve
+#             ax.plot(extendT, [exponential_model(i,exp_fit[0][0],
+#                                    exp_fit[0][1],exp_fit[0][2]) for i in extendT], label="Exponential model" )
             # Real data
             ax.scatter(timeFit,casesFit,label="Real cases "+strip_accents(country),color="red")
 
             #axis, limits and legend
             plt.xlabel("Days since 100th case", fontproperties=comic_font)
             plt.ylabel("Total number of infected people", fontproperties=comic_font)
-            plt.ylim((min(y)*0.9,int(1.05*fit[0][2])))
+            plt.ylim((0,int(1.05*fit[0][2])))
             leg=plt.legend(frameon=False)
             for lh in leg.legendHandles: 
                 lh.set_alpha(0.75)
@@ -377,11 +379,11 @@ def covid_plots(country, countries4Plot,\
                     ha='right', fontproperties=comic_font)
 
             # Adding a title and a subtitle
-            plt.text(x = 0.02, y = 1.1, s = "Curve Fitting with Simple Math Functions",
+            plt.text(x = 0.02, y = 1.1, s = "Curve Fitting with Simple Math Function",
                         fontsize = 30, weight = 'bold', alpha = .75,transform=ax.transAxes,
                         fontproperties=heading_font)
             plt.text(x = 0.02, y = 1.05,
-                        s = "Logistic and Exponential Function fitted with real data from "+country,
+                        s = "Logistic Function fitted with real data from "+country,
                         fontsize = 22, alpha = .85,transform=ax.transAxes, 
                             fontproperties=subtitle_font)
             leg=ax.legend(frameon=False,prop=comic_font,fontsize=26)
