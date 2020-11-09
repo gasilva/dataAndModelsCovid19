@@ -224,15 +224,15 @@ A zoom at infected, deaths and recovered
 
 ## Validation with Real Data from Selected Countries
 
-![Comparison between US deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptUS.png)
+![Comparison between US deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptUS20SEAIRD.png)
 
-![Comparison between Germany deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptGermany.png)
+![Comparison between Italy deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptItaly20SEAIRD.png)
 
-![Comparison between UK deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptUnited%20Kingdom.png)
+![Comparison between China infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptChina20SEAIRD.png)
 
-![Comparison between Spain deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptSpain.png)
+![Comparison between Brazil deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptBrazil20SEAIRD.png)
 
-![Comparison between Belgium deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptBelgium.png)
+![Comparison between India deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptIndia20SEAIRD.png)
 
 ## Databases Used in This Study
  
@@ -250,8 +250,7 @@ https://data.brasil.io/dataset/covid19/_meta/list.html
 
 ### Log Plot for Covid-19 Infection in 5 Countries
 
-![Log Plot for Covid-19 Infection in 5 countries](./results/coronaPythonEN_1.png)
-![Log Plot for Covid-19 Infection in 5 countries second set](./results/coronaPythonEN_2.png)
+![Log Plot for Covid-19 Infection in 5 countries second set](./results/coronaPythonEN_20.png)
 
 ### Bar Plot for Covid-19 for Infected Cases
 
