@@ -218,21 +218,18 @@ It is a new completely development model inspired on the paper below, because it
 
 [https://www.hindawi.com/journals/ddns/2017/4232971/#references](https://www.hindawi.com/journals/ddns/2017/4232971/#references)
 
-A zoom at infected, deaths and recovered
-
-![Model SEAIR-D Global Optimization Zoom Covid-19 epidemics for Brazil with asymptomatic](./results/ZoomModelSEAIRDOptBrazil.png)
 
 ## Validation with Real Data from Selected Countries
 
-![Comparison between US deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptUS20SEAIRD.png)
+![Comparison between US deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptUS20YaboxIC.png)
 
-![Comparison between Italy deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptItaly20SEAIRD.png)
+![Comparison between Italy deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptItaly20YaboxICpng)
 
-![Comparison between China infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptChina20SEAIRD.png)
+![Comparison between China infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptChina20YaboxIC.png)
 
-![Comparison between Brazil deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptBrazil20SEAIRD.png)
+![Comparison between Brazil deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptBrazil20YaboxIC.png)
 
-![Comparison between India deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptIndia20SEAIRD.png)
+![Comparison between India deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptIndia20YaboxIC.png)
 
 ## Databases Used in This Study
  
