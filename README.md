@@ -214,7 +214,7 @@ The last equation does not need to solved, because
 
 ![](https://latex.codecogs.com/png.latex?%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bda%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
 
-The original β is divided in two factors β and β01 along time. They are linked by a sigmoid function to smooth the non-linearity.
+The original β is divided in two factors β0 and β01 along time. They are linked by a sigmoid function to smooth the non-linearity.
 
 How the final β is calculated. It is a linear combination of two β values. There is a development of 4 days to change from one value to another. The optimization also finds the ```startT```date to make the jump in addtion to the two values of β.
 ```
@@ -238,8 +238,11 @@ def sigmoid(x,betai,betaf):
         return 1 / (1 + math.exp(-x))
 ```
 
+The function format has this shape by considering β0=0 and β01=1 or β0=1 and β01=0 with ```startT=5```.
 
-It is a new completely development model inspired on the paper below, because it does not have same equations and parameters:
+![Sigmoid function](./results/sigmoid.png)
+
+It is a new completely development model but inspired on the paper below. However, it does not have same equations and parameters:
 
 [https://www.hindawi.com/journals/ddns/2017/4232971/#references](https://www.hindawi.com/journals/ddns/2017/4232971/#references)
 
