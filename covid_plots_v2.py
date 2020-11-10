@@ -250,7 +250,7 @@ def covid_plots(country, countries4Plot,\
                         s = "Comparison selected countrys and model for "+country,
                         fontsize = 26, alpha = .85,transform=ax.transAxes, 
                             fontproperties=subtitle_font)
-            leg=ax.legend(frameon=False,prop=comic_font,fontsize=12,loc='upper left')
+            leg=ax.legend(frameon=False,prop=comic_font,fontsize=12,loc='lower right')
             for lh in leg.legendHandles: 
                 lh.set_alpha(0.75)
             ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
