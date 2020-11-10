@@ -219,9 +219,12 @@ The original β is divided in two factors β0 and β01 along time. They are link
 How the final β is calculated. It is a linear combination of two β values. There is a development of 4 days to change from one value to another. The optimization also finds the ```startT```date to make the jump in addtion to the two values of β.
 ```
 rx=sg.sigmoid(t-startT,beta0,beta01)
-beta=beta0*rx+beta01*(1-rx)
+if beta0>beta01:
+    beta=beta01*rx+beta0*(1-rx)    
+else:
+    beta=beta0*rx+beta01*(1-rx)
 ```
-How the sigmoid function is calculated. Numba package compiles the function and make it faster. The parallelization does not work but a LRU Cache is used to save memory and used it to evaluate repeated calcuations.
+How the sigmoid function is calculated. Numba package compiles the function and make it faster. The parallelization does not work but a LRU Cache is used to save memory and used it to evaluate repeated calculations.
 
 ```
 from functools import lru_cache
