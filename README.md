@@ -133,7 +133,7 @@ b: mortality rate  [1/min]
 
 The last equation does not need to solved, because
 
-![](https://latex.codecogs.com/png.latex?%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
+![](https://latex.codecogs.com/png.latex?\huge%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
 
 The SIR-D model code is based on the contribution of Giuliano Belinassi, from IME-USP, Brazil
 
@@ -168,7 +168,7 @@ Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://tripl
 
 The last equation does not need to solved, because
 
-![](https://latex.codecogs.com/png.latex?%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D%20%3D%200)
+![](https://latex.codecogs.com/png.latex?\huge%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D%20%3D%200)
 
 About SEIR models:
 
@@ -212,7 +212,7 @@ The inclusion of asymptomatic cases in SEIRD model generates SEAIRD equation sys
 
 The last equation does not need to solved, because
 
-![](https://latex.codecogs.com/png.latex?%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bda%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
+![](https://latex.codecogs.com/png.latex?\huge%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bda%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
 
 The original β is divided in two factors β0 and β01 along time. They are linked by a sigmoid function to smooth the non-linearity.
 
