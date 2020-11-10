@@ -240,6 +240,47 @@ def sigmoid(x,betai,betaf):
 
 The function format has this shape by considering β0=0 and β01=1 or β0=1 and β01=0 with ```startT=5```.
 
+```
+%reload_ext autoreload
+%autoreload 2
+import sigmoidOnly as sg
+
+import matplotlib.pyplot as plt
+import matplotlib.style as style
+style.use('fivethirtyeight')
+import numpy as np
+import pandas as pd
+
+t=np.linspace(0,10)
+
+beta0=0
+beta01=1
+startT=5
+
+beta=[]
+for i in range(0,len(t)):
+    rx=sg.sigmoid(t[i]-startT,beta0,beta01)
+    beta.append(beta0*rx+beta01*(1-rx))
+
+plt.plot(t,beta,label="$\\beta_0\\leq\\beta_{01}$")
+
+beta0=1
+beta01=0
+
+beta=[]
+for i in range(0,len(t)):
+    rx=sg.sigmoid(t[i]-startT,beta0,beta01)
+    beta.append(beta0*(1-rx)+beta01*rx)
+
+plt.plot(t,beta,label="$\\beta_0>\\beta_{01}$")
+
+leg=plt.legend(frameon=False,loc='center right')
+
+
+strFile ='./results/sigmoid.png'
+plt.savefig(strFile)
+```
+
 ![Sigmoid function](./results/sigmoid.png)
 
 It is a new completely development model but inspired on the paper below. However, it does not have same equations and parameters:
