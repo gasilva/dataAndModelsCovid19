@@ -214,6 +214,31 @@ The last equation does not need to solved, because
 
 ![](https://latex.codecogs.com/png.latex?%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bda%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
 
+The original β is divided in two factors β and β01 along time. They are linked by a sigmoid function to smooth the non-linearity.
+
+How the final β is calculated. It is a linear combination of two β values. There is a development of 4 days to change from one value to another. The optimization also finds the ```startT```date to make the jump in addtion to the two values of β.
+```
+rx=sg.sigmoid(t-startT,beta0,beta01)
+beta=beta0*rx+beta01*(1-rx)
+```
+How the sigmoid function is calculated. Numba package compiles the function and make it faster. The parallelization does not work but a LRU Cache is used to save memory and used it to evaluate repeated calcuations.
+
+```
+from functools import lru_cache
+from numba import njit
+import math
+import numpy as np
+
+@lru_cache(maxsize=None)
+@njit #(parallel=True)
+def sigmoid(x,betai,betaf):
+    if betai>betaf:
+        return 1-(1 / (1 + math.exp(-x)))
+    else:
+        return 1 / (1 + math.exp(-x))
+```
+
+
 It is a new completely development model inspired on the paper below, because it does not have same equations and parameters:
 
 [https://www.hindawi.com/journals/ddns/2017/4232971/#references](https://www.hindawi.com/journals/ddns/2017/4232971/#references)
