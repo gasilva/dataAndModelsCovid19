@@ -52,7 +52,7 @@ The countries and initial parameters file is `data/param.csv`
 |India  |3/10/20   |200             |10e6|1e-4|1e-4|200|100|50 |50   |.15   |0.05|0.8 
 
 
-The optimized initial conditions are taken from the file `param_optimized_Yabox_HistMin.csv`
+The optimized initial conditions are taken from the file `data/param_optimized_Yabox_HistMin.csv`
 
 |country|start-date|range|s0  |e0  |a0  |i0 |r0 |d0 |START|WCASES|WREC|WDTH|
 |-------|----------|----------------|----|----|----|---|---|---|-----|------|----|----|
@@ -63,34 +63,6 @@ The optimized initial conditions are taken from the file `param_optimized_Yabox_
 |India  |03/10/20  |200             |37519697|0   |0   |265|362|81 |128  |0.9216|0.3379|0.4319|
 
 The Brazlian States and Sao Paulo region follows the same logic.
-
-## Databases Used in This Study
- 
-### Data
-
-This code for countries has data from Repository by Johns Hopkins CSSE
-
-https://github.com/CSSEGISandData/COVID-19
-
-For Brazilian States and Sao Paulo State Regions the data is from Brazil.io
-
-https://data.brasil.io/dataset/covid19/_meta/list.html
-
-## Data Analysis
-
-### Log Plot for Covid-19 Infection in 5 Countries
-
-![Log Plot for Covid-19 Infection in 5 countries](./results/coronaPythonEN_1.png)
-![Log Plot for Covid-19 Infection in 5 countries second set](./results/coronaPythonEN_2.png)
-
-### Bar Plot for Covid-19 for Infected Cases
-
-![Bar Plot for Covid-19 for Infected Cases Relative](./results/coronaPythonGrowthEN_Brazil.png)
-![Bar Plot for Covid-19 for Infected Cases Absolute](./results/coronaPythonGrowthDeltaCasesEN_Brazil.png)
-
-### Simple Exponential and Logistic Functions Fitting for Covid-19 Infected Data
-
-![Simple Exponential and Logistic Functions Fitting](./results/coronaPythonModelENBrazil.png)
 
 ## Theory
 
@@ -120,7 +92,7 @@ The differential equations describing this model were first derived by Kermack a
 
 ### SIR - Susceptible, Infected and Recovered Model
 
-![](./equations/SIR.gif)
+![](./equations/SIR.png)
 
 Here, the number of 'recovery' englobes both recovered and deaths. This parameter is represented by γ.
 
@@ -157,11 +129,11 @@ b: mortality rate  [1/min]
 
 ---
 
-![](./equations/SIRD.gif)
+![](./equations/SIRD.png)
 
 The last equation does not need to solved, because
 
-![](https://latex.codecogs.com/png.latex?%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
+![](https://latex.codecogs.com/png.latex?\huge%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
 
 The SIR-D model code is based on the contribution of Giuliano Belinassi, from IME-USP, Brazil
 
@@ -171,7 +143,7 @@ The the Python notebook of
 
 https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
 
-### SEIR - WHO model type for susceptible, exposed, infected and recovered with delay in recoveries
+### SEIR - WHO model type for susceptible, exposed, infected and recovered
 
 ![SEIR model general application](https://d25hn4jiqx5f7l.cloudfront.net/file_attachments/files/original/73be551d5ca0a993eafa0f5b53a66da1b9e8e012.png?1582334250)
 
@@ -196,7 +168,7 @@ Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://tripl
 
 The last equation does not need to solved, because
 
-![](https://latex.codecogs.com/png.latex?%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D%20%3D%200)
+![](https://latex.codecogs.com/png.latex?\huge%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D%20%3D%200)
 
 About SEIR models:
 
@@ -207,7 +179,7 @@ Matt J. Keeling & Pejman Rohani, Chaper 2.6, SEIR model
 
 [http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html](http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html)
 
-### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptible, exposed, asymptomatic, infected and deaths with delay in recoveries and deaths
+### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptible, exposed, asymptomatic, infected and deaths
 
 - S(t) are those susceptible but not yet infected with the disease
 - E(t) are those exposed to the virus
@@ -236,29 +208,86 @@ p: is the fraction of the exposed which become symptomatic infectious sub-popula
 
 The inclusion of asymptomatic cases in SEIRD model generates SEAIRD equation system:
 
+![](./equations/SEAIRD_Model.png)
+
 The last equation does not need to solved, because
 
-![](https://latex.codecogs.com/png.latex?%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bda%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
+![](https://latex.codecogs.com/png.latex?\huge%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bda%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
 
-It is a new completely development model inspired on the paper below, because it does not have same equations and parameters:
+The original β is divided in two factors β0 and β01 along time. They are linked by a sigmoid function to smooth the non-linearity.
+
+How the final β is calculated. It is a linear combination of two β values. There is a development of 4 days to change from one value to another. The optimization also finds the ```startT```date to make the jump in addtion to the two values of β.
+```
+rx=sg.sigmoid(t-startT,beta0,beta01)
+if beta0>beta01:
+    beta=beta01*rx+beta0*(1-rx)    
+else:
+    beta=beta0*rx+beta01*(1-rx)
+```
+How the sigmoid function is calculated. Numba package compiles the function and make it faster. The parallelization does not work but a LRU Cache is used to save memory and used it to evaluate repeated calculations.
+
+```
+from functools import lru_cache
+from numba import njit
+import math
+import numpy as np
+
+@lru_cache(maxsize=None)
+@njit #(parallel=True)
+def sigmoid(x,betai,betaf):
+    if betai>betaf:
+        return 1-(1 / (1 + math.exp(-x)))
+    else:
+        return 1 / (1 + math.exp(-x))
+```
+
+The function format has this shape by considering β0=0 and β01=1 or β0=1 and β01=0 with ```startT=5```.
+
+![Sigmoid function](./results/sigmoid.png)
+
+It is a new completely development model but inspired on the paper below. However, it does not have same equations and parameters:
 
 [https://www.hindawi.com/journals/ddns/2017/4232971/#references](https://www.hindawi.com/journals/ddns/2017/4232971/#references)
 
-A zoom at infected, deaths and recovered
-
-![Model SEAIR-D Global Optimization Zoom Covid-19 epidemics for Brazil with asymptomatic](./results/ZoomModelSEAIRDOptBrazil.png)
 
 ## Validation with Real Data from Selected Countries
 
-![Comparison between US deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptUS.png)
+![Comparison between US deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptUS20YaboxIC.png)
 
-![Comparison between Germany deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptGermany.png)
+![Comparison between Italy deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptItaly20YaboxIC.png)
 
-![Comparison between UK deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptUnited%20Kingdom.png)
+![Comparison between China infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptChina20YaboxIC.png)
 
-![Comparison between Spain deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptSpain.png)
+![Comparison between Brazil deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptBrazil20YaboxIC.png)
 
-![Comparison between Belgium deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptBelgium.png)
+![Comparison between India deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptIndia20YaboxIC.png)
+
+## Databases Used in This Study
+ 
+### Data
+
+This code for countries has data from Repository by Johns Hopkins CSSE
+
+https://github.com/CSSEGISandData/COVID-19
+
+For Brazilian States and Sao Paulo State Regions the data is from Brazil.io
+
+https://data.brasil.io/dataset/covid19/_meta/list.html
+
+## Data Analysis
+
+### Log Plot for Covid-19 Infection in 5 Countries
+
+![Log Plot for Covid-19 Infection in 5 countries second set](./results/coronaPythonEN_20.png)
+
+### Bar Plot for Covid-19 for Infected Cases
+
+![Bar Plot for Covid-19 for Infected Cases Relative](./results/coronaPythonGrowthEN_Brazil.png)
+![Bar Plot for Covid-19 for Infected Cases Absolute](./results/coronaPythonGrowthDeltaCasesEN_Brazil.png)
+
+### Simple Exponential and Logistic Functions Fitting for Covid-19 Infected Data
+
+![Simple Exponential and Logistic Functions Fitting](./results/coronaPythonModelENBrazil.png)
 
 ## References:
 
@@ -274,6 +303,9 @@ Glaser, A., Dynamics and Control of Infectious Diseases, Lecture, WWS556d, Princ
 Hamzaha, F.A.B.,Laub, C.H., Nazric, H., et al. CoronaTracker: World-wide COVID-19 Outbreak Data Analysis and Prediction CoronaTracker Community Research Group, [Submitted]. Bull World Health Organ. E-pub: 19 March 2020. doi: http://dx.doi.org/10.2471/BLT.20.255695
 
 Keeling, M.J., Rohani, P., Modeling Infectious Diseases in Humans and Animals, Princeton University Press, Release Date: September 19, 2011, Princeton University Press, ISBN: 9781400841035 https://www.kobo.com/us/en/ebook/modeling-infectious-diseases-in-humans-and-animals Python, C++, Fortran, Matlab codes availables at: http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/index.html
+
+Kermack William Ogilvy  and McKendrick A. G.  1927, A contribution to the mathematical theory of epidemicsProc. R. Soc. Lond. A115700–721
+http://doi.org/10.1098/rspa.1927.0118
 
 Prem, K., Liu, Y, Russell, T.W. et al, The effect of control strategies to reduce social mixing on outcomes of the COVID-19 epidemic in Wuhan, China: a modelling study,The Lancet Public Health,2020,ISSN 2468-2667, https://doi.org/10.1016/S2468-2667(20)30073-6 and http://www.sciencedirect.com/science/article/pii/S2468266720300736
 

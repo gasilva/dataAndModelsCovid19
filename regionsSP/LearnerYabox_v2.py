@@ -28,7 +28,7 @@ import sigmoidOnly as sg
 #parallel computation
 import ray
 ray.shutdown()
-ray.init(num_cpus=1,num_gpus=5,memory=230*1024*1024*1024)
+ray.init(num_cpus=1,num_gpus=5) #,memory=230*1024*1024*1024)
 
 #register function for parallel processing
 @ray.remote(memory=10*1024*1024*1024)
