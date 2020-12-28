@@ -28,7 +28,9 @@ import sigmoidOnly as sg
 #parallel computation
 import ray
 ray.shutdown()
-ray.init(num_cpus=1,num_gpus=5) #,memory=230*1024*1024*1024)
+ray.init(num_cpus=6) #,log_to_driver=False,ignore_reinit_error=True)  #,memory=230*1024*1024*1024)
+
+import unicodedata
 
 #register function for parallel processing
 @ray.remote(memory=10*1024*1024*1024)
@@ -51,6 +53,20 @@ class Learner(object):
         self.cleanRecovered=cleanRecovered
         self.version=version
         self.savedata = savedata
+        
+        
+    def strip_accents(self,text):
+
+        try:
+            text = unicode(text, 'utf-8')
+        except NameError: # unicode is a default on python 3 
+            pass
+
+        text = unicodedata.normalize('NFD', text)\
+               .encode('ascii', 'ignore')\
+               .decode("utf-8")
+
+        return str(text)
 
     def load_confirmed(self, districtRegion):
         dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
@@ -133,7 +149,7 @@ class Learner(object):
 
             y0=[s_0,e_0,a_0,i_0,r_0,d_0]
             size = len(data)+1
-            tspan=np.arange(0, size+100, 1)
+            tspan=np.arange(0, size+200, 1)
             res=odeint(SEAIRD,y0,tspan) #,hmax=0.01)
 
             # calculate fitting error by using numpy.where
@@ -232,13 +248,13 @@ class Learner(object):
         bounds=[(1e-12, .2),(1e-12, .2),(5,size-5),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
             (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
 
-        maxiterations=5500
+        maxiterations=3500
         f=self.create_lossOdeint(self.data, \
             self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
                  self.ratio, self.weigthCases, self.weigthRecov)
         de = DE(f, bounds, maxiters=maxiterations) #,popsize=100)
         i=0
-        with tqdm(total=maxiterations*1750) as pbar:
+        with tqdm(total=maxiterations*1750*maxiterations/3500) as pbar:
             for step in de.geniterator():
                 idx = step.best_idx
                 norm_vector = step.population[idx]
@@ -265,11 +281,12 @@ class Learner(object):
         df.index = pd.date_range(start=new_index[0], 
             end=new_index[-1])
         df.index.name = 'date'
-
+        
         if self.savedata:
+            dR = self.strip_accents(self.districtRegion)
             #save simulation results for comparison and use in another codes/routines
-            df.to_pickle('./data/SEAIRD_sigmaOpt_'+self.districtRegion+'.pkl')
-            df.to_csv('./results/data/SEAIRD_sigmaOpt_'+self.districtRegion+'.csv', sep=",")
+            df.to_pickle('./data/SEAIRD_sigmaOpt_'+dR+'.pkl')
+            df.to_csv('./results/data/SEAIRD_sigmaOpt_'+dR+'.csv', sep=",")
 
         del dataFr, dataFr2, idx, norm_vector, best_params, df,\
             new_index, extended_actual, extended_death, y0, y1, y2, y3, y4, y5            

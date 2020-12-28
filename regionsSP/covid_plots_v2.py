@@ -172,7 +172,7 @@ def covid_plots(districtRegion, districts4Plot,\
 
     #load CSV file
     dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
-    df = pd.read_csv('./data/DRS_confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse,index_col=0)
+    df = pd.read_csv('data/DRS_confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse,index_col=0)
     districtRegion10=districtRegion
     [time10,cases10]=getCases(df,districtRegion10)
 
@@ -180,7 +180,8 @@ def covid_plots(districtRegion, districts4Plot,\
 
         model='SEAIRD'
 
-        df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+districtRegion+'.pkl')
+        dR = strip_accents(districtRegion)
+        df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+dR+'.pkl')
         time6, cases6 = predictionsPlot(df,startCase)
 
         #model
@@ -610,7 +611,8 @@ def covid_plots(districtRegion, districts4Plot,\
                 plt.close()
         
     if opt==5 or opt==0:
-        df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+districtRegion+'.pkl')
+        dR = strip_accents(districtRegion)
+        df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+dR+'.pkl')
         df.index = pd.to_datetime(df.index,format='%Y-%m-%d')
         
         actual = load_confirmed(districtRegion, startdate)
@@ -688,7 +690,7 @@ def covid_plots(districtRegion, districts4Plot,\
             fig.tight_layout()
 
             #file name to be saved
-            strFile ="./results/modelSEAIRDOpt"+districtRegion+version+model+".png"
+            strFile ="./results/modelSEAIRDOpt"+dR+version+model+".png"
 
             #remove previous file
             if os.path.isfile(strFile):
@@ -757,7 +759,7 @@ def covid_plots(districtRegion, districts4Plot,\
             fig.tight_layout()
 
             #file name to be saved
-            strFile ="./results/ZoomModelSEAIRDOpt"+districtRegion+version+model+".png"
+            strFile ="./results/ZoomModelSEAIRDOpt"+dR+version+model+".png"
 
             #remove previous file
             if os.path.isfile(strFile):
@@ -836,7 +838,7 @@ def covid_plots(districtRegion, districts4Plot,\
             fig.tight_layout()
 
             #file name to be saved
-            strFile ="./results/dailyCasesSEAIRDOpt"+districtRegion+version+model+".png"
+            strFile ="./results/dailyCasesSEAIRDOpt"+dR+version+model+".png"
 
             #remove previous file
             if os.path.isfile(strFile):
@@ -917,7 +919,7 @@ def covid_plots(districtRegion, districts4Plot,\
             fig.tight_layout()
 
             #file name to be saved
-            strFile ="./results/dailyCasesSEAIRDOpt"+districtRegion+version+model+".png"
+            strFile ="./results/dailyCasesSEAIRDOpt"+dR+version+model+".png"
 
             #remove previous file
             if os.path.isfile(strFile):
