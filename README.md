@@ -7,7 +7,7 @@ All the copyrights for the parts of the code are due to Kai Sassaki https://gith
 The code was modified to include data analysis a new models SEAIR-D was developed, which is very new and original with time delays, deaths and other constants. A conversion to a Jupyter Notebook was made and three other codes were included: one for initial conditions optimization by evolutionary algorithm, other for ploting results in a map and last one to see the evolution of evolutionary calculation.
 
 The project has three codes for Covid-19 infection in:
-* countries at root
+* countries at ``./countries```
 * Brazilian states at ```./statesBrazil```
 * district regions of Sao Paulo State, Brazil at ```./regionsSP```
 
@@ -243,7 +243,7 @@ def sigmoid(x,betai,betaf):
 
 The function format has this shape by considering β0=0 and β01=1 or β0=1 and β01=0 with ```startT=5```.
 
-![Sigmoid function](./results/sigmoid.png)
+![Sigmoid function](./countries/results/sigmoid.png)
 
 It is a new completely development model but inspired on the paper below. However, it does not have same equations and parameters:
 
@@ -252,15 +252,15 @@ It is a new completely development model but inspired on the paper below. Howeve
 
 ## Validation with Real Data from Selected Countries
 
-![Comparison between US deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptUS20YaboxIC.png)
+![Comparison between US deaths infected and recovered data and SEAIRD model result](./countries/results/ZoomModelSEAIRDOptUS20YaboxIC.png)
 
-![Comparison between Italy deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptItaly20YaboxIC.png)
+![Comparison between Italy deaths infected and recovered data and SEAIRD model result](./countries/results/ZoomModelSEAIRDOptItaly20YaboxIC.png)
 
-![Comparison between China infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptChina20YaboxIC.png)
+![Comparison between China infected and recovered data and SEAIRD model result](./countries/results/ZoomModelSEAIRDOptChina20YaboxIC.png)
 
-![Comparison between Brazil deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptBrazil20YaboxIC.png)
+![Comparison between Brazil deaths infected and recovered data and SEAIRD model result](./countries/results/ZoomModelSEAIRDOptBrazil20YaboxIC.png)
 
-![Comparison between India deaths infected and recovered data and SEAIRD model result](./results/ZoomModelSEAIRDOptIndia20YaboxIC.png)
+![Comparison between India deaths infected and recovered data and SEAIRD model result](./countries/results/ZoomModelSEAIRDOptIndia20YaboxIC.png)
 
 ## Databases Used in This Study
  
@@ -278,16 +278,16 @@ https://data.brasil.io/dataset/covid19/_meta/list.html
 
 ### Log Plot for Covid-19 Infection in 5 Countries
 
-![Log Plot for Covid-19 Infection in 5 countries second set](./results/coronaPythonEN_20.png)
+![Log Plot for Covid-19 Infection in 5 countries second set](./countries/results/coronaPythonEN_20.png)
 
 ### Bar Plot for Covid-19 for Infected Cases
 
-![Bar Plot for Covid-19 for Infected Cases Relative](./results/coronaPythonGrowthEN_Brazil.png)
-![Bar Plot for Covid-19 for Infected Cases Absolute](./results/coronaPythonGrowthDeltaCasesEN_Brazil.png)
+![Bar Plot for Covid-19 for Infected Cases Relative](./countries/results/coronaPythonGrowthEN_Brazil.png)
+![Bar Plot for Covid-19 for Infected Cases Absolute](./countries/results/coronaPythonGrowthDeltaCasesEN_Brazil.png)
 
 ### Simple Exponential and Logistic Functions Fitting for Covid-19 Infected Data
 
-![Simple Exponential and Logistic Functions Fitting](./results/coronaPythonModelENBrazil.png)
+![Simple Exponential and Logistic Functions Fitting](./countries/results/coronaPythonModelENBrazil.png)
 
 ## References:
 
