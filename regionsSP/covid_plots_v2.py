@@ -12,36 +12,23 @@ from tempfile import NamedTemporaryFile
 import urllib.request
 import matplotlib.font_manager as fm
 
+def newFont(github_url,sizeFont):
+    url = github_url + '?raw=true'  # You want the actual file, not some html
+    request = urllib.request.Request(url)
+    response = urllib.request.urlopen(request)
+    f = NamedTemporaryFile(delete=False, suffix='.ttf')
+    f.write(response.read())
+    f.close()    
+    return fm.FontProperties(fname=f.name, size=sizeFont)
+
 github_url = 'https://github.com/google/fonts/blob/master/ofl/playfairdisplay/static/PlayfairDisplay-Regular.ttf'
-url = github_url + '?raw=true'  # You want the actual file, not some html
-request = urllib.request.Request(url)
-response = urllib.request.urlopen(request)
-f = NamedTemporaryFile(delete=False, suffix='.ttf')
-f.write(response.read())
-f.close()
-heading_font = fm.FontProperties(fname=f.name, size=26)
+heading_font = newFont(github_url,20)
 
 github_url = 'https://github.com/google/fonts/blob/master/apache/roboto/static/Roboto-Regular.ttf'
-url = github_url + '?raw=true'  # You want the actual file, not some html
-request = urllib.request.Request(url)
-response = urllib.request.urlopen(request)
-f = NamedTemporaryFile(delete=False, suffix='.ttf')
-f.write(response.read())
-f.close()
-subtitle_font = fm.FontProperties(fname=f.name, size=18)
+subtitle_font = newFont(github_url,12)
 
-# github_url = 'http://antiyawn.com/uploads/Humor-Sans-1.0.ttf'
-# github_url = 'https://github.com/ipython/xkcd-font/blob/master/xkcd-script/font/xkcd-script.ttf'
 github_url = 'https://github.com/ipython/xkcd-font/blob/master/xkcd/build/xkcd-Regular.otf'
-# github_url = 'https://github.com/shreyankg/xkcd-desktop/blob/master/Humor-Sans.ttf'
-url = github_url + '?raw=true'  # You want the actual file, not some html
-
-request = urllib.request.Request(url)
-response = urllib.request.urlopen(request)
-f = NamedTemporaryFile(delete=False, suffix='.ttf')
-f.write(response.read())
-f.close()
-comic_font = fm.FontProperties(fname=f.name, size=18)
+comic_font = newFont(github_url,18)
 
 def logGrowth(growth,finalDay):
     x =[]
@@ -155,7 +142,7 @@ def covid_plots(districtRegion, districts4Plot,\
     dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
     df1 = pd.read_csv('./data/DRS_confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse,index_col=0)
     df2 = pd.read_csv('./data/DRS_mortes.csv',delimiter=',',parse_dates=True, date_parser=dateparse,index_col=0)
-    df1=df1.select_dtypes(exclude=['object', 'datetime']) * (1-ratio)
+    df1=df1.select_dtypes(exclude=['object', 'datetime'])*(1-ratio)
     df=df1.subtract(df2)
 
     #prepare data for plotting
@@ -259,11 +246,11 @@ def covid_plots(districtRegion, districts4Plot,\
 
             # Adding a title and a subtitle
             plt.text(x = 0.02, y = 1.1, s = "Corona virus growth",
-                        fontsize = 34, weight = 'bold', alpha = .75,transform=ax.transAxes,
+                        fontsize = 28, weight = 'bold', alpha = .75,transform=ax.transAxes,
                         fontproperties=heading_font)
             plt.text(x = 0.02, y = 1.05,
                         s = "Comparison selected districtRegions and model for "+districtRegion,
-                        fontsize = 26, alpha = .85,transform=ax.transAxes, 
+                        fontsize = 20, alpha = .85,transform=ax.transAxes, 
                             fontproperties=subtitle_font)
             leg=ax.legend(frameon=False,prop=comic_font,fontsize=12,loc='upper left')
             for lh in leg.legendHandles: 
@@ -395,11 +382,11 @@ def covid_plots(districtRegion, districts4Plot,\
 
             # Adding a title and a subtitle
             plt.text(x = 0.02, y = 1.1, s = "Curve Fitting with Simple Math Functions",
-                        fontsize = 30, weight = 'bold', alpha = .75,transform=ax.transAxes,
+                        fontsize = 28, weight = 'bold', alpha = .75,transform=ax.transAxes,
                         fontproperties=heading_font)
             plt.text(x = 0.02, y = 1.05,
                         s = "Logistic and Exponential Function fitted with real data from "+districtRegion,
-                        fontsize = 22, alpha = .85,transform=ax.transAxes, 
+                        fontsize = 20, alpha = .85,transform=ax.transAxes, 
                             fontproperties=subtitle_font)
             leg=ax.legend(frameon=False,prop=comic_font,fontsize=26)
             for lh in leg.legendHandles: 
@@ -525,11 +512,11 @@ def covid_plots(districtRegion, districts4Plot,\
 
             # Adding a title and a subtitle
             plt.text(x = 0.02, y = 1.1, s = "Relative Growth per Day",
-                        fontsize = 34, weight = 'bold', alpha = .75,transform=ax.transAxes,
+                        fontsize = 28, weight = 'bold', alpha = .75,transform=ax.transAxes,
                         fontproperties=heading_font)
             plt.text(x = 0.02, y = 1.05,
                         s = "Real Data for "+districtRegion,
-                        fontsize = 26, alpha = .85,transform=ax.transAxes, 
+                        fontsize = 20, alpha = .85,transform=ax.transAxes, 
                             fontproperties=subtitle_font)
             fig.tight_layout()
 
@@ -594,11 +581,11 @@ def covid_plots(districtRegion, districts4Plot,\
 
             # Adding a title and a subtitle
             plt.text(x = 0.02, y = 1.1, s = "Absolute Growth per Day",
-                        fontsize = 34, weight = 'bold', alpha = .75,transform=ax.transAxes,
+                        fontsize = 28, weight = 'bold', alpha = .75,transform=ax.transAxes,
                         fontproperties=heading_font)
             plt.text(x = 0.02, y = 1.05,
                         s = "Real Data for "+districtRegion,
-                        fontsize = 26, alpha = .85,transform=ax.transAxes, 
+                        fontsize = 20, alpha = .85,transform=ax.transAxes, 
                             fontproperties=subtitle_font)
             fig.tight_layout()
 
@@ -645,11 +632,11 @@ def covid_plots(districtRegion, districts4Plot,\
 
             # Adding a title and a subtitle
             plt.text(x = 0.02, y = 1.1, s = "SEAIR-D Model for "+districtRegion+" District Region",
-                        fontsize = 30, weight = 'bold', alpha = .75,transform=ax.transAxes, 
+                        fontsize = 28, weight = 'bold', alpha = .75,transform=ax.transAxes, 
                         fontproperties=heading_font)
             plt.text(x = 0.02, y = 1.05,
                         s = "Optimization fitted with real data",
-                        fontsize = 26, alpha = .85,transform=ax.transAxes, 
+                        fontsize = 20, alpha = .85,transform=ax.transAxes, 
                         fontproperties=subtitle_font)
 
             #limits for plotting
@@ -722,11 +709,11 @@ def covid_plots(districtRegion, districts4Plot,\
 
             # Adding a title and a subtitle
             plt.text(x = 0.02, y = 1.1, s = "Zoom SEAIR-D Model for "+districtRegion+" District Region",
-                        fontsize = 30, weight = 'bold', alpha = .75,transform=ax.transAxes,
+                        fontsize = 28, weight = 'bold', alpha = .75,transform=ax.transAxes,
                         fontproperties=heading_font)
             plt.text(x = 0.02, y = 1.05,
                         s = "Optimization fitted with real data",
-                        fontsize = 26, alpha = .85,transform=ax.transAxes, 
+                        fontsize = 20, alpha = .85,transform=ax.transAxes, 
                         fontproperties=subtitle_font)
 
             ax.xaxis_date()
@@ -734,6 +721,7 @@ def covid_plots(districtRegion, districts4Plot,\
             ax.plot(df['infected'],'y-',label="Infected")
             ax.plot(df['recovered'],'c-',label="Recovered")
             ax.plot(df['deaths'],'m-',label="Deaths")
+#             ax.plot(df['asymptomatic'],'b-',label="Asymptomatic")
             ax.plot(actual.index,extended_actual,'o',label="Infected data")
             ax.plot(death.index,extended_death,'x',label="Death data")
             #format legend
@@ -789,11 +777,11 @@ def covid_plots(districtRegion, districts4Plot,\
 
             # Adding a title and a subtitle
             plt.text(x = 0.02, y = 1.1, s = "Cases per day for "+districtRegion+" District Region",
-                        fontsize = 30, weight = 'bold', alpha = .75,transform=ax.transAxes,
+                        fontsize = 28, weight = 'bold', alpha = .75,transform=ax.transAxes,
                         fontproperties=heading_font)
             plt.text(x = 0.02, y = 1.05,
                         s = "Optimization fitted with real data",
-                        fontsize = 26, alpha = .85,transform=ax.transAxes, 
+                        fontsize = 20, alpha = .85,transform=ax.transAxes, 
                         fontproperties=subtitle_font)
 
             ax.xaxis_date()
@@ -869,11 +857,11 @@ def covid_plots(districtRegion, districts4Plot,\
 
             # Adding a title and a subtitle
             plt.text(x = 0.02, y = 1.1, s = "Deaths per day for "+districtRegion+" District Region",
-                        fontsize = 30, weight = 'bold', alpha = .75,transform=ax.transAxes,
+                        fontsize = 28, weight = 'bold', alpha = .75,transform=ax.transAxes,
                         fontproperties=heading_font)
             plt.text(x = 0.02, y = 1.05,
                         s = "Optimization fitted with real data",
-                        fontsize = 26, alpha = .85,transform=ax.transAxes, 
+                        fontsize = 20, alpha = .85,transform=ax.transAxes, 
                         fontproperties=subtitle_font)
 
             ax.xaxis_date()

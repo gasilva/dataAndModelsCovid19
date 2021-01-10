@@ -3,7 +3,6 @@ from numba import njit
 import math
 import numpy as np
 
-@lru_cache(maxsize=None)
 @njit #(parallel=True)
 def sigmoid(x,betai,betaf):
     if betai<betaf:
@@ -12,4 +11,12 @@ def sigmoid(x,betai,betaf):
     else:
         rx=1 / (1 + math.exp(-x))
         return betaf*rx+betai*(1-rx)  
-        
+    
+@lru_cache(maxsize=None)
+@njit
+def sigmoid2(x,xff,betai,betaf,betaff,half):        
+    
+    if half<=0:
+        return sigmoid(x,betai,betaf)
+    else:
+        return sigmoid(xff,betaf,betaff)
