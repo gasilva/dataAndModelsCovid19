@@ -45,7 +45,7 @@ import unicodedata
 class Learner(object):
     def __init__(self, districtRegion, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, \
     startNCases, weigthCases, weigthRecov, weigthDeath, end_date, ratio, cleanRecovered, version, \
-                 underNotif=True, Deaths=True, propWeigth=True, savedata=True):
+                 underNotif=False, Deaths=True, propWeigth=True, savedata=True):
         self.districtRegion = districtRegion
         self.start_date = start_date
         self.predict_range = predict_range
@@ -137,22 +137,20 @@ class Learner(object):
 
         def lossOdeint(point):
             size = len(self.data)+1
-            beta0, beta01, beta02, startT, startT2, sigma,  a, b, d, mu, p = point
+            sigma=[]
+            beta0, beta01, beta02, startT, startT2, sigma0,  a, b, d, mu, p = point
             gamma=a+b
             gamma2=d
             
             def SEAIRD(y,t):
-                beta=sg.sigmoid2(t-startT,t-startT2,beta0,beta01,beta02,t-int(size/2+0.5))
-                if t>size-110 and t<size-130:
-                    dS=0.02*self.s_0
-                else:
-                    dS=0
+                sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,beta01,beta02,t-int(size*3/4+0.5))
+                beta=beta0
                 S = y[0]
                 E = y[1]
                 A = y[2]
                 I = y[3]
                 R = y[4]
-                y0=(-(A+I)*beta*S-mu*S)+dS #S
+                y0=(-(A+I)*beta*S-mu*S) #S
                 y1=(A+I)*beta*S-sigma*E-mu*E #E
                 y2=sigma*E*(1-p)-gamma2*A #A
                 y3=sigma*E*p-gamma*I-mu*I #I
@@ -161,7 +159,7 @@ class Learner(object):
                 return [y0,y1,y2,y3,y4,y5]
 
             y0=[self.s_0,self.e_0,self.a_0,self.i_0,self.r_0,self.d_0]
-            tspan=np.arange(0, size, 1)
+            tspan=np.arange(0, size+200, 1)
             res=odeint(SEAIRD,y0,tspan,atol=1e-4, rtol=1e-6)       
             res = np.where(res < 0, 0, res)
             res = np.where(res >= 1e10, 1e10, res)
@@ -177,12 +175,12 @@ class Learner(object):
             #for deaths
             dDeath=np.diff(res[1:size,5])           
             dDeathData=np.diff(self.death.values.T[:])
-            dErrorD=np.mean(((dDeath-dDeathData)**2)[-8:]) 
+            dErrorD=np.mean(((dDeath-dDeathData)**2)[-4:]) 
 
             #for infected
             dInf=np.diff(res[1:size,3])
             dInfData=np.diff(self.data.values.T[:])          
-            dErrorI=np.mean(((dInf-dInfData)**2)[-8:])
+            dErrorI=np.mean(((dInf-dInfData)**2)[-4:])
 
             if self.Deaths:
                 #penalty function for negative derivative at end of deaths
@@ -204,7 +202,7 @@ class Learner(object):
                 
             #objective function
             gtot=wCases*(l1+0.05*dErrorI) + wDeath*(l2+0.2*dErrorD)
-            
+
             #final objective function
             gtot=(10*correctGtot)+abs(gtot)
             
@@ -215,7 +213,7 @@ class Learner(object):
 
     def create_lossSub(self,pointOrig):
 
-        beta0, beta01, beta02, startT, startT2, sigma,  a, b, d, mu, p = pointOrig
+        beta0, beta01, beta02, startT, startT2, sigma0,  a, b, d, mu, p = pointOrig
         
         def lossSub(point):
             sub, subDth = point
@@ -224,17 +222,14 @@ class Learner(object):
             size = len(self.data)+1
             
             def SEAIRD(y,t):
-                beta=sg.sigmoid2(t-startT,t-startT2,beta0,beta01,beta02,t-int(size/2+0.5))
-                if t>size-110 and t<size-130:
-                    dS=0.02*self.s_0
-                else:
-                    dS=0
+                sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,beta01,beta02,t-int(size*3/4+0.5))
+                beta=beta0
                 S = y[0]
                 E = y[1]
                 A = y[2]
                 I = y[3]
                 R = y[4]
-                y0=(-(A+I)*beta*S-mu*S)+dS#S
+                y0=(-(A+I)*beta*S-mu*S)#S
                 y1=(A+I)*beta*S-sigma*E-mu*E #E
                 y2=sigma*E*(1-p)-gamma2*A #A
                 y3=sigma*E*p-gamma*I-mu*I #I
@@ -243,7 +238,7 @@ class Learner(object):
                 return [y0,y1,y2,y3,y4,y5]
 
             y0=[self.s_0,self.e_0,self.a_0,self.i_0,self.r_0,self.d_0]
-            tspan=np.arange(0, size, 1)
+            tspan=np.arange(0, size+200, 1)
             res=odeint(SEAIRD,y0,tspan,atol=1e-4, rtol=1e-6) 
             res = np.where(res < 0, 0, res)
             res = np.where(res >= 1e10, 1e10, res)
@@ -261,12 +256,12 @@ class Learner(object):
             #for deaths
             dDeath=np.diff(res[1:size,5])           
             dDeathData=np.diff(self.death.values.T[:])
-            dErrorD=np.mean(((dDeath-dDeathData)**2)[-8:]) 
+            dErrorD=np.mean(((dDeath-dDeathData)**2)[-4:]) 
 
             #for infected
             dInf=np.diff(res[1:size,3])
             dInfData=np.diff(self.data.values.T[:])          
-            dErrorI=np.mean(((dInf-dInfData)**2)[-8:])
+            dErrorI=np.mean(((dInf-dInfData)**2)[-4:])
 
             if self.Deaths:
                 #penalty function for negative derivative at end of deaths
@@ -287,8 +282,8 @@ class Learner(object):
             wDeath=self.weigthDeath/wt
                 
             #objective function
-            gtot=wCases*(l1+0.05*dErrorI) + wDeath*(l2+0.2*dErrorD)       
-            
+            gtot=wCases*(l1+0.05*dErrorI) + wDeath*(l2+0.2*dErrorD)
+
             #final objective function
             gtot=(10*correctGtot)+abs(gtot)
             
@@ -301,25 +296,21 @@ class Learner(object):
     #predict final extended values
     def predict(self, point):
 
-        beta0, beta01, beta02, startT, startT2, sigma,  a, b, d, mu, p, sub, subDth  = point
-        sizeOrig=len(self.data)+1
+        beta0, beta01, beta02, startT, startT2, sigma0,  a, b, d, mu, p, sub, subDth  = point
         new_index = self.extend_index()
         size = len(new_index)
         gamma=a+b
         gamma2=d
 
         def SEAIRD(y,t):
-            beta=sg.sigmoid2(t-startT,t-startT2,beta0,beta01,beta02,t-int(sizeOrig/2+0.5))
-            if t>size-110 and t<size-130:
-                dS=0.02*self.s_0
-            else:
-                dS=0
+            sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,beta01,beta02,t-int((len(self.data)+1)*3/4+0.5))
+            beta=beta0
             S = y[0]
             E = y[1]
             A = y[2]
             I = y[3]
             R = y[4]
-            y0=(-(A+I)*beta*S-mu*S)+dS #S
+            y0=(-(A+I)*beta*S-mu*S) #S
             y1=(A+I)*beta*S-sigma*E-mu*E #E
             y2=sigma*E*(1-p)-gamma2*A #A
             y3=sigma*E*p-gamma*I-mu*I #I
@@ -345,8 +336,8 @@ class Learner(object):
         self.data = self.load_confirmed()-self.recovered-self.death
         
         size=len(self.data)
-        bounds=[(1e-16, .2),(1e-16, .2),(1e-16, .2),(0,int(size/2+0.5)),(int(size/2+0.5)+1,size),
-            (1/365, .4),(1e-16, .4),(1e-16, .4),(1e-16, .4),(1e-16, .4),(0,1)]
+        bounds=[(1e-16, .9),(1e-16, .9),(1e-16, .9),(0,int(size/2+0.5)),(int(size/2+0.5)+1,size),
+            (1e-16, .9),(1e-16, .9),(1e-16, .9),(1e-16, .9),(1e-16, .9),(0.2,0.8)]
 
         maxiterations=3500
         f=self.create_lossOdeint()
@@ -368,14 +359,13 @@ class Learner(object):
             minimizer_kwargs = { "method": "L-BFGS-B","bounds":bnds }
             optimal = basinhopping(f, x0, minimizer_kwargs=minimizer_kwargs,disp=True,niter=100) 
             p2=optimal.x
+            print("districtRegion {}".format(self.districtRegion))
+            print("under notifications cases {:.2f}".format(p2[0]))
+            print("under notifications deaths {:.2f}".format(p2[1]))
         else:
             p2=[1,1]
         
         point = np.concatenate((p, p2))
-        print("districtRegion {}".format(self.districtRegion))
-        print("under notifications cases {:.2f}".format(p2[0]))
-        print("under notifications deaths {:.2f}".format(p2[1]))
-
         today = datetime.today()
         endDate = today + timedelta(days=-2)
         self.end_date= datetime.strftime(endDate, '%Y-%m-%d') 

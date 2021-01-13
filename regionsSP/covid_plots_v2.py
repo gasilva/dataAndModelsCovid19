@@ -645,7 +645,7 @@ def covid_plots(districtRegion, districts4Plot,\
             ax.xaxis_date()
             ax.plot(df['susceptible'],'g-',label="Susceptible")
             ax.plot(df['exposed'],'r-',label="Exposed")
-            ax.plot(df['asymptomatic'],'b-',label="Asymptomatic")
+#             ax.plot(df['asymptomatic'],'b-',label="Asymptomatic")
             #plt.xticks(np.arange(0, predict_range, predict_range/8))
             ax.plot(df['infected'],'y-',label="Infected")
             ax.plot(df['recovered'],'c-',label="Recovered")
@@ -907,7 +907,7 @@ def covid_plots(districtRegion, districts4Plot,\
             fig.tight_layout()
 
             #file name to be saved
-            strFile ="./results/dailyCasesSEAIRDOpt"+dR+version+model+".png"
+            strFile ="./results/dailyDeathsSEAIRDOpt"+dR+version+model+".png"
 
             #remove previous file
             if os.path.isfile(strFile):
