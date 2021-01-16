@@ -105,7 +105,7 @@ class Learner(object):
             if self.Deaths:
                 #penalty function for negative derivative at end of deaths
                 NegDeathData=np.diff(res[:,3])
-                dNeg=np.mean(NegDeathData[-5:])+0.01
+                dNeg=np.mean(NegDeathData[-5:])+0.1
                 correctGtot=max(0,np.sign(dNeg))*(dNeg)**2
                 del NegDeathData
             else:

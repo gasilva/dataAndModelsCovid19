@@ -13,8 +13,12 @@ import urllib.request
 import matplotlib.font_manager as fm
 
 def newFont(github_url,sizeFont):
+    headers = {}
+    headers[
+        "User-Agent"
+    ] = "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.27 Safari/537.17"
     url = github_url + '?raw=true'  # You want the actual file, not some html
-    request = urllib.request.Request(url)
+    request = urllib.request.Request(url, headers=headers)
     response = urllib.request.urlopen(request)
     f = NamedTemporaryFile(delete=False, suffix='.ttf')
     f.write(response.read())
@@ -73,7 +77,7 @@ def loadDataFrame(filename):
     df.columns = [c.lower().replace(')', '') for c in df.columns]
     return df
 
-def load_confirmed(districtRegion, startdate):
+def load_confirmed(districtRegion, start_date):
     dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
     df = pd.read_csv('./data/DRS_confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
     y=[]
@@ -82,10 +86,21 @@ def load_confirmed(districtRegion, startdate):
         y.append(df[districtRegion].values[i])
         x.append(df.date.values[i])
     df2=pd.DataFrame(data=y,index=x,columns=[""])
-    df2=df2[startdate:]
+    df2 =df2.apply (pd.to_numeric, errors='coerce')
+    df2 = df2.dropna()
+    df2.index = pd.DatetimeIndex(df2.index)
+    #interpolate missing data
+    df2 = df2.reindex(pd.date_range(df2.index.min(), df2.index.max()), fill_value=np.nan)
+    df2 = df2.interpolate(method='akima', axis=0).ffill().bfill()
+    #string type for dates and integer for data
+    df2 = df2.astype(int)
+    df2.index = df2.index.astype(str)
+    #select dates
+    df2=df2[start_date:]
+    del x,y,df,dateparse
     return df2
 
-def load_dead(districtRegion, startdate):
+def load_dead(districtRegion, start_date):
     dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
     df = pd.read_csv('./data/DRS_mortes.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
     y=[]
@@ -94,7 +109,18 @@ def load_dead(districtRegion, startdate):
         y.append(df[districtRegion].values[i])
         x.append(df.date.values[i])
     df2=pd.DataFrame(data=y,index=x,columns=[""])
-    df2=df2[startdate:]
+    df2 =df2.apply (pd.to_numeric, errors='coerce')
+    df2 = df2.dropna()
+    df2.index = pd.DatetimeIndex(df2.index)
+    #interpolate missing data
+    df2 = df2.reindex(pd.date_range(df2.index.min(), df2.index.max()), fill_value=np.nan)
+    df2 = df2.interpolate(method='akima', axis=0).ffill().bfill()
+    #string type for dates and integer for data
+    df2 = df2.astype(int)
+    df2.index = df2.index.astype(str)
+    #select dates
+    df2=df2[start_date:]
+    del x,y,df,dateparse
     return df2
 
 def extend_index(index, new_size):
@@ -252,7 +278,7 @@ def covid_plots(districtRegion, districts4Plot,\
                         s = "Comparison selected districtRegions and model for "+districtRegion,
                         fontsize = 20, alpha = .85,transform=ax.transAxes, 
                             fontproperties=subtitle_font)
-            leg=ax.legend(frameon=False,prop=comic_font,fontsize=12,loc='upper left')
+            leg=ax.legend(frameon=False,prop=comic_font,fontsize=12) #,loc='upper left')
             for lh in leg.legendHandles: 
                 lh.set_alpha(0.75)
             ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
@@ -300,18 +326,18 @@ def covid_plots(districtRegion, districts4Plot,\
 
         casesFit=cases10
         timeFit=time10
-        maxCases=2e6
-        maxTime=200
-        guessExp=2
+        maxCases=3e6
+        maxTime=400
+        guessExp=1
 
         #logistic curve
-        fit = curve_fit(logistic_model,timeFit,casesFit,p0=[20,100,maxCases])
+        fit = curve_fit(logistic_model,timeFit,casesFit,p0=[30,100,maxCases])
         print ("Infection speed=",fit[0][0])
         print ("Day with the maximum infections occurred=",int(fit[0][1]))
         print ("Total number of recorded infected people at the infection’s end=",int(fit[0][2]))
     
         #exponential curve
-        exp_fit = curve_fit(exponential_model,timeFit,casesFit,p0=[guessExp*2,guessExp/2,guessExp/4],maxfev=10000)
+        exp_fit = curve_fit(exponential_model,timeFit,casesFit,p0=[guessExp,guessExp/2,guessExp/4],maxfev=10000)
         
         # Plot the data
         #ax.figure(figsize=(19.20,10.80))
@@ -341,16 +367,16 @@ def covid_plots(districtRegion, districts4Plot,\
             # Predicted logistic curve
             ax.plot(extendT, [logistic_model(i,fit[0][0],fit[0][1],fit[0][2]) 
                                    for i in extendT], label="Logistic model" )
-            # Predicted exponential curve
-            ax.plot(extendT, [exponential_model(i,exp_fit[0][0],
-                                   exp_fit[0][1],exp_fit[0][2]) for i in extendT], label="Exponential model" )
+#             # Predicted exponential curve
+#             ax.plot(extendT, [exponential_model(i,exp_fit[0][0],
+#                                    exp_fit[0][1],exp_fit[0][2]) for i in extendT], label="Exponential model" )
             # Real data
             ax.scatter(timeFit,casesFit,label="Real cases "+strip_accents(districtRegion),color="red")
 
             #axis, limits and legend
             plt.xlabel("Days since 100th case", fontproperties=comic_font)
             plt.ylabel("Total number of infected people", fontproperties=comic_font)
-            plt.ylim((min(y)*0.9,int(1.05*fit[0][2])))
+            plt.ylim((min(y)*0.9,int(1.5*fit[0][2])))
             leg=plt.legend(frameon=False)
             for lh in leg.legendHandles: 
                 lh.set_alpha(0.75)
@@ -385,7 +411,7 @@ def covid_plots(districtRegion, districts4Plot,\
                         fontsize = 28, weight = 'bold', alpha = .75,transform=ax.transAxes,
                         fontproperties=heading_font)
             plt.text(x = 0.02, y = 1.05,
-                        s = "Logistic and Exponential Function fitted with real data from "+districtRegion,
+                        s = "Fitted with real data from "+districtRegion,
                         fontsize = 20, alpha = .85,transform=ax.transAxes, 
                             fontproperties=subtitle_font)
             leg=ax.legend(frameon=False,prop=comic_font,fontsize=26)
@@ -653,11 +679,15 @@ def covid_plots(districtRegion, districts4Plot,\
             ax.plot(actual.index,extended_actual,'o',label="Infected data")
             ax.plot(death.index,extended_death,'x',label="Death data")
 
-            #format legend
-            leg=ax.legend(frameon=False,prop=comic_font,fontsize=20)
-            for lh in leg.legendHandles: 
-                lh.set_alpha(0.75)
-            ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.4)
+
+            plt.annotate("Max Exposed {:,}".format(int(max(df['exposed']))).replace(',', ' '), 
+                 xy=(df.index[df['exposed']==max(df['exposed'])], max(df['exposed'])), 
+                 xytext=(-50,50), textcoords='offset points', ha='center', va='bottom',
+                arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)
+            plt.annotate("Max Recovered {:,}".format(int(max(df['recovered']))).replace(',', ' '), 
+                 xy=(df.index[df['recovered']==max(df['recovered'])], max(df['recovered'])), 
+                 xytext=(-75,50), textcoords='offset points', ha='center', va='bottom',
+                arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)
 
             #plot margin annotation
             plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS', 
@@ -672,6 +702,12 @@ def covid_plots(districtRegion, districts4Plot,\
             #labels for x and y axis
 #             plt.xlabel("Date", fontproperties=comic_font)
 #             plt.ylabel("Number of People", fontproperties=comic_font)
+
+            #format legend
+            leg=ax.legend(frameon=False,prop=comic_font,fontsize=20)
+            for lh in leg.legendHandles: 
+                lh.set_alpha(0.75)
+            ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.4)
 
             #plot layout
             fig.tight_layout()
@@ -729,6 +765,16 @@ def covid_plots(districtRegion, districts4Plot,\
             for lh in leg.legendHandles: 
                 lh.set_alpha(0.75)
             ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
+
+            plt.annotate("Peak Infected {:,}".format(int(max(df['infected']))).replace(',', ' '), 
+                 xy=(df.index[df['infected']==max(df['infected'])], max(df['infected'])), 
+                 xytext=(-50,50), textcoords='offset points', ha='center', va='bottom',
+                arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)
+            plt.annotate("Max Deaths {:,}".format(int(max(df['deaths']))).replace(',', ' '), 
+                 xy=(df.index[df['deaths']==max(df['deaths'])], max(df['deaths'])), 
+                 xytext=(-75,50), textcoords='offset points', ha='center', va='bottom',
+                arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)
+            
 
             plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS', 
             xy=(1.04, 0.1), xycoords='axes fraction',

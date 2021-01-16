@@ -45,7 +45,7 @@ import unicodedata
 class Learner(object):
     def __init__(self, districtRegion, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, \
     startNCases, weigthCases, weigthRecov, weigthDeath, end_date, ratio, cleanRecovered, version, \
-                 underNotif=False, Deaths=True, propWeigth=True, savedata=True):
+                 underNotif=True, Deaths=True, propWeigth=True, savedata=True):
         self.districtRegion = districtRegion
         self.start_date = start_date
         self.predict_range = predict_range
@@ -138,12 +138,12 @@ class Learner(object):
         def lossOdeint(point):
             size = len(self.data)+1
             sigma=[]
-            beta0, beta01, beta02, startT, startT2, sigma0,  a, b, d, mu, p = point
+            beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, d, mu, p = point
             gamma=a+b
             gamma2=d
             
             def SEAIRD(y,t):
-                sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,beta01,beta02,t-int(size*3/4+0.5))
+                sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(size*3/4+0.5))
                 beta=beta0
                 S = y[0]
                 E = y[1]
@@ -185,8 +185,8 @@ class Learner(object):
             if self.Deaths:
                 #penalty function for negative derivative at end of deaths
                 NegDeathData=np.diff(res[:,3])
-                dNeg=np.mean(NegDeathData[-5:]) 
-                correctGtot=(dNeg)**2
+                dNeg=np.mean(NegDeathData[-5:])+0.1
+                correctGtot=max(0,np.sign(dNeg))*(dNeg)**2
                 del NegDeathData
             else:
                 correctGtot=0
@@ -213,7 +213,7 @@ class Learner(object):
 
     def create_lossSub(self,pointOrig):
 
-        beta0, beta01, beta02, startT, startT2, sigma0,  a, b, d, mu, p = pointOrig
+        beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, d, mu, p = pointOrig
         
         def lossSub(point):
             sub, subDth = point
@@ -222,7 +222,7 @@ class Learner(object):
             size = len(self.data)+1
             
             def SEAIRD(y,t):
-                sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,beta01,beta02,t-int(size*3/4+0.5))
+                sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(size*3/4+0.5))
                 beta=beta0
                 S = y[0]
                 E = y[1]
@@ -266,8 +266,8 @@ class Learner(object):
             if self.Deaths:
                 #penalty function for negative derivative at end of deaths
                 NegDeathData=np.diff(res[:,3])
-                dNeg=np.mean(NegDeathData[-5:]) 
-                correctGtot=(dNeg)**2
+                dNeg=np.mean(NegDeathData[-5:])+0.1
+                correctGtot=max(0,np.sign(dNeg))*(dNeg)**2
                 del NegDeathData
             else:
                 correctGtot=0
@@ -296,14 +296,14 @@ class Learner(object):
     #predict final extended values
     def predict(self, point):
 
-        beta0, beta01, beta02, startT, startT2, sigma0,  a, b, d, mu, p, sub, subDth  = point
+        beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, d, mu, p, sub, subDth  = point
         new_index = self.extend_index()
         size = len(new_index)
         gamma=a+b
         gamma2=d
 
         def SEAIRD(y,t):
-            sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,beta01,beta02,t-int((len(self.data)+1)*3/4+0.5))
+            sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int((len(self.data)+1)*3/4+0.5))
             beta=beta0
             S = y[0]
             E = y[1]
@@ -335,9 +335,9 @@ class Learner(object):
         self.recovered = self.load_confirmed()*self.ratio
         self.data = self.load_confirmed()-self.recovered-self.death
         
-        size=len(self.data)
-        bounds=[(1e-16, .9),(1e-16, .9),(1e-16, .9),(0,int(size/2+0.5)),(int(size/2+0.5)+1,size),
-            (1e-16, .9),(1e-16, .9),(1e-16, .9),(1e-16, .9),(1e-16, .9),(0.2,0.8)]
+        size=len(self.data)+1
+        bounds =[(1e-16, .9),(1e-16, .9),(1e-16, .9),(0,int(size*3/4+0.5)-1),(int(size*3/4+0.5),size),
+            (1e-16, .9),(1e-16, .9),(1e-16, .9),(1e-16, .9),(1e-16, .9),(0.01,0.99)]
 
         maxiterations=3500
         f=self.create_lossOdeint()
@@ -354,8 +354,8 @@ class Learner(object):
         
         if self.under:
             f=self.create_lossSub(p)
-            bnds = ((.001,4),(.001,4))
-            x0 = [0.9, 0.9]
+            bnds = ((.1,4),(.1,4))
+            x0 = [1, 1]
             minimizer_kwargs = { "method": "L-BFGS-B","bounds":bnds }
             optimal = basinhopping(f, x0, minimizer_kwargs=minimizer_kwargs,disp=True,niter=100) 
             p2=optimal.x
