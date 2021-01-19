@@ -7,7 +7,7 @@ All the copyrights for the parts of the code are due to Kai Sassaki https://gith
 The code was modified to include data analysis a new models SEAIR-D was developed, which is very new and original with time delays, deaths and other constants. A conversion to a Jupyter Notebook was made and three other codes were included: one for initial conditions optimization by evolutionary algorithm, other for ploting results in a map and last one to see the evolution of evolutionary calculation.
 
 The project has three codes for Covid-19 infection in:
-* countries at ``./countries```
+* countries at ```./countries```
 * Brazilian states at ```./statesBrazil```
 * district regions of Sao Paulo State, Brazil at ```./regionsSP```
 
@@ -107,6 +107,13 @@ https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model
 https://triplebyte.com/blog/modeling-infectious-diseases
 
 The γ is split in two by γ = a + b, where a is the rate of recoveries, and b is the rate of death. Since the death rate seems to be linear (1.5% in China, for example), this linear decomposition of γ is precise enough. 
+
+Some facts about SIR model:
+
+- The number of Susceptible individuals can only decrease
+- The number of Recovered can only increase
+- The number of Infectious individuals grows up to a certain point before reaching a peak and starting to decline.
+- The majority of the population becomes infected and eventually recovers.
 
 So we can add a new variable k, (Kill rate), and add to the system of equations. Therefore:
 
