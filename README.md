@@ -230,11 +230,15 @@ The original β is divided in two factors β0 and β01 along time. They are link
 
 How the final β is calculated. It is a linear combination of two β values. There is a development of 4 days to change from one value to another. The optimization also finds the ```startT```date to make the jump in addtion to the two values of β.
 ```
-rx=sg.sigmoid(t-startT,beta0,beta01)
-if beta0>beta01:
-    beta=beta01*rx+beta0*(1-rx)    
-else:
-    beta=beta0*rx+beta01*(1-rx)
+beta=sg.sigmoid(t-startT,beta0,beta01)
+
+def sigmoid(x,betai,betaf):
+    if betai<betaf:
+        rx=1-(1 / (1 + math.exp(-x)))
+        return betai*rx+betaf*(1-rx)
+    else:
+        rx=1 / (1 + math.exp(-x))
+        return betaf*rx+betai*(1-rx)  
 ```
 How the sigmoid function is calculated. Numba package compiles the function and make it faster. The parallelization does not work but a LRU Cache is used to save memory and used it to evaluate repeated calculations.
 
@@ -244,18 +248,28 @@ from numba import njit
 import math
 import numpy as np
 
-@lru_cache(maxsize=None)
 @njit #(parallel=True)
 def sigmoid(x,betai,betaf):
-    if betai>betaf:
-        return 1-(1 / (1 + math.exp(-x)))
+    if betai<betaf:
+        rx=1-(1 / (1 + math.exp(-x)))
+        return betai*rx+betaf*(1-rx)
     else:
-        return 1 / (1 + math.exp(-x))
+        rx=1 / (1 + math.exp(-x))
+        return betaf*rx+betai*(1-rx)  
+    
+@lru_cache(maxsize=None)
+@njit
+def sigmoid2(x,xff,betai,betaf,betaff,half):        
+    
+    if half<=0:
+        return sigmoid(x,betai,betaf)
+    else:
+        return sigmoid(xff,betaf,betaff)
 ```
 
 The function format has this shape by considering β0=0 and β01=1 or β0=1 and β01=0 with ```startT=5```.
 
-![Sigmoid function](./countries/results/sigmoid.png)
+![Sigmoid function](countries/results/sigmoid.png)
 
 It is a new completely development model but inspired on the paper below. However, it does not have same equations and parameters:
 
