@@ -115,6 +115,14 @@ Some facts about SIR model:
 - The number of Infectious individuals grows up to a certain point before reaching a peak and starting to decline.
 - The majority of the population becomes infected and eventually recovers.
 
+The the Python notebook of
+
+https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
+
+A well posed explanation about SIR Model is given by:
+
+https://medium.com/data-for-science/epidemic-modeling-101-or-why-your-covid19-exponential-fits-are-wrong-97aa50c55f8
+
 So we can add a new variable k, (Kill rate), and add to the system of equations. Therefore:
 
 ### SIR-D - SIR model extended to have deaths and recovered separated
@@ -146,13 +154,6 @@ The SIR-D model code is based on the contribution of Giuliano Belinassi, from IM
 
 https://github.com/Lewuathe/COVID19-SIR/issues/13#issue-589616803
 
-The the Python notebook of
-
-https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
-
-A well posed explanation about SIR Model is given by:
-
-https://medium.com/data-for-science/epidemic-modeling-101-or-why-your-covid19-exponential-fits-are-wrong-97aa50c55f8
 
 ### SEIR - WHO model type for susceptible, exposed, infected and recovered
 
