@@ -150,6 +150,10 @@ The the Python notebook of
 
 https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
 
+A well posed explanation about SIR Model is given by:
+
+https://medium.com/data-for-science/epidemic-modeling-101-or-why-your-covid19-exponential-fits-are-wrong-97aa50c55f8
+
 ### SEIR - WHO model type for susceptible, exposed, infected and recovered
 
 ![SEIR model general application](https://d25hn4jiqx5f7l.cloudfront.net/file_attachments/files/original/73be551d5ca0a993eafa0f5b53a66da1b9e8e012.png?1582334250)
@@ -255,6 +259,10 @@ The function format has this shape by considering β0=0 and β01=1 or β0=1 and 
 It is a new completely development model but inspired on the paper below. However, it does not have same equations and parameters:
 
 [https://www.hindawi.com/journals/ddns/2017/4232971/#references](https://www.hindawi.com/journals/ddns/2017/4232971/#references)
+
+and
+
+https://medium.com/data-for-science/epidemic-modeling-102-all-covid-19-models-are-wrong-but-some-are-useful-c81202cc6ee9
 
 
 ## Validation with Real Data from Selected Countries
