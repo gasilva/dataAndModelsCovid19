@@ -19,7 +19,7 @@ If you have interest, ATS (www.ats4i.com) has some posts about Covid-19 pandemic
 
 This is a open source contribution for the comunity. Please use and contribute!
 
-## Installation
+# Installation
 
 Clone this repository
 
@@ -29,7 +29,7 @@ git clone https://github.com/gasilva/dataAndModelsCovid19.git
 
 Or use GitHub Desktop [https://desktop.github.com/](https://desktop.github.com/) and File, Clone repository
 
-## Codes
+# Codes
 
 The project has some codes for Covid-19 infection in countries:
 * ```countries_Covid19_v7.ipynb```: main code
@@ -39,7 +39,7 @@ The project has some codes for Covid-19 infection in countries:
 
 The Brazlian States and Sao Paulo region follows the same logic.
 
-## Countries and Initial Conditions
+# Countries and Initial Conditions
 
 The countries and initial parameters file is `data/param.csv`
 
@@ -64,7 +64,7 @@ The optimized initial conditions are taken from the file `data/param_optimized_Y
 
 The Brazlian States and Sao Paulo region follows the same logic.
 
-## Theory
+# Theory
 
 The mathematical Models are based in Lotka-Volterra equations, it is like a predator-prey type of model.
 
@@ -90,7 +90,7 @@ The SIR model describes the change in the population of each of these compartmen
 
 The differential equations describing this model were first derived by Kermack and McKendrick [Proc. R. Soc. A, 115, 772 (1927)]:
 
-### SIR - Susceptible, Infected and Recovered Model
+# SIR - Susceptible, Infected and Recovered Model
 
 ![](./equations/SIR.png)
 
@@ -125,7 +125,7 @@ https://medium.com/data-for-science/epidemic-modeling-101-or-why-your-covid19-ex
 
 So we can add a new variable k, (Kill rate), and add to the system of equations. Therefore:
 
-### SIR-D - SIR model extended to have deaths and recovered separated
+# SIR-D - SIR model extended to have deaths and recovered separated
 
 - S(t) are those susceptible but not yet infected with the disease
 - I(t) is the number of infectious individuals
@@ -155,7 +155,7 @@ The SIR-D model code is based on the contribution of Giuliano Belinassi, from IM
 https://github.com/Lewuathe/COVID19-SIR/issues/13#issue-589616803
 
 
-### SEIR - WHO model type for susceptible, exposed, infected and recovered
+# SEIR - WHO model type for susceptible, exposed, infected and recovered
 
 ![SEIR model general application](https://d25hn4jiqx5f7l.cloudfront.net/file_attachments/files/original/73be551d5ca0a993eafa0f5b53a66da1b9e8e012.png?1582334250)
 
@@ -191,7 +191,7 @@ Matt J. Keeling & Pejman Rohani, Chaper 2.6, SEIR model
 
 [http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html](http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html)
 
-### SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptible, exposed, asymptomatic, infected and deaths
+# SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptible, exposed, asymptomatic, infected and deaths
 
 - S(t) are those susceptible but not yet infected with the disease
 - E(t) are those exposed to the virus
@@ -280,7 +280,7 @@ and
 https://medium.com/data-for-science/epidemic-modeling-102-all-covid-19-models-are-wrong-but-some-are-useful-c81202cc6ee9
 
 
-## Validation with Real Data from Selected Countries
+# Validation with Real Data from Selected Countries
 
 ![Comparison between US deaths infected and recovered data and SEAIRD model result](./countries/results/ZoomModelSEAIRDOptUS20YaboxIC.png)
 
@@ -292,9 +292,9 @@ https://medium.com/data-for-science/epidemic-modeling-102-all-covid-19-models-ar
 
 ![Comparison between India deaths infected and recovered data and SEAIRD model result](./countries/results/ZoomModelSEAIRDOptIndia20YaboxIC.png)
 
-## Databases Used in This Study
+# Databases Used in This Study
  
-### Data
+# Data
 
 This code for countries has data from Repository by Johns Hopkins CSSE
 
@@ -304,22 +304,22 @@ For Brazilian States and Sao Paulo State Regions the data is from Brazil.io
 
 https://data.brasil.io/dataset/covid19/_meta/list.html
 
-## Data Analysis
+# Data Analysis
 
-### Log Plot for Covid-19 Infection in 5 Countries
+# Log Plot for Covid-19 Infection in 5 Countries
 
 ![Log Plot for Covid-19 Infection in 5 countries second set](./countries/results/coronaPythonEN_20.png)
 
-### Bar Plot for Covid-19 for Infected Cases
+# Bar Plot for Covid-19 for Infected Cases
 
 ![Bar Plot for Covid-19 for Infected Cases Relative](./countries/results/coronaPythonGrowthEN_Brazil.png)
 ![Bar Plot for Covid-19 for Infected Cases Absolute](./countries/results/coronaPythonGrowthDeltaCasesEN_Brazil.png)
 
-### Simple Exponential and Logistic Functions Fitting for Covid-19 Infected Data
+# Simple Exponential and Logistic Functions Fitting for Covid-19 Infected Data
 
 ![Simple Exponential and Logistic Functions Fitting](./countries/results/coronaPythonModelENBrazil.png)
 
-## References:
+# References:
 
 Anderson, R. M., May, R. M. , Infectious Diseases of Humans: Dynamics and Control, Oxford University Press, 1991
 
