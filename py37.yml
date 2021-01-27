@@ -1,0 +1,6 @@
+name: py37
+channels:
+  - defaults
+  - conda-forge
+  - intel
+prefix: /home/ats4i/anaconda3/envs/py37

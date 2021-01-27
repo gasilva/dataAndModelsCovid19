@@ -77,7 +77,7 @@ def loadDataFrame(filename):
     df.columns = [c.lower().replace(')', '') for c in df.columns]
     return df
 
-def load_confirmed(districtRegion, start_date):
+def load_confirmed(districtRegion, start_date,end_date):
     dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
     df = pd.read_csv('./data/DRS_confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
     y=[]
@@ -96,11 +96,11 @@ def load_confirmed(districtRegion, start_date):
     df2 = df2.astype(int)
     df2.index = df2.index.astype(str)
     #select dates
-    df2=df2[start_date:]
+    df2=df2[start_date:end_date]
     del x,y,df,dateparse
     return df2
 
-def load_dead(districtRegion, start_date):
+def load_dead(districtRegion, start_date,end_date):
     dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
     df = pd.read_csv('./data/DRS_mortes.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
     y=[]
@@ -119,7 +119,7 @@ def load_dead(districtRegion, start_date):
     df2 = df2.astype(int)
     df2.index = df2.index.astype(str)
     #select dates
-    df2=df2[start_date:]
+    df2=df2[start_date:end_date]
     del x,y,df,dateparse
     return df2
 
@@ -148,7 +148,7 @@ def strip_accents(text):
 def covid_plots(districtRegion, districts4Plot,\
                 startdate="2020-03-15",predict_range = 60, \
                     startCase = 180, opt = 5, version = "1", \
-                        show = False, ratio=0.15, maxDate="2020-08-31",model=""):
+                        show = False, ratio=0.15, maxDate="2020-08-31",model="",lastDate="2021-01-01"):
         
 
     #choose districtRegion
@@ -255,7 +255,7 @@ def covid_plots(districtRegion, districts4Plot,\
                 xytext=(80,-20), # distance from text to points (x,y)
                 ha='center',fontproperties=comic_font,fontsize=16) # horizontal alignment can be left, right or center
 
-            plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS',fontproperties=subtitle_font,fontsize = 16,
+            plt.annotate('Modeling Team ATS with support of IPT',fontproperties=subtitle_font,fontsize = 16,
                     xy=(1.06, 0.1), xycoords='axes fraction',
                     xytext=(0, 0), textcoords='offset points',
                     ha='right',rotation=90)
@@ -381,7 +381,7 @@ def covid_plots(districtRegion, districts4Plot,\
             for lh in leg.legendHandles: 
                 lh.set_alpha(0.75)
 
-            plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS',fontproperties=subtitle_font,fontsize = 16,
+            plt.annotate('Modeling Team ATS with support of IPT',fontproperties=subtitle_font,fontsize = 16,
                     xy=(1.06, 0.1), xycoords='axes fraction',
                     xytext=(0, 0), textcoords='offset points',
                     ha='right',rotation=90)
@@ -523,7 +523,7 @@ def covid_plots(districtRegion, districts4Plot,\
                 ha='right', weight='bold',fontsize=18,fontproperties=comic_font) 
                 # horizontal alignment can be left, right or center
 
-            plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS',fontproperties=subtitle_font,fontsize = 16,
+            plt.annotate('Modeling Team ATS with support of IPT',fontproperties=subtitle_font,fontsize = 16,
                     xy=(1.24, 0.1), xycoords='axes fraction',
                     xytext=(0, 0), textcoords='offset points',
                     ha='right',rotation=90)
@@ -593,7 +593,7 @@ def covid_plots(districtRegion, districts4Plot,\
             # Make the y-axis label and tick labels match the line color.
             plt.ylabel('Growth official cases per day [*1000]', fontproperties=comic_font)
 
-            plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS',fontproperties=subtitle_font,fontsize = 16,
+            plt.annotate('Modeling Team ATS with support of IPT',fontproperties=subtitle_font,fontsize = 16,
                     xy=(1.24, 0.1), xycoords='axes fraction',
                     xytext=(0, 0), textcoords='offset points',
                     ha='right',rotation=90)
@@ -628,8 +628,8 @@ def covid_plots(districtRegion, districts4Plot,\
         df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+dR+'.pkl')
         df.index = pd.to_datetime(df.index,format='%Y-%m-%d')
         
-        actual = load_confirmed(districtRegion, startdate)
-        death = load_dead(districtRegion,startdate)
+        actual = load_confirmed(districtRegion, startdate,lastDate)
+        death = load_dead(districtRegion,startdate,lastDate)
         death.index = pd.to_datetime(death.index,format='%Y-%m-%d')        
         actual.index = pd.to_datetime(actual.index,format='%Y-%m-%d')  
         extended_death = death.iloc[:,0].to_numpy()
@@ -671,7 +671,7 @@ def covid_plots(districtRegion, districts4Plot,\
             ax.xaxis_date()
             ax.plot(df['susceptible'],'g-',label="Susceptible")
             ax.plot(df['exposed'],'r-',label="Exposed")
-#             ax.plot(df['asymptomatic'],'b-',label="Asymptomatic")
+            ax.plot(df['asymptomatic'],'b-',label="Asymptomatic")
             #plt.xticks(np.arange(0, predict_range, predict_range/8))
             ax.plot(df['infected'],'y-',label="Infected")
             ax.plot(df['recovered'],'c-',label="Recovered")
@@ -690,21 +690,23 @@ def covid_plots(districtRegion, districts4Plot,\
                 arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)
 
             #plot margin annotation
-            plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS', 
+            plt.annotate('Modeling Team ATS with support of IPT', 
             xy=(1.04, 0.1), xycoords='axes fraction',
             xytext=(0, 0), textcoords='offset points',
             ha='right',rotation=90,fontproperties=subtitle_font,fontsize = 16)
-            plt.annotate('Original SEAIR-D with delay model, São Paulo, Brazil', 
+            plt.annotate('SEAIR-D Model, São Paulo, Brazil', 
             xy=(1.045,0.1), xycoords='axes fraction',
             xytext=(0, 0), textcoords='offset points',
             ha='left',rotation=90,fontproperties=subtitle_font,fontsize = 16)
             
-            #labels for x and y axis
-#             plt.xlabel("Date", fontproperties=comic_font)
-#             plt.ylabel("Number of People", fontproperties=comic_font)
-
+            dateMax=df.index[df['exposed']==max(df['exposed'])][0]
+            deltaDays=(dateMax-df.index[0]).days
+            deltaDaysMax=(df.index[-1]-df.index[0]).days
+            deltaExp = max(df['exposed'])/max(df['susceptible'])*0.45
+            
             #format legend
-            leg=ax.legend(frameon=False,prop=comic_font,fontsize=20)
+            leg=ax.legend(frameon=False,prop=comic_font,fontsize=20,loc='center',
+                          bbox_to_anchor=[deltaDays/deltaDaysMax+0.15, deltaExp],ncol=1)
             for lh in leg.legendHandles: 
                 lh.set_alpha(0.75)
             ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.4)
@@ -776,11 +778,11 @@ def covid_plots(districtRegion, districts4Plot,\
                 arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)
             
 
-            plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS', 
+            plt.annotate('Modeling Team ATS with support of IPT', 
             xy=(1.04, 0.1), xycoords='axes fraction',
             xytext=(0, 0), textcoords='offset points',
             ha='right',rotation=90,fontproperties=subtitle_font,fontsize = 16)
-            plt.annotate('Original SEAIR-D with delay model, São Paulo, Brazil', 
+            plt.annotate('SEAIR-D Model, São Paulo, Brazil', 
             xy=(1.045,0.1), xycoords='axes fraction',
             xytext=(0, 0), textcoords='offset points',
             ha='left',rotation=90,fontproperties=subtitle_font,fontsize = 16)
@@ -855,11 +857,11 @@ def covid_plots(districtRegion, districts4Plot,\
                 lh.set_alpha(0.75)
             ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
 
-            plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS', 
+            plt.annotate('Modeling Team ATS with support of IPT', 
             xy=(1.04, 0.1), xycoords='axes fraction',
             xytext=(0, 0), textcoords='offset points',
             ha='right',rotation=90,fontproperties=subtitle_font,fontsize = 16)
-            plt.annotate('Original SEAIR-D with delay model, São Paulo, Brazil', 
+            plt.annotate('SEAIR-D Model, São Paulo, Brazil', 
             xy=(1.045,0.1), xycoords='axes fraction',
             xytext=(0, 0), textcoords='offset points',
             ha='left',rotation=90,fontproperties=subtitle_font,fontsize = 16)
@@ -936,11 +938,11 @@ def covid_plots(districtRegion, districts4Plot,\
                 lh.set_alpha(0.75)
             ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
 
-            plt.annotate('Modeling Team for Sao Paulo State IPT, USP, ATS', 
+            plt.annotate('Modeling Team ATS with support of IPT', 
             xy=(1.04, 0.1), xycoords='axes fraction',
             xytext=(0, 0), textcoords='offset points',
             ha='right',rotation=90,fontproperties=subtitle_font,fontsize = 16)
-            plt.annotate('Original SEAIR-D with delay model, São Paulo, Brazil', 
+            plt.annotate('SEAIR-D Model, São Paulo, Brazil', 
             xy=(1.045,0.1), xycoords='axes fraction',
             xytext=(0, 0), textcoords='offset points',
             ha='left',rotation=90,fontproperties=subtitle_font,fontsize = 16)

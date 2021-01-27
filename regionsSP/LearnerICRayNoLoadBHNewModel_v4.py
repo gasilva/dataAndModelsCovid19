@@ -58,23 +58,23 @@ class Learner(object):
 
         def lossOdeint(point):
             size = len(self.data)+1
-            beta0, beta01, beta02, startT, startT2, sigma0,  a, b, d, mu, p = point
+            beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, betaR, mu = point
             gamma=a+b
-            gamma2=d
+            p=0.4
             
             def SEAIRD(y,t):
-                sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,beta01,beta02,t-int(size*3/4+0.5))
+                sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(size*3/4+0.5))
                 beta=beta0
                 S = y[0]
                 E = y[1]
                 A = y[2]
                 I = y[3]
                 R = y[4]
-                y0=(-(A+I)*beta*S-mu*S) #S
-                y1=(A+I)*beta*S-sigma*E-mu*E #E
-                y2=sigma*E*(1-p)-gamma2*A #A
+                y0=(-(A*betaR+I)*beta*S-mu*S) #S
+                y1=(A*betaR+I)*beta*S-sigma*E-mu*E #E
+                y2=sigma*E*(1-p)-gamma*A-mu*A #A
                 y3=sigma*E*p-gamma*I-mu*I #I
-                y4=(b*I+d*A)#R
+                y4=(b*I+gamma*A)-mu*R #R
                 y5=(-(y0+y1+y2+y3+y4)) #D
                 return [y0,y1,y2,y3,y4,y5]
 
@@ -137,10 +137,10 @@ class Learner(object):
         f=self.create_lossOdeint()
         size=len(self.data)+1
         
-        bnds =[(1e-16, .9),(1e-16, .9),(1e-16, .9),(0,int(size*3/4+0.5)-1),(int(size*3/4+0.5),size),
-            (1e-16, .9),(1e-16, .9),(1e-16, .9),(1e-16, .9),(1e-16, .9),(0.01,0.99)]
+        bnds =[(1e-16, .9),(1e-16, .9),(1e-16, .9),(0,int(size*3/4+0.5)-1),(int(size*3/4+0.5),size-5),
+            (1e-16, .9),(1e-16, .9),(1e-16, .9),(0,10),(1e-16,0.9)]
         
-        x0 = [1e-3, 1e-3, 1e-3, size/2, size*0.85, 1e-3, 1/50, 1e-3, 1e-3, 1e-3,0.4]
+        x0 = [1e-3, 1e-3, 1e-3, size/2, size*0.85, 1e-3, 1/50, 1e-3,1,0]
         
         minimizer_kwargs = { "method": "L-BFGS-B","bounds":bnds }
         optimal = basinhopping(f, x0, minimizer_kwargs=minimizer_kwargs,niter=10,disp=True)        

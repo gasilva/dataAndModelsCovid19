@@ -138,9 +138,9 @@ class Learner(object):
         def lossOdeint(point):
             size = len(self.data)+1
             sigma=[]
-            beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, d, mu, p = point
+            beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, betaR, mu = point
             gamma=a+b
-            gamma2=d
+            p=0.4
             
             def SEAIRD(y,t):
                 sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(size*3/4+0.5))
@@ -150,11 +150,11 @@ class Learner(object):
                 A = y[2]
                 I = y[3]
                 R = y[4]
-                y0=(-(A+I)*beta*S-mu*S) #S
-                y1=(A+I)*beta*S-sigma*E-mu*E #E
-                y2=sigma*E*(1-p)-gamma2*A #A
+                y0=(-(A*betaR+I)*beta*S-mu*S) #S
+                y1=(A*betaR+I)*beta*S-sigma*E-mu*E #E
+                y2=sigma*E*(1-p)-gamma*A-mu*A #A
                 y3=sigma*E*p-gamma*I-mu*I #I
-                y4=(b*I+d*A)#R
+                y4=(b*I+gamma*A)-mu*R #R
                 y5=(-(y0+y1+y2+y3+y4)) #D
                 return [y0,y1,y2,y3,y4,y5]
 
@@ -213,13 +213,13 @@ class Learner(object):
 
     def create_lossSub(self,pointOrig):
 
-        beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, d, mu, p = pointOrig
+        beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, betaR, mu = pointOrig
         
         def lossSub(point):
             sub, subDth = point
             gamma=a+b
-            gamma2=d
             size = len(self.data)+1
+            p=0.4
             
             def SEAIRD(y,t):
                 sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(size*3/4+0.5))
@@ -229,11 +229,11 @@ class Learner(object):
                 A = y[2]
                 I = y[3]
                 R = y[4]
-                y0=(-(A+I)*beta*S-mu*S)#S
-                y1=(A+I)*beta*S-sigma*E-mu*E #E
-                y2=sigma*E*(1-p)-gamma2*A #A
+                y0=(-(A*betaR+I)*beta*S-mu*S) #S
+                y1=(A*betaR+I)*beta*S-sigma*E-mu*E #E
+                y2=sigma*E*(1-p)-gamma*A-mu*A #A
                 y3=sigma*E*p-gamma*I-mu*I #I
-                y4=(b*I+d*A)#R
+                y4=(b*I+gamma*A)-mu*R #R
                 y5=(-(y0+y1+y2+y3+y4)) #D
                 return [y0,y1,y2,y3,y4,y5]
 
@@ -296,28 +296,29 @@ class Learner(object):
     #predict final extended values
     def predict(self, point):
 
-        beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, d, mu, p, sub, subDth  = point
+        beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, betaR, mu, sub, subDth  = point
         new_index = self.extend_index()
         size = len(new_index)
+        sizeData = len(self.data)+1
         gamma=a+b
-        gamma2=d
-
+        p=0.4
+            
         def SEAIRD(y,t):
-            sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int((len(self.data)+1)*3/4+0.5))
+            sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(sizeData*3/4+0.5))
             beta=beta0
             S = y[0]
             E = y[1]
             A = y[2]
             I = y[3]
             R = y[4]
-            y0=(-(A+I)*beta*S-mu*S) #S
-            y1=(A+I)*beta*S-sigma*E-mu*E #E
-            y2=sigma*E*(1-p)-gamma2*A #A
+            y0=(-(A*betaR+I)*beta*S-mu*S) #S
+            y1=(A*betaR+I)*beta*S-sigma*E-mu*E #E
+            y2=sigma*E*(1-p)-gamma*A-mu*A #A
             y3=sigma*E*p-gamma*I-mu*I #I
-            y4=(b*I+d*A)#R
+            y4=(b*I+gamma*A)-mu*R #R
             y5=(-(y0+y1+y2+y3+y4)) #D
             return [y0,y1,y2,y3,y4,y5]
-
+        
         y0=[self.s_0,self.e_0,self.a_0,self.i_0,self.r_0,self.d_0]
         tspan=np.arange(0, size, 1)
         res=odeint(SEAIRD,y0,tspan,atol=1e-4, rtol=1e-6) 
@@ -336,10 +337,10 @@ class Learner(object):
         self.data = self.load_confirmed()-self.recovered-self.death
         
         size=len(self.data)+1
-        bounds =[(1e-16, .9),(1e-16, .9),(1e-16, .9),(0,int(size*3/4+0.5)-1),(int(size*3/4+0.5),size),
-            (1e-16, .9),(1e-16, .9),(1e-16, .9),(1e-16, .9),(1e-16, .9),(0.01,0.99)]
+        bounds =[(1e-16, .9),(1e-16, .9),(1e-16, .9),(0,int(size*3/4+0.5)-1),(int(size*3/4+0.5),size-5),
+            (1e-16, .9),(1e-16, .9),(1e-16, .9),(0,10),(1e-16,0.9)]
 
-        maxiterations=3500
+        maxiterations=4500
         f=self.create_lossOdeint()
         de = DE(f, bounds, maxiters=maxiterations) #,popsize=100)
         i=0

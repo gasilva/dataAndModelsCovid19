@@ -35,7 +35,7 @@ def group_by_DRS():
     df_popEst = df_popEst.replace(['Indefinido'],'SP')
     print(df_popEst)
 
-    dfSP.to_csv("data/dados_municipios_SP.csv", sep=",", index=False)
+    dfSP.to_csv("data/dados_municipios_SP.csv.gz", sep=",", index=False,compression='gzip')
     df_confirmed.to_csv("data/DRS_confirmados.csv", sep=",")
     df_deaths.to_csv("data/DRS_mortes.csv", sep=",")
     df_popEst.to_csv("data/DRS_popEst.csv", sep=",")
