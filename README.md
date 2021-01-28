@@ -226,19 +226,12 @@ The last equation does not need to solved, because
 
 ![](https://latex.codecogs.com/png.latex?\huge%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bda%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
 
-The original β is divided in two factors β0 and β01 along time. They are linked by a sigmoid function to smooth the non-linearity.
+The original σ is divided in three factors σ, σ0 and σ01 along time. They are linked by a sigmoid function to smooth the non-linearity.
 
-How the final β is calculated. It is a linear combination of two β values. There is a development of 4 days to change from one value to another. The optimization also finds the ```startT```date to make the jump in addtion to the two values of β.
+How the final σ is calculated. It is a linear combination of two σ values. There is a development of 4 days to change from one value to another. The optimization also finds the ```startT```date to make the jump in addtion to the two values of σ.
 ```
-beta=sg.sigmoid(t-startT,beta0,beta01)
-
-def sigmoid(x,betai,betaf):
-    if betai<betaf:
-        rx=1-(1 / (1 + math.exp(-x)))
-        return betai*rx+betaf*(1-rx)
-    else:
-        rx=1 / (1 + math.exp(-x))
-        return betaf*rx+betai*(1-rx)  
+sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(size*3/4+0.5))
+ 
 ```
 How the sigmoid function is calculated. Numba package compiles the function and make it faster. The parallelization does not work but a LRU Cache is used to save memory and used it to evaluate repeated calculations.
 
@@ -249,25 +242,25 @@ import math
 import numpy as np
 
 @njit #(parallel=True)
-def sigmoid(x,betai,betaf):
+def sigmoid(x,σi,sigmaf):
     if betai<betaf:
         rx=1-(1 / (1 + math.exp(-x)))
-        return betai*rx+betaf*(1-rx)
+        return betai*rx+sigmaf*(1-rx)
     else:
         rx=1 / (1 + math.exp(-x))
-        return betaf*rx+betai*(1-rx)  
+        return betaf*rx+sigmai*(1-rx)  
     
 @lru_cache(maxsize=None)
 @njit
-def sigmoid2(x,xff,betai,betaf,betaff,half):        
+def sigmoid2(x,xff,sigmai,sigmaf,sigmaff,half):        
     
     if half<=0:
-        return sigmoid(x,betai,betaf)
+        return sigmoid(x,sigmai,sigmaf)
     else:
-        return sigmoid(xff,betaf,betaff)
+        return sigmoid(xff,sigmaf,sigmaff)
 ```
 
-The function format has this shape by considering β0=0 and β01=1 or β0=1 and β01=0 with ```startT=5```.
+The function format has this shape by considering σ0=0 and σ01=1 or σ0=1 and σ01=0 with ```startT=5```.
 
 ![Sigmoid function](countries/results/sigmoid.png)
 
