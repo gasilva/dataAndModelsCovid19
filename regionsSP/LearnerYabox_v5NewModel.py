@@ -86,15 +86,20 @@ class Learner(object):
         df = pd.read_csv('./data/DRS_confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
         y=[]
         x=[]
+        start=datetime.strptime(self.start_date, "%Y-%m-%d")+timedelta(days=10)
+        start2=start.strftime("%Y-%m-%d")
         for i in range(0,len(df.date)):
             y.append(df[self.districtRegion].values[i])
             x.append(df.date.values[i])
         df2=pd.DataFrame(data=y,index=x,columns=[""])
         df2 =df2.apply (pd.to_numeric, errors='coerce')
+        df2[start2:] = df2[start2:].replace({0:np.nan})
         df2 = df2.dropna()
         df2.index = pd.DatetimeIndex(df2.index)
+        #interpolate missing data
         df2 = df2.reindex(pd.date_range(df2.index.min(), df2.index.max()), fill_value=np.nan)
         df2 = df2.interpolate(method='akima', axis=0).ffill().bfill()
+        #string type for dates and integer for data
         df2 = df2.astype(int)
         df2.index = df2.index.astype(str)
         df2=df2[self.start_date:]
@@ -105,15 +110,20 @@ class Learner(object):
         df = pd.read_csv('./data/DRS_mortes.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
         y=[]
         x=[]
+        start=datetime.strptime(self.start_date, "%Y-%m-%d")+timedelta(days=10)
+        start2=start.strftime("%Y-%m-%d")
         for i in range(0,len(df.date)):
             y.append(df[self.districtRegion].values[i])
             x.append(df.date.values[i])
         df2=pd.DataFrame(data=y,index=x,columns=[""])
         df2 =df2.apply (pd.to_numeric, errors='coerce')
+        df2[start2:] = df2[start2:].replace({0:np.nan})
         df2 = df2.dropna()
         df2.index = pd.DatetimeIndex(df2.index)
+        #interpolate missing data
         df2 = df2.reindex(pd.date_range(df2.index.min(), df2.index.max()), fill_value=np.nan)
         df2 = df2.interpolate(method='akima', axis=0).ffill().bfill()
+        #string type for dates and integer for data
         df2 = df2.astype(int)
         df2.index = df2.index.astype(str)
         df2=df2[self.start_date:]

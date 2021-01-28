@@ -82,11 +82,14 @@ def load_confirmed(districtRegion, start_date,end_date):
     df = pd.read_csv('./data/DRS_confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
     y=[]
     x=[]
+    start=datetime.strptime(start_date, "%Y-%m-%d")+timedelta(days=10)
+    start2=start.strftime("%Y-%m-%d")
     for i in range(0,len(df.date)):
         y.append(df[districtRegion].values[i])
         x.append(df.date.values[i])
     df2=pd.DataFrame(data=y,index=x,columns=[""])
     df2 =df2.apply (pd.to_numeric, errors='coerce')
+    df2[start2:] = df2[start2:].replace({0:np.nan})
     df2 = df2.dropna()
     df2.index = pd.DatetimeIndex(df2.index)
     #interpolate missing data
@@ -105,11 +108,14 @@ def load_dead(districtRegion, start_date,end_date):
     df = pd.read_csv('./data/DRS_mortes.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
     y=[]
     x=[]
+    start=datetime.strptime(start_date, "%Y-%m-%d")+timedelta(days=10)
+    start2=start.strftime("%Y-%m-%d")
     for i in range(0,len(df.date)):
         y.append(df[districtRegion].values[i])
         x.append(df.date.values[i])
     df2=pd.DataFrame(data=y,index=x,columns=[""])
     df2 =df2.apply (pd.to_numeric, errors='coerce')
+    df2[start2:] = df2[start2:].replace({0:np.nan})
     df2 = df2.dropna()
     df2.index = pd.DatetimeIndex(df2.index)
     #interpolate missing data
