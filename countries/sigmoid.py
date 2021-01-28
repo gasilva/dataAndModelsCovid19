@@ -2,7 +2,6 @@ from functools import lru_cache
 from numba import njit
 import math
 import numpy as np
-import latexify
 
 @lru_cache(maxsize=None)
 @njit #(parallel=True)

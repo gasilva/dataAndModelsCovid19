@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c990f5e7a6072115a13b1a4ff98f3564b208e864c68670238b8c9975e1de140a
-size 141
+country = Italy
+S0 = 1000000.0
+Delta Date Days = 0.0
+I0 = 200.0
+wCases = 0.3994144997734597
+wRec = 0.09996656420998148
+R0 = 200.0
+D0 = 200.0

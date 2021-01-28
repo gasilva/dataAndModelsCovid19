@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5974ebab6aa65418851b03b8b16b7815872696158321e5453e5b1d90ccffb589
-size 143
+country = France
+S0 = 1000000.0
+Delta Date Days = 0.0
+I0 = 200.0
+wCases = 0.40000108784270644
+wRec = 0.10000008702741651
+R0 = 200.0
+D0 = 200.0

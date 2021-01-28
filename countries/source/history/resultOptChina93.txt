@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:fb5cf9e432749574de6b4dd3da0656c496fdd9db669c57a6e8e3b75ba21e12eb
-size 142
+country = China
+S0 = 1000000.0
+Delta Date Days = 0.0
+I0 = 200.0
+wCases = 0.40000367722197067
+wRec = 0.10000028467327239
+R0 = 200.0
+D0 = 200.0
