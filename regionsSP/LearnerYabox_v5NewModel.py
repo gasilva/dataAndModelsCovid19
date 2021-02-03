@@ -25,6 +25,7 @@ from scipy.optimize import basinhopping
 from yabox import DE
 from tqdm import tqdm
 import sigmoid as sg
+import gamma as gm
 
 from environs import Env
 env = Env()
@@ -45,7 +46,7 @@ import unicodedata
 class Learner(object):
     def __init__(self, districtRegion, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, \
     startNCases, weigthCases, weigthRecov, weigthDeath, end_date, ratio, cleanRecovered, version, \
-                 underNotif=True, Deaths=True, propWeigth=True, savedata=True):
+                 underNotif=False, Deaths=True, propWeigth=True, savedata=True):
         self.districtRegion = districtRegion
         self.start_date = start_date
         self.predict_range = predict_range
@@ -149,10 +150,11 @@ class Learner(object):
             size = len(self.data)+1
             sigma=[]
             beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, betaR, mu = point
-            gamma=a+b
             p=0.4
             
+            
             def SEAIRD(y,t):
+                gamma=a+b
                 sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(size*3/4+0.5))
                 beta=beta0
                 S = y[0]
@@ -185,17 +187,17 @@ class Learner(object):
             #for deaths
             dDeath=np.diff(res[1:size,5])           
             dDeathData=np.diff(self.death.values.T[:])
-            dErrorD=np.mean(((dDeath-dDeathData)**2)[-4:]) 
+            dErrorD=np.mean(((dDeath-dDeathData)**2)[-10:]) 
 
             #for infected
             dInf=np.diff(res[1:size,3])
             dInfData=np.diff(self.data.values.T[:])          
-            dErrorI=np.mean(((dInf-dInfData)**2)[-4:])
+            dErrorI=np.mean(((dInf-dInfData)**2)[-10:])
 
             if self.Deaths:
                 #penalty function for negative derivative at end of deaths
-                NegDeathData=np.diff(res[:,3])
-                dNeg=np.mean(NegDeathData[-5:])+0.1
+                NegDeathData=np.diff(res[:,5])
+                dNeg=np.mean(NegDeathData[-5:])
                 correctGtot=max(0,np.sign(dNeg))*(dNeg)**2
                 del NegDeathData
             else:
@@ -211,7 +213,7 @@ class Learner(object):
             wDeath=self.weigthDeath/wt
                 
             #objective function
-            gtot=wCases*(l1+0.05*dErrorI) + wDeath*(l2+0.2*dErrorD)
+            gtot=wCases*(l1+0.05*dErrorI) + wDeath*(l2+.2*dErrorD)
 
             #final objective function
             gtot=(10*correctGtot)+abs(gtot)
@@ -227,11 +229,11 @@ class Learner(object):
         
         def lossSub(point):
             sub, subDth = point
-            gamma=a+b
             size = len(self.data)+1
             p=0.4
             
             def SEAIRD(y,t):
+                gamma=a+b
                 sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(size*3/4+0.5))
                 beta=beta0
                 S = y[0]
@@ -266,17 +268,17 @@ class Learner(object):
             #for deaths
             dDeath=np.diff(res[1:size,5])           
             dDeathData=np.diff(self.death.values.T[:])
-            dErrorD=np.mean(((dDeath-dDeathData)**2)[-4:]) 
+            dErrorD=np.mean(((dDeath-dDeathData)**2)[-10:]) 
 
             #for infected
             dInf=np.diff(res[1:size,3])
             dInfData=np.diff(self.data.values.T[:])          
-            dErrorI=np.mean(((dInf-dInfData)**2)[-4:])
+            dErrorI=np.mean(((dInf-dInfData)**2)[-10:])
 
             if self.Deaths:
                 #penalty function for negative derivative at end of deaths
-                NegDeathData=np.diff(res[:,3])
-                dNeg=np.mean(NegDeathData[-5:])+0.1
+                NegDeathData=np.diff(res[:,5])
+                dNeg=np.mean(NegDeathData[-5:])
                 correctGtot=max(0,np.sign(dNeg))*(dNeg)**2
                 del NegDeathData
             else:
@@ -292,7 +294,7 @@ class Learner(object):
             wDeath=self.weigthDeath/wt
                 
             #objective function
-            gtot=wCases*(l1+0.05*dErrorI) + wDeath*(l2+0.2*dErrorD)
+            gtot=wCases*(l1+0.05*dErrorI) + wDeath*(l2+.2*dErrorD)
 
             #final objective function
             gtot=(10*correctGtot)+abs(gtot)
@@ -310,10 +312,10 @@ class Learner(object):
         new_index = self.extend_index()
         size = len(new_index)
         sizeData = len(self.data)+1
-        gamma=a+b
         p=0.4
             
         def SEAIRD(y,t):
+            gamma=a+b
             sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(sizeData*3/4+0.5))
             beta=beta0
             S = y[0]
@@ -328,7 +330,7 @@ class Learner(object):
             y4=(b*I+gamma*A)-mu*R #R
             y5=(-(y0+y1+y2+y3+y4)) #D
             return [y0,y1,y2,y3,y4,y5]
-        
+
         y0=[self.s_0,self.e_0,self.a_0,self.i_0,self.r_0,self.d_0]
         tspan=np.arange(0, size, 1)
         res=odeint(SEAIRD,y0,tspan,atol=1e-4, rtol=1e-6) 
@@ -347,8 +349,11 @@ class Learner(object):
         self.data = self.load_confirmed()-self.recovered-self.death
         
         size=len(self.data)+1
+          
         bounds =[(1e-16, .9),(1e-16, .9),(1e-16, .9),(0,int(size*3/4+0.5)-1),(int(size*3/4+0.5),size-5),
-            (1e-16, .9),(1e-16, .9),(1e-16, .9),(0,10),(1e-16,0.9)]
+            (1e-16, .9),
+            (1e-16, 10),(1e-16, 10),
+            (0,10),(1e-16,10)]            
 
         maxiterations=4500
         f=self.create_lossOdeint()
@@ -368,7 +373,7 @@ class Learner(object):
             bnds = ((.1,4),(.1,4))
             x0 = [1, 1]
             minimizer_kwargs = { "method": "L-BFGS-B","bounds":bnds }
-            optimal = basinhopping(f, x0, minimizer_kwargs=minimizer_kwargs,disp=True,niter=100) 
+            optimal = basinhopping(f, x0, minimizer_kwargs=minimizer_kwargs,disp=True,niter=30) 
             p2=optimal.x
             print("districtRegion {}".format(self.districtRegion))
             print("under notifications cases {:.2f}".format(p2[0]))

@@ -4,19 +4,19 @@ import math
 import numpy as np
 
 @njit #(parallel=True)
-def sigmoid(x,betai,betaf):
-    if betai<betaf:
+def sigmoid(x,vari,varf):
+    if vari<varf:
         rx=1-(1 / (1 + math.exp(-x)))
-        return betai*rx+betaf*(1-rx)
+        return vari*rx+varf*(1-rx)
     else:
         rx=1 / (1 + math.exp(-x))
-        return betaf*rx+betai*(1-rx)  
+        return varf*rx+vari*(1-rx)  
     
 @lru_cache(maxsize=None)
 @njit
-def sigmoid2(x,xff,betai,betaf,betaff,half):        
+def sigmoid2(x,xff,vari,varf,varff,half):        
     
     if half<=0:
-        return sigmoid(x,betai,betaf)
+        return sigmoid(x,vari,varf)
     else:
-        return sigmoid(xff,betaf,betaff)
+        return sigmoid(xff,varf,varff)
