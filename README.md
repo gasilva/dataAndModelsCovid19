@@ -203,11 +203,11 @@ Matt J. Keeling & Pejman Rohani, Chaper 2.6, SEIR model
 
 ---
 
-β : Effective contact rate [1/min]
+<img src="https://render.githubusercontent.com/render/math?math=\large \beta">: Effective contact rate [1/min]
 
 <img src="https://render.githubusercontent.com/render/math?math=\large \beta_R">: Fraction of effective contact rate [1/day]
 
-γ: Recovery(+Mortality) rate γ=(a+b) [1/min]
+<img src="https://render.githubusercontent.com/render/math?math=\large \gamma">: Recovery(+Mortality) rate γ=(a+b) [1/min]
 
 <img src="https://render.githubusercontent.com/render/math?math=\large a_\gamma">: recovery of healed  [1/min]
 
