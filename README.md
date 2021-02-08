@@ -92,7 +92,7 @@ The differential equations describing this model were first derived by Kermack a
 
 # SIR - Susceptible, Infected and Recovered Model
 
-![](./equations/SIR.png)
+<img width="500" alt="SIR Equation" src="./equations/SIR.png">
 
 Here, the number of 'recovery' englobes both recovered and deaths. This parameter is represented by γ.
 
@@ -144,7 +144,7 @@ b: mortality rate  [1/min]
 
 ---
 
-![](./equations/SIRD.png)
+<img width="500" alt="SIRD Equation" src="./equations/SIRD.png">
 
 The last equation does not need to solved, because
 
@@ -176,7 +176,8 @@ Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://tripl
 
 ---
 
-![](./equations/SEIR_Model.png)
+<img width="500" alt="SEIR Equation" src="./equations/SEIR_Model.png">
+
 
 The last equation does not need to solved, because
 
@@ -204,23 +205,29 @@ Matt J. Keeling & Pejman Rohani, Chaper 2.6, SEIR model
 
 β : Effective contact rate [1/min]
 
+$\beta_R$: Fraction of effective contact rate [1/day]
+
 γ: Recovery(+Mortality) rate γ=(a+b) [1/min]
 
-a: recovery of healed  [1/min]
+<img src="https://render.githubusercontent.com/render/math?math=a_\gamma">: recovery of healed  [1/min]
 
-b: mortality rate  [1/min]
+<img src="https://render.githubusercontent.com/render/math?math=b_\gamma">: mortality rate  [1/min]
 
-σ: is the rate at which individuals move from the exposed to the infectious classes. Its reciprocal (1/σ) is the average latent (exposed) period.
+ <img src="https://render.githubusercontent.com/render/math?math=\sigma">: is the rate at which individuals move from the exposed to the infectious classes. Three parameters  <img src="https://render.githubusercontent.com/render/math?math=\sigma_i">,  <img src="https://render.githubusercontent.com/render/math?math=\sigma_f"> and  <img src="https://render.githubusercontent.com/render/math?math=\sigma_{ff}"> are used along the days. The transition from  <img src="https://render.githubusercontent.com/render/math?math=\sigma_i"> to  <img src="https://render.githubusercontent.com/render/math?math=\sigma_f"> and from  <img src="https://render.githubusercontent.com/render/math?math=\sigma_f"> to  <img src="https://render.githubusercontent.com/render/math?math=\sigma_{ff}"> are made by a sigmoid function. Its reciprocal   <img src="https://render.githubusercontent.com/render/math?math=1/\sigma"> is the average latent (exposed) period. [1/day]
 
 p: is the fraction of the exposed which become symptomatic infectious sub-population.
 
 (1-p): is the fraction of the exposed which becomes asymptomatic infectious sub-population.
 
+ <img src="https://render.githubusercontent.com/render/math?math=\nu">: medicine and hospital improvement rate [1/day] 
+
+ <img src="https://render.githubusercontent.com/render/math?math=\mu">: direct mortality rate [1/day] 
+
 ---
 
 The inclusion of asymptomatic cases in SEIRD model generates SEAIRD equation system:
 
-![](./equations/SEAIRD_Model.png)
+<img width="500" alt="SEAIRD Equation" src="./equations/SEAIRD_Model.png">
 
 The last equation does not need to solved, because
 
