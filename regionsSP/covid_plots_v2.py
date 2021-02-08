@@ -165,6 +165,7 @@ def covid_plots(districtRegion, districts4Plot,\
     b = 0.0
     c = 0.0 
     date = []
+    ratio = 0
 
     #load CSV file
     dateparse = lambda x: pd.datetime.strptime(x, '%Y-%m-%d')
@@ -778,12 +779,15 @@ def covid_plots(districtRegion, districts4Plot,\
                  xy=(df.index[df['infected']==max(df['infected'])], max(df['infected'])), 
                  xytext=(-50,50), textcoords='offset points', ha='center', va='bottom',
                 arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)
-            plt.annotate("Max Deaths {:,}".format(int(max(df['deaths']))).replace(',', ' '), 
-                 xy=(df.index[df['deaths']==max(df['deaths'])], max(df['deaths'])), 
+            
+            maxD=max(df['deaths'])
+            maxInd=df.index[df['deaths']==max(df['deaths'])][0]
+            
+            plt.annotate("Max Deaths {:,}".format(int(df['deaths'].nlargest(1))).replace(',', ' '), 
+                 xy=(maxInd,maxD), 
                  xytext=(-75,50), textcoords='offset points', ha='center', va='bottom',
                 arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)
             
-
             plt.annotate('Modeling Team ATS with support of IPT', 
             xy=(1.04, 0.1), xycoords='axes fraction',
             xytext=(0, 0), textcoords='offset points',

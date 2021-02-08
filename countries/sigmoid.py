@@ -3,13 +3,16 @@ from numba import njit
 import math
 import numpy as np
 
-@lru_cache(maxsize=None)
 @njit #(parallel=True)
-def sigmoid(x,betai,betaf):
-    if betai<betaf:
-        rx=1-(1 / (1 + math.exp(-x)))
-        return betai*rx+betaf*(1-rx)
+def sigmoid(x,vari,varf):
+    rx=1 / (1 + math.exp(-x))
+    return vari*(1-rx)+varf*rx
+
+@lru_cache(maxsize=None)
+@njit
+def sigmoid2(x,xff,vari,varf,varff,half):        
+    
+    if half<=0:
+        return sigmoid(x,vari,varf)
     else:
-        rx=1 / (1 + math.exp(-x))
-        return betaf*rx+betai*(1-rx)  
-        
+        return sigmoid(xff,varf,varff)

@@ -42,11 +42,11 @@ ray.init(num_gpus=96,num_cpus=6)
 import unicodedata
 
 #register function for parallel processing
-@ray.remote(memory=8*1024*1024*1024,num_gpus=10,num_cpus=1)
+@ray.remote(memory=8*1024*1024*1024,num_gpus=10,num_cpus=0)
 class Learner(object):
     def __init__(self, districtRegion, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, \
     startNCases, weigthCases, weigthRecov, weigthDeath, end_date, ratio, cleanRecovered, version, \
-                 underNotif=False, Deaths=True, propWeigth=True, savedata=True):
+                 underNotif=True, Deaths=True, propWeigth=True, savedata=True):
         self.districtRegion = districtRegion
         self.start_date = start_date
         self.predict_range = predict_range
@@ -67,7 +67,8 @@ class Learner(object):
         self.end_date = end_date
         self.Deaths = Deaths
         self.propWeigth = propWeigth
-        self.ratio=ratio
+        self.ratio=0 #ratio
+        self.sigmoidTime=0.85
 
     def strip_accents(self,text):
 
@@ -149,25 +150,29 @@ class Learner(object):
         def lossOdeint(point):
             size = len(self.data)+1
             sigma=[]
-            beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, betaR, mu = point
+            beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, betaR, nu, mu, sigTime = point
             p=0.4
             
             
             def SEAIRD(y,t):
                 gamma=a+b
-                sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(size*3/4+0.5))
+                sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(size*sigTime+0.5))
                 beta=beta0
                 S = y[0]
                 E = y[1]
                 A = y[2]
                 I = y[3]
                 R = y[4]
-                y0=(-(A*betaR+I)*beta*S-mu*S) #S
+                D = y[5]                
+                y0=(-(A*betaR+I)*beta*S) #S
                 y1=(A*betaR+I)*beta*S-sigma*E-mu*E #E
                 y2=sigma*E*(1-p)-gamma*A-mu*A #A
                 y3=sigma*E*p-gamma*I-mu*I #I
-                y4=(b*I+gamma*A)-mu*R #R
+                y4=(b*I+gamma*A)+nu*D #R
                 y5=(-(y0+y1+y2+y3+y4)) #D
+                if y5<0:
+                    y4=y4-y5
+                    y5=0
                 return [y0,y1,y2,y3,y4,y5]
 
             y0=[self.s_0,self.e_0,self.a_0,self.i_0,self.r_0,self.d_0]
@@ -187,17 +192,17 @@ class Learner(object):
             #for deaths
             dDeath=np.diff(res[1:size,5])           
             dDeathData=np.diff(self.death.values.T[:])
-            dErrorD=np.mean(((dDeath-dDeathData)**2)[-10:]) 
+            dErrorD=np.mean(((dDeath-dDeathData)**2)) 
 
             #for infected
             dInf=np.diff(res[1:size,3])
             dInfData=np.diff(self.data.values.T[:])          
-            dErrorI=np.mean(((dInf-dInfData)**2)[-10:])
+            dErrorI=np.mean(((dInf-dInfData)**2))
 
             if self.Deaths:
                 #penalty function for negative derivative at end of deaths
                 NegDeathData=np.diff(res[:,5])
-                dNeg=np.mean(NegDeathData[-5:])
+                dNeg=np.mean(NegDeathData[-5:])-10
                 correctGtot=max(0,np.sign(dNeg))*(dNeg)**2
                 del NegDeathData
             else:
@@ -225,7 +230,7 @@ class Learner(object):
 
     def create_lossSub(self,pointOrig):
 
-        beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, betaR, mu = pointOrig
+        beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, betaR, nu, mu, sigTime = pointOrig
         
         def lossSub(point):
             sub, subDth = point
@@ -234,19 +239,23 @@ class Learner(object):
             
             def SEAIRD(y,t):
                 gamma=a+b
-                sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(size*3/4+0.5))
+                sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(size*sigTime+0.5))
                 beta=beta0
                 S = y[0]
                 E = y[1]
                 A = y[2]
                 I = y[3]
                 R = y[4]
-                y0=(-(A*betaR+I)*beta*S-mu*S) #S
+                D = y[5]
+                y0=(-(A*betaR+I)*beta*S) #S
                 y1=(A*betaR+I)*beta*S-sigma*E-mu*E #E
                 y2=sigma*E*(1-p)-gamma*A-mu*A #A
                 y3=sigma*E*p-gamma*I-mu*I #I
-                y4=(b*I+gamma*A)-mu*R #R
+                y4=(b*I+gamma*A)+nu*D #R
                 y5=(-(y0+y1+y2+y3+y4)) #D
+                if y5<0:
+                    y4=y4-y5
+                    y5=0
                 return [y0,y1,y2,y3,y4,y5]
 
             y0=[self.s_0,self.e_0,self.a_0,self.i_0,self.r_0,self.d_0]
@@ -268,17 +277,17 @@ class Learner(object):
             #for deaths
             dDeath=np.diff(res[1:size,5])           
             dDeathData=np.diff(self.death.values.T[:])
-            dErrorD=np.mean(((dDeath-dDeathData)**2)[-10:]) 
+            dErrorD=np.mean(((dDeath-dDeathData)**2)) 
 
             #for infected
             dInf=np.diff(res[1:size,3])
             dInfData=np.diff(self.data.values.T[:])          
-            dErrorI=np.mean(((dInf-dInfData)**2)[-10:])
+            dErrorI=np.mean(((dInf-dInfData)**2))
 
             if self.Deaths:
                 #penalty function for negative derivative at end of deaths
                 NegDeathData=np.diff(res[:,5])
-                dNeg=np.mean(NegDeathData[-5:])
+                dNeg=np.mean(NegDeathData[-5:])-10
                 correctGtot=max(0,np.sign(dNeg))*(dNeg)**2
                 del NegDeathData
             else:
@@ -308,7 +317,7 @@ class Learner(object):
     #predict final extended values
     def predict(self, point):
 
-        beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, betaR, mu, sub, subDth  = point
+        beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, betaR, nu, mu, sigTime, sub, subDth  = point
         new_index = self.extend_index()
         size = len(new_index)
         sizeData = len(self.data)+1
@@ -316,19 +325,23 @@ class Learner(object):
             
         def SEAIRD(y,t):
             gamma=a+b
-            sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(sizeData*3/4+0.5))
+            sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(sizeData*sigTime+0.5))
             beta=beta0
             S = y[0]
             E = y[1]
             A = y[2]
             I = y[3]
             R = y[4]
-            y0=(-(A*betaR+I)*beta*S-mu*S) #S
+            D = y[5]
+            y0=(-(A*betaR+I)*beta*S) #S
             y1=(A*betaR+I)*beta*S-sigma*E-mu*E #E
             y2=sigma*E*(1-p)-gamma*A-mu*A #A
             y3=sigma*E*p-gamma*I-mu*I #I
-            y4=(b*I+gamma*A)-mu*R #R
+            y4=(b*I+gamma*A)+nu*D #R
             y5=(-(y0+y1+y2+y3+y4)) #D
+            if y5<0:
+                y4=y4-y5
+                y5=0
             return [y0,y1,y2,y3,y4,y5]
 
         y0=[self.s_0,self.e_0,self.a_0,self.i_0,self.r_0,self.d_0]
@@ -349,11 +362,16 @@ class Learner(object):
         self.data = self.load_confirmed()-self.recovered-self.death
         
         size=len(self.data)+1
+        
+        self.sigmoidTime=0.6
           
-        bounds =[(1e-16, .9),(1e-16, .9),(1e-16, .9),(0,int(size*3/4+0.5)-1),(int(size*3/4+0.5),size-5),
+        bounds =[(1e-16, .9),(1e-16, .9),(1e-16, .9),
+            (5,int(size*self.sigmoidTime+0.5)-5),(int(size*self.sigmoidTime+0.5)+5,size-5),
             (1e-16, .9),
             (1e-16, 10),(1e-16, 10),
-            (0,10),(1e-16,10)]            
+            (0,10),(1e-16,10),(1e-16,10),
+            (0.65,0.95)
+            ]            
 
         maxiterations=4500
         f=self.create_lossOdeint()
