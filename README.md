@@ -249,22 +249,17 @@ import math
 import numpy as np
 
 @njit #(parallel=True)
-def sigmoid(x,σi,sigmaf):
-    if betai<betaf:
-        rx=1-(1 / (1 + math.exp(-x)))
-        return betai*rx+sigmaf*(1-rx)
-    else:
-        rx=1 / (1 + math.exp(-x))
-        return betaf*rx+sigmai*(1-rx)  
-    
+def sigmoid(x,vari,varf):
+    rx=1 / (1 + math.exp(-x))
+    return vari*(1-rx)+varf*rx
+
 @lru_cache(maxsize=None)
 @njit
-def sigmoid2(x,xff,sigmai,sigmaf,sigmaff,half):        
-    
+def sigmoid2(x,xff,vari,varf,varff,half):        
     if half<=0:
-        return sigmoid(x,sigmai,sigmaf)
+        return sigmoid(x,vari,varf)
     else:
-        return sigmoid(xff,sigmaf,sigmaff)
+        return sigmoid(xff,varf,varff)
 ```
 
 The function format has this shape by considering σ0=0 and σ01=1 or σ0=1 and σ01=0 with ```startT=5```.
