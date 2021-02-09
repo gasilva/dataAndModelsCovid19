@@ -172,7 +172,7 @@ The SIR model describes the change in the population of each of these compartmen
 
 The differential equations describing this model were first derived by Kermack and McKendrick [Proc. R. Soc. A, 115, 772 (1927)]:
 
-# SIR Model
+## SIR Model
 
 <img width="500" alt="SIR Equation" src="./equations/SIR.png">
 
@@ -207,7 +207,7 @@ https://medium.com/data-for-science/epidemic-modeling-101-or-why-your-covid19-ex
 
 So we can add a new variable k, (Kill rate), and add to the system of equations. Therefore:
 
-# SIR-D Model
+## SIR-D Model
 
 - S(t) are those susceptible but not yet infected with the disease
 - I(t) is the number of infectious individuals
@@ -237,7 +237,7 @@ The SIR-D model code is based on the contribution of Giuliano Belinassi, from IM
 https://github.com/Lewuathe/COVID19-SIR/issues/13#issue-589616803
 
 
-# SEIR Model
+## SEIR Model - World Health Organization WHO recommended
 
 ![SEIR model general application](https://d25hn4jiqx5f7l.cloudfront.net/file_attachments/files/original/73be551d5ca0a993eafa0f5b53a66da1b9e8e012.png?1582334250)
 
