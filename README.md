@@ -64,134 +64,6 @@ The optimized initial conditions are taken from the file `data/param_optimized_Y
 
 The Brazlian States and Sao Paulo region follows the same logic.
 
-# Theory
-
-The mathematical Models are based in Lotka-Volterra equations, it is like a predator-prey type of model.
-
-![General explanation about SIR model](https://d25hn4jiqx5f7l.cloudfront.net/file_attachments/files/original/f92193ccb498ebc28d1af83c31de63314c959a58.png?1582329912)
-
-Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://triplebyte.com/blog/modeling-infectious-diseases)
-
-A simple mathematical description of the spread of a disease in a population is the so-called SIR model, which divides the (fixed) population of N individuals into three "compartments" which may vary as a function of time, t:
-
-- S(t) are those susceptible but not yet infected with the disease
-- I(t) is the number of infectious individuals
-- R(t) are those individuals who have recovered (dead+healed)
-
----
-
-β : Effective contact rate [1/min]
-
-γ: Recovery(+Mortality) rate [1/min]
-
----
-
-The SIR model describes the change in the population of each of these compartments in terms of two parameters, β and γ. β describes the effective contact rate of the disease: an infected individual comes into contact with βN other individuals per unit time (of which the fraction that are susceptible to contracting the disease is S/N). γ is the mean recovery rate: that is, 1/γ is the mean period of time during which an infected individual can pass it on.
-
-The differential equations describing this model were first derived by Kermack and McKendrick [Proc. R. Soc. A, 115, 772 (1927)]:
-
-# SIR - Susceptible, Infected and Recovered Model
-
-<img width="500" alt="SIR Equation" src="./equations/SIR.png">
-
-Here, the number of 'recovery' englobes both recovered and deaths. This parameter is represented by γ.
-
-The SIR model code is based on
-
-https://www.lewuathe.com/covid-19-dynamics-with-sir-model.html
-
-https://github.com/Lewuathe/COVID19-SIR
-
-https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model
-
-https://triplebyte.com/blog/modeling-infectious-diseases
-
-The γ is split in two by γ = a + b, where a is the rate of recoveries, and b is the rate of death. Since the death rate seems to be linear (1.5% in China, for example), this linear decomposition of γ is precise enough. 
-
-Some facts about SIR model:
-
-- The number of Susceptible individuals can only decrease
-- The number of Recovered can only increase
-- The number of Infectious individuals grows up to a certain point before reaching a peak and starting to decline.
-- The majority of the population becomes infected and eventually recovers.
-
-The the Python notebook of
-
-https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
-
-A well posed explanation about SIR Model is given by:
-
-https://medium.com/data-for-science/epidemic-modeling-101-or-why-your-covid19-exponential-fits-are-wrong-97aa50c55f8
-
-So we can add a new variable k, (Kill rate), and add to the system of equations. Therefore:
-
-# SIR-D - SIR model extended to have deaths and recovered separated
-
-- S(t) are those susceptible but not yet infected with the disease
-- I(t) is the number of infectious individuals
-- R(t) are those individuals who have healed
-- K(t) are those individuals who have died
-
----
-
-β : Effective contact rate [1/min]
-
-γ: Recovery(+Mortality) rate γ=(a+b) [1/min]
-
-a: recovery of healed  [1/min]
-
-b: mortality rate  [1/min]
-
----
-
-<img width="500" alt="SIRD Equation" src="./equations/SIRD.png">
-
-The last equation does not need to solved, because
-
-![](https://latex.codecogs.com/png.latex?\huge%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
-
-The SIR-D model code is based on the contribution of Giuliano Belinassi, from IME-USP, Brazil
-
-https://github.com/Lewuathe/COVID19-SIR/issues/13#issue-589616803
-
-
-# SEIR - WHO model type for susceptible, exposed, infected and recovered
-
-![SEIR model general application](https://d25hn4jiqx5f7l.cloudfront.net/file_attachments/files/original/73be551d5ca0a993eafa0f5b53a66da1b9e8e012.png?1582334250)
-
-Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://triplebyte.com/blog/modeling-infectious-diseases)
-
-- S(t) are those susceptible but not yet infected with the disease
-- E(t) are those exposed to the virus
-- I(t) is the number of infectious individuals
-- R(t) are those individuals who have recovered (deads+healed)
-
----
-
-β : Effective contact rate [1/min]
-
-γ: Recovery(+Mortality) rate γ=(a+b) [1/min]
-
-σ: is the rate at which individuals move from the exposed to the infectious classes. Its reciprocal (1/σ) is the average latent (exposed) period.
-
----
-
-<img width="500" alt="SEIR Equation" src="./equations/SEIR_Model.png">
-
-
-The last equation does not need to solved, because
-
-![](https://latex.codecogs.com/png.latex?\huge%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D%20%3D%200)
-
-About SEIR models:
-
-[https://idmod.org/docs/malaria/model-seir.html](https://idmod.org/docs/malaria/model-seir.html)
-
-Codes from the book of Modeling Infectious Diseases in Humans and Animals
-Matt J. Keeling & Pejman Rohani, Chaper 2.6, SEIR model
-
-[http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html](http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html)
-
 # SEAIR-D - Original variation, proposed by this author, from SEIR model for susceptible, exposed, asymptomatic, infected and deaths
 
 - S(t) are those susceptible but not yet infected with the disease
@@ -273,6 +145,134 @@ It is a new completely development model but inspired on the paper below. Howeve
 and
 
 https://medium.com/data-for-science/epidemic-modeling-102-all-covid-19-models-are-wrong-but-some-are-useful-c81202cc6ee9
+
+# The Epidemiological Model Development
+
+The mathematical Models are based in Lotka-Volterra equations, it is like a predator-prey type of model.
+
+![General explanation about SIR model](https://d25hn4jiqx5f7l.cloudfront.net/file_attachments/files/original/f92193ccb498ebc28d1af83c31de63314c959a58.png?1582329912)
+
+Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://triplebyte.com/blog/modeling-infectious-diseases)
+
+A simple mathematical description of the spread of a disease in a population is the so-called SIR model, which divides the (fixed) population of N individuals into three "compartments" which may vary as a function of time, t:
+
+- S(t) are those susceptible but not yet infected with the disease
+- I(t) is the number of infectious individuals
+- R(t) are those individuals who have recovered (dead+healed)
+
+---
+
+β : Effective contact rate [1/min]
+
+γ: Recovery(+Mortality) rate [1/min]
+
+---
+
+The SIR model describes the change in the population of each of these compartments in terms of two parameters, β and γ. β describes the effective contact rate of the disease: an infected individual comes into contact with βN other individuals per unit time (of which the fraction that are susceptible to contracting the disease is S/N). γ is the mean recovery rate: that is, 1/γ is the mean period of time during which an infected individual can pass it on.
+
+The differential equations describing this model were first derived by Kermack and McKendrick [Proc. R. Soc. A, 115, 772 (1927)]:
+
+# SIR Model
+
+<img width="500" alt="SIR Equation" src="./equations/SIR.png">
+
+Here, the number of 'recovery' englobes both recovered and deaths. This parameter is represented by γ.
+
+The SIR model code is based on
+
+https://www.lewuathe.com/covid-19-dynamics-with-sir-model.html
+
+https://github.com/Lewuathe/COVID19-SIR
+
+https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model
+
+https://triplebyte.com/blog/modeling-infectious-diseases
+
+The γ is split in two by γ = a + b, where a is the rate of recoveries, and b is the rate of death. Since the death rate seems to be linear (1.5% in China, for example), this linear decomposition of γ is precise enough. 
+
+Some facts about SIR model:
+
+- The number of Susceptible individuals can only decrease
+- The number of Recovered can only increase
+- The number of Infectious individuals grows up to a certain point before reaching a peak and starting to decline.
+- The majority of the population becomes infected and eventually recovers.
+
+The the Python notebook of
+
+https://www.kaggle.com/lisphilar/covid-19-data-with-sir-model#Scenario-in-Italy
+
+A well posed explanation about SIR Model is given by:
+
+https://medium.com/data-for-science/epidemic-modeling-101-or-why-your-covid19-exponential-fits-are-wrong-97aa50c55f8
+
+So we can add a new variable k, (Kill rate), and add to the system of equations. Therefore:
+
+# SIR-D Model
+
+- S(t) are those susceptible but not yet infected with the disease
+- I(t) is the number of infectious individuals
+- R(t) are those individuals who have healed
+- K(t) are those individuals who have died
+
+---
+
+β : Effective contact rate [1/min]
+
+γ: Recovery(+Mortality) rate γ=(a+b) [1/min]
+
+a: recovery of healed  [1/min]
+
+b: mortality rate  [1/min]
+
+---
+
+<img width="500" alt="SIRD Equation" src="./equations/SIRD.png">
+
+The last equation does not need to solved, because
+
+![](https://latex.codecogs.com/png.latex?\huge%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
+
+The SIR-D model code is based on the contribution of Giuliano Belinassi, from IME-USP, Brazil
+
+https://github.com/Lewuathe/COVID19-SIR/issues/13#issue-589616803
+
+
+# SEIR Model
+
+![SEIR model general application](https://d25hn4jiqx5f7l.cloudfront.net/file_attachments/files/original/73be551d5ca0a993eafa0f5b53a66da1b9e8e012.png?1582334250)
+
+Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://triplebyte.com/blog/modeling-infectious-diseases)
+
+- S(t) are those susceptible but not yet infected with the disease
+- E(t) are those exposed to the virus
+- I(t) is the number of infectious individuals
+- R(t) are those individuals who have recovered (deads+healed)
+
+---
+
+β : Effective contact rate [1/min]
+
+γ: Recovery(+Mortality) rate γ=(a+b) [1/min]
+
+σ: is the rate at which individuals move from the exposed to the infectious classes. Its reciprocal (1/σ) is the average latent (exposed) period.
+
+---
+
+<img width="500" alt="SEIR Equation" src="./equations/SEIR_Model.png">
+
+
+The last equation does not need to solved, because
+
+![](https://latex.codecogs.com/png.latex?\huge%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D%20%3D%200)
+
+About SEIR models:
+
+[https://idmod.org/docs/malaria/model-seir.html](https://idmod.org/docs/malaria/model-seir.html)
+
+Codes from the book of Modeling Infectious Diseases in Humans and Animals
+Matt J. Keeling & Pejman Rohani, Chaper 2.6, SEIR model
+
+[http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html](http://homepages.warwick.ac.uk/~masfz/ModelingInfectiousDiseases/Chapter2/Program_2.6/index.html)
 
 
 # Validation with Real Data from Selected Countries
