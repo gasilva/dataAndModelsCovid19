@@ -99,11 +99,11 @@ p: is the fraction of the exposed which become symptomatic infectious sub-popula
 
 The inclusion of asymptomatic cases in SEIRD model generates SEAIRD equation system:
 
-<img width="600" alt="SEAIRD Equation" src="./equations/SEAIRD_Model.png">
+<img width="700" alt="SEAIRD Equation" src="./equations/SEAIRD_Model.png">
 
 The last equation does not need to solved, because
 
-![](https://latex.codecogs.com/png.latex?\huge%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bda%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
+![](https://latex.codecogs.com/png.latex?\Huge%5Cinline%20%5Cbg_white%20%5Cfrac%7Bds%7D%7Bdt%7D&plus;%5Cfrac%7Bde%7D%7Bdt%7D&plus;%5Cfrac%7Bda%7D%7Bdt%7D&plus;%5Cfrac%7Bdi%7D%7Bdt%7D&plus;%5Cfrac%7Bdr%7D%7Bdt%7D&plus;%5Cfrac%7Bdk%7D%7Bdt%7D%20%3D%200)
 
 The original σ is divided in three factors σ, σ0 and σ01 along time. They are linked by a sigmoid function to smooth the non-linearity.
 
@@ -174,7 +174,7 @@ The differential equations describing this model were first derived by Kermack a
 
 ## SIR Model
 
-<img width="500" alt="SIR Equation" src="./equations/SIR.png">
+<img width="300" alt="SIR Equation" src="./equations/SIR.png">
 
 Here, the number of 'recovery' englobes both recovered and deaths. This parameter is represented by γ.
 
@@ -226,7 +226,7 @@ b: mortality rate  [1/min]
 
 ---
 
-<img width="500" alt="SIRD Equation" src="./equations/SIRD.png">
+<img width="300" alt="SIRD Equation" src="./equations/SIRD.png">
 
 The last equation does not need to solved, because
 
@@ -258,7 +258,7 @@ Source: [https://triplebyte.com/blog/modeling-infectious-diseases](https://tripl
 
 ---
 
-<img width="500" alt="SEIR Equation" src="./equations/SEIR_Model.png">
+<img width="300" alt="SEIR Equation" src="./equations/SEIR_Model.png">
 
 
 The last equation does not need to solved, because
