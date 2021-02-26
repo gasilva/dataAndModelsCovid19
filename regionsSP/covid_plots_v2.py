@@ -201,7 +201,7 @@ def covid_plots(districtRegion, districts4Plot,\
         model='SEAIRD'
 
         dR = strip_accents(districtRegion)
-        df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+dR+'.pkl')
+        df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+dR+version+'.pkl')
         time6, cases6 = predictionsPlot(df,startCase)
 
         #model
@@ -632,7 +632,7 @@ def covid_plots(districtRegion, districts4Plot,\
         
     if opt==5 or opt==0:
         dR = strip_accents(districtRegion)
-        df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+dR+'.pkl')
+        df = loadDataFrame('./data/SEAIRD_sigmaOpt_'+dR+version+'.pkl')
         df.index = pd.to_datetime(df.index,format='%Y-%m-%d')
         
         actual = load_confirmed(districtRegion, startdate,lastDate)
@@ -880,6 +880,23 @@ def covid_plots(districtRegion, districts4Plot,\
             plt.xlabel("Date", fontproperties=comic_font)
             plt.ylabel("Cases per day", fontproperties=comic_font)
 
+            ax.set_ylim(0,max(df2['infectedDay'])*1.2)
+            
+            
+            df2a=df2.iloc[0:int(len(df2.index)*0.5),:]    
+
+            plt.annotate("Max  {:,}".format(int(max(df2a['infectedDay']))).replace(',', ' '), 
+                 xy=(df2a.index[df2a['infectedDay']==max(df2a['infectedDay'])], max(df2a['infectedDay'])), 
+                 xytext=(-40,20), textcoords='offset points', ha='center', va='bottom',
+                arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)     
+                   
+            df2a=df2.iloc[int(len(df2.index)*0.5)+1:,:]    
+                
+            plt.annotate("2nd Max {:,}".format(int(df2a['infectedDay'].nlargest(2)[0])).replace(',', ' '), 
+                 xy=(df2a.index[df2a['infectedDay']==df2a['infectedDay'].nlargest(2)[0]], df2a['infectedDay'].nlargest(2)[0]), 
+                 xytext=(-40,20), textcoords='offset points', ha='center', va='bottom',
+                arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)               
+            
             #plot layout
             fig.tight_layout()
 
@@ -940,7 +957,23 @@ def covid_plots(districtRegion, districts4Plot,\
 
             df3.rolling(7).mean()['deathDay'].plot(label="7-day real",style='o')
             df2.rolling(7).mean()['deathDay'].plot(label="7-day model")
+            
+            ax.set_ylim(0,max(df2['deathDay'])*1.2)
+            
+            df2a=df2.iloc[:int(len(df2.index)*0.5),:]    
 
+            plt.annotate("Max {:,}".format(int(max(df2a['deathDay']))).replace(',', ' '), 
+                 xy=(df2a.index[df2a['deathDay']==max(df2a['deathDay'])], max(df2a['deathDay'])), 
+                 xytext=(-50,80), textcoords='offset points', ha='center', va='bottom',
+                arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font,  xycoords='data')     
+                   
+            df2a=df2.iloc[int(len(df2.index)*0.5)+1:,:]    
+            
+            if df2a['deathDay'].nlargest(2)[0]>1:         
+                plt.annotate("2nd Max {:,}".format(int(df2a['deathDay'].nlargest(2)[0])).replace(',', ' '), 
+                     xy=(df2a.index[df2a['deathDay']==df2a['deathDay'].nlargest(2)[0]], df2a['deathDay'].nlargest(2)[0]), 
+                     xytext=(-50,80), textcoords='offset points', ha='center', va='bottom',
+                    arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font,  xycoords='data')    
             
             #format legend
             leg=ax.legend(frameon=False,prop=comic_font,fontsize=20)

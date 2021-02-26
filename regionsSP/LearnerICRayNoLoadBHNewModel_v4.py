@@ -16,7 +16,7 @@ import ray
 #register function for parallel processing
 @ray.remote(num_cpus=1,num_gpus=4)
 class Learner(object):
-    def __init__(self, districtRegion, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov, cleanRecovered, version, data, death, underNotif=False, Deaths=True, propWeigth=True, savedata=True):
+    def __init__(self, districtRegion, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov, cleanRecovered, version, data, death, underNotif=False, Deaths=False, propWeigth=True, savedata=True):
         self.districtRegion = districtRegion
         self.start_date = start_date
         self.predict_range = predict_range
@@ -39,7 +39,7 @@ class Learner(object):
         self.propWeigth = propWeigth
         self.underNotif = underNotif
         self.savedata = savedata
-        self.sigmoidTime=4/5
+        self.sigmoidTime=0.85
 
     def append_new_line(self,file_name, text_to_append):
         #Append given text as a new line at the end of file
@@ -85,14 +85,20 @@ class Learner(object):
 
             y0=[self.s_0,self.e_0,self.a_0,self.i_0,self.r_0,self.d_0]
             tspan=np.arange(0, size+200, 1)
-            res=odeint(SEAIRD,y0,tspan,atol=1e-4, rtol=1e-6)       
+            res, info =odeint(SEAIRD,y0,tspan,atol=1e-4, rtol=1e-6, full_output=True, 
+                              mxstep=500000,hmin=1e-12)    
             res = np.where(res < 0, 0, res)
             res = np.where(res >= 1e10, 1e10, res)
 
             # calculate fitting error by using numpy.where
             ix= np.where(self.data.values >= self.startNCases)
             l1 = np.mean((res[ix[0],3] - (self.data.values[ix]))**2)
-            l2 = np.mean((res[ix[0],5] - self.death.values[ix])**2)
+            
+            #deaths
+            l2 = (res[ix[0],5] - self.death.values[ix])**2
+            sizeD=len(l2)
+            l2Final=np.mean(l2[sizeD-8:sizeD])
+            l2=np.mean(l2)
 
             #calculate derivatives
             #and the error of the derivative between prediction and the data
@@ -100,18 +106,18 @@ class Learner(object):
             #for deaths
             dDeath=np.diff(res[1:size,5])           
             dDeathData=np.diff(self.death.values.T[:])
-            dErrorD=np.mean(((dDeath-dDeathData)**2)) 
+            dErrorD=np.mean(((dDeath-dDeathData)**2)[-8:]) 
 
             #for infected
             dInf=np.diff(res[1:size,3])
             dInfData=np.diff(self.data.values.T[:])          
-            dErrorI=np.mean(((dInf-dInfData)**2))
+            dErrorI=np.mean(((dInf-dInfData)**2)[-8:])
 
             if self.Deaths:
                 #penalty function for negative derivative at end of deaths
                 NegDeathData=np.diff(res[:,5])
-                dNeg=np.mean(NegDeathData[-5:])
-                correctGtot=max(0,np.sign(dNeg))*(dNeg)**2
+                dNeg=np.mean(NegDeathData[-5:])-25
+                correctGtot=-1*max(0,np.sign(dNeg))*(dNeg)**2
                 del NegDeathData
             else:
                 correctGtot=0
@@ -124,12 +130,12 @@ class Learner(object):
                 
             wCases=self.weigthCases/wt
             wDeath=self.weigthDeath/wt
+
+            diffI=(np.mean(np.diff(self.data.values.T[:]))-np.mean(np.diff(res[ix[0],3])))**2
+            diffD=(np.mean(np.diff(self.death.values.T[:]))-np.mean(np.diff(res[ix[0],5])))**2
                 
             #objective function
-            gtot=wCases*(l1+0.05*dErrorI) + wDeath*(l2+.2*dErrorD)
-
-            #final objective function
-            gtot=(10*correctGtot)+abs(gtot)
+            gtot=wCases*(l1+0.05*dErrorI+diffI) + wDeath*(l2+4*dErrorD+l2Final+diffD)
 
             del l1, l2, correctGtot, dNeg, dErrorI, dErrorD,dInfData, dInf, dDeathData, dDeath
             
