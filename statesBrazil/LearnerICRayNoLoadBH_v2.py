@@ -160,6 +160,7 @@ class Learner(object):
         
         strSave='{}, {}, '.format(self.state, abs(optimal.fun))
         strSave=strSave+', '.join(map(str,point))
+        print("Saved {} - version {}".format(self.state,str(self.version)))
         self.append_new_line('./results/history_'+self.state+str(self.version)+'.csv', strSave) 
         
         del self, f, strSave, point
