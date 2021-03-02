@@ -150,7 +150,6 @@ class Learner(object):
             beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, betaR, nu, mu = point
             p=0.4
             
-            
             def SEAIRD(y,t):
                 gamma=a+b
                 sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(size*self.sigmoidTime+0.5))
@@ -163,10 +162,10 @@ class Learner(object):
                 D = y[5]                
                 y0=(-(A*betaR+I)*beta*S) #S
                 y1=(A*betaR+I)*beta*S-sigma*E-mu*E #E
-                y2=sigma*E*(1-p)-gamma*A-mu*A #A
+                y2=sigma*E*(1-p)-gamma*A #A
                 y3=sigma*E*p-gamma*I-mu*I #I
-                y4=(b*I+gamma*A)+nu*D #R
-                y5=(-(y0+y1+y2+y3+y4)) #D
+                y5=a*I-nu*D+mu*(E+I+R) #D
+                y4=(-(y0+y1+y2+y3+y5)) #R
                 if y5<0:
                     y4=y4-y5
                     y5=0
@@ -178,7 +177,7 @@ class Learner(object):
                               mxstep=500000,hmin=1e-12)   
             res = np.where(res < 0, 0, res)
             res = np.where(res >= 1e10, 1e10, res)
-            res= res.astype(int)
+#             res = res.astype(int)
 
             # calculate fitting error
             ix= np.where(self.data.values >= self.startNCases)
@@ -221,20 +220,12 @@ class Learner(object):
                 wt=1
                 
             wCases=self.weigthCases/wt
-            wDeath=self.weigthDeath/wt
-            
-            diffDead=np.diff(res[ix[0],5])
-            
-            diffI=(np.mean(np.diff(self.data.values.T[:]))-np.mean(np.diff(res[ix[0],3])))**2
-            diffD=(np.mean(np.diff(self.death.values.T[:]))-np.mean(diffDead))**2
-                
-            iDead = (len(np.where(diffDead<=0)))**2
-            diff2Dead = max(np.diff(diffDead))**2
+            wDeath=self.weigthDeath/wt                                                                          
                 
             #objective function
-            gtot=wCases*(l1+0.05*dErrorI+diffI*2) + wDeath*(l2+4*dErrorD+l2Final+diffD*2+iDead*10+diff2Dead)
-            
-            del l1, l2, correctGtot, dNeg, dErrorI, dErrorD, diffDead, diffD, diffI, diff2Dead, wCases, wDeath, wt
+            gtot=wCases*(l1+0.05*dErrorI) + wDeath*(8*l2+dErrorD+4*l2Final)
+
+            del l1, l2, correctGtot, dNeg, dErrorI, dErrorD,dInfData, dInf, dDeathData, dDeath
             
             return gtot
         return lossOdeint
@@ -260,10 +251,10 @@ class Learner(object):
                 D = y[5]
                 y0=(-(A*betaR+I)*beta*S) #S
                 y1=(A*betaR+I)*beta*S-sigma*E-mu*E #E
-                y2=sigma*E*(1-p)-gamma*A-mu*A #A
+                y2=sigma*E*(1-p)-gamma*A #A
                 y3=sigma*E*p-gamma*I-mu*I #I
-                y4=(b*I+gamma*A)+nu*D #R
-                y5=(-(y0+y1+y2+y3+y4)) #D
+                y5=a*I-nu*D+mu*(E+I+R)#D
+                y4=(-(y0+y1+y2+y3+y5)) #R
                 if y5<0:
                     y4=y4-y5
                     y5=0
@@ -277,7 +268,7 @@ class Learner(object):
             res = np.where(res >= 1e10, 1e10, res)
             res[:,3]=sub*res[:,3]
             res[:,5]=subDth*res[:,5]
-            res=res.astype(int)
+#             res=res.astype(int)
 
             # calculate fitting error
             ix= np.where(self.data.values >= self.startNCases)
@@ -322,18 +313,11 @@ class Learner(object):
             wCases=self.weigthCases/wt
             wDeath=self.weigthDeath/wt
                 
-            diffDead=np.diff(res[ix[0],5])
-            
-            diffI=(np.mean(np.diff(self.data.values.T[:]))-np.mean(np.diff(res[ix[0],3])))**2
-            diffD=(np.mean(np.diff(self.death.values.T[:]))-np.mean(diffDead))**2
-                
-            iDead = (len(np.where(diffDead<=0)))**2
-            diff2Dead = max(np.diff(diffDead))**2
-                
             #objective function
-            gtot=wCases*(l1+0.05*dErrorI+diffI*2) + wDeath*(l2+4*dErrorD+l2Final+diffD*2+iDead*10+diff2Dead)
+            gtot=wCases*(l1+0.05*dErrorI) + wDeath*(8*l2+dErrorD+4*l2Final)
+
+            del l1, l2, correctGtot, dNeg, dErrorI, dErrorD,dInfData, dInf, dDeathData, dDeath
             
-            del l1, l2, correctGtot, dNeg, dErrorI, dErrorD, diffDead, diffD, diffI, diff2Dead, wCases, wDeath, wt
             return gtot 
         return lossSub     
     
@@ -360,10 +344,10 @@ class Learner(object):
             D = y[5]
             y0=(-(A*betaR+I)*beta*S) #S
             y1=(A*betaR+I)*beta*S-sigma*E-mu*E #E
-            y2=sigma*E*(1-p)-gamma*A-mu*A #A
+            y2=sigma*E*(1-p)-gamma*A #A
             y3=sigma*E*p-gamma*I-mu*I #I
-            y4=(b*I+gamma*A)+nu*D #R
-            y5=(-(y0+y1+y2+y3+y4)) #D
+            y5=a*I-nu*D+mu*(E+I+R) #D
+            y4=(-(y0+y1+y2+y3+y5)) #R
             if y5<0:
                 y4=y4-y5
                 y5=0
@@ -377,6 +361,7 @@ class Learner(object):
         res = np.where(res >= 1e10, 1e10, res)
         res[:,3]=sub*res[:,3]
         res[:,5]=subDth*res[:,5]
+#         res=res.astype(int)
 
         return new_index, res[:,0], res[:,1],res[:,2],res[:,3],res[:,4], res[:,5]
 

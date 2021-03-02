@@ -25,11 +25,11 @@ def newFont(github_url,sizeFont):
     f.close()    
     return fm.FontProperties(fname=f.name, size=sizeFont)
 
-github_url = 'https://github.com/google/fonts/blob/master/ofl/playfairdisplay/static/PlayfairDisplay-Regular.ttf'
-heading_font = newFont(github_url,20)
+github_url = 'https://www.1001fonts.com/download/font/playfair-display.regular.ttf'
+heading_font = newFont(github_url,18)
 
-github_url = 'https://github.com/google/fonts/blob/master/apache/roboto/static/Roboto-Regular.ttf'
-subtitle_font = newFont(github_url,12)
+github_url = 'https://www.1001fonts.com/download/font/roboto.regular.ttf'
+subtitle_font = newFont(github_url,14)
 
 github_url = 'https://github.com/ipython/xkcd-font/blob/master/xkcd/build/xkcd-Regular.otf'
 comic_font = newFont(github_url,18)
@@ -151,6 +151,64 @@ def strip_accents(text):
 
     return str(text)
 
+def plotTitle(title,subtitle,ax):
+    
+        # Adding a title and a subtitle
+    plt.text(x = 0.02, y = 1.1, s = title,
+                fontsize = 28, weight = 'bold', alpha = .75,transform=ax.transAxes, 
+                fontproperties=heading_font)
+    plt.text(x = 0.02, y = 1.05,
+                s=subtitle,
+                fontsize = 20, alpha = .85,transform=ax.transAxes, 
+                fontproperties=subtitle_font)
+    
+    return
+
+def plotAuthor(ax):
+        #plot margin annotation
+    ax.annotate('Modeling Team ATS with support of IPT', 
+        xy=(1.03, 0.1), xycoords='axes fraction',
+        xytext=(0, 0), textcoords='offset points',
+    ha='right',rotation=90,fontproperties=subtitle_font,fontsize = 16)
+    ax.annotate('Dr. Guilherme A. Lima da Silva - gasilva@ats4i.com.br', 
+        xy=(1.035,0.1), xycoords='axes fraction',
+        xytext=(0, 0), textcoords='offset points',
+        ha='left',rotation=90,fontproperties=subtitle_font,fontsize = 16)
+    
+    return
+
+def plotFT(title,subtitle):
+
+    color_bg = '#FEF1E5'
+    # lighter_highlight = '#FAE6E1'
+    darker_highlight = '#FBEADC'
+    
+    fig, ax = plt.subplots(figsize=(15, 10),facecolor=color_bg)
+    ax.patch.set_facecolor(darker_highlight)
+    
+    
+    # Hide the right and top spines
+    ax.spines['left'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+
+    #fonts for the thicks
+    for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+        label.set_fontproperties(comic_font)
+        label.set_fontsize(16) # Size here overrides font_prop
+
+    plotTitle(title,subtitle,ax)
+    
+    plotAuthor(ax)
+
+    # Hide grid lines
+    ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
+
+    #plot layout
+    fig.tight_layout()
+
+    return fig,ax
+
 def covid_plots(districtRegion, districts4Plot,\
                 startdate="2020-03-15",predict_range = 60, \
                     startCase = 180, opt = 5, version = "1", \
@@ -214,7 +272,6 @@ def covid_plots(districtRegion, districts4Plot,\
         x1,y1 = logGrowth(growth1,200)
 
         # Plot the data
-        #ax.figure(figsize=(19.20,10.80))
         color_bg = '#FEF1E5'
         # lighter_highlight = '#FAE6E1'
         darker_highlight = '#FBEADC'
@@ -222,16 +279,8 @@ def covid_plots(districtRegion, districts4Plot,\
         plt.rc('font', size=14)
 
         with plt.xkcd():        
-            fig, ax = plt.subplots(facecolor=color_bg)
-            ax.patch.set_facecolor(darker_highlight)
-            # Hide the right and top spines
-            ax.spines['left'].set_visible(False)
-            ax.spines['right'].set_visible(False)
-            ax.spines['top'].set_visible(False)
-            #fonts for the thicks
-            for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-                label.set_fontproperties(comic_font)
-                label.set_fontsize(16) # Size here overrides font_prop
+            fig, ax = plotFT( "Corona virus growth",
+                             "Comparison selected districtRegions and model for "+districtRegion)
 
             plt.plot(time2, cases2,'r-',label=strip_accents(districtRegion2),markevery=3) 
             plt.plot(time4, cases4,'m-',label=strip_accents(districtRegion4),markevery=3) 
@@ -262,43 +311,21 @@ def covid_plots(districtRegion, districts4Plot,\
                 xytext=(80,-20), # distance from text to points (x,y)
                 ha='center',fontproperties=comic_font,fontsize=16) # horizontal alignment can be left, right or center
 
-            plt.annotate('Modeling Team ATS with support of IPT',fontproperties=subtitle_font,fontsize = 16,
-                    xy=(1.06, 0.1), xycoords='axes fraction',
-                    xytext=(0, 0), textcoords='offset points',
-                    ha='right',rotation=90)
-            plt.annotate('Source: https://data.brasil.io',fontproperties=subtitle_font,fontsize = 16,
-                    xy=(1.06,0.1), xycoords='axes fraction',
-                    xytext=(0, 0), textcoords='offset points',
-                    ha='left',rotation=90)
-
             plt.xlabel('Days after 100th case', fontproperties=comic_font)
             plt.ylabel('Official registered cases', fontproperties=comic_font)
             plt.yscale('log')
             # Hide grid lines
             # ax.grid(False)
-
-            # Adding a title and a subtitle
-            plt.text(x = 0.02, y = 1.1, s = "Corona virus growth",
-                        fontsize = 28, weight = 'bold', alpha = .75,transform=ax.transAxes,
-                        fontproperties=heading_font)
-            plt.text(x = 0.02, y = 1.05,
-                        s = "Comparison selected districtRegions and model for "+districtRegion,
-                        fontsize = 20, alpha = .85,transform=ax.transAxes, 
-                            fontproperties=subtitle_font)
-            leg=ax.legend(frameon=False,prop=comic_font,fontsize=12) #,loc='upper left')
+            
+            #format legend
+            leg=ax.legend(frameon=False,prop=comic_font,fontsize=20)
             for lh in leg.legendHandles: 
                 lh.set_alpha(0.75)
-            ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
-
-            fig.tight_layout()
-
+            ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.4)
+            
             #save figs
             strFile ='./results/coronaPythonEN_'+version+'.png'
             fig.savefig(strFile, facecolor=fig.get_facecolor(), edgecolor=fig.get_edgecolor())
-
-            # Show the plot
-            plt.show() 
-            plt.close()
 
             # Show the plot
             if show:
@@ -355,17 +382,8 @@ def covid_plots(districtRegion, districts4Plot,\
         plt.rc('font', size=14)
         
         with plt.xkcd():
-            fig, ax = plt.subplots(facecolor=color_bg)
-            ax.patch.set_facecolor(darker_highlight)
-            # Hide the right and top spines
-            ax.spines['left'].set_visible(False)
-            ax.spines['right'].set_visible(False)
-            ax.spines['top'].set_visible(False)
-
-            #fonts for the thicks
-            for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-                label.set_fontproperties(comic_font)
-                label.set_fontsize(16) # Size here overrides font_prop
+            fig, ax = plotFT( "Curve Fitting with Simple Math Functions",
+                             "Fitted with real data from "+districtRegion)
 
             #plot
             pred_x = np.arange(len(timeFit),maxTime,1)      
@@ -383,20 +401,7 @@ def covid_plots(districtRegion, districts4Plot,\
             #axis, limits and legend
             plt.xlabel("Days since 100th case", fontproperties=comic_font)
             plt.ylabel("Total number of infected people", fontproperties=comic_font)
-            plt.ylim((min(y)*0.9,int(1.5*fit[0][2])))
-            leg=plt.legend(frameon=False)
-            for lh in leg.legendHandles: 
-                lh.set_alpha(0.75)
-
-            plt.annotate('Modeling Team ATS with support of IPT',fontproperties=subtitle_font,fontsize = 16,
-                    xy=(1.06, 0.1), xycoords='axes fraction',
-                    xytext=(0, 0), textcoords='offset points',
-                    ha='right',rotation=90)
-            plt.annotate('Source: https://data.brasil.io',fontproperties=subtitle_font,fontsize = 16,
-                    xy=(1.06,0.1), xycoords='axes fraction',
-                    xytext=(0, 0), textcoords='offset points',
-                    ha='left',rotation=90)
-            
+            plt.ylim((min(y)*0.9,int(1.5*fit[0][2])))    
 
             plt.annotate('Total infected = {:.2f} M'.format(fit[0][2]/1e6), fontsize=16, 
                     xy=(0.97,0.60), xycoords='axes fraction',
@@ -412,21 +417,12 @@ def covid_plots(districtRegion, districts4Plot,\
                     xy=(fit[0][1],logistic_model(fit[0][1],fit[0][0],fit[0][1],fit[0][2])),
                     xytext=(-35, 0), textcoords='offset points', arrowprops={'arrowstyle': '-|>'},
                     ha='right', fontproperties=comic_font)
-
-            # Adding a title and a subtitle
-            plt.text(x = 0.02, y = 1.1, s = "Curve Fitting with Simple Math Functions",
-                        fontsize = 28, weight = 'bold', alpha = .75,transform=ax.transAxes,
-                        fontproperties=heading_font)
-            plt.text(x = 0.02, y = 1.05,
-                        s = "Fitted with real data from "+districtRegion,
-                        fontsize = 20, alpha = .85,transform=ax.transAxes, 
-                            fontproperties=subtitle_font)
-            leg=ax.legend(frameon=False,prop=comic_font,fontsize=26)
+            
+            #format legend
+            leg=ax.legend(frameon=False,prop=comic_font,fontsize=20)
             for lh in leg.legendHandles: 
                 lh.set_alpha(0.75)
-            ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
-            
-            fig.tight_layout()
+            ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.4)
 
             #save figs
             strFile ='./results/coronaPythonModelEN'+districtRegion+'.png'
@@ -496,63 +492,37 @@ def covid_plots(districtRegion, districts4Plot,\
         
         with plt.xkcd():
         
-            fig, ax = plt.subplots(facecolor=color_bg)
+            fig, ax = plotFT("","")
             plot = ax.scatter(growth, growth, c = growth, cmap = 'rainbow')
             fig.colorbar(plot)
             ax.cla()
-
-            # Plot the data
             ax.patch.set_facecolor(darker_highlight)
-            # Hide the right and top spines
-            ax.spines['left'].set_visible(False)
-            ax.spines['right'].set_visible(False)
-            ax.spines['top'].set_visible(False)
-
-            #fonts for the thicks
-            for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-                label.set_fontproperties(comic_font)
-                label.set_fontsize(16) # Size here overrides font_prop
-
+            
             #Plot bars
-            plt.bar(ind, bars, color=colors)
-            plt.xlabel('Days since 100th case', fontproperties=comic_font)
+            ax.bar(ind, bars, color=colors)
+            ax.set_xlabel('Days since 100th case', fontproperties=comic_font)
 
             # Make the y-axis label and tick labels match the line color.
-            plt.ylabel('Growth official cases per day [%]', fontproperties=comic_font)
-
+            ax.set_ylabel('Growth official cases per day [%]', fontproperties=comic_font)
+            ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)        
+            
             #Plot a line
             plt.axhline(y=10,color='r',linestyle='--')
 
-            plt.annotate("doubling each 10 days", # this is the text
-                (75,10), # this is the point to label
+            ax.annotate("doubling each 20 days", # this is the text
+                (75,5), # this is the point to label
                 textcoords="offset points", # how to position the text
                 xytext=(10,5), # distance from text to points (x,y)
                 ha='right', weight='bold',fontsize=18,fontproperties=comic_font) 
                 # horizontal alignment can be left, right or center
-
-            plt.annotate('Modeling Team ATS with support of IPT',fontproperties=subtitle_font,fontsize = 16,
-                    xy=(1.24, 0.1), xycoords='axes fraction',
-                    xytext=(0, 0), textcoords='offset points',
-                    ha='right',rotation=90)
-            plt.annotate('Source: https://data.brasil.io',fontproperties=subtitle_font,fontsize = 16, 
-                    xy=(1.24,0.1), xycoords='axes fraction',
-                    xytext=(0, 0), textcoords='offset points',
-                    ha='left',rotation=90)
-            
-            
+                
             # Hide grid lines
             ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
-
-            # Adding a title and a subtitle
-            plt.text(x = 0.02, y = 1.1, s = "Relative Growth per Day",
-                        fontsize = 28, weight = 'bold', alpha = .75,transform=ax.transAxes,
-                        fontproperties=heading_font)
-            plt.text(x = 0.02, y = 1.05,
-                        s = "Real Data for "+districtRegion,
-                        fontsize = 20, alpha = .85,transform=ax.transAxes, 
-                            fontproperties=subtitle_font)
+            
+            plotAuthor(ax)
+            plotTitle("Relative Growth per Day","Real Data for "+districtRegion,ax)
             fig.tight_layout()
-
+                
             #save figs
             strFile ='./results/coronaPythonGrowthEN_'+districtRegion+'.png'
             fig.savefig(strFile, facecolor=fig.get_facecolor(), edgecolor=fig.get_edgecolor())
@@ -582,44 +552,25 @@ def covid_plots(districtRegion, districts4Plot,\
         colors = cm.rainbow(np.asfarray(growth,float) / float(max(np.asfarray(growth,float))))
 
         with plt.xkcd():
-            fig, ax = plt.subplots(facecolor=color_bg)
+            fig, ax = plotFT("","")
             plot = ax.scatter(growth, growth, c = growth, cmap = 'rainbow')
             fig.colorbar(plot)
             ax.cla()
-
             ax.patch.set_facecolor(darker_highlight)
-            # Hide the right and top spines
-            ax.spines['left'].set_visible(False)
-            ax.spines['right'].set_visible(False)
-            ax.spines['top'].set_visible(False)
 
             #Plot bars
-            plt.bar(ind, bars, color=colors)
-            plt.xlabel('Days since 100th case', fontproperties=comic_font)
+            ax.bar(ind, bars, color=colors)
+            ax.set_xlabel('Days since 100th case', fontproperties=comic_font)
 
             # Make the y-axis label and tick labels match the line color.
-            plt.ylabel('Growth official cases per day [*1000]', fontproperties=comic_font)
-
-            plt.annotate('Modeling Team ATS with support of IPT',fontproperties=subtitle_font,fontsize = 16,
-                    xy=(1.24, 0.1), xycoords='axes fraction',
-                    xytext=(0, 0), textcoords='offset points',
-                    ha='right',rotation=90)
-            plt.annotate('Source: https://data.brasil.io',fontproperties=subtitle_font,fontsize = 16,
-                    xy=(1.24,0.1), xycoords='axes fraction',
-                    xytext=(0, 0), textcoords='offset points',
-                    ha='left',rotation=90)
+            ax.set_ylabel('Growth official cases per day [*1000]', fontproperties=comic_font)
 
             # Hide grid lines
             ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
 
             # Adding a title and a subtitle
-            plt.text(x = 0.02, y = 1.1, s = "Absolute Growth per Day",
-                        fontsize = 28, weight = 'bold', alpha = .75,transform=ax.transAxes,
-                        fontproperties=heading_font)
-            plt.text(x = 0.02, y = 1.05,
-                        s = "Real Data for "+districtRegion,
-                        fontsize = 20, alpha = .85,transform=ax.transAxes, 
-                            fontproperties=subtitle_font)
+            plotAuthor(ax)
+            plotTitle("Absolute Growth per Day","Real Data for "+districtRegion,ax)
             fig.tight_layout()
 
             #save figs
@@ -651,26 +602,8 @@ def covid_plots(districtRegion, districts4Plot,\
 #         plt.rc('font', size=14)
         
         with plt.xkcd():        
-            fig, ax = plt.subplots(figsize=(15, 10),facecolor=color_bg)
-            ax.patch.set_facecolor(darker_highlight)
-            # Hide the right and top spines
-            ax.spines['left'].set_visible(False)
-            ax.spines['right'].set_visible(False)
-            ax.spines['top'].set_visible(False)
-
-            #fonts for the thicks
-            for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-                label.set_fontproperties(comic_font)
-                label.set_fontsize(16) # Size here overrides font_prop
-
-            # Adding a title and a subtitle
-            plt.text(x = 0.02, y = 1.1, s = "SEAIR-D Model for "+districtRegion+" District Region",
-                        fontsize = 28, weight = 'bold', alpha = .75,transform=ax.transAxes, 
-                        fontproperties=heading_font)
-            plt.text(x = 0.02, y = 1.05,
-                        s = "Optimization fitted with real data",
-                        fontsize = 20, alpha = .85,transform=ax.transAxes, 
-                        fontproperties=subtitle_font)
+            fig, ax = plotFT( "SEAIR-D Model for "+districtRegion+" District Region",
+                             "Optimization fitted with real data")
 
             #limits for plotting
             ax.set_ylim((0, max(df.iloc[:]['susceptible'])*1.1))
@@ -687,24 +620,14 @@ def covid_plots(districtRegion, districts4Plot,\
             ax.plot(death.index,extended_death,'x',label="Death data")
 
 
-            plt.annotate("Max Exposed {:,}".format(int(max(df['exposed']))).replace(',', ' '), 
-                 xy=(df.index[df['exposed']==max(df['exposed'])], max(df['exposed'])), 
-                 xytext=(-50,50), textcoords='offset points', ha='center', va='bottom',
-                arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)
-            plt.annotate("Max Recovered {:,}".format(int(max(df['recovered']))).replace(',', ' '), 
-                 xy=(df.index[df['recovered']==max(df['recovered'])], max(df['recovered'])), 
-                 xytext=(-75,50), textcoords='offset points', ha='center', va='bottom',
-                arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)
-
-            #plot margin annotation
-            plt.annotate('Modeling Team ATS with support of IPT', 
-            xy=(1.04, 0.1), xycoords='axes fraction',
-            xytext=(0, 0), textcoords='offset points',
-            ha='right',rotation=90,fontproperties=subtitle_font,fontsize = 16)
-            plt.annotate('SEAIR-D Model, São Paulo, Brazil', 
-            xy=(1.045,0.1), xycoords='axes fraction',
-            xytext=(0, 0), textcoords='offset points',
-            ha='left',rotation=90,fontproperties=subtitle_font,fontsize = 16)
+#             ax.annotate("Max Exposed {:,}".format(int(max(df['exposed']))).replace(',', ' '), 
+#                  xy=(df.index[df['exposed']==max(df['exposed'])], max(df['exposed'])), 
+#                  xytext=(-50,50), textcoords='offset points', ha='center', va='bottom',
+#                 arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)
+#             ax.annotate("Max Recovered {:,}".format(int(max(df['recovered']))).replace(',', ' '), 
+#                  xy=(df.index[df['recovered']==max(df['recovered'])], max(df['recovered'])), 
+#                  xytext=(-75,50), textcoords='offset points', ha='center', va='bottom',
+#                 arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)
             
             dateMax=df.index[df['exposed']==max(df['exposed'])][0]
             deltaDays=(dateMax-df.index[0]).days
@@ -717,9 +640,6 @@ def covid_plots(districtRegion, districts4Plot,\
             for lh in leg.legendHandles: 
                 lh.set_alpha(0.75)
             ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.4)
-
-            #plot layout
-            fig.tight_layout()
 
             #file name to be saved
             strFile ="./results/modelSEAIRDOpt"+dR+version+model+".png"
@@ -737,29 +657,10 @@ def covid_plots(districtRegion, districts4Plot,\
         #format background
 
         with plt.xkcd():        
-            fig, ax = plt.subplots(figsize=(15, 10),facecolor=color_bg)
-            ax.patch.set_facecolor(darker_highlight)
-
-            # Hide the right and top spines
-            ax.spines['left'].set_visible(False)
-            ax.spines['right'].set_visible(False)
-            ax.spines['top'].set_visible(False)
-            
-            #fonts for the thicks
-            for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-                label.set_fontproperties(comic_font)
-                label.set_fontsize(16) # Size here overrides font_prop
+            fig, ax = plotFT( "Zoom SEAIR-D Model for "+districtRegion+" District Region",
+                             "Optimization fitted with real data")
 
             ax.set_ylim(0,max(max(df['infected']),max(np.int32(extended_actual)))*1.1)
-
-            # Adding a title and a subtitle
-            plt.text(x = 0.02, y = 1.1, s = "Zoom SEAIR-D Model for "+districtRegion+" District Region",
-                        fontsize = 28, weight = 'bold', alpha = .75,transform=ax.transAxes,
-                        fontproperties=heading_font)
-            plt.text(x = 0.02, y = 1.05,
-                        s = "Optimization fitted with real data",
-                        fontsize = 20, alpha = .85,transform=ax.transAxes, 
-                        fontproperties=subtitle_font)
 
             ax.xaxis_date()
             #plt.xticks(np.arange(0, predict_range, predict_range/8))
@@ -775,34 +676,22 @@ def covid_plots(districtRegion, districts4Plot,\
                 lh.set_alpha(0.75)
             ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
 
-            plt.annotate("Peak Infected {:,}".format(int(max(df['infected']))).replace(',', ' '), 
-                 xy=(df.index[df['infected']==max(df['infected'])], max(df['infected'])), 
-                 xytext=(-50,50), textcoords='offset points', ha='center', va='bottom',
-                arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)
+#             ax.annotate("Peak Infected {:,}".format(int(max(df['infected']))).replace(',', ' '), 
+#                  xy=(df.index[df['infected']==max(df['infected'])], max(df['infected'])), 
+#                  xytext=(-50,50), textcoords='offset points', ha='center', va='bottom',
+#                 arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)
             
-            maxD=max(df['deaths'])
-            maxInd=df.index[df['deaths']==max(df['deaths'])][0]
+#             maxD=max(df['deaths'])
+#             maxInd=df.index[df['deaths']==max(df['deaths'])][0]
             
-            plt.annotate("Max Deaths {:,}".format(int(df['deaths'].nlargest(1))).replace(',', ' '), 
-                 xy=(maxInd,maxD), 
-                 xytext=(-75,50), textcoords='offset points', ha='center', va='bottom',
-                arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)
-            
-            plt.annotate('Modeling Team ATS with support of IPT', 
-            xy=(1.04, 0.1), xycoords='axes fraction',
-            xytext=(0, 0), textcoords='offset points',
-            ha='right',rotation=90,fontproperties=subtitle_font,fontsize = 16)
-            plt.annotate('SEAIR-D Model, São Paulo, Brazil', 
-            xy=(1.045,0.1), xycoords='axes fraction',
-            xytext=(0, 0), textcoords='offset points',
-            ha='left',rotation=90,fontproperties=subtitle_font,fontsize = 16)
- 
+#             ax.annotate("Max Deaths {:,}".format(int(df['deaths'].nlargest(1))).replace(',', ' '), 
+#                  xy=(maxInd,maxD), 
+#                  xytext=(-75,50), textcoords='offset points', ha='center', va='bottom',
+#                 arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)
+          
             #labels for x and y axis
 #             plt.xlabel("Date", fontproperties=comic_font)
 #             plt.ylabel("Number of People", fontproperties=comic_font)
-
-            #plot layout
-            fig.tight_layout()
 
             #file name to be saved
             strFile ="./results/ZoomModelSEAIRDOpt"+dR+version+model+".png"
@@ -818,29 +707,8 @@ def covid_plots(districtRegion, districts4Plot,\
                 plt.close()
                 
         with plt.xkcd():        
-            fig, ax = plt.subplots(figsize=(15, 10),facecolor=color_bg)
-            ax.patch.set_facecolor(darker_highlight)
-
-            # Hide the right and top spines
-            ax.spines['left'].set_visible(False)
-            ax.spines['right'].set_visible(False)
-            ax.spines['top'].set_visible(False)
-            
-            #fonts for the thicks
-            for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-                label.set_fontproperties(comic_font)
-                label.set_fontsize(16) # Size here overrides font_prop
-
-#             ax.set_ylim(0,max(max(df['infected']),max(np.int32(extended_actual)))*1.1)
-
-            # Adding a title and a subtitle
-            plt.text(x = 0.02, y = 1.1, s = "Cases per day for "+districtRegion+" District Region",
-                        fontsize = 28, weight = 'bold', alpha = .75,transform=ax.transAxes,
-                        fontproperties=heading_font)
-            plt.text(x = 0.02, y = 1.05,
-                        s = "Optimization fitted with real data",
-                        fontsize = 20, alpha = .85,transform=ax.transAxes, 
-                        fontproperties=subtitle_font)
+            fig, ax = plotFT("Cases per day for "+districtRegion+" District Region",
+                             "Optimization fitted with real data")
 
             ax.xaxis_date()
             #plt.xticks(np.arange(0, predict_range, predict_range/8))
@@ -867,38 +735,21 @@ def covid_plots(districtRegion, districts4Plot,\
                 lh.set_alpha(0.75)
             ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
 
-            plt.annotate('Modeling Team ATS with support of IPT', 
-            xy=(1.04, 0.1), xycoords='axes fraction',
-            xytext=(0, 0), textcoords='offset points',
-            ha='right',rotation=90,fontproperties=subtitle_font,fontsize = 16)
-            plt.annotate('SEAIR-D Model, São Paulo, Brazil', 
-            xy=(1.045,0.1), xycoords='axes fraction',
-            xytext=(0, 0), textcoords='offset points',
-            ha='left',rotation=90,fontproperties=subtitle_font,fontsize = 16)
- 
-            #labels for x and y axis
-            plt.xlabel("Date", fontproperties=comic_font)
-            plt.ylabel("Cases per day", fontproperties=comic_font)
-
-            ax.set_ylim(0,max(df2['infectedDay'])*1.2)
+#             ax.set_ylim(0,max(df2['infectedDay'])*1.2)
             
-            
-            df2a=df2.iloc[0:int(len(df2.index)*0.5),:]    
+#             df2a=df2.iloc[0:int(len(df2.index)*0.5),:]    
 
-            plt.annotate("Max  {:,}".format(int(max(df2a['infectedDay']))).replace(',', ' '), 
-                 xy=(df2a.index[df2a['infectedDay']==max(df2a['infectedDay'])], max(df2a['infectedDay'])), 
-                 xytext=(-40,20), textcoords='offset points', ha='center', va='bottom',
-                arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)     
+#             ax.annotate("Max  {:,}".format(int(max(df2a['infectedDay']))).replace(',', ' '), 
+#                  xy=(df2a.index[df2a['infectedDay']==max(df2a['infectedDay'])], max(df2a['infectedDay'])), 
+#                  xytext=(-40,20), textcoords='offset points', ha='center', va='bottom',
+#                 arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)     
                    
-            df2a=df2.iloc[int(len(df2.index)*0.5)+1:,:]    
+#             df2a=df2.iloc[int(len(df2.index)*0.5)+1:,:]    
                 
-            plt.annotate("2nd Max {:,}".format(int(df2a['infectedDay'].nlargest(2)[0])).replace(',', ' '), 
-                 xy=(df2a.index[df2a['infectedDay']==df2a['infectedDay'].nlargest(2)[0]], df2a['infectedDay'].nlargest(2)[0]), 
-                 xytext=(-40,20), textcoords='offset points', ha='center', va='bottom',
-                arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)               
-            
-            #plot layout
-            fig.tight_layout()
+#             ax.annotate("2nd Max {:,}".format(int(df2a['infectedDay'].nlargest(2)[0])).replace(',', ' '), 
+#                  xy=(df2a.index[df2a['infectedDay']==df2a['infectedDay'].nlargest(2)[0]], df2a['infectedDay'].nlargest(2)[0]), 
+#                  xytext=(-40,20), textcoords='offset points', ha='center', va='bottom',
+#                 arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font)               
 
             #file name to be saved
             strFile ="./results/dailyCasesSEAIRDOpt"+dR+version+model+".png"
@@ -915,29 +766,8 @@ def covid_plots(districtRegion, districts4Plot,\
                 
                 
         with plt.xkcd():        
-            fig, ax = plt.subplots(figsize=(15, 10),facecolor=color_bg)
-            ax.patch.set_facecolor(darker_highlight)
-
-            # Hide the right and top spines
-            ax.spines['left'].set_visible(False)
-            ax.spines['right'].set_visible(False)
-            ax.spines['top'].set_visible(False)
-            
-            #fonts for the thicks
-            for label in (ax.get_xticklabels() + ax.get_yticklabels()):
-                label.set_fontproperties(comic_font)
-                label.set_fontsize(16) # Size here overrides font_prop
-
-#             ax.set_ylim(0,max(max(df['infected']),max(np.int32(extended_actual)))*1.1)
-
-            # Adding a title and a subtitle
-            plt.text(x = 0.02, y = 1.1, s = "Deaths per day for "+districtRegion+" District Region",
-                        fontsize = 28, weight = 'bold', alpha = .75,transform=ax.transAxes,
-                        fontproperties=heading_font)
-            plt.text(x = 0.02, y = 1.05,
-                        s = "Optimization fitted with real data",
-                        fontsize = 20, alpha = .85,transform=ax.transAxes, 
-                        fontproperties=subtitle_font)
+            fig, ax = plotFT("Deaths per day for "+districtRegion+" District Region",
+                             "Optimization fitted with real data")
 
             ax.xaxis_date()
             #plt.xticks(np.arange(0, predict_range, predict_range/8))
@@ -960,42 +790,26 @@ def covid_plots(districtRegion, districts4Plot,\
             
             ax.set_ylim(0,max(df2['deathDay'])*1.2)
             
-            df2a=df2.iloc[:int(len(df2.index)*0.5),:]    
+#             df2a=df2.iloc[:int(len(df2.index)*0.5),:]    
 
-            plt.annotate("Max {:,}".format(int(max(df2a['deathDay']))).replace(',', ' '), 
-                 xy=(df2a.index[df2a['deathDay']==max(df2a['deathDay'])], max(df2a['deathDay'])), 
-                 xytext=(-50,80), textcoords='offset points', ha='center', va='bottom',
-                arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font,  xycoords='data')     
+#             ax.annotate("Max {:,}".format(int(max(df2a['deathDay']))).replace(',', ' '), 
+#                  xy=(df2a.index[df2a['deathDay']==max(df2a['deathDay'])], max(df2a['deathDay'])), 
+#                  xytext=(-50,80), textcoords='offset points', ha='center', va='bottom',
+#                 arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font,  xycoords='data')     
                    
-            df2a=df2.iloc[int(len(df2.index)*0.5)+1:,:]    
+#             df2a=df2.iloc[int(len(df2.index)*0.5)+1:,:]    
             
-            if df2a['deathDay'].nlargest(2)[0]>1:         
-                plt.annotate("2nd Max {:,}".format(int(df2a['deathDay'].nlargest(2)[0])).replace(',', ' '), 
-                     xy=(df2a.index[df2a['deathDay']==df2a['deathDay'].nlargest(2)[0]], df2a['deathDay'].nlargest(2)[0]), 
-                     xytext=(-50,80), textcoords='offset points', ha='center', va='bottom',
-                    arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font,  xycoords='data')    
+#             if df2a['deathDay'].nlargest(2)[0]>1:         
+#                 ax.annotate("2nd Max {:,}".format(int(df2a['deathDay'].nlargest(2)[0])).replace(',', ' '), 
+#                      xy=(df2a.index[df2a['deathDay']==df2a['deathDay'].nlargest(2)[0]], df2a['deathDay'].nlargest(2)[0]), 
+#                      xytext=(-50,80), textcoords='offset points', ha='center', va='bottom',
+#                     arrowprops=dict(arrowstyle='-|>', color='black', lw=1),fontsize=20,fontproperties=comic_font,  xycoords='data')    
             
             #format legend
             leg=ax.legend(frameon=False,prop=comic_font,fontsize=20)
             for lh in leg.legendHandles: 
                 lh.set_alpha(0.75)
             ax.grid(True, linestyle='--', linewidth='2', color='white',alpha=0.2)
-
-            plt.annotate('Modeling Team ATS with support of IPT', 
-            xy=(1.04, 0.1), xycoords='axes fraction',
-            xytext=(0, 0), textcoords='offset points',
-            ha='right',rotation=90,fontproperties=subtitle_font,fontsize = 16)
-            plt.annotate('SEAIR-D Model, São Paulo, Brazil', 
-            xy=(1.045,0.1), xycoords='axes fraction',
-            xytext=(0, 0), textcoords='offset points',
-            ha='left',rotation=90,fontproperties=subtitle_font,fontsize = 16)
- 
-            #labels for x and y axis
-            plt.xlabel("Date", fontproperties=comic_font)
-            plt.ylabel("Deaths per day", fontproperties=comic_font)
-
-            #plot layout
-            fig.tight_layout()
 
             #file name to be saved
             strFile ="./results/dailyDeathsSEAIRDOpt"+dR+version+model+".png"

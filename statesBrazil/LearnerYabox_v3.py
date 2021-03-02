@@ -21,19 +21,31 @@ from datetime import datetime,timedelta
 from sklearn.metrics import mean_squared_error
 from scipy.optimize import curve_fit
 from scipy.integrate import odeint
+from scipy.optimize import basinhopping
 from yabox import DE
 from tqdm import tqdm
-import sigmoidOnly as sg
-# import gc
-# gc.enable()
+import sigmoid as sg
+
+from environs import Env
+env = Env()
+env.str("CUDA_DEVICE_ORDER",'PCI_BUS_ID')
+env.str("CUDA_VISIBLE_DEVICES",'0,1,2,3,4,5')
+env.int("NUMBA_ENABLE_CUDASIM",1)
+env.bool("OMPI_MCA_opal_cuda_support",True)
 
 #parallel computation
 import ray
+ray.shutdown()
+ray.init(num_gpus=96,num_cpus=6)
+
+import unicodedata
 
 #register function for parallel processing
-@ray.remote
+@ray.remote(memory=8*1024*1024*1024,num_gpus=10,num_cpus=0)
 class Learner(object):
-    def __init__(self, state, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, startNCases, ratio, weigthCases, weigthRecov, cleanRecovered, version, savedata=True):
+    def __init__(self, state, start_date, predict_range,s_0, e_0, a_0, i_0, r_0, d_0, \
+    startNCases, weigthCases, weigthRecov, weigthDeath, end_date, ratio, cleanRecovered, version, \
+                 underNotif=True, Deaths=False, propWeigth=True, savedata=True):
         self.state = state
         self.start_date = start_date
         self.predict_range = predict_range
@@ -44,176 +56,242 @@ class Learner(object):
         self.d_0 = d_0
         self.a_0 = a_0
         self.startNCases = startNCases
-        self.ratio = ratio
         self.weigthCases = weigthCases
         self.weigthRecov = weigthRecov
+        self.weigthDeath = weigthDeath
         self.cleanRecovered=cleanRecovered
         self.version=version
         self.savedata = savedata
+        self.under = underNotif
+        self.end_date = end_date
+        self.Deaths = Deaths
+        self.propWeigth = propWeigth
+        self.ratio=0 #ratio
+        self.sigmoidTime=0.85
 
-    def load_confirmed(self, state):
+    def strip_accents(self,text):
+        try:
+            text = unicode(text, 'utf-8')
+        except NameError: # unicode is a default on python 3 
+            pass
+
+        text = unicodedata.normalize('NFD', text)\
+               .encode('ascii', 'ignore')\
+               .decode("utf-8")
+        return str(text)
+
+    def load_confirmed(self):
         dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
         df = pd.read_csv('./data/confirmados.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
         y=[]
         x=[]
+        start=datetime.strptime(self.start_date, "%Y-%m-%d")+timedelta(days=10)
+        start2=start.strftime("%Y-%m-%d")
         for i in range(0,len(df.date)):
-            y.append(df[state].values[i])
+            y.append(df[self.state].values[i])
             x.append(df.date.values[i])
         df2=pd.DataFrame(data=y,index=x,columns=[""])
+        df2 =df2.apply (pd.to_numeric, errors='coerce')
+        df2[start2:] = df2[start2:].replace({0:np.nan})
+        df2 = df2.dropna()
+        df2.index = pd.DatetimeIndex(df2.index)
+        #interpolate missing data
+        df2 = df2.reindex(pd.date_range(df2.index.min(), df2.index.max()), fill_value=np.nan)
+        df2 = df2.interpolate(method='akima', axis=0).ffill().bfill()
+        #string type for dates and integer for data
+        df2 = df2.astype(int)
+        df2.index = df2.index.astype(str)
         df2=df2[self.start_date:]
-        del x,y,df
         return df2
 
-    def load_dead(self, state):
+    def load_dead(self):
         dateparse = lambda x: datetime.strptime(x, '%Y-%m-%d')
         df = pd.read_csv('./data/mortes.csv',delimiter=',',parse_dates=True, date_parser=dateparse)
         y=[]
         x=[]
+        start=datetime.strptime(self.start_date, "%Y-%m-%d")+timedelta(days=10)
+        start2=start.strftime("%Y-%m-%d")
         for i in range(0,len(df.date)):
-            y.append(df[state].values[i])
+            y.append(df[self.state].values[i])
             x.append(df.date.values[i])
         df2=pd.DataFrame(data=y,index=x,columns=[""])
+        df2 =df2.apply (pd.to_numeric, errors='coerce')
+        df2[start2:] = df2[start2:].replace({0:np.nan})
+        df2 = df2.dropna()
+        df2.index = pd.DatetimeIndex(df2.index)
+        #interpolate missing data
+        df2 = df2.reindex(pd.date_range(df2.index.min(), df2.index.max()), fill_value=np.nan)
+        df2 = df2.interpolate(method='akima', axis=0).ffill().bfill()
+        #string type for dates and integer for data
+        df2 = df2.astype(int)
+        df2.index = df2.index.astype(str)
         df2=df2[self.start_date:]
-        del x,y,df
         return df2
     
-    def extend_index(self, index, new_size):
-        start = datetime.strptime(index[0], '%Y-%m-%d')
-        end = datetime.strftime(start  + timedelta(days=new_size), '%Y-%m-%d')
-        start = datetime.strftime(start, '%Y-%m-%d')
-        values = pd.date_range(start=start, 
-            end=end)
+    def extend_index(self):
+        #values = index.values
+        #current = datetime.strptime(index[-1], '%Y-%m-%d')
+        '''
+        while len(values) < new_size:
+            print(current)
+            current = current + timedelta(days=1)
+            values = np.append(values, datetime.strftime(current, '%Y-%m-%d'))
+        '''
+        endData = datetime.strptime(self.data.index[-1], '%Y-%m-%d')
+        end = datetime.strftime(endData  + timedelta(days=self.predict_range), '%Y-%m-%d')
+        values = pd.date_range(start=self.data.index[0],end=end)
         return list(values)
     
-    def create_lossOdeint(self,data, \
-                death, s_0, e_0, a_0, i_0, r_0, d_0, startNCases, \
-                     ratioRecovered,weigthCases, weigthRecov):
-
+    def create_lossOdeint(self):
+            
         def lossOdeint(point):
-            size = len(data)
-            beta0, beta01, startT, beta2, sigma, sigma2, sigma3,  gamma, b, gamma2, d, mu = point
+            size = len(self.data)+1
+            sigma=[]
+            beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, betaR, nu, mu = point
+            p=0.4
+
             def SEAIRD(y,t):
-                rx=sg.sigmoid(t-startT,beta0,beta01)
-                beta=beta0*rx+beta01*(1-rx)
+                gamma=a+b
+                sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(size*self.sigmoidTime+0.5))
+                beta=beta0
                 S = y[0]
                 E = y[1]
                 A = y[2]
                 I = y[3]
                 R = y[4]
-                p=0.2
-                y0=-(beta2*A+beta*I)*S-mu*S #S
-                y1=(beta2*A+beta*I)*S-sigma*E-mu*E #E
-                y2=sigma*E*(1-p)-(1-p)*mu*A-gamma2*A #A
-                y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-p*mu*I #I
-                y4=b*I+d*A+sigma2*I-mu*R #R
-                y5=(-(y0+y1+y2+y3+y4)) #D
+                D = y[5]
+                y0=(-(A*betaR+I)*beta*S) #S
+                y1=(A*betaR+I)*beta*S-sigma*E-mu*E #E
+                y2=sigma*E*(1-p)-gamma*A #A
+                y3=sigma*E*p-gamma*I-mu*I #I
+                y5=a*I-nu*D+mu*(E+I+R)#D
+                y4=(-(y0+y1+y2+y3+y5)) #R
+                if y5<0:
+                    y4=y4-y5
+                    y5=0
                 return [y0,y1,y2,y3,y4,y5]
 
-            y0=[s_0,e_0,a_0,i_0,r_0,d_0]
-            size = len(data)+1
-            tspan=np.arange(0, size+100, 1)
-            res=odeint(SEAIRD,y0,tspan) #,hmax=0.01)
+            y0=[self.s_0,self.e_0,self.a_0,self.i_0,self.r_0,self.d_0]
+            tspan=np.arange(0, size+200, 1)
+            res, info =odeint(SEAIRD,y0,tspan,atol=1e-4, rtol=1e-6, full_output=True, 
+                              mxstep=500000,hmin=1e-12)   
+            res = np.where(res < 0, 0, res)
+            res = np.where(res >= 1e10, 1e10, res)
+#             res = res.astype(int)
 
-            # calculate fitting error by using numpy.where
-            ix= np.where(data.values >= startNCases)
-            l1 = np.mean((res[ix[0],3] - data.values[ix])**2)
-            l2 = np.mean((res[ix[0],5] - death.values[ix])**2)
-            l3 = np.mean((res[ix[0],4] - data.values[ix]*ratioRecovered)**2)
-
-            #weight for cases
-            u = weigthCases
-            #weight for recovered
-            w = weigthRecov 
-            #weight for deaths
-            v = max(0,1. - u - w)
+            # calculate fitting error
+            ix= np.where(self.data.values >= self.startNCases)
+            
+            #cases
+            l1 = np.mean((res[ix[0],3] - (self.data.values[ix]))**2)
+            
+            #deaths
+            l2 = (res[ix[0],5] - self.death.values[ix])**2
+            sizeD=len(l2)
+            l2Final=np.mean(l2[sizeD-8:sizeD])
+            l2=np.mean(l2)
 
             #calculate derivatives
             #and the error of the derivative between prediction and the data
 
             #for deaths
-            dDeath=np.diff(res[1:size,5])
-            dDeathData=np.diff(death.values.T[0][:])
-            dErrorX=(dDeath-dDeathData)**2
-            dErrorD=np.mean(dErrorX[-8:]) 
+            dDeath=np.diff(res[1:size,5])           
+            dDeathData=np.diff(self.death.values.T[:])
+            dErrorD=np.mean(((dDeath-dDeathData)**2)[-8:]) 
 
             #for infected
             dInf=np.diff(res[1:size,3])
-            dInfData=np.diff(data.values.T[0][:])
-            dErrorY=(dInf-dInfData)**2
-            dErrorI=np.mean(dErrorY[-8:])
+            dInfData=np.diff(self.data.values.T[:])          
+            dErrorI=np.mean(((dInf-dInfData)**2)[-8:])
 
+            if self.Deaths:
+                #penalty function for negative derivative at end of deaths
+                NegDeathData=np.diff(res[:,5])
+                dNeg=np.mean(NegDeathData[-5:])
+                correctGtot=max(0,np.sign(dNeg))*(dNeg)**2
+                del NegDeathData
+            else:
+                correctGtot=0
+                dNeg=0
+            
+            if self.propWeigth:
+                wt=self.weigthCases+self.weigthDeath
+            else:
+                wt=1
+                
+            wCases=self.weigthCases/wt
+            wDeath=self.weigthDeath/wt                                                                          
+                
             #objective function
-            gtot=u*(l1+0.05*dErrorI) + v*(l2+0.2*dErrorD) + w*l3
+            gtot=wCases*(l1+0.05*dErrorI) + wDeath*(8*l2+dErrorD+4*l2Final)
 
-            #penalty function for negative derivative at end of deaths
-            NegDeathData=np.diff(res[:,5])
-            dNeg=np.mean(NegDeathData[-5:]) 
-            correctGtot=max(abs(dNeg),0)**2
-
-            #final objective function
-            gtot=-10*min(np.sign(dNeg),0)*correctGtot+gtot
+            del l1, l2, correctGtot, dNeg, dErrorI, dErrorD,dInfData, dInf, dDeathData, dDeath
             
-#             gc.collect()
-            
-            del dNeg,correctGtot,NegDeathData, dErrorI, dErrorD, dErrorY, dInfData, dInf,\
-                    dErrorX, dDeathData, dDeath, u, v, w, l1, l2, l3, res, size, tspan, ix, y0
-
             return gtot
         return lossOdeint
 
     #predict final extended values
-    def predict(self, beta0, beta01, startT, beta2, sigma, sigma2, sigma3,  gamma, b, gamma2, d, mu, data, \
-                    death, state, s_0, e_0, a_0, i_0, r_0, d_0):
-        new_index = self.extend_index(data.index, self.predict_range)
-        size = len(new_index)
+    def predict(self, point):
 
+        beta0, sigma01, sigma02, startT, startT2, sigma0,  a, b, betaR, nu, mu  = point
+        new_index = self.extend_index()
+        size = len(new_index)
+        sizeData = len(self.data)+1
+        p=0.4
+            
         def SEAIRD(y,t):
-            rx=sg.sigmoid(t-startT,beta0,beta01)
-            beta=beta0*rx+beta01*(1-rx)
+            gamma=a+b
+            sigma=sg.sigmoid2(t-startT,t-startT2,sigma0,sigma01,sigma02,t-int(sizeData*self.sigmoidTime+0.5))
+            beta=beta0
             S = y[0]
             E = y[1]
             A = y[2]
             I = y[3]
             R = y[4]
-            p=0.2
-            y0=-(beta2*A+beta*I)*S-mu*S #S
-            y1=(beta2*A+beta*I)*S-sigma*E-mu*E #E
-            y2=sigma*E*(1-p)-(1-p)*mu*A-gamma2*A #A
-            y3=sigma*E*p-gamma*I-sigma2*I-sigma3*I-p*mu*I #I
-            y4=b*I+d*A+sigma2*I-mu*R #R
-            y5=(-(y0+y1+y2+y3+y4)) #D
+            D = y[5]
+            y0=(-(A*betaR+I)*beta*S) #S
+            y1=(A*betaR+I)*beta*S-sigma*E-mu*E #E
+            y2=sigma*E*(1-p)-gamma*A #A
+            y3=sigma*E*p-gamma*I-mu*I #I
+            y5=a*I-nu*D+mu*(E+I+R) #D
+            y4=(-(y0+y1+y2+y3+y5)) #R
+            if y5<0:
+                y4=y4-y5
+                y5=0
             return [y0,y1,y2,y3,y4,y5]
 
-        y0=[s_0,e_0,a_0,i_0,r_0,d_0]
+        y0=[self.s_0,self.e_0,self.a_0,self.i_0,self.r_0,self.d_0]
         tspan=np.arange(0, size, 1)
-        res=odeint(SEAIRD,y0,tspan)
+        res, info =odeint(SEAIRD,y0,tspan,atol=1e-4, rtol=1e-6, full_output=True, 
+                              mxstep=500000,hmin=1e-12)           
+        res = np.where(res < 0, 0, res)
+        res = np.where(res >= 1e10, 1e10, res)
+#         res=res.astype(int)
 
-        #data not extended
-        extended_actual = data.values
-        extended_death = death.values
-
-        return new_index, extended_actual, extended_death, res[:,0], res[:,1],res[:,2],res[:,3],res[:,4], res[:,5]
+        return new_index, res[:,0], res[:,1],res[:,2],res[:,3],res[:,4], res[:,5]
 
 
     #run optimizer and plotting
-    @ray.method(num_return_vals=1)
     def train(self):
-        dead=self.load_dead(self.state)
-        self.data = self.load_confirmed(self.state)*(1-self.ratio)-dead
-        self.death = dead
+        
+        self.death= self.load_dead()
+        self.recovered = self.load_confirmed()*self.ratio
+        self.data = self.load_confirmed()-self.recovered-self.death
+        
+        size=len(self.data)+1
+          
+        bounds =[(1e-16, .9),(1e-16, .9),(1e-16, .9),
+            (5,int(size*self.sigmoidTime+0.5)-5),(int(size*self.sigmoidTime+0.5)+5,size-5),
+            (1e-16, .9),
+            (1e-16, 10),(1e-16, 10),
+            (0,10),(1e-16,10),(1e-16,10)
+            ]            
 
-        size=len(self.data)
-
-        bounds=[(1e-12, .2),(1e-12, .2),(5,size-5),(1e-12, .2),(1/120 ,0.4),(1/120, .4),
-        (1/120, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4),(1e-12, .4)]
-
-        maxiterations=3500
-        f=self.create_lossOdeint(self.data, \
-            self.death, self.s_0, self.e_0, self.a_0, self.i_0, self.r_0, self.d_0, self.startNCases, \
-                 self.ratio, self.weigthCases, self.weigthRecov)
+        maxiterations=4500
+        f=self.create_lossOdeint()
         de = DE(f, bounds, maxiters=maxiterations) #,popsize=100)
         i=0
-        with tqdm(total=maxiterations*1750) as pbar:
+        with tqdm(total=maxiterations*1750*maxiterations/3500) as pbar:
             for step in de.geniterator():
                 idx = step.best_idx
                 norm_vector = step.population[idx]
@@ -222,12 +300,15 @@ class Learner(object):
                 i+=1
         p=best_params[0]
 
-        beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, gamma2, d, mu  = p
-
-        new_index, extended_actual, extended_death, y0, y1, y2, y3, y4, y5 \
-                = self.predict(beta0, beta01, startT, beta2, sigma, sigma2, sigma3, gamma, b, gamma2, d, mu, \
-                    self.data, self.death, self.state, self.s_0, \
-                    self.e_0, self.a_0, self.i_0, self.r_0, self.d_0)
+        today = datetime.today()
+        endDate = today + timedelta(days=-2)
+        self.end_date= datetime.strftime(endDate, '%Y-%m-%d') 
+        
+        self.death= self.load_dead()
+        self.recovered = self.load_confirmed()*self.ratio
+        self.data = self.load_confirmed()-self.recovered-self.death
+        
+        new_index, y0, y1, y2, y3, y4, y5 = self.predict(p)
 
         #prepare dataframe to export
         dataFr = [y0, y1, y2, y3, y4, y5]

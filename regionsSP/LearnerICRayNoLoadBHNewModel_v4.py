@@ -74,10 +74,10 @@ class Learner(object):
                 D = y[5]
                 y0=(-(A*betaR+I)*beta*S) #S
                 y1=(A*betaR+I)*beta*S-sigma*E-mu*E #E
-                y2=sigma*E*(1-p)-gamma*A-mu*A #A
+                y2=sigma*E*(1-p)-gamma*A #A
                 y3=sigma*E*p-gamma*I-mu*I #I
-                y4=(b*I+gamma*A)+nu*D #R
-                y5=(-(y0+y1+y2+y3+y4)) #D
+                y5=a*I-nu*D+mu*(E+I+R)#D
+                y4=(-(y0+y1+y2+y3+y5)) #R
                 if y5<0:
                     y4=y4-y5
                     y5=0
@@ -116,8 +116,8 @@ class Learner(object):
             if self.Deaths:
                 #penalty function for negative derivative at end of deaths
                 NegDeathData=np.diff(res[:,5])
-                dNeg=np.mean(NegDeathData[-5:])-25
-                correctGtot=-1*max(0,np.sign(dNeg))*(dNeg)**2
+                dNeg=np.mean(NegDeathData[-5:])
+                correctGtot=max(0,np.sign(dNeg))*(dNeg)**2
                 del NegDeathData
             else:
                 correctGtot=0
@@ -131,11 +131,8 @@ class Learner(object):
             wCases=self.weigthCases/wt
             wDeath=self.weigthDeath/wt
 
-            diffI=(np.mean(np.diff(self.data.values.T[:]))-np.mean(np.diff(res[ix[0],3])))**2
-            diffD=(np.mean(np.diff(self.death.values.T[:]))-np.mean(np.diff(res[ix[0],5])))**2
-                
             #objective function
-            gtot=wCases*(l1+0.05*dErrorI+diffI) + wDeath*(l2+4*dErrorD+l2Final+diffD)
+            gtot=wCases*(l1+0.05*dErrorI) + wDeath*(8*l2+dErrorD+4*l2Final)
 
             del l1, l2, correctGtot, dNeg, dErrorI, dErrorD,dInfData, dInf, dDeathData, dDeath
             
@@ -148,12 +145,16 @@ class Learner(object):
         f=self.create_lossOdeint()
         size=len(self.data)+1
         
-        bnds =[(1e-16, .9),(1e-16, .9),(1e-16, .9),(0,int(size*self.sigmoidTime+0.5)-1),(int(size*self.sigmoidTime+0.5),size),
-            (1e-16, .9),(1e-16, .9),(1e-16, .9),(0,10),(1e-16,0.9),(1e-16,0.9)]
+        bounds =[(1e-16, .9),(1e-16, .9),(1e-16, .9),
+            (5,int(size*self.sigmoidTime+0.5)-5),(int(size*self.sigmoidTime+0.5)+5,size-5),
+            (1e-16, .9),
+            (1e-16, 10),(1e-16, 10),
+            (0,10),(1e-16,10),(1e-16,10)
+            ]
         
-        x0 = [1e-3, 1e-3, 1e-3, size/2, size*0.85, 1e-3, 1/50, 1e-3,1,0,0]
+        x0 = [1e-3, 1e-3, 1e-3, size/2, size*0.85, 1e-3, 1/50, 1e-3,1,1e-3,1e-3]
         
-        minimizer_kwargs = { "method": "L-BFGS-B","bounds":bnds }
+        minimizer_kwargs = { "method": "L-BFGS-B","bounds":bounds }
         optimal = basinhopping(f, x0, minimizer_kwargs=minimizer_kwargs,niter=10,disp=True)        
         point = self.s_0, self.start_date, self.i_0, self.d_0, self.startNCases, self.weigthCases, self.weigthRecov
         
