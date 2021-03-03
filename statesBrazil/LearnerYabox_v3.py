@@ -319,8 +319,8 @@ class Learner(object):
             end=new_index[-1])
         df.index.name = 'date'
         
-        del dataFr, dataFr2, idx, norm_vector, best_params, dead,\
-            new_index, extended_actual, extended_death, y0, y1, y2, y3, y4, y5
+        del dataFr, dataFr2, idx, norm_vector, best_params,\
+            new_index, y0, y1, y2, y3, y4, y5
         
         if self.savedata:
             #save simulation results for comparison and use in another codes/routines
