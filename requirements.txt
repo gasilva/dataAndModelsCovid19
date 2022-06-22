@@ -1,7 +1,7 @@
 pandas==1.1.5
 ray==1.0.1.post1
 tqdm==4.46.1
-numpy==1.18.5
+numpy==1.22.0
 ipywidgets==7.5.1
 matplotlib==3.3.3
 yabox==1.1.0
