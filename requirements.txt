@@ -9,6 +9,6 @@ environs==8.0.0
 numba==0.52.0
 scipy==1.4.1
 gamma==0.0.1
-ipython==7.20.0
+ipython==7.31.1
 python_dateutil==2.8.1
 scikit_learn==0.24.1
