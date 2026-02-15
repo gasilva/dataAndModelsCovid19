@@ -3,7 +3,7 @@ pandas==1.1.5
 yabox==1.1.0
 scipy==1.4.1
 numpy==1.22.0
-ray==1.0.1.post1
+ray==2.52.1
 matplotlib==3.3.3
 numba==0.52.0
 tqdm==4.46.1
